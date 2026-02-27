@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoHo Local – San Joaquin County CA</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background:#f1f5f9; color:#1e293b; }
+
+  /* NAV */
+  nav { background:#1e3a5f; padding:14px 32px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+  .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .logo-icon { width:36px; height:36px; background:#f59e0b; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px; color:#1e3a5f; }
+  .logo-text { color:white; font-weight:700; font-size:18px; }
+
+  /* CITY SWITCHER in nav */
+  .city-switcher { display:flex; align-items:center; gap:6px; background:rgba(255,255,255,0.1); border-radius:8px; padding:4px; }
+  .city-btn { color:rgba(255,255,255,0.7); border:none; background:none; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; transition:all .2s; white-space:nowrap; }
+  .city-btn.active { background:#f59e0b; color:#1e3a5f; }
+  .city-btn:hover:not(.active) { background:rgba(255,255,255,0.15); color:white; }
+
+  .nav-links { display:flex; gap:20px; }
+  .nav-links a { color:rgba(255,255,255,0.8); text-decoration:none; font-size:14px; transition:color .2s; }
+  .nav-links a:hover { color:#f59e0b; }
+  .nav-actions { display:flex; gap:10px; }
+  .btn-ghost { background:rgba(255,255,255,0.12); color:white; border:none; padding:8px 16px; border-radius:7px; font-size:13px; cursor:pointer; }
+  .btn-primary { background:#f59e0b; color:#1e3a5f; border:none; padding:8px 18px; border-radius:7px; font-size:13px; font-weight:700; cursor:pointer; }
+
+  /* PAGE TABS */
+  .page-tabs { background:white; border-bottom:1px solid #e2e8f0; display:flex; gap:0; padding:0 32px; overflow-x:auto; }
+  .page-tab { padding:14px 20px; font-size:13px; font-weight:500; color:#64748b; cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap; transition:all .2s; }
+  .page-tab.active { color:#1e3a5f; border-bottom-color:#f59e0b; font-weight:600; }
+  .page-tab:hover { color:#1e3a5f; }
+
+  /* CITY BANNER — changes color per city */
+  .city-banner { padding:10px 32px; display:flex; align-items:center; gap:12px; font-size:13px; font-weight:600; }
+  .city-banner.mh { background:#eff6ff; color:#1e40af; border-bottom:2px solid #bfdbfe; }
+  .city-banner.tracy { background:#f0fdf4; color:#166534; border-bottom:2px solid #bbf7d0; }
+  .city-banner.lathrop { background:#fdf4ff; color:#7e22ce; border-bottom:2px solid #e9d5ff; }
+  .city-banner.manteca { background:#fff7ed; color:#c2410c; border-bottom:2px solid #fed7aa; }
+  .city-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  .dot-mh { background:#2563eb; }
+  .dot-tracy { background:#16a34a; }
+  .dot-lathrop { background:#9333ea; }
+  .dot-manteca { background:#ea580c; }
+
+  /* PAGES */
+  .page { display:none; padding:32px; max-width:1200px; margin:0 auto; }
+  .page.active { display:block; }
+
+  /* HERO */
+  .hero { border-radius:16px; padding:56px 40px; text-align:center; color:white; margin-bottom:32px; transition:background .4s; }
+  .hero.mh { background:linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%); }
+  .hero.tracy { background:linear-gradient(135deg,#14532d 0%,#16a34a 100%); }
+  .hero.lathrop { background:linear-gradient(135deg,#581c87 0%,#9333ea 100%); }
+  .hero.manteca { background:linear-gradient(135deg,#7c2d12 0%,#ea580c 100%); }
+  .hero h1 { font-size:30px; font-weight:800; margin-bottom:8px; }
+  .hero p { font-size:15px; opacity:.85; margin-bottom:24px; }
+  .search-bar { display:flex; gap:10px; max-width:560px; margin:0 auto 20px; }
+  .search-bar input { flex:1; padding:14px 18px; border-radius:10px; border:none; font-size:14px; outline:none; }
+  .search-bar button { background:#f59e0b; color:#1e3a5f; border:none; padding:14px 24px; border-radius:10px; font-weight:700; font-size:14px; cursor:pointer; }
+  .hero-tags { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+  .hero-tag { background:rgba(255,255,255,0.15); color:white; padding:6px 14px; border-radius:20px; font-size:12px; cursor:pointer; }
+
+  /* CITY CARDS (homepage) */
+  .city-cards { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:36px; }
+  .city-card { border-radius:14px; padding:24px 20px; color:white; cursor:pointer; transition:transform .2s, box-shadow .2s; position:relative; overflow:hidden; }
+  .city-card:hover { transform:translateY(-3px); box-shadow:0 12px 32px rgba(0,0,0,0.15); }
+  .city-card.mh { background:linear-gradient(135deg,#1e3a5f,#2563eb); }
+  .city-card.tracy { background:linear-gradient(135deg,#14532d,#16a34a); }
+  .city-card.lathrop { background:linear-gradient(135deg,#581c87,#9333ea); }
+  .city-card.manteca { background:linear-gradient(135deg,#7c2d12,#ea580c); }
+  .city-card-name { font-size:18px; font-weight:800; margin-bottom:4px; }
+  .city-card-county { font-size:12px; opacity:.75; margin-bottom:12px; }
+  .city-card-stats { display:flex; gap:12px; }
+  .city-stat { font-size:11px; opacity:.85; }
+  .city-stat strong { display:block; font-size:16px; font-weight:800; opacity:1; }
+  .city-active-badge { position:absolute; top:12px; right:12px; background:rgba(255,255,255,0.25); font-size:10px; padding:3px 8px; border-radius:10px; font-weight:700; }
+
+  /* SECTION */
+  .section-title { font-size:20px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; }
+  .section-title a { font-size:13px; color:#2563eb; text-decoration:none; font-weight:500; }
+  .section-subtitle { font-size:13px; color:#64748b; margin-top:-10px; margin-bottom:16px; }
+
+  /* STATS BAR */
+  .stats-bar { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:32px; }
+  .stat-card { background:white; border-radius:12px; padding:20px; border:1px solid #e2e8f0; text-align:center; }
+  .stat-num { font-size:28px; font-weight:800; color:#1e3a5f; }
+  .stat-label { font-size:12px; color:#64748b; margin-top:4px; }
+
+  /* CAT GRID */
+  .cat-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:12px; margin-bottom:36px; }
+  .cat-card { background:white; border-radius:12px; padding:18px 14px; text-align:center; cursor:pointer; transition:all .2s; border:1px solid #e2e8f0; }
+  .cat-card:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.1); border-color:#2563eb; }
+  .cat-icon { font-size:26px; margin-bottom:8px; }
+  .cat-name { font-size:12px; font-weight:600; }
+  .cat-count { font-size:11px; color:#94a3b8; margin-top:2px; }
+
+  /* BIZ CARDS */
+  .biz-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; margin-bottom:36px; }
+  .biz-card { background:white; border-radius:12px; overflow:hidden; border:1px solid #e2e8f0; transition:all .2s; cursor:pointer; }
+  .biz-card:hover { box-shadow:0 8px 24px rgba(0,0,0,0.1); transform:translateY(-2px); }
+  .biz-img { height:130px; display:flex; align-items:center; justify-content:center; font-size:38px; }
+  .biz-img.mh { background:linear-gradient(135deg,#dbeafe,#bfdbfe); }
+  .biz-img.tracy { background:linear-gradient(135deg,#dcfce7,#bbf7d0); }
+  .biz-img.lathrop { background:linear-gradient(135deg,#f3e8ff,#e9d5ff); }
+  .biz-img.manteca { background:linear-gradient(135deg,#ffedd5,#fed7aa); }
+  .biz-body { padding:14px; }
+  .biz-name { font-weight:700; font-size:14px; margin-bottom:3px; }
+  .biz-cat { font-size:12px; color:#64748b; margin-bottom:8px; }
+  .biz-meta { display:flex; align-items:center; justify-content:space-between; }
+  .stars { color:#f59e0b; font-size:12px; }
+  .badge { font-size:10px; padding:3px 8px; border-radius:20px; font-weight:600; }
+  .badge-verified { background:#dcfce7; color:#16a34a; }
+  .badge-featured { background:#fef3c7; color:#d97706; }
+  .city-chip { font-size:10px; padding:2px 7px; border-radius:10px; font-weight:600; margin-top:6px; display:inline-block; }
+  .chip-mh { background:#eff6ff; color:#2563eb; }
+  .chip-tracy { background:#f0fdf4; color:#16a34a; }
+  .chip-lathrop { background:#fdf4ff; color:#9333ea; }
+  .chip-manteca { background:#fff7ed; color:#ea580c; }
+
+  /* POSTS */
+  .post-list { display:flex; flex-direction:column; gap:12px; margin-bottom:36px; }
+  .post-card { background:white; border-radius:12px; padding:16px 20px; border:1px solid #e2e8f0; cursor:pointer; transition:all .2s; }
+  .post-card:hover { box-shadow:0 4px 16px rgba(0,0,0,0.08); }
+  .post-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .post-avatar { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; color:white; flex-shrink:0; }
+  .post-meta { flex:1; }
+  .post-author { font-weight:600; font-size:13px; }
+  .post-time { font-size:11px; color:#94a3b8; }
+  .post-type { font-size:11px; padding:3px 10px; border-radius:20px; font-weight:600; }
+  .post-title { font-weight:600; font-size:14px; margin-bottom:5px; }
+  .post-body { font-size:13px; color:#64748b; line-height:1.5; }
+  .post-footer { margin-top:10px; display:flex; gap:14px; font-size:12px; color:#94a3b8; align-items:center; }
+
+  /* EVENTS */
+  .event-list { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px; margin-bottom:36px; }
+  .event-card { background:white; border-radius:12px; overflow:hidden; border:1px solid #e2e8f0; display:flex; cursor:pointer; transition:all .2s; }
+  .event-card:hover { box-shadow:0 8px 24px rgba(0,0,0,0.1); }
+  .event-date-col { color:white; padding:16px 12px; text-align:center; min-width:60px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .event-date-col.mh { background:#1e3a5f; }
+  .event-date-col.tracy { background:#14532d; }
+  .event-date-col.lathrop { background:#581c87; }
+  .event-date-col.manteca { background:#7c2d12; }
+  .event-month { font-size:10px; text-transform:uppercase; opacity:.75; }
+  .event-day { font-size:24px; font-weight:800; }
+  .event-body { padding:14px; flex:1; }
+  .event-title { font-weight:700; font-size:13px; margin-bottom:4px; }
+  .event-detail { font-size:12px; color:#64748b; }
+
+  /* DIR LAYOUT */
+  .dir-layout { display:grid; grid-template-columns:220px 1fr; gap:24px; }
+  .dir-sidebar { background:white; border-radius:12px; padding:20px; border:1px solid #e2e8f0; height:fit-content; position:sticky; top:80px; }
+  .filter-title { font-weight:700; font-size:14px; margin-bottom:14px; }
+  .filter-group { margin-bottom:18px; }
+  .filter-group h4 { font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; }
+  .filter-item { display:flex; align-items:center; gap:8px; padding:5px 0; cursor:pointer; font-size:13px; color:#475569; }
+  .filter-item input { accent-color:#2563eb; }
+  .dir-main { display:flex; flex-direction:column; gap:14px; }
+  .dir-header { background:white; border-radius:12px; padding:14px 18px; border:1px solid #e2e8f0; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .dir-search { display:flex; gap:8px; flex:1; max-width:400px; }
+  .dir-search input { flex:1; padding:9px 14px; border:1px solid #e2e8f0; border-radius:8px; font-size:13px; outline:none; }
+  .dir-search button { background:#1e3a5f; color:white; border:none; padding:9px 16px; border-radius:8px; font-size:13px; cursor:pointer; }
+  .biz-list-card { background:white; border-radius:12px; padding:14px 18px; border:1px solid #e2e8f0; display:flex; gap:14px; align-items:center; cursor:pointer; transition:all .2s; }
+  .biz-list-card:hover { box-shadow:0 4px 16px rgba(0,0,0,0.08); border-color:#2563eb; }
+  .biz-list-img { width:64px; height:64px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:26px; flex-shrink:0; }
+  .biz-list-name { font-weight:700; font-size:14px; margin-bottom:2px; }
+  .biz-list-meta { font-size:12px; color:#64748b; display:flex; gap:10px; margin-top:5px; flex-wrap:wrap; }
+  .biz-list-actions { display:flex; flex-direction:column; gap:8px; align-items:flex-end; flex-shrink:0; }
+
+  /* DETAIL */
+  .detail-hero { border-radius:16px; padding:28px; color:white; margin-bottom:22px; display:flex; align-items:center; gap:20px; }
+  .detail-hero.mh { background:linear-gradient(135deg,#1e3a5f,#1e40af); }
+  .detail-hero.tracy { background:linear-gradient(135deg,#14532d,#15803d); }
+  .detail-hero.lathrop { background:linear-gradient(135deg,#581c87,#7e22ce); }
+  .detail-hero.manteca { background:linear-gradient(135deg,#7c2d12,#c2410c); }
+  .detail-logo { width:72px; height:72px; background:white; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:32px; flex-shrink:0; }
+  .detail-info h1 { font-size:22px; font-weight:800; margin-bottom:4px; }
+  .detail-info p { opacity:.8; font-size:13px; }
+  .detail-badges { display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+  .detail-badge { background:rgba(255,255,255,0.2); padding:4px 10px; border-radius:20px; font-size:11px; }
+  .detail-layout { display:grid; grid-template-columns:1fr 300px; gap:20px; }
+  .detail-card { background:white; border-radius:12px; padding:18px; border:1px solid #e2e8f0; margin-bottom:16px; }
+  .detail-card h3 { font-size:15px; font-weight:700; margin-bottom:12px; }
+  .info-row { display:flex; gap:10px; padding:8px 0; border-bottom:1px solid #f1f5f9; font-size:13px; align-items:flex-start; }
+  .info-icon { font-size:15px; width:20px; flex-shrink:0; }
+  .info-label { color:#64748b; width:70px; flex-shrink:0; font-size:12px; }
+  .review-item { padding:12px 0; border-bottom:1px solid #f1f5f9; }
+  .review-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:5px; }
+  .review-author { font-weight:600; font-size:13px; }
+  .review-body { font-size:13px; color:#64748b; line-height:1.5; }
+  .map-placeholder { background:#e2e8f0; border-radius:10px; height:160px; display:flex; align-items:center; justify-content:center; font-size:13px; color:#94a3b8; margin-bottom:14px; }
+
+  /* NEW RESIDENT */
+  .welcome-banner { border-radius:14px; padding:28px; color:white; margin-bottom:24px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+  .welcome-banner.mh { background:linear-gradient(135deg,#f59e0b,#d97706); }
+  .welcome-banner.tracy { background:linear-gradient(135deg,#16a34a,#15803d); }
+  .welcome-banner.lathrop { background:linear-gradient(135deg,#9333ea,#7e22ce); }
+  .welcome-banner.manteca { background:linear-gradient(135deg,#ea580c,#c2410c); }
+  .welcome-banner h2 { font-size:20px; font-weight:800; margin-bottom:4px; }
+  .welcome-banner p { opacity:.9; font-size:13px; }
+  .welcome-banner button { background:white; border:none; padding:10px 20px; border-radius:8px; font-weight:700; font-size:13px; cursor:pointer; white-space:nowrap; flex-shrink:0; }
+  .guide-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; margin-bottom:28px; }
+  .guide-card { background:white; border-radius:12px; padding:20px; border:1px solid #e2e8f0; cursor:pointer; transition:all .2s; }
+  .guide-card:hover { box-shadow:0 8px 24px rgba(0,0,0,0.08); transform:translateY(-2px); }
+  .guide-icon { font-size:28px; margin-bottom:10px; }
+  .guide-title { font-weight:700; font-size:14px; margin-bottom:4px; }
+  .guide-desc { font-size:12px; color:#64748b; line-height:1.5; }
+
+  /* COMMUNITY */
+  .chip { display:inline-flex; align-items:center; gap:4px; font-size:11px; padding:4px 10px; border-radius:20px; font-weight:600; }
+  .chip-red { background:#fee2e2; color:#dc2626; }
+  .chip-orange { background:#fef3c7; color:#d97706; }
+  .chip-green { background:#dcfce7; color:#16a34a; }
+  .chip-purple { background:#f3e8ff; color:#9333ea; }
+  .chip-blue { background:#eff6ff; color:#2563eb; }
+
+  .btn { padding:8px 16px; border-radius:8px; border:none; font-size:13px; font-weight:600; cursor:pointer; }
+  .btn-blue { background:#2563eb; color:white; }
+  .btn-outline { background:white; color:#1e293b; border:1px solid #e2e8f0; }
+  .btn-amber { background:#f59e0b; color:#1e3a5f; }
+
+  /* FOOTER */
+  footer { background:#111827; color:#6b7280; padding:36px 32px 20px; margin-top:40px; }
+  .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:28px; max-width:1200px; margin:0 auto 28px; }
+  .footer-brand strong { color:white; font-size:15px; display:block; margin-bottom:8px; }
+  .footer-brand p { font-size:13px; line-height:1.6; }
+  .footer-cities { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+  .footer-city-chip { font-size:11px; padding:3px 9px; border-radius:10px; font-weight:600; }
+  .footer-col h4 { color:white; font-size:12px; font-weight:700; margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px; }
+  .footer-col a { display:block; font-size:13px; color:#6b7280; text-decoration:none; margin-bottom:5px; }
+  .footer-col a:hover { color:#f59e0b; }
+  .footer-bottom { border-top:1px solid #1f2937; padding-top:18px; display:flex; justify-content:space-between; font-size:12px; max-width:1200px; margin:0 auto; flex-wrap:wrap; gap:8px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#">
+    <div class="logo-icon">M</div>
+    <span class="logo-text">MoHo Local</span>
+  </a>
+  <div class="city-switcher">
+    <button class="city-btn active" onclick="switchCity('mh',this)">🏘️ Mountain House</button>
+    <button class="city-btn" onclick="switchCity('tracy',this)">🌿 Tracy</button>
+    <button class="city-btn" onclick="switchCity('lathrop',this)">🔮 Lathrop</button>
+    <button class="city-btn" onclick="switchCity('manteca',this)">🍊 Manteca</button>
+  </div>
+  <div class="nav-links">
+    <a href="#" onclick="showPage('directory',null)">Directory</a>
+    <a href="#" onclick="showPage('community',null)">Community</a>
+    <a href="#" onclick="showPage('events',null)">Events</a>
+    <a href="#" onclick="showPage('newresident',null)">New Resident</a>
+  </div>
+  <div class="nav-actions">
+    <button class="btn-ghost">Login</button>
+    <button class="btn-primary">Join Free</button>
+  </div>
+</nav>
+
+<!-- CITY BANNER -->
+<div id="city-banner" class="city-banner mh">
+  <span id="city-dot" class="city-dot dot-mh"></span>
+  <span id="city-banner-text">📍 Viewing: <strong>Mountain House, CA</strong> — San Joaquin County · Pop. ~25,000 · <span style="opacity:.7">Switch city using the nav above</span></span>
+</div>
+
+<!-- PAGE TABS -->
+<div class="page-tabs">
+  <div class="page-tab active" onclick="showPage('home',this)">🏠 Home</div>
+  <div class="page-tab" onclick="showPage('directory',this)">📋 Directory</div>
+  <div class="page-tab" onclick="showPage('bizdetail',this)">🏪 Business Detail</div>
+  <div class="page-tab" onclick="showPage('community',this)">💬 Community</div>
+  <div class="page-tab" onclick="showPage('events',this)">📅 Events</div>
+  <div class="page-tab" onclick="showPage('newresident',this)">👋 New Resident</div>
+</div>
+
+<!-- ========== HOME ========== -->
+<div id="page-home" class="page active">
+
+  <!-- Hero (color changes with city) -->
+  <div id="home-hero" class="hero mh">
+    <h1 id="hero-title">Your Mountain House Community Hub</h1>
+    <p id="hero-sub">Find local businesses, connect with neighbors, discover events — all in one place</p>
+    <div class="search-bar">
+      <input type="text" id="hero-search" placeholder="🔍  Search businesses, services...">
+      <button>Search</button>
+    </div>
+    <div class="hero-tags">
+      <span class="hero-tag">🔧 Plumber</span>
+      <span class="hero-tag">🍕 Restaurants</span>
+      <span class="hero-tag">🐾 Pet Care</span>
+      <span class="hero-tag">👶 Childcare</span>
+      <span class="hero-tag">💇 Salon</span>
+      <span class="hero-tag">🏫 Tutors</span>
+      <span class="hero-tag">🏥 Doctors</span>
+    </div>
+  </div>
+
+  <!-- City Cards -->
+  <div class="section-title">Browse by City <a href="#">All Cities →</a></div>
+  <div class="city-cards">
+    <div class="city-card mh" onclick="switchCity('mh',null)">
+      <span class="city-active-badge" id="badge-mh">✓ Active</span>
+      <div class="city-card-name">Mountain House</div>
+      <div class="city-card-county">San Joaquin County</div>
+      <div class="city-card-stats">
+        <div class="city-stat"><strong>342</strong>Businesses</div>
+        <div class="city-stat"><strong>1.2k</strong>Members</div>
+        <div class="city-stat"><strong>~31k</strong>Pop.</div>
+      </div>
+    </div>
+    <div class="city-card tracy" onclick="switchCity('tracy',null)">
+      <span class="city-active-badge" id="badge-tracy" style="display:none">✓ Active</span>
+      <div class="city-card-name">Tracy</div>
+      <div class="city-card-county">San Joaquin County</div>
+      <div class="city-card-stats">
+        <div class="city-stat"><strong>890</strong>Businesses</div>
+        <div class="city-stat"><strong>3.4k</strong>Members</div>
+        <div class="city-stat"><strong>~103k</strong>Pop.</div>
+      </div>
+    </div>
+    <div class="city-card lathrop" onclick="switchCity('lathrop',null)">
+      <span class="city-active-badge" id="badge-lathrop" style="display:none">✓ Active</span>
+      <div class="city-card-name">Lathrop</div>
+      <div class="city-card-county">San Joaquin County</div>
+      <div class="city-card-stats">
+        <div class="city-stat"><strong>124</strong>Businesses</div>
+        <div class="city-stat"><strong>480</strong>Members</div>
+        <div class="city-stat"><strong>~28k</strong>Pop.</div>
+      </div>
+    </div>
+    <div class="city-card manteca" onclick="switchCity('manteca',null)">
+      <span class="city-active-badge" id="badge-manteca" style="display:none">✓ Active</span>
+      <div class="city-card-name">Manteca</div>
+      <div class="city-card-county">San Joaquin County</div>
+      <div class="city-card-stats">
+        <div class="city-stat"><strong>510</strong>Businesses</div>
+        <div class="city-stat"><strong>1.8k</strong>Members</div>
+        <div class="city-stat"><strong>~90k</strong>Pop.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-card"><div class="stat-num" id="stat-biz">342</div><div class="stat-label" id="stat-biz-label">Businesses in Mountain House</div></div>
+    <div class="stat-card"><div class="stat-num">1,866</div><div class="stat-label">Total Members</div></div>
+    <div class="stat-card"><div class="stat-num">4</div><div class="stat-label">Cities Covered</div></div>
+    <div class="stat-card"><div class="stat-num">4.8★</div><div class="stat-label">Avg Business Rating</div></div>
+  </div>
+
+  <!-- Categories -->
+  <div class="section-title">Browse by Category</div>
+  <div class="cat-grid">
+    <div class="cat-card"><div class="cat-icon">🔧</div><div class="cat-name">Home Services</div><div class="cat-count">84 listings</div></div>
+    <div class="cat-card"><div class="cat-icon">🍽️</div><div class="cat-name">Restaurants</div><div class="cat-count">62 listings</div></div>
+    <div class="cat-card"><div class="cat-icon">🏥</div><div class="cat-name">Health & Medical</div><div class="cat-count">45 listings</div></div>
+    <div class="cat-card"><div class="cat-icon">👶</div><div class="cat-name">Childcare</div><div class="cat-count">28 listings</div></div>
+    <div class="cat-card"><div class="cat-icon">🐾</div><div class="cat-name">Pet Services</div><div class="cat-count">22 listings</div></div>
+    <div class="cat-card"><div class="cat-icon">💇</div><div class="cat-name">Beauty & Salon</div><div class="cat-count">31 listings</div></div>
+    <div class="cat-card"><div class="cat-icon">🏫</div><div class="cat-name">Tutoring</div><div class="cat-count">19 listings</div></div>
+    <div class="cat-card"><div class="cat-icon">🚗</div><div class="cat-name">Auto Services</div><div class="cat-count">17 listings</div></div>
+  </div>
+
+  <!-- Featured Businesses -->
+  <div class="section-title">Featured Businesses <a href="#">View all →</a></div>
+  <div class="biz-grid">
+    <div class="biz-card">
+      <div class="biz-img mh">🔧</div>
+      <div class="biz-body">
+        <div class="biz-name">Valley Pro Plumbing</div>
+        <div class="biz-cat">Home Services · Plumbing</div>
+        <span class="city-chip chip-mh">📍 Mountain House</span>
+        <div class="biz-meta" style="margin-top:8px"><span class="stars">★★★★★</span><span style="font-size:11px;color:#94a3b8;margin-left:4px">(48)</span><span class="badge badge-featured">⭐ Featured</span></div>
+      </div>
+    </div>
+    <div class="biz-card">
+      <div class="biz-img tracy">🍜</div>
+      <div class="biz-body">
+        <div class="biz-name">Spice Garden Indian Bistro</div>
+        <div class="biz-cat">Restaurant · Indian Cuisine</div>
+        <span class="city-chip chip-tracy">📍 Tracy</span>
+        <div class="biz-meta" style="margin-top:8px"><span class="stars">★★★★☆</span><span style="font-size:11px;color:#94a3b8;margin-left:4px">(93)</span><span class="badge badge-verified">✓ Verified</span></div>
+      </div>
+    </div>
+    <div class="biz-card">
+      <div class="biz-img lathrop">🏋️</div>
+      <div class="biz-body">
+        <div class="biz-name">Iron Peak Fitness</div>
+        <div class="biz-cat">Health · Gym & Fitness</div>
+        <span class="city-chip chip-lathrop">📍 Lathrop</span>
+        <div class="biz-meta" style="margin-top:8px"><span class="stars">★★★★★</span><span style="font-size:11px;color:#94a3b8;margin-left:4px">(27)</span><span class="badge badge-featured">⭐ Featured</span></div>
+      </div>
+    </div>
+    <div class="biz-card">
+      <div class="biz-img manteca">🍦</div>
+      <div class="biz-body">
+        <div class="biz-name">Sweet Scoops Creamery</div>
+        <div class="biz-cat">Food · Ice Cream & Desserts</div>
+        <span class="city-chip chip-manteca">📍 Manteca</span>
+        <div class="biz-meta" style="margin-top:8px"><span class="stars">★★★★★</span><span style="font-size:11px;color:#94a3b8;margin-left:4px">(61)</span><span class="badge badge-verified">✓ Verified</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Community Snapshot -->
+  <div class="section-title">Latest from the Community <a href="#">See all →</a></div>
+  <div class="post-list">
+    <div class="post-card">
+      <div class="post-header">
+        <div class="post-avatar" style="background:#6366f1">R</div>
+        <div class="post-meta"><div class="post-author">Raj M. · Altamont Village</div><div class="post-time">2 hours ago</div></div>
+        <span class="chip chip-red">🚨 Lost & Found</span>
+        <span class="city-chip chip-mh" style="margin-left:4px">Mountain House</span>
+      </div>
+      <div class="post-title">Lost golden retriever near Central Park — answers to "Buddy"</div>
+      <div class="post-body">Last seen on Mountain House Pkwy around 4pm. Wearing blue collar. Please call if you see him!</div>
+      <div class="post-footer"><span>💬 14</span><span>❤️ 32</span></div>
+    </div>
+    <div class="post-card">
+      <div class="post-header">
+        <div class="post-avatar" style="background:#0891b2">M</div>
+        <div class="post-meta"><div class="post-author">Maria G. · Tracy</div><div class="post-time">4 hours ago</div></div>
+        <span class="chip chip-green">💡 Recommendation</span>
+        <span class="city-chip chip-tracy" style="margin-left:4px">Tracy</span>
+      </div>
+      <div class="post-title">Best taqueria in Tracy — La Familia on 11th St is incredible</div>
+      <div class="post-body">Authentic street tacos, super friendly staff. Go on Tuesday for $1.50 taco night!</div>
+      <div class="post-footer"><span>💬 22</span><span>❤️ 71</span></div>
+    </div>
+    <div class="post-card">
+      <div class="post-header">
+        <div class="post-avatar" style="background:#ea580c">J</div>
+        <div class="post-meta"><div class="post-author">James T. · Manteca</div><div class="post-time">Yesterday</div></div>
+        <span class="chip chip-orange">⚠️ Alert</span>
+        <span class="city-chip chip-manteca" style="margin-left:4px">Manteca</span>
+      </div>
+      <div class="post-title">Road closure on Airport Way — detour via Main St thru Friday</div>
+      <div class="post-body">PG&E utility work causing full closure. Budget extra 10 min for morning commute.</div>
+      <div class="post-footer"><span>💬 8</span><span>❤️ 44</span></div>
+    </div>
+  </div>
+
+  <!-- Events -->
+  <div class="section-title">Upcoming Events <a href="#">Full calendar →</a></div>
+  <div class="event-list">
+    <div class="event-card"><div class="event-date-col mh"><div class="event-month">MAR</div><div class="event-day">8</div></div><div class="event-body"><div class="event-title">Mountain House Spring Farmers Market</div><div class="event-detail">📍 Central Community Park · 9AM–1PM</div><span class="city-chip chip-mh" style="margin-top:6px;display:inline-block">Mountain House</span></div></div>
+    <div class="event-card"><div class="event-date-col tracy"><div class="event-month">MAR</div><div class="event-day">15</div></div><div class="event-body"><div class="event-title">Tracy Night Market — Food & Artisan Stalls</div><div class="event-detail">📍 Downtown Tracy · 6PM–10PM</div><span class="city-chip chip-tracy" style="margin-top:6px;display:inline-block">Tracy</span></div></div>
+    <div class="event-card"><div class="event-date-col lathrop"><div class="event-month">MAR</div><div class="event-day">22</div></div><div class="event-body"><div class="event-title">Lathrop Community Clean-Up Day</div><div class="event-detail">📍 Lathrop City Park · 8AM–12PM</div><span class="city-chip chip-lathrop" style="margin-top:6px;display:inline-block">Lathrop</span></div></div>
+    <div class="event-card"><div class="event-date-col manteca"><div class="event-month">MAR</div><div class="event-day">29</div></div><div class="event-body"><div class="event-title">Manteca Spring Car Show</div><div class="event-detail">📍 Downtown Manteca · 10AM–4PM</div><span class="city-chip chip-manteca" style="margin-top:6px;display:inline-block">Manteca</span></div></div>
+  </div>
+</div>
+
+<!-- ========== DIRECTORY ========== -->
+<div id="page-directory" class="page">
+  <div style="margin-bottom:18px">
+    <h2 style="font-size:20px;font-weight:800;margin-bottom:4px">Local Business Directory</h2>
+    <p style="color:#64748b;font-size:14px">Mountain House · Tracy · Lathrop · Manteca · 1,866 businesses listed</p>
+  </div>
+  <div class="dir-layout">
+    <div class="dir-sidebar">
+      <div class="filter-title">🔽 Filter</div>
+      <div class="filter-group">
+        <h4>City</h4>
+        <label class="filter-item"><input type="checkbox" checked> 🏘️ Mountain House <span style="margin-left:auto;font-size:11px;color:#94a3b8">342</span></label>
+        <label class="filter-item"><input type="checkbox" checked> 🌿 Tracy <span style="margin-left:auto;font-size:11px;color:#94a3b8">890</span></label>
+        <label class="filter-item"><input type="checkbox"> 🔮 Lathrop <span style="margin-left:auto;font-size:11px;color:#94a3b8">124</span></label>
+        <label class="filter-item"><input type="checkbox"> 🍊 Manteca <span style="margin-left:auto;font-size:11px;color:#94a3b8">510</span></label>
+      </div>
+      <div class="filter-group">
+        <h4>Neighborhood</h4>
+        <label class="filter-item"><input type="checkbox"> Altamont (MH)</label>
+        <label class="filter-item"><input type="checkbox"> Bethany (MH)</label>
+        <label class="filter-item"><input type="checkbox"> Downtown Tracy</label>
+        <label class="filter-item"><input type="checkbox"> West Tracy</label>
+        <label class="filter-item"><input type="checkbox"> Downtown Manteca</label>
+      </div>
+      <div class="filter-group">
+        <h4>Category</h4>
+        <label class="filter-item"><input type="checkbox"> 🔧 Home Services</label>
+        <label class="filter-item"><input type="checkbox"> 🍽️ Restaurants</label>
+        <label class="filter-item"><input type="checkbox"> 🏥 Health & Medical</label>
+        <label class="filter-item"><input type="checkbox"> 👶 Childcare</label>
+        <label class="filter-item"><input type="checkbox"> 🐾 Pet Services</label>
+        <label class="filter-item"><input type="checkbox"> 💇 Beauty</label>
+      </div>
+      <div class="filter-group">
+        <h4>Rating</h4>
+        <label class="filter-item"><input type="radio" name="r"> ★★★★★ 5 stars</label>
+        <label class="filter-item"><input type="radio" name="r"> ★★★★☆ 4+</label>
+        <label class="filter-item"><input type="radio" name="r"> ★★★☆☆ 3+</label>
+      </div>
+    </div>
+    <div class="dir-main">
+      <div class="dir-header">
+        <div class="dir-search">
+          <input type="text" placeholder="Search businesses...">
+          <button>Search</button>
+        </div>
+        <select style="padding:8px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;outline:none">
+          <option>Sort: Top Rated</option><option>Sort: Newest</option><option>Sort: A–Z</option>
+        </select>
+        <span style="font-size:13px;color:#64748b;white-space:nowrap">1,232 results</span>
+      </div>
+      <div class="biz-list-card">
+        <div class="biz-list-img mh" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe)">🔧</div>
+        <div style="flex:1"><div style="display:flex;align-items:center;gap:8px;margin-bottom:2px"><span class="biz-list-name">Valley Pro Plumbing</span><span class="badge badge-featured">⭐ Featured</span></div><div style="font-size:12px;color:#64748b">Home Services · Plumbing</div><div style="font-size:12px;margin-top:4px"><span class="stars">★★★★★</span><span style="color:#94a3b8;margin-left:3px">(48)</span></div><div class="biz-list-meta"><span class="city-chip chip-mh">Mountain House</span><span>📞 (209) 555-0142</span><span>⏰ Open</span></div></div>
+        <div class="biz-list-actions"><button class="btn btn-blue">View</button><button class="btn btn-outline">📞 Call</button></div>
+      </div>
+      <div class="biz-list-card">
+        <div class="biz-list-img" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0)">🍜</div>
+        <div style="flex:1"><div style="display:flex;align-items:center;gap:8px;margin-bottom:2px"><span class="biz-list-name">Spice Garden Indian Bistro</span><span class="badge badge-verified">✓ Verified</span></div><div style="font-size:12px;color:#64748b">Restaurant · Indian Cuisine</div><div style="font-size:12px;margin-top:4px"><span class="stars">★★★★☆</span><span style="color:#94a3b8;margin-left:3px">(93)</span></div><div class="biz-list-meta"><span class="city-chip chip-tracy">Tracy</span><span>📞 (209) 555-0198</span><span>⏰ Open</span></div></div>
+        <div class="biz-list-actions"><button class="btn btn-blue">View</button><button class="btn btn-outline">📞 Call</button></div>
+      </div>
+      <div class="biz-list-card">
+        <div class="biz-list-img" style="background:linear-gradient(135deg,#f3e8ff,#e9d5ff)">🏋️</div>
+        <div style="flex:1"><div style="display:flex;align-items:center;gap:8px;margin-bottom:2px"><span class="biz-list-name">Iron Peak Fitness</span><span class="badge badge-featured">⭐ Featured</span></div><div style="font-size:12px;color:#64748b">Health · Gym & Fitness</div><div style="font-size:12px;margin-top:4px"><span class="stars">★★★★★</span><span style="color:#94a3b8;margin-left:3px">(27)</span></div><div class="biz-list-meta"><span class="city-chip chip-lathrop">Lathrop</span><span>📞 (209) 555-0233</span><span>⏰ Open 24/7</span></div></div>
+        <div class="biz-list-actions"><button class="btn btn-blue">View</button><button class="btn btn-outline">📞 Call</button></div>
+      </div>
+      <div class="biz-list-card">
+        <div class="biz-list-img" style="background:linear-gradient(135deg,#ffedd5,#fed7aa)">🍦</div>
+        <div style="flex:1"><div style="display:flex;align-items:center;gap:8px;margin-bottom:2px"><span class="biz-list-name">Sweet Scoops Creamery</span><span class="badge badge-verified">✓ Verified</span></div><div style="font-size:12px;color:#64748b">Food · Ice Cream & Desserts</div><div style="font-size:12px;margin-top:4px"><span class="stars">★★★★★</span><span style="color:#94a3b8;margin-left:3px">(61)</span></div><div class="biz-list-meta"><span class="city-chip chip-manteca">Manteca</span><span>📞 (209) 555-0311</span><span>⏰ Closes 9pm</span></div></div>
+        <div class="biz-list-actions"><button class="btn btn-blue">View</button><button class="btn btn-outline">📞 Call</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== BUSINESS DETAIL ========== -->
+<div id="page-bizdetail" class="page">
+  <div style="font-size:13px;color:#64748b;margin-bottom:14px">← <a href="#" style="color:#2563eb">Directory</a> / Home Services / <strong>Valley Pro Plumbing</strong></div>
+  <div id="detail-hero" class="detail-hero mh">
+    <div class="detail-logo">🔧</div>
+    <div class="detail-info">
+      <h1>Valley Pro Plumbing</h1>
+      <p>Licensed & insured plumbing services — Mountain House & surrounding cities</p>
+      <div class="detail-badges">
+        <span class="detail-badge">✓ Verified</span>
+        <span class="detail-badge">⭐ Featured</span>
+        <span class="detail-badge">📍 Mountain House</span>
+        <span class="detail-badge">🗓️ Est. 2018</span>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-left:auto">
+      <button class="btn btn-amber">📞 Call Now</button>
+      <button style="background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3);padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer">💬 Message</button>
+    </div>
+  </div>
+  <div class="detail-layout">
+    <div>
+      <div class="detail-card">
+        <h3>About</h3>
+        <p style="font-size:13px;color:#475569;line-height:1.7">Valley Pro Plumbing has been serving Mountain House, Tracy, Lathrop, and Manteca families since 2018. We specialize in emergency repairs, water heater installation, drain cleaning, and full bathroom remodels. Available 7 days a week.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px">
+          <span class="chip chip-blue">🔧 Emergency Repairs</span><span class="chip chip-blue">💧 Water Heaters</span><span class="chip chip-blue">🚿 Bathroom Remodels</span>
+        </div>
+      </div>
+      <div class="detail-card">
+        <h3>Reviews <span style="font-size:13px;font-weight:400;color:#64748b">(48 · avg 4.9★)</span></h3>
+        <div class="review-item">
+          <div class="review-header"><span class="review-author">Sunita P. · Mountain House</span><span style="color:#f59e0b;font-size:12px">★★★★★</span></div>
+          <div class="review-body">Called at 7am for a burst pipe — they were here by 9am. Incredibly professional!</div>
+          <div style="font-size:11px;color:#94a3b8;margin-top:5px">✓ Verified Resident · 3 days ago</div>
+        </div>
+        <div class="review-item">
+          <div class="review-header"><span class="review-author">Marcus T. · Tracy</span><span style="color:#f59e0b;font-size:12px">★★★★★</span></div>
+          <div class="review-body">New water heater installed in under 3 hours. Price was exactly what they quoted.</div>
+          <div style="font-size:11px;color:#94a3b8;margin-top:5px">✓ Verified Resident · 1 week ago</div>
+        </div>
+        <button class="btn btn-outline" style="margin-top:12px;width:100%">Write a Review</button>
+      </div>
+    </div>
+    <div>
+      <div class="detail-card">
+        <div class="map-placeholder">🗺️ Map — Mountain House, CA</div>
+        <div class="info-row"><span class="info-icon">📍</span><span class="info-label">Address</span><span>Mountain House, CA 95391</span></div>
+        <div class="info-row"><span class="info-icon">📞</span><span class="info-label">Phone</span><span>(209) 555-0142</span></div>
+        <div class="info-row"><span class="info-icon">🌐</span><span class="info-label">Website</span><a href="#" style="color:#2563eb">valleypro.com</a></div>
+        <div class="info-row"><span class="info-icon">🏙️</span><span class="info-label">Cities</span><span style="display:flex;gap:4px;flex-wrap:wrap"><span class="city-chip chip-mh">Mountain House</span><span class="city-chip chip-tracy">Tracy</span></span></div>
+        <div class="info-row"><span class="info-icon">⏰</span><span class="info-label">Hours</span><div style="font-size:12px"><div>Mon–Fri: 7am–7pm</div><div>Sat–Sun: 8am–5pm</div><div style="color:#16a34a;font-weight:600;margin-top:2px">● Open Now</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== COMMUNITY ========== -->
+<div id="page-community" class="page">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+    <div><h2 style="font-size:20px;font-weight:800;margin-bottom:3px">Community Board</h2><p style="color:#64748b;font-size:13px">All 4 cities · Filter by city or post type</p></div>
+    <button class="btn btn-amber">+ New Post</button>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+    <span class="chip chip-blue" style="cursor:pointer;padding:6px 12px">All Cities</span>
+    <span class="city-chip chip-mh" style="cursor:pointer;padding:6px 12px;font-size:12px">🏘️ Mountain House</span>
+    <span class="city-chip chip-tracy" style="cursor:pointer;padding:6px 12px;font-size:12px">🌿 Tracy</span>
+    <span class="city-chip chip-lathrop" style="cursor:pointer;padding:6px 12px;font-size:12px">🔮 Lathrop</span>
+    <span class="city-chip chip-manteca" style="cursor:pointer;padding:6px 12px;font-size:12px">🍊 Manteca</span>
+    <span style="width:1px;background:#e2e8f0;margin:0 4px"></span>
+    <span class="chip chip-red" style="cursor:pointer;padding:6px 12px">🚨 Lost & Found</span>
+    <span class="chip chip-orange" style="cursor:pointer;padding:6px 12px">⚠️ Alerts</span>
+    <span class="chip chip-green" style="cursor:pointer;padding:6px 12px">💡 Recommendations</span>
+    <span class="chip chip-purple" style="cursor:pointer;padding:6px 12px">💬 General</span>
+  </div>
+  <div class="post-list">
+    <div class="post-card" style="border-left:3px solid #dc2626">
+      <div class="post-header"><div class="post-avatar" style="background:#6366f1">R</div><div class="post-meta"><div class="post-author">Raj M. · Altamont Village</div><div class="post-time">2 hrs ago</div></div><span class="chip chip-red">🚨 Lost & Found</span><span class="city-chip chip-mh" style="margin-left:6px">Mountain House</span></div>
+      <div class="post-title">Lost golden retriever near Central Park — answers to "Buddy"</div>
+      <div class="post-body">Last seen on Mountain House Pkwy around 4pm. Blue collar, has tag. Call 209-555-0188!</div>
+      <div class="post-footer"><span>💬 14</span><span>❤️ 32</span><span>🔗 Share</span></div>
+    </div>
+    <div class="post-card" style="border-left:3px solid #16a34a">
+      <div class="post-header"><div class="post-avatar" style="background:#0891b2">M</div><div class="post-meta"><div class="post-author">Maria G. · Tracy</div><div class="post-time">4 hrs ago</div></div><span class="chip chip-green">💡 Recommendation</span><span class="city-chip chip-tracy" style="margin-left:6px">Tracy</span></div>
+      <div class="post-title">Best taqueria in Tracy — La Familia on 11th is 🔥</div>
+      <div class="post-body">Authentic street tacos, super friendly staff. Go Tuesday for $1.50 taco night!</div>
+      <div class="post-footer"><span>💬 22</span><span>❤️ 71</span><span>🔗 Share</span></div>
+    </div>
+    <div class="post-card" style="border-left:3px solid #f59e0b">
+      <div class="post-header"><div class="post-avatar" style="background:#ea580c">J</div><div class="post-meta"><div class="post-author">James T. · Manteca</div><div class="post-time">Yesterday</div></div><span class="chip chip-orange">⚠️ Alert</span><span class="city-chip chip-manteca" style="margin-left:6px">Manteca</span></div>
+      <div class="post-title">Road closure on Airport Way thru Friday</div>
+      <div class="post-body">PG&E utility work. Full closure — detour via Main St. Budget extra 10 min mornings.</div>
+      <div class="post-footer"><span>💬 8</span><span>❤️ 44</span><span>🔗 Share</span></div>
+    </div>
+    <div class="post-card" style="border-left:3px solid #9333ea">
+      <div class="post-header"><div class="post-avatar" style="background:#9333ea">S</div><div class="post-meta"><div class="post-author">Sofia R. · Lathrop</div><div class="post-time">2 days ago</div></div><span class="chip chip-purple">💬 General</span><span class="city-chip chip-lathrop" style="margin-left:6px">Lathrop</span></div>
+      <div class="post-title">Anyone know a good Hindi-speaking pediatrician near Lathrop?</div>
+      <div class="post-body">Moving here next month with my toddler. Would love a local recommendation!</div>
+      <div class="post-footer"><span>💬 18</span><span>❤️ 25</span><span>🔗 Share</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== EVENTS ========== -->
+<div id="page-events" class="page">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+    <div><h2 style="font-size:20px;font-weight:800;margin-bottom:3px">Community Events</h2><p style="color:#64748b;font-size:13px">All 4 cities — filter by city or category</p></div>
+    <button class="btn btn-amber">+ Submit Event</button>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+    <span class="chip chip-blue" style="cursor:pointer;padding:6px 12px">All Cities</span>
+    <span class="city-chip chip-mh" style="cursor:pointer;padding:6px 12px;font-size:12px">🏘️ Mountain House</span>
+    <span class="city-chip chip-tracy" style="cursor:pointer;padding:6px 12px;font-size:12px">🌿 Tracy</span>
+    <span class="city-chip chip-lathrop" style="cursor:pointer;padding:6px 12px;font-size:12px">🔮 Lathrop</span>
+    <span class="city-chip chip-manteca" style="cursor:pointer;padding:6px 12px;font-size:12px">🍊 Manteca</span>
+  </div>
+  <div class="event-list">
+    <div class="event-card"><div class="event-date-col mh"><div class="event-month">MAR</div><div class="event-day">8</div></div><div class="event-body"><div class="event-title">Mountain House Spring Farmers Market</div><div class="event-detail">📍 Central Community Park · 9AM–1PM · 🎟️ Free</div><span class="city-chip chip-mh" style="margin-top:6px;display:inline-block">Mountain House</span></div></div>
+    <div class="event-card"><div class="event-date-col tracy"><div class="event-month">MAR</div><div class="event-day">15</div></div><div class="event-body"><div class="event-title">Tracy Night Market</div><div class="event-detail">📍 Downtown Tracy · 6PM–10PM · 🎟️ Free</div><span class="city-chip chip-tracy" style="margin-top:6px;display:inline-block">Tracy</span></div></div>
+    <div class="event-card"><div class="event-date-col lathrop"><div class="event-month">MAR</div><div class="event-day">22</div></div><div class="event-body"><div class="event-title">Lathrop Community Clean-Up Day</div><div class="event-detail">📍 Lathrop City Park · 8AM–12PM · 🎟️ Free</div><span class="city-chip chip-lathrop" style="margin-top:6px;display:inline-block">Lathrop</span></div></div>
+    <div class="event-card"><div class="event-date-col manteca"><div class="event-month">MAR</div><div class="event-day">29</div></div><div class="event-body"><div class="event-title">Manteca Spring Car Show</div><div class="event-detail">📍 Downtown Manteca · 10AM–4PM · 🎟️ Free</div><span class="city-chip chip-manteca" style="margin-top:6px;display:inline-block">Manteca</span></div></div>
+    <div class="event-card"><div class="event-date-col mh"><div class="event-month">APR</div><div class="event-day">5</div></div><div class="event-body"><div class="event-title">MH Easter Egg Hunt — Central Park</div><div class="event-detail">📍 Central Community Park · 10AM · 🎟️ Free · 👶 Kids</div><span class="city-chip chip-mh" style="margin-top:6px;display:inline-block">Mountain House</span></div></div>
+    <div class="event-card"><div class="event-date-col tracy"><div class="event-month">APR</div><div class="event-day">12</div></div><div class="event-body"><div class="event-title">Tracy Home & Garden Expo</div><div class="event-detail">📍 Tracy Fairgrounds · 9AM–5PM · 🎟️ $5</div><span class="city-chip chip-tracy" style="margin-top:6px;display:inline-block">Tracy</span></div></div>
+  </div>
+</div>
+
+<!-- ========== NEW RESIDENT ========== -->
+<div id="page-newresident" class="page">
+  <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+    <button onclick="setResidentCity('mh',this)" class="btn btn-blue" style="font-size:13px">🏘️ Mountain House</button>
+    <button onclick="setResidentCity('tracy',this)" class="btn btn-outline" style="font-size:13px">🌿 Tracy</button>
+    <button onclick="setResidentCity('lathrop',this)" class="btn btn-outline" style="font-size:13px">🔮 Lathrop</button>
+    <button onclick="setResidentCity('manteca',this)" class="btn btn-outline" style="font-size:13px">🍊 Manteca</button>
+  </div>
+  <div id="resident-banner" class="welcome-banner mh">
+    <div><h2 id="resident-title">Welcome to Mountain House! 🎉</h2><p id="resident-sub">Everything you need to settle in — services, schools, utilities, and neighbor tips.</p></div>
+    <button>Get Your Welcome Pack →</button>
+  </div>
+  <div class="section-title">Your New Resident Checklist</div>
+  <div class="guide-grid">
+    <div class="guide-card"><div class="guide-icon">⚡</div><div class="guide-title">Set Up Utilities</div><div class="guide-desc">PG&E, water, trash pickup. Links, account setup guides, and avg monthly costs.</div></div>
+    <div class="guide-card"><div class="guide-icon">🏫</div><div class="guide-title">School Enrollment</div><div class="guide-desc">Find your local school district, enrollment forms, and school ratings.</div></div>
+    <div class="guide-card"><div class="guide-icon">🏥</div><div class="guide-title">Find a Doctor</div><div class="guide-desc">Top-rated primary care, pediatricians, dentists, and urgent care nearby.</div></div>
+    <div class="guide-card"><div class="guide-icon">🛒</div><div class="guide-title">Grocery & Shopping</div><div class="guide-desc">Nearest Costco, Target, Safeway, and specialty stores with drive times.</div></div>
+    <div class="guide-card"><div class="guide-icon">🚌</div><div class="guide-title">Commute Options</div><div class="guide-desc">ACE Train, BART connections, highway routes, and morning commute tips.</div></div>
+    <div class="guide-card"><div class="guide-icon">📱</div><div class="guide-title">Community Apps</div><div class="guide-desc">MoHo Local, city alert notifications, school apps, local Facebook groups.</div></div>
+    <div class="guide-card"><div class="guide-icon">🐕</div><div class="guide-title">Pet Resources</div><div class="guide-desc">Dog parks, vets, groomers, and pet-friendly trails in your city.</div></div>
+    <div class="guide-card"><div class="guide-icon">🏘️</div><div class="guide-title">Know Your Neighborhood</div><div class="guide-desc">Local parks, community centers, events, and who to call for city services.</div></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <strong>🏘️ MoHo Local</strong>
+      <p style="font-size:13px;line-height:1.6;margin-bottom:12px">The community directory for San Joaquin County — find local businesses, connect with neighbors, and discover what's happening in your city.</p>
+      <div class="footer-cities">
+        <span class="footer-city-chip chip-mh">Mountain House</span>
+        <span class="footer-city-chip chip-tracy">Tracy</span>
+        <span class="footer-city-chip chip-lathrop">Lathrop</span>
+        <span class="footer-city-chip chip-manteca">Manteca</span>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Directory</h4>
+      <a href="#">Home Services</a><a href="#">Restaurants</a><a href="#">Health & Medical</a><a href="#">Childcare</a><a href="#">All Categories</a>
+    </div>
+    <div class="footer-col">
+      <h4>Community</h4>
+      <a href="#">Community Board</a><a href="#">Events Calendar</a><a href="#">Lost & Found</a><a href="#">New Resident Guide</a>
+    </div>
+    <div class="footer-col">
+      <h4>Business Owners</h4>
+      <a href="#">List Your Business</a><a href="#">Claim a Listing</a><a href="#">Pricing & Plans</a><a href="#">Advertise</a><a href="#">Contact Us</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 MoHo Local · San Joaquin County, CA · Built by a neighbor, for neighbors</span>
+    <div style="display:flex;gap:14px"><a href="#" style="color:#6b7280;text-decoration:none">Privacy</a><a href="#" style="color:#6b7280;text-decoration:none">Terms</a><a href="#" style="color:#6b7280;text-decoration:none">Contact</a></div>
+  </div>
+</footer>
+
+<script>
+const cityData = {
+  mh:      { name:'Mountain House', pop:'~31,000', biz:342,  color:'mh',      banner:'mh',      dot:'dot-mh',      bannerText:'📍 Viewing: <strong>Mountain House, CA</strong> — San Joaquin County · Pop. ~31,000' },
+  tracy:   { name:'Tracy',          pop:'~103,000',biz:890,  color:'tracy',    banner:'tracy',   dot:'dot-tracy',   bannerText:'📍 Viewing: <strong>Tracy, CA</strong> — San Joaquin County · Pop. ~103,000' },
+  lathrop: { name:'Lathrop',        pop:'~28,000', biz:124,  color:'lathrop',  banner:'lathrop', dot:'dot-lathrop', bannerText:'📍 Viewing: <strong>Lathrop, CA</strong> — San Joaquin County · Pop. ~28,000' },
+  manteca: { name:'Manteca',        pop:'~90,000', biz:510,  color:'manteca',  banner:'manteca', dot:'dot-manteca', bannerText:'📍 Viewing: <strong>Manteca, CA</strong> — San Joaquin County · Pop. ~90,000' },
+}
+
+let activeCity = 'mh'
+
+function switchCity(city, btnEl) {
+  activeCity = city
+  const d = cityData[city]
+
+  // Nav city buttons
+  document.querySelectorAll('.city-btn').forEach(b => b.classList.remove('active'))
+  const navBtns = document.querySelectorAll('.city-btn')
+  const cityOrder = ['mh','tracy','lathrop','manteca']
+  navBtns[cityOrder.indexOf(city)].classList.add('active')
+
+  // City banner
+  const banner = document.getElementById('city-banner')
+  banner.className = `city-banner ${d.banner}`
+  document.getElementById('city-dot').className = `city-dot ${d.dot}`
+  document.getElementById('city-banner-text').innerHTML = d.bannerText + ' · <span style="opacity:.7">Switch city using the nav above</span>'
+
+  // Hero
+  document.getElementById('home-hero').className = `hero ${d.color}`
+  document.getElementById('hero-title').textContent = `Your ${d.name} Community Hub`
+  document.getElementById('hero-search').placeholder = `🔍  Search ${d.name} businesses...`
+
+  // Stats
+  document.getElementById('stat-biz').textContent = d.biz
+  document.getElementById('stat-biz-label').textContent = `Businesses in ${d.name}`
+
+  // City card badges
+  Object.keys(cityData).forEach(c => {
+    const badge = document.getElementById(`badge-${c}`)
+    if (badge) badge.style.display = c === city ? 'block' : 'none'
+  })
+
+  // Detail hero
+  if (document.getElementById('detail-hero')) {
+    document.getElementById('detail-hero').className = `detail-hero ${d.color}`
+  }
+
+  // Resident guide
+  setResidentCity(city, null)
+}
+
+function setResidentCity(city, btnEl) {
+  const d = cityData[city]
+  document.getElementById('resident-banner').className = `welcome-banner ${d.banner}`
+  document.getElementById('resident-title').textContent = `Welcome to ${d.name}! 🎉`
+  document.getElementById('resident-sub').textContent = `Everything you need to settle into ${d.name} — local services, schools, utilities, and neighbor tips.`
+
+  if (btnEl) {
+    document.querySelectorAll('#page-newresident .btn').forEach(b => {
+      b.className = 'btn btn-outline'
+      b.style.fontSize = '13px'
+    })
+    btnEl.className = 'btn btn-blue'
+    btnEl.style.fontSize = '13px'
+  }
+}
+
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'))
+  document.getElementById('page-' + id).classList.add('active')
+  if (el) {
+    document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'))
+    el.classList.add('active')
+  }
+}
+</script>
+</body>
+</html>
