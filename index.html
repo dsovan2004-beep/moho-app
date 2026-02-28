@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="canonical" href="https://www.moholocal.com/" />
 <title>MoHo Local – San Joaquin County CA</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -233,6 +232,48 @@
   .footer-col a { display:block; font-size:13px; color:#6b7280; text-decoration:none; margin-bottom:5px; }
   .footer-col a:hover { color:#f59e0b; }
   .footer-bottom { border-top:1px solid #1f2937; padding-top:18px; display:flex; justify-content:space-between; font-size:12px; max-width:1200px; margin:0 auto; flex-wrap:wrap; gap:8px; }
+
+  /* ── LOST & FOUND ── */
+  .lf-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; margin-bottom:36px; }
+  .lf-card { background:white; border-radius:14px; overflow:hidden; border:1px solid #e2e8f0; transition:all .2s; cursor:pointer; }
+  .lf-card:hover { box-shadow:0 8px 24px rgba(0,0,0,0.1); transform:translateY(-2px); }
+  .lf-card.status-reunited { border:2px solid #16a34a; background:linear-gradient(135deg,#f0fdf4,white); }
+  .lf-photo { height:140px; display:flex; align-items:center; justify-content:center; font-size:52px; position:relative; }
+  .lf-photo.lost { background:linear-gradient(135deg,#fee2e2,#fecaca); }
+  .lf-photo.found { background:linear-gradient(135deg,#fef3c7,#fde68a); }
+  .lf-photo.reunited { background:linear-gradient(135deg,#dcfce7,#bbf7d0); }
+  .lf-status { position:absolute; top:10px; right:10px; font-size:11px; font-weight:700; padding:4px 10px; border-radius:20px; }
+  .lf-status.lost { background:#dc2626; color:white; }
+  .lf-status.found { background:#d97706; color:white; }
+  .lf-status.reunited { background:#16a34a; color:white; }
+  .lf-body { padding:14px; }
+  .lf-name { font-size:16px; font-weight:800; color:#1e293b; margin-bottom:2px; }
+  .lf-breed { font-size:12px; color:#64748b; margin-bottom:10px; }
+  .lf-detail { display:flex; align-items:center; gap:6px; font-size:12px; color:#475569; margin-bottom:5px; }
+  .lf-detail span:first-child { font-size:14px; }
+  .lf-footer { padding:10px 14px; border-top:1px solid #f1f5f9; display:flex; align-items:center; justify-content:space-between; }
+  .lf-reward { font-size:11px; font-weight:700; background:#fef3c7; color:#d97706; padding:3px 8px; border-radius:10px; }
+  .lf-contact { font-size:12px; color:#2563eb; font-weight:600; }
+  .lf-reunited-banner { background:linear-gradient(135deg,#16a34a,#15803d); color:white; border-radius:12px; padding:12px 16px; text-align:center; font-size:12px; font-weight:600; margin-top:6px; }
+  .lf-filters { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; align-items:center; }
+  .lf-filter-btn { padding:7px 14px; border-radius:20px; border:1px solid #e2e8f0; background:white; font-size:12px; font-weight:600; cursor:pointer; transition:all .2s; color:#475569; }
+  .lf-filter-btn.active { background:#dc2626; color:white; border-color:#dc2626; }
+  .lf-filter-btn.found-active { background:#d97706; color:white; border-color:#d97706; }
+  .lf-filter-btn.reunited-active { background:#16a34a; color:white; border-color:#16a34a; }
+  .lf-filter-btn.all-active { background:#1e3a5f; color:white; border-color:#1e3a5f; }
+  .lf-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:24px; }
+  .lf-stat { background:white; border-radius:10px; padding:14px; text-align:center; border:1px solid #e2e8f0; }
+  .lf-stat-num { font-size:24px; font-weight:800; }
+  .lf-stat-num.lost { color:#dc2626; }
+  .lf-stat-num.found { color:#d97706; }
+  .lf-stat-num.reunited { color:#16a34a; }
+  .lf-stat-label { font-size:11px; color:#64748b; margin-top:3px; }
+  @media (max-width:768px) {
+    .lf-grid { grid-template-columns:1fr; }
+    .lf-stats { grid-template-columns:repeat(3,1fr); gap:8px; }
+    .lf-stat-num { font-size:20px; }
+  }
+
 </style>
 </head>
 <body>
@@ -275,6 +316,7 @@
   <div class="page-tab" onclick="showPage('community',this)">💬 Community</div>
   <div class="page-tab" onclick="showPage('events',this)">📅 Events</div>
   <div class="page-tab" onclick="showPage('newresident',this)">👋 New Resident</div>
+  <div class="page-tab" onclick="showPage('lostfound',this)">🐾 Lost & Found</div>
 </div>
 
 <!-- ========== HOME ========== -->
@@ -699,7 +741,7 @@
     </div>
     <div class="footer-col">
       <h4>Community</h4>
-      <a href="#">Community Board</a><a href="#">Events Calendar</a><a href="#">Lost & Found</a><a href="#">New Resident Guide</a>
+      <a href="#">Community Board</a><a href="#">Events Calendar</a><a href="#" onclick="showPage('lostfound',null);return false;">Lost & Found</a><a href="#">New Resident Guide</a>
     </div>
     <div class="footer-col">
       <h4>Business Owners</h4>
@@ -787,5 +829,154 @@ function showPage(id, el) {
   }
 }
 </script>
+
+<!-- ========== LOST & FOUND ========== -->
+<div id="page-lostfound" class="page">
+
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+    <div>
+      <h2 style="font-size:22px;font-weight:800;margin-bottom:4px">🐾 Lost & Found Pets</h2>
+      <p style="color:#64748b;font-size:13px">All 4 cities · Post a lost or found pet · Celebrate reunions 🎉</p>
+    </div>
+    <button class="btn btn-amber" style="font-size:13px">+ Post Lost or Found Pet</button>
+  </div>
+
+  <!-- Stats bar -->
+  <div class="lf-stats">
+    <div class="lf-stat"><div class="lf-stat-num lost">6</div><div class="lf-stat-label">Currently Lost</div></div>
+    <div class="lf-stat"><div class="lf-stat-num found">3</div><div class="lf-stat-label">Found — Seeking Owner</div></div>
+    <div class="lf-stat"><div class="lf-stat-num reunited">14</div><div class="lf-stat-label">Reunited This Month 🎉</div></div>
+  </div>
+
+  <!-- City + Status filters -->
+  <div class="lf-filters">
+    <span style="font-size:12px;color:#64748b;font-weight:600;margin-right:4px">City:</span>
+    <button class="lf-filter-btn all-active">All Cities</button>
+    <span class="city-chip chip-mh" style="cursor:pointer;padding:7px 12px;font-size:12px">🏘️ Mountain House</span>
+    <span class="city-chip chip-tracy" style="cursor:pointer;padding:7px 12px;font-size:12px">🌿 Tracy</span>
+    <span class="city-chip chip-lathrop" style="cursor:pointer;padding:7px 12px;font-size:12px">🔮 Lathrop</span>
+    <span class="city-chip chip-manteca" style="cursor:pointer;padding:7px 12px;font-size:12px">🍊 Manteca</span>
+    <span style="width:1px;background:#e2e8f0;margin:0 4px;align-self:stretch"></span>
+    <span style="font-size:12px;color:#64748b;font-weight:600;margin-right:4px">Status:</span>
+    <button class="lf-filter-btn active">🚨 Lost</button>
+    <button class="lf-filter-btn" style="">🔍 Found</button>
+    <button class="lf-filter-btn" style="">🎉 Reunited</button>
+    <button class="lf-filter-btn" style="">All</button>
+  </div>
+
+  <!-- Pet cards -->
+  <div class="lf-grid">
+
+    <!-- LOST -->
+    <div class="lf-card">
+      <div class="lf-photo lost">🐕<span class="lf-status lost">🚨 LOST</span></div>
+      <div class="lf-body">
+        <div class="lf-name">Buddy</div>
+        <div class="lf-breed">Golden Retriever · Male · 3 yrs</div>
+        <div class="lf-detail"><span>📍</span><span>Altamont Village, Mountain House</span></div>
+        <div class="lf-detail"><span>🕐</span><span>Last seen Feb 27 · ~4:00 PM</span></div>
+        <div class="lf-detail"><span>🎨</span><span>Golden coat · Blue collar · Has tag</span></div>
+        <span class="city-chip chip-mh" style="margin-top:6px">Mountain House</span>
+      </div>
+      <div class="lf-footer">
+        <span class="lf-reward">💰 $200 Reward</span>
+        <span class="lf-contact">📞 (209) 555-0188</span>
+      </div>
+    </div>
+
+    <div class="lf-card">
+      <div class="lf-photo lost">🐈<span class="lf-status lost">🚨 LOST</span></div>
+      <div class="lf-body">
+        <div class="lf-name">Luna</div>
+        <div class="lf-breed">Domestic Shorthair · Female · 2 yrs</div>
+        <div class="lf-detail"><span>📍</span><span>West Tracy, near 11th St</span></div>
+        <div class="lf-detail"><span>🕐</span><span>Last seen Feb 25 · Morning</span></div>
+        <div class="lf-detail"><span>🎨</span><span>Gray tabby · Pink collar · Microchipped</span></div>
+        <span class="city-chip chip-tracy" style="margin-top:6px">Tracy</span>
+      </div>
+      <div class="lf-footer">
+        <span class="lf-reward">💰 $100 Reward</span>
+        <span class="lf-contact">📞 (209) 555-0244</span>
+      </div>
+    </div>
+
+    <div class="lf-card">
+      <div class="lf-photo lost">🐕‍🦺<span class="lf-status lost">🚨 LOST</span></div>
+      <div class="lf-body">
+        <div class="lf-name">Max</div>
+        <div class="lf-breed">German Shepherd · Male · 5 yrs</div>
+        <div class="lf-detail"><span>📍</span><span>Downtown Manteca</span></div>
+        <div class="lf-detail"><span>🕐</span><span>Last seen Feb 26 · Evening</span></div>
+        <div class="lf-detail"><span>🎨</span><span>Black & tan · Red collar · Very friendly</span></div>
+        <span class="city-chip chip-manteca" style="margin-top:6px">Manteca</span>
+      </div>
+      <div class="lf-footer">
+        <span style="font-size:11px;color:#94a3b8">No reward listed</span>
+        <span class="lf-contact">📞 (209) 555-0377</span>
+      </div>
+    </div>
+
+    <!-- FOUND -->
+    <div class="lf-card">
+      <div class="lf-photo found">🐩<span class="lf-status found">🔍 FOUND</span></div>
+      <div class="lf-body">
+        <div class="lf-name">Unknown — Small White Dog</div>
+        <div class="lf-breed">Poodle mix · Estimated 4-6 yrs</div>
+        <div class="lf-detail"><span>📍</span><span>Lathrop City Park area</span></div>
+        <div class="lf-detail"><span>🕐</span><span>Found Feb 26 · Afternoon</span></div>
+        <div class="lf-detail"><span>🎨</span><span>White fluffy · No collar · Well-groomed</span></div>
+        <span class="city-chip chip-lathrop" style="margin-top:6px">Lathrop</span>
+      </div>
+      <div class="lf-footer">
+        <span style="font-size:11px;color:#64748b">Safe with finder</span>
+        <span class="lf-contact">📞 (209) 555-0412</span>
+      </div>
+    </div>
+
+    <div class="lf-card">
+      <div class="lf-photo found">🐈‍⬛<span class="lf-status found">🔍 FOUND</span></div>
+      <div class="lf-body">
+        <div class="lf-name">Unknown — Black Cat</div>
+        <div class="lf-breed">Domestic Longhair · Adult</div>
+        <div class="lf-detail"><span>📍</span><span>Bethany Village, Mountain House</span></div>
+        <div class="lf-detail"><span>🕐</span><span>Found Feb 24 · Night</span></div>
+        <div class="lf-detail"><span>🎨</span><span>All black · Very friendly · Indoor cat behavior</span></div>
+        <span class="city-chip chip-mh" style="margin-top:6px">Mountain House</span>
+      </div>
+      <div class="lf-footer">
+        <span style="font-size:11px;color:#64748b">At finder's home</span>
+        <span class="lf-contact">📞 (209) 555-0521</span>
+      </div>
+    </div>
+
+    <!-- REUNITED -->
+    <div class="lf-card status-reunited">
+      <div class="lf-photo reunited">🐶<span class="lf-status reunited">🎉 REUNITED</span></div>
+      <div class="lf-body">
+        <div class="lf-name">Coco</div>
+        <div class="lf-breed">Chihuahua mix · Female · 4 yrs</div>
+        <div class="lf-detail"><span>📍</span><span>Downtown Tracy</span></div>
+        <div class="lf-detail"><span>🕐</span><span>Missing 2 days · Found by neighbor</span></div>
+        <div class="lf-detail"><span>💬</span><span style="color:#16a34a;font-weight:600">"MoHo Local helped us find her in hours!"</span></div>
+        <span class="city-chip chip-tracy" style="margin-top:6px">Tracy</span>
+        <div class="lf-reunited-banner">🎉 Home safe! Reunited Feb 25, 2026</div>
+      </div>
+      <div class="lf-footer">
+        <span style="font-size:11px;color:#16a34a;font-weight:600">✓ Case closed — Happy ending!</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CTA -->
+  <div style="background:linear-gradient(135deg,#1e3a5f,#2563eb);border-radius:14px;padding:28px;color:white;text-align:center;margin-top:8px">
+    <div style="font-size:28px;margin-bottom:8px">🐾</div>
+    <h3 style="font-size:18px;font-weight:800;margin-bottom:8px">Lost or found a pet in your area?</h3>
+    <p style="opacity:.85;font-size:13px;margin-bottom:16px">Post immediately — the faster neighbors know, the faster pets get home.</p>
+    <button class="btn btn-amber" style="font-size:14px;padding:12px 28px">+ Post Now — It's Free</button>
+  </div>
+
+</div>
+
 </body>
 </html>
