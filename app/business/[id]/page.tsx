@@ -222,3 +222,4 @@ export default async function BusinessDetailPage({ params }: PageProps) {
     </div>
   )
 }
+
