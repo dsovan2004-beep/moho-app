@@ -3,100 +3,185 @@ export const runtime = 'edge'
 import { supabase, type LostAndFound } from '@/lib/supabase'
 import Link from 'next/link'
 
-const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca']
-const STATUSES = ['All', 'lost', 'found', 'reunited'] as const
+// ── Pet emoji map (matches index.html exactly) ───────────────────────────────
+function getPetEmoji(pet: LostAndFound): string {
+  const breed = (pet.breed ?? pet.pet_type ?? '').toLowerCase()
+  const name = (pet.pet_name ?? '').toLowerCase()
+  const desc = (pet.coat_description ?? '').toLowerCase()
 
-type Status = typeof STATUSES[number]
-
-const STATUS_STYLES: Record<string, { bg: string; text: string; label: string; icon: string }> = {
-  lost: { bg: 'bg-red-100', text: 'text-red-700', label: 'Lost', icon: '🔴' },
-  found: { bg: 'bg-amber-100', text: 'text-amber-700', label: 'Found', icon: '🟡' },
-  reunited: { bg: 'bg-green-100', text: 'text-green-700', label: 'Reunited', icon: '🟢' },
+  if (breed.includes('poodle')) return '🐩'
+  if (breed.includes('shepherd') || breed.includes('gsd')) return '🐕‍🦺'
+  if (breed.includes('chihuahua') || breed.includes('french bulldog')) return '🐶'
+  if (breed.includes('siamese') || breed.includes('shorthair') || breed.includes('longhair') || breed.includes('tabby') || pet.pet_type?.toLowerCase() === 'cat') {
+    if (desc.includes('all black') || desc.includes('black ·') || breed.includes('black')) return '🐈‍⬛'
+    return '🐈'
+  }
+  if (pet.pet_type?.toLowerCase() === 'cat') return '🐈'
+  // all dogs default
+  return '🐕'
 }
 
-interface PageProps {
-  searchParams: Promise<{ city?: string; status?: string }>
+// ── Status config ─────────────────────────────────────────────────────────────
+const STATUS_CFG = {
+  lost: {
+    photoBg: 'linear-gradient(135deg,#fee2e2,#fecaca)',
+    badgeBg: '#dc2626',
+    label: '🚨 LOST',
+    filterLabel: '🚨 Lost',
+    cardBorder: 'border-gray-200',
+  },
+  found: {
+    photoBg: 'linear-gradient(135deg,#fef3c7,#fde68a)',
+    badgeBg: '#d97706',
+    label: '🔍 FOUND',
+    filterLabel: '🔍 Found',
+    cardBorder: 'border-gray-200',
+  },
+  reunited: {
+    photoBg: 'linear-gradient(135deg,#dcfce7,#bbf7d0)',
+    badgeBg: '#16a34a',
+    label: '🎉 REUNITED',
+    filterLabel: '🎉 Reunited',
+    cardBorder: 'border-green-500',
+  },
+} as const
+
+// ── City chip styles ──────────────────────────────────────────────────────────
+const CITY_CHIP: Record<string, string> = {
+  'Mountain House': 'bg-blue-50 text-blue-700',
+  Tracy: 'bg-green-50 text-green-700',
+  Lathrop: 'bg-purple-50 text-purple-700',
+  Manteca: 'bg-orange-50 text-orange-700',
 }
 
+const CITY_EMOJI: Record<string, string> = {
+  'Mountain House': '🏘️',
+  Tracy: '🌿',
+  Lathrop: '🔮',
+  Manteca: '🍊',
+}
+
+// ── Data fetching ─────────────────────────────────────────────────────────────
 async function getPets(city?: string, status?: string) {
   let req = supabase
     .from('lost_and_found')
     .select('*')
     .order('created_at', { ascending: false })
 
-  if (city && city !== 'All Cities') {
-    req = req.eq('city', city)
-  }
-  if (status && status !== 'All') {
-    req = req.eq('status', status)
-  }
+  if (city && city !== 'All Cities') req = req.eq('city', city)
+  if (status && status !== 'All') req = req.eq('status', status)
 
   const { data, error } = await req
   if (error) console.error(error)
   return (data ?? []) as LostAndFound[]
 }
 
+// ── Card component ────────────────────────────────────────────────────────────
 function PetCard({ pet }: { pet: LostAndFound }) {
-  const style = STATUS_STYLES[pet.status] ?? STATUS_STYLES.lost
+  const cfg = STATUS_CFG[pet.status] ?? STATUS_CFG.lost
+  const emoji = getPetEmoji(pet)
+  const chipClass = CITY_CHIP[pet.city] ?? 'bg-gray-100 text-gray-600'
+  const isReunited = pet.status === 'reunited'
 
   return (
-    <article className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all">
-      {/* Image */}
-      <div className="h-40 bg-gray-100 flex items-center justify-center overflow-hidden">
-        {pet.image_url ? (
-          <img src={pet.image_url} alt={pet.title} className="w-full h-full object-cover" />
-        ) : (
-          <span className="text-5xl">🐾</span>
-        )}
+    <div
+      className={`rounded-2xl overflow-hidden border-2 ${cfg.cardBorder} transition-all hover:-translate-y-0.5 hover:shadow-xl cursor-pointer`}
+      style={isReunited ? { background: 'linear-gradient(135deg,#f0fdf4,white)' } : { background: 'white' }}
+    >
+      {/* Photo area */}
+      <div
+        className="h-36 flex items-center justify-center relative"
+        style={{ background: cfg.photoBg }}
+      >
+        <span className="text-5xl">{emoji}</span>
+        <span
+          className="absolute top-2.5 right-2.5 text-white text-[11px] font-bold px-2.5 py-1 rounded-full"
+          style={{ backgroundColor: cfg.badgeBg }}
+        >
+          {cfg.label}
+        </span>
       </div>
 
-      {/* Content */}
+      {/* Body */}
       <div className="p-4">
-        <div className="flex items-start justify-between gap-2 mb-2">
-          <div>
-            <span className={`inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full ${style.bg} ${style.text}`}>
-              {style.icon} {style.label.toUpperCase()}
-            </span>
-            {pet.pet_name && (
-              <span className="ml-2 text-xs font-medium text-gray-500">
-                "{pet.pet_name}"
-              </span>
-            )}
+        {pet.pet_name && (
+          <div className="text-lg font-extrabold text-gray-900 mb-0.5">{pet.pet_name}</div>
+        )}
+        {(pet.breed || pet.age || pet.gender) && (
+          <div className="text-xs text-gray-500 mb-3">
+            {[pet.breed, pet.gender, pet.age].filter(Boolean).join(' · ')}
           </div>
-          <span className="text-xs text-gray-400 shrink-0">
-            {new Date(pet.created_at).toLocaleDateString()}
-          </span>
-        </div>
+        )}
+        {!pet.pet_name && (
+          <div className="text-sm font-bold text-gray-900 mb-3">{pet.title}</div>
+        )}
 
-        <h3 className="font-bold text-gray-900 mb-1">{pet.title}</h3>
-        <p className="text-sm text-gray-500 line-clamp-2 mb-3">{pet.description}</p>
+        {pet.location_detail && (
+          <div className="flex items-center gap-1.5 text-xs text-gray-600 mb-1.5">
+            <span>📍</span><span>{pet.location_detail}, {pet.city}</span>
+          </div>
+        )}
+        {pet.last_seen && (
+          <div className="flex items-center gap-1.5 text-xs text-gray-600 mb-1.5">
+            <span>🕐</span><span>{pet.last_seen}</span>
+          </div>
+        )}
+        {pet.coat_description && (
+          <div className="flex items-center gap-1.5 text-xs text-gray-600 mb-1.5">
+            <span>🎨</span><span>{pet.coat_description}</span>
+          </div>
+        )}
+        {/* Reunited testimonial */}
+        {isReunited && pet.description && (
+          <div className="flex items-start gap-1.5 text-xs text-green-700 font-semibold mb-1.5">
+            <span>💬</span><span>"{pet.description.replace(/🎉/g, '').trim()}"</span>
+          </div>
+        )}
 
-        <div className="flex items-center gap-3 text-xs text-gray-400 border-t border-gray-100 pt-3">
-          <span>🐶 {pet.pet_type}</span>
-          <span>📍 {pet.city}</span>
-        </div>
+        {/* City chip */}
+        <span className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full mt-2 ${chipClass}`}>
+          {CITY_EMOJI[pet.city]} {pet.city}
+        </span>
 
-        {pet.contact_name && (
-          <div className="mt-2 text-xs text-gray-500">
-            Contact: <span className="font-medium text-gray-700">{pet.contact_name}</span>
-            {pet.contact_phone && (
-              <span className="ml-2 text-blue-600">{pet.contact_phone}</span>
-            )}
+        {/* Reunited banner */}
+        {isReunited && (
+          <div className="mt-3 rounded-xl bg-green-600 text-white text-center text-xs font-bold py-2.5">
+            🎉 Home safe! Reunited
           </div>
         )}
       </div>
-    </article>
-  )
-}
 
-function StatCard({ count, label, colorClass }: { count: number; label: string; colorClass: string }) {
-  return (
-    <div className={`rounded-xl p-4 text-center ${colorClass}`}>
-      <p className="text-3xl font-extrabold">{count}</p>
-      <p className="text-sm font-medium mt-0.5">{label}</p>
+      {/* Footer */}
+      <div className="px-4 pb-4 flex items-center justify-between">
+        {pet.reward ? (
+          <span className="text-xs font-bold bg-amber-50 text-amber-700 px-2.5 py-1 rounded-full">
+            💰 {pet.reward} Reward
+          </span>
+        ) : isReunited ? (
+          <span className="text-xs font-semibold text-green-700">✓ Case closed — Happy ending!</span>
+        ) : (
+          <span className="text-xs text-gray-400">No reward listed</span>
+        )}
+        {pet.contact_phone && (
+          <span className="text-xs font-semibold text-blue-600">📞 {pet.contact_phone}</span>
+        )}
+      </div>
     </div>
   )
 }
+
+// ── Page ─────────────────────────────────────────────────────────────────────
+interface PageProps {
+  searchParams: Promise<{ city?: string; status?: string }>
+}
+
+const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca']
+const STATUSES = [
+  { key: 'All', label: 'All' },
+  { key: 'lost', label: '🚨 Lost' },
+  { key: 'found', label: '🔍 Found' },
+  { key: 'reunited', label: '🎉 Reunited' },
+]
 
 export default async function LostAndFoundPage({ searchParams }: PageProps) {
   const params = await searchParams
@@ -113,76 +198,99 @@ export default async function LostAndFoundPage({ searchParams }: PageProps) {
   const reunitedCount = allPets.filter((p) => p.status === 'reunited').length
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-6 flex items-start justify-between gap-4 flex-wrap">
+    <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      {/* ── Header ── */}
+      <div className="flex items-start justify-between gap-4 flex-wrap mb-6">
         <div>
-          <h1 className="text-3xl font-extrabold text-gray-900">Lost & Found Pets</h1>
-          <p className="text-gray-500 mt-1">Help reunite pets with their families</p>
+          <h1 className="text-2xl font-extrabold text-gray-900">🐾 Lost &amp; Found Pets</h1>
+          <p className="text-gray-500 text-sm mt-1">
+            All 4 cities · Post a lost or found pet · Celebrate reunions 🎉
+          </p>
         </div>
         <button
-          className="shrink-0 text-sm font-semibold px-4 py-2 rounded-full text-white transition"
+          className="shrink-0 text-sm font-bold px-4 py-2 rounded-lg transition"
           style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}
         >
-          + Report Pet
+          + Post Lost or Found Pet
         </button>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-3 gap-3 mb-6">
-        <StatCard count={lostCount} label="Lost" colorClass="bg-red-50 text-red-700" />
-        <StatCard count={foundCount} label="Found" colorClass="bg-amber-50 text-amber-700" />
-        <StatCard count={reunitedCount} label="Reunited" colorClass="bg-green-50 text-green-700" />
+      {/* ── Stats bar ── */}
+      <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
+          <div className="text-3xl font-extrabold text-red-600">{lostCount}</div>
+          <div className="text-xs text-gray-500 mt-1">Currently Lost</div>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
+          <div className="text-3xl font-extrabold text-amber-600">{foundCount}</div>
+          <div className="text-xs text-gray-500 mt-1">Found — Seeking Owner</div>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
+          <div className="text-3xl font-extrabold text-green-600">{reunitedCount}</div>
+          <div className="text-xs text-gray-500 mt-1">Reunited This Month 🎉</div>
+        </div>
       </div>
 
-      {/* City Filter */}
-      <div className="flex gap-2 flex-wrap mb-3">
-        {CITIES.map((c) => (
-          <Link
-            key={c}
-            href={`/lost-and-found?city=${encodeURIComponent(c)}&status=${encodeURIComponent(status)}`}
-            className={`text-sm font-semibold px-4 py-1.5 rounded-full transition-all ${
-              city === c
-                ? 'bg-blue-700 text-white shadow-sm'
-                : 'bg-white border border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-700'
-            }`}
-          >
-            {c}
-          </Link>
-        ))}
-      </div>
+      {/* ── Filters ── */}
+      <div className="flex gap-2 flex-wrap items-center mb-6">
+        {/* City label */}
+        <span className="text-xs font-bold text-gray-500 mr-1">City:</span>
 
-      {/* Status Filter */}
-      <div className="flex gap-2 flex-wrap mb-6">
-        {STATUSES.map((s) => {
-          const st = s === 'All' ? null : STATUS_STYLES[s]
-          const isActive = status === s
+        {CITIES.map((c) => {
+          const isActive = city === c
           return (
             <Link
-              key={s}
-              href={`/lost-and-found?city=${encodeURIComponent(city)}&status=${encodeURIComponent(s)}`}
-              className={`text-sm font-semibold px-4 py-1.5 rounded-full transition-all ${
+              key={c}
+              href={`/lost-and-found?city=${encodeURIComponent(c)}&status=${encodeURIComponent(status)}`}
+              className={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-all ${
                 isActive
-                  ? st
-                    ? `${st.bg} ${st.text} ring-2 ring-offset-1`
-                    : 'bg-gray-800 text-white'
-                  : 'bg-white border border-gray-200 text-gray-600 hover:border-gray-300'
+                  ? 'bg-[#1e3a5f] text-white border-[#1e3a5f]'
+                  : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300 hover:text-blue-700'
               }`}
             >
-              {st ? `${st.icon} ${st.label}` : 'All'}
+              {c === 'All Cities' ? c : `${CITY_EMOJI[c]} ${c}`}
+            </Link>
+          )
+        })}
+
+        {/* Divider */}
+        <span className="w-px bg-gray-200 self-stretch mx-1" />
+        <span className="text-xs font-bold text-gray-500 mr-1">Status:</span>
+
+        {STATUSES.map(({ key, label }) => {
+          const isActive = status === key
+          const activeStyle =
+            key === 'lost' ? 'bg-red-600 text-white border-red-600'
+            : key === 'found' ? 'bg-amber-500 text-white border-amber-500'
+            : key === 'reunited' ? 'bg-green-600 text-white border-green-600'
+            : 'bg-gray-800 text-white border-gray-800'
+
+          return (
+            <Link
+              key={key}
+              href={`/lost-and-found?city=${encodeURIComponent(city)}&status=${encodeURIComponent(key)}`}
+              className={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-all ${
+                isActive
+                  ? activeStyle
+                  : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:text-gray-800'
+              }`}
+            >
+              {label}
             </Link>
           )
         })}
       </div>
 
-      {/* Grid */}
+      {/* ── Grid ── */}
       {filteredPets.length === 0 ? (
-        <div className="text-center py-20 text-gray-400">
-          <p className="text-4xl mb-3">🐾</p>
-          <p className="font-medium">No listings found</p>
+        <div className="text-center py-24 text-gray-400">
+          <p className="text-5xl mb-4">🐾</p>
+          <p className="font-semibold text-lg">No listings found</p>
           <p className="text-sm mt-1">Try a different city or status filter</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {filteredPets.map((pet) => (
             <PetCard key={pet.id} pet={pet} />
           ))}
