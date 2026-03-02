@@ -1,3 +1,5 @@
+export const runtime = 'edge'
+
 import { supabase, type LostAndFound } from '@/lib/supabase'
 import Link from 'next/link'
 
