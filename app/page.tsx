@@ -1,3 +1,5 @@
+export const runtime = 'edge'
+
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 
