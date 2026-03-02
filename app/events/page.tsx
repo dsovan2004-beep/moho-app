@@ -10,7 +10,7 @@ interface PageProps {
 }
 
 async function getEvents(city?: string) {
-  let req = supabase.from('events').select('*').order('date', { ascending: true })
+  let req = supabase.from('events').select('*').order('start_date', { ascending: true })
 
   if (city && city !== 'All Cities') {
     req = req.eq('city', city)
@@ -38,7 +38,7 @@ const CITY_COLORS: Record<string, string> = {
 }
 
 function EventCard({ event }: { event: Event }) {
-  const { month, day, full } = formatDate(event.date)
+  const { month, day, full } = formatDate(event.start_date)
   const cityColor = CITY_COLORS[event.city] ?? 'bg-gray-100 text-gray-700'
 
   return (
@@ -71,7 +71,9 @@ function EventCard({ event }: { event: Event }) {
         <p className="text-sm text-gray-500 mt-1.5 line-clamp-2">{event.description}</p>
         <div className="flex items-center gap-4 mt-2 text-xs text-gray-400">
           <span>📅 {full}</span>
-          {event.time && <span>🕐 {event.time}</span>}
+          {event.start_date.includes('T') && (
+            <span>🕐 {new Date(event.start_date).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</span>
+          )}
           {event.location && <span>📍 {event.location}</span>}
         </div>
       </div>
@@ -86,8 +88,8 @@ export default async function EventsPage({ searchParams }: PageProps) {
 
   // Group by upcoming vs past
   const now = new Date()
-  const upcoming = events.filter((e) => new Date(e.date) >= now)
-  const past = events.filter((e) => new Date(e.date) < now)
+  const upcoming = events.filter((e) => new Date(e.start_date) >= now)
+  const past = events.filter((e) => new Date(e.start_date) < now)
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
