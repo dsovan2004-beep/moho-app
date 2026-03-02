@@ -3,140 +3,318 @@ export const runtime = 'edge'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 
-const CITIES = [
-  { name: 'Mountain House', bg: 'bg-blue-800',   hover: 'hover:bg-blue-700',   emoji: '🏔️' },
-  { name: 'Tracy',          bg: 'bg-green-800',  hover: 'hover:bg-green-700',  emoji: '🌿' },
-  { name: 'Lathrop',        bg: 'bg-purple-800', hover: 'hover:bg-purple-700', emoji: '⚡' },
-  { name: 'Manteca',        bg: 'bg-orange-800', hover: 'hover:bg-orange-700', emoji: '🌅' },
+// ── City config ──────────────────────────────────────────────────────────────
+const CITIES = ['Mountain House', 'Tracy', 'Lathrop', 'Manteca'] as const
+type City = (typeof CITIES)[number]
+
+const CITY_CFG: Record<
+  City,
+  {
+    key: string
+    emoji: string
+    gradient: string
+    chip: string
+    population: string
+    heroTitle: string
+  }
+> = {
+  'Mountain House': {
+    key: 'mh',
+    emoji: '🏘️',
+    gradient: 'linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%)',
+    chip: 'bg-blue-50 text-blue-700',
+    population: '~31k',
+    heroTitle: 'Your Mountain House Community Hub',
+  },
+  Tracy: {
+    key: 'tracy',
+    emoji: '🌿',
+    gradient: 'linear-gradient(135deg,#14532d 0%,#16a34a 100%)',
+    chip: 'bg-green-50 text-green-700',
+    population: '~103k',
+    heroTitle: 'Your Tracy Community Hub',
+  },
+  Lathrop: {
+    key: 'lathrop',
+    emoji: '🔮',
+    gradient: 'linear-gradient(135deg,#581c87 0%,#9333ea 100%)',
+    chip: 'bg-purple-50 text-purple-700',
+    population: '~28k',
+    heroTitle: 'Your Lathrop Community Hub',
+  },
+  Manteca: {
+    key: 'manteca',
+    emoji: '🍊',
+    gradient: 'linear-gradient(135deg,#7c2d12 0%,#ea580c 100%)',
+    chip: 'bg-orange-50 text-orange-700',
+    population: '~90k',
+    heroTitle: 'Your Manteca Community Hub',
+  },
+}
+
+// ── Categories ───────────────────────────────────────────────────────────────
+const CATEGORIES = [
+  { icon: '🔧', name: 'Home Services', cat: 'Home Services' },
+  { icon: '🍽️', name: 'Restaurants', cat: 'Restaurants' },
+  { icon: '🏥', name: 'Health & Wellness', cat: 'Health & Wellness' },
+  { icon: '👶', name: 'Childcare', cat: 'Education' },
+  { icon: '🐾', name: 'Pet Services', cat: 'Pet Services' },
+  { icon: '💇', name: 'Beauty & Spa', cat: 'Beauty & Spa' },
+  { icon: '🏫', name: 'Tutoring', cat: 'Education' },
+  { icon: '🚗', name: 'Auto Services', cat: 'Automotive' },
 ]
 
-const SECTIONS = [
-  {
-    href: '/directory',
-    icon: '🏢',
-    title: 'Business Directory',
-    desc: 'Find local restaurants, shops, services and more',
-    border: 'border-blue-200 hover:border-blue-400',
-    bg: 'bg-blue-50',
-    iconBg: 'bg-blue-100',
-    hoverText: 'group-hover:text-blue-700',
-  },
-  {
-    href: '/events',
-    icon: '📅',
-    title: 'Community Events',
-    desc: "What's happening across San Joaquin County",
-    border: 'border-green-200 hover:border-green-400',
-    bg: 'bg-green-50',
-    iconBg: 'bg-green-100',
-    hoverText: 'group-hover:text-green-700',
-  },
-  {
-    href: '/community',
-    icon: '💬',
-    title: 'Community Board',
-    desc: 'Conversations, recommendations & local news',
-    border: 'border-amber-200 hover:border-amber-400',
-    bg: 'bg-amber-50',
-    iconBg: 'bg-amber-100',
-    hoverText: 'group-hover:text-amber-700',
-  },
-  {
-    href: '/lost-and-found',
-    icon: '🐾',
-    title: 'Lost & Found Pets',
-    desc: 'Help reunite pets with their families',
-    border: 'border-red-200 hover:border-red-400',
-    bg: 'bg-red-50',
-    iconBg: 'bg-red-100',
-    hoverText: 'group-hover:text-red-700',
-  },
-]
+// ── Data fetching ─────────────────────────────────────────────────────────────
+async function getData() {
+  const [bizTotalResult, bizByCityResult, eventsResult, catCountsResult] =
+    await Promise.allSettled([
+      // Total count
+      supabase.from('businesses').select('*', { count: 'exact', head: true }),
+      // City breakdown
+      supabase.from('businesses').select('city'),
+      // Upcoming events (next 4)
+      supabase
+        .from('events')
+        .select('*')
+        .gte('start_date', new Date().toISOString())
+        .order('start_date', { ascending: true })
+        .limit(4),
+      // Category counts
+      supabase.from('businesses').select('category'),
+    ])
 
-async function getSiteCounts() {
-  const [businesses, events, posts, pets] = await Promise.allSettled([
-    supabase.from('businesses').select('id', { count: 'exact', head: true }),
-    supabase.from('events').select('id', { count: 'exact', head: true }),
-    supabase.from('community_posts').select('id', { count: 'exact', head: true }),
-    supabase.from('lost_and_found').select('id', { count: 'exact', head: true }).eq('status', 'lost'),
-  ])
+  const totalBiz =
+    bizTotalResult.status === 'fulfilled' ? (bizTotalResult.value.count ?? 0) : 0
 
+  const cityBizMap: Record<string, number> = {}
+  if (bizByCityResult.status === 'fulfilled' && bizByCityResult.value.data) {
+    for (const row of bizByCityResult.value.data) {
+      cityBizMap[row.city] = (cityBizMap[row.city] ?? 0) + 1
+    }
+  }
+
+  const catCountMap: Record<string, number> = {}
+  if (catCountsResult.status === 'fulfilled' && catCountsResult.value.data) {
+    for (const row of catCountsResult.value.data) {
+      catCountMap[row.category] = (catCountMap[row.category] ?? 0) + 1
+    }
+  }
+
+  const upcomingEvents =
+    eventsResult.status === 'fulfilled' ? (eventsResult.value.data ?? []) : []
+
+  return { totalBiz, cityBizMap, upcomingEvents, catCountMap }
+}
+
+function formatEventDate(dateStr: string) {
+  const d = new Date(dateStr)
   return {
-    businesses: businesses.status === 'fulfilled' ? (businesses.value.count ?? 0) : 0,
-    events:     events.status === 'fulfilled'     ? (events.value.count ?? 0)     : 0,
-    posts:      posts.status === 'fulfilled'      ? (posts.value.count ?? 0)      : 0,
-    lostPets:   pets.status === 'fulfilled'       ? (pets.value.count ?? 0)       : 0,
+    month: d.toLocaleString('en-US', { month: 'short' }).toUpperCase(),
+    day: d.getDate(),
   }
 }
 
-export default async function HomePage() {
-  const counts = await getSiteCounts()
+// ── Page ─────────────────────────────────────────────────────────────────────
+interface PageProps {
+  searchParams: Promise<{ city?: string }>
+}
+
+export default async function HomePage({ searchParams }: PageProps) {
+  const params = await searchParams
+  const activeCity: City =
+    (CITIES.find(
+      (c) => c.toLowerCase().replace(' ', '') === (params.city ?? '').toLowerCase()
+    ) as City) ?? 'Mountain House'
+
+  const cfg = CITY_CFG[activeCity]
+  const { totalBiz, cityBizMap, upcomingEvents, catCountMap } = await getData()
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-      {/* Hero */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-4 leading-tight">
-          Your Local Hub for<br />
-          <span className="text-blue-700">San Joaquin County</span>
-        </h1>
-        <p className="text-lg text-gray-500 max-w-xl mx-auto">
-          Discover businesses, events, and community conversations in
-          Mountain House, Tracy, Lathrop, and Manteca.
+      {/* ── Hero ── */}
+      <div
+        className="rounded-2xl px-8 py-14 text-center text-white mb-8"
+        style={{ background: cfg.gradient }}
+      >
+        <h1 className="text-3xl font-extrabold mb-2">{cfg.heroTitle}</h1>
+        <p className="text-sm opacity-85 mb-6">
+          Find local businesses, connect with neighbors, discover events — all in one place
         </p>
+        <div className="flex gap-2 max-w-xl mx-auto mb-5 flex-col sm:flex-row">
+          <input
+            type="text"
+            placeholder="🔍  Search businesses, services..."
+            className="flex-1 px-4 py-3 rounded-xl text-gray-900 text-sm outline-none border-0"
+          />
+          <button className="bg-amber-400 text-[#1e3a5f] font-bold px-6 py-3 rounded-xl text-sm whitespace-nowrap">
+            Search
+          </button>
+        </div>
+        <div className="flex gap-2 justify-center flex-wrap">
+          {['🔧 Plumber', '🍕 Restaurants', '🐾 Pet Care', '👶 Childcare', '💇 Salon', '🏫 Tutors', '🏥 Doctors'].map(
+            (tag) => (
+              <span
+                key={tag}
+                className="bg-white/15 text-white px-3 py-1.5 rounded-full text-xs cursor-pointer hover:bg-white/25 transition-all"
+              >
+                {tag}
+              </span>
+            )
+          )}
+        </div>
       </div>
 
-      {/* Live stats bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">
-        {[
-          { count: counts.businesses, label: 'Businesses',    color: 'text-blue-700',   bg: 'bg-blue-50'   },
-          { count: counts.events,     label: 'Events',        color: 'text-green-700',  bg: 'bg-green-50'  },
-          { count: counts.posts,      label: 'Posts',         color: 'text-amber-700',  bg: 'bg-amber-50'  },
-          { count: counts.lostPets,   label: 'Pets Missing',  color: 'text-red-700',    bg: 'bg-red-50'    },
-        ].map(({ count, label, color, bg }) => (
-          <div key={label} className={`${bg} rounded-xl py-4 text-center`}>
-            <p className={`text-3xl font-extrabold ${color}`}>{count}</p>
-            <p className="text-sm font-medium text-gray-600 mt-0.5">{label}</p>
+      {/* ── Browse by City ── */}
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-bold text-gray-900">Browse by City</h2>
+        <Link href="/directory" className="text-sm text-blue-600 hover:underline font-medium">
+          All Cities →
+        </Link>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+        {CITIES.map((city) => {
+          const c = CITY_CFG[city]
+          const count = cityBizMap[city] ?? 0
+          const isActive = city === activeCity
+          return (
+            <Link
+              key={city}
+              href={`/?city=${c.key}`}
+              className="rounded-2xl p-5 text-white relative overflow-hidden hover:-translate-y-1 hover:shadow-xl transition-all block"
+              style={{ background: c.gradient }}
+            >
+              {isActive && (
+                <span className="absolute top-3 right-3 bg-white/25 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                  ✓ Active
+                </span>
+              )}
+              <div className="text-base font-extrabold mb-1">{city}</div>
+              <div className="text-xs opacity-75 mb-3">San Joaquin County</div>
+              <div className="flex gap-4">
+                <div className="text-xs opacity-85">
+                  <strong className="block text-base font-extrabold">{count || '—'}</strong>
+                  Businesses
+                </div>
+                <div className="text-xs opacity-85">
+                  <strong className="block text-base font-extrabold">{c.population}</strong>
+                  Pop.
+                </div>
+              </div>
+            </Link>
+          )
+        })}
+      </div>
+
+      {/* ── Stats Bar ── */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+        <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
+          <div className="text-3xl font-extrabold text-[#1e3a5f]">
+            {cityBizMap[activeCity] ?? 0}
           </div>
-        ))}
+          <div className="text-xs text-gray-500 mt-1">Businesses in {activeCity}</div>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
+          <div className="text-3xl font-extrabold text-[#1e3a5f]">{totalBiz}</div>
+          <div className="text-xs text-gray-500 mt-1">Total Listings</div>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
+          <div className="text-3xl font-extrabold text-[#1e3a5f]">4</div>
+          <div className="text-xs text-gray-500 mt-1">Cities Covered</div>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
+          <div className="text-3xl font-extrabold text-[#1e3a5f]">{upcomingEvents.length}</div>
+          <div className="text-xs text-gray-500 mt-1">Upcoming Events</div>
+        </div>
       </div>
 
-      {/* City quick-links */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">
-        {CITIES.map((city) => (
+      {/* ── Browse by Category ── */}
+      <h2 className="text-lg font-bold text-gray-900 mb-4">Browse by Category</h2>
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-8 gap-3 mb-8">
+        {CATEGORIES.map(({ icon, name, cat }) => {
+          const count = catCountMap[cat] ?? 0
+          return (
+            <Link
+              key={name}
+              href={`/directory?category=${encodeURIComponent(cat)}`}
+              className="bg-white rounded-xl border border-gray-200 p-4 text-center hover:-translate-y-0.5 hover:shadow-lg hover:border-blue-400 transition-all block"
+            >
+              <div className="text-2xl mb-2">{icon}</div>
+              <div className="text-xs font-semibold text-gray-800 leading-tight">{name}</div>
+              {count > 0 && (
+                <div className="text-[10px] text-gray-400 mt-1">{count} listings</div>
+              )}
+            </Link>
+          )
+        })}
+      </div>
+
+      {/* ── Upcoming Events (real data) ── */}
+      {upcomingEvents.length > 0 && (
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-bold text-gray-900">Upcoming Events</h2>
+            <Link href="/events" className="text-sm text-blue-600 hover:underline font-medium">
+              Full calendar →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {upcomingEvents.map((event) => {
+              const { month, day } = formatEventDate(event.start_date)
+              const c = CITY_CFG[event.city as City] ?? CITY_CFG['Mountain House']
+              return (
+                <div
+                  key={event.id}
+                  className="bg-white rounded-xl border border-gray-200 overflow-hidden flex hover:shadow-lg hover:-translate-y-0.5 transition-all cursor-pointer"
+                >
+                  <div
+                    className="text-white px-3 py-4 text-center min-w-[56px] flex flex-col items-center justify-center shrink-0"
+                    style={{ background: c.gradient }}
+                  >
+                    <div className="text-[10px] uppercase opacity-75 font-semibold">{month}</div>
+                    <div className="text-2xl font-extrabold leading-none">{day}</div>
+                  </div>
+                  <div className="p-3 flex-1 min-w-0">
+                    <div className="font-bold text-sm text-gray-900 leading-snug mb-1 line-clamp-2">
+                      {event.title}
+                    </div>
+                    {event.location && (
+                      <div className="text-xs text-gray-500 line-clamp-1">
+                        📍 {event.location}
+                      </div>
+                    )}
+                    <span
+                      className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full mt-1.5 ${c.chip}`}
+                    >
+                      {event.city}
+                    </span>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ── Quick-nav cards ── */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        {[
+          { href: '/directory', icon: '📋', label: 'Business Directory', desc: 'Find local services & shops' },
+          { href: '/events', icon: '📅', label: 'Events Calendar', desc: "What's happening near you" },
+          { href: '/community', icon: '💬', label: 'Community Board', desc: 'Connect with neighbors' },
+          { href: '/lost-and-found', icon: '🐾', label: 'Lost & Found', desc: 'Help reunite pets' },
+        ].map(({ href, icon, label, desc }) => (
           <Link
-            key={city.name}
-            href={`/directory?city=${encodeURIComponent(city.name)}`}
-            className={`${city.bg} ${city.hover} text-white rounded-xl p-4 text-center transition-all hover:-translate-y-0.5`}
+            key={href}
+            href={href}
+            className="bg-white rounded-xl border border-gray-200 p-5 hover:-translate-y-0.5 hover:shadow-lg hover:border-blue-300 transition-all"
           >
-            <div className="text-2xl mb-1">{city.emoji}</div>
-            <div className="font-bold text-sm">{city.name}</div>
+            <div className="text-2xl mb-2">{icon}</div>
+            <div className="font-bold text-sm text-gray-900 mb-1">{label}</div>
+            <div className="text-xs text-gray-500">{desc}</div>
           </Link>
         ))}
       </div>
-
-      {/* Section cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {SECTIONS.map((s) => (
-          <Link
-            key={s.href}
-            href={s.href}
-            className={`group flex items-start gap-4 p-5 rounded-2xl border-2 transition-all hover:-translate-y-0.5 hover:shadow-md ${s.bg} ${s.border}`}
-          >
-            <div className={`shrink-0 w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${s.iconBg}`}>
-              {s.icon}
-            </div>
-            <div>
-              <h2 className={`font-bold text-gray-900 text-lg transition ${s.hoverText}`}>
-                {s.title}
-              </h2>
-              <p className="text-sm text-gray-500 mt-0.5">{s.desc}</p>
-            </div>
-          </Link>
-        ))}
-      </div>
-
     </div>
   )
 }
