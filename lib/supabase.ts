@@ -27,9 +27,12 @@ export interface Event {
   description: string
   city: string
   location: string
-  date: string
-  time?: string
+  start_date: string
+  end_date?: string
   category?: string
+  source_url?: string
+  confidence?: string
+  status?: string
   image_url?: string
   created_at: string
 }
