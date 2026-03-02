@@ -1,3 +1,5 @@
+export const runtime = 'edge'
+
 import { supabase, type CommunityPost } from '@/lib/supabase'
 import Link from 'next/link'
 
