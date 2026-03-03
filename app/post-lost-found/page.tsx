@@ -29,15 +29,24 @@ export default function PostLostFoundPage() {
   const [reward, setReward]               = useState('')
   const [contactName, setContactName]     = useState('')
   const [contactPhone, setContactPhone]   = useState('')
+  const [photoFile, setPhotoFile]         = useState<File | null>(null)
+  const [photoPreview, setPhotoPreview]   = useState<string | null>(null)
   const [submitting, setSubmitting]       = useState(false)
   const [error, setError]                 = useState('')
   const [success, setSuccess]             = useState(false)
+
+  function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setPhotoFile(file)
+    setPhotoPreview(URL.createObjectURL(file))
+  }
 
   function resetForm() {
     setStatus('lost'); setType('Dog'); setPetName(''); setBreed(''); setAge('')
     setGender(''); setCity('Mountain House'); setLocationDetail(''); setLastSeen('')
     setCoatDesc(''); setDescription(''); setReward(''); setContactName(''); setContactPhone('')
-    setSuccess(false); setError('')
+    setPhotoFile(null); setPhotoPreview(null); setSuccess(false); setError('')
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -48,6 +57,23 @@ export default function PostLostFoundPage() {
     const title = petName
       ? `${status === 'lost' ? 'Lost' : status === 'found' ? 'Found' : 'Reunited'} ${type} — ${petName}`
       : `${status === 'lost' ? 'Lost' : status === 'found' ? 'Found' : 'Reunited'} ${type}`
+
+    // ── Upload photo if provided ──────────────────────────────────────────
+    let imageUrl: string | null = null
+    if (photoFile) {
+      const ext = photoFile.name.split('.').pop() ?? 'jpg'
+      const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+      const { error: uploadErr } = await supabase.storage
+        .from('pet-images')
+        .upload(path, photoFile, { contentType: photoFile.type })
+      if (uploadErr) {
+        setError(`Photo upload failed: ${uploadErr.message}`)
+        setSubmitting(false)
+        return
+      }
+      const { data: urlData } = supabase.storage.from('pet-images').getPublicUrl(path)
+      imageUrl = urlData.publicUrl
+    }
 
     const { error: err } = await supabase.from('lost_and_found').insert({
       title,
@@ -65,6 +91,7 @@ export default function PostLostFoundPage() {
       reward:           reward         || null,
       contact_name:     contactName,
       contact_phone:    contactPhone   || null,
+      image_url:        imageUrl,
     })
 
     setSubmitting(false)
@@ -205,6 +232,30 @@ export default function PostLostFoundPage() {
             <input value={coatDesc} onChange={(e) => setCoatDesc(e.target.value)}
               placeholder="e.g. Golden coat · Blue collar · Has tag"
               className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          </div>
+
+          {/* Photo upload */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+              Photo <span className="text-gray-400 font-normal">(strongly recommended)</span>
+            </label>
+            {photoPreview ? (
+              <div className="relative">
+                <img src={photoPreview} alt="Preview"
+                  className="w-full h-48 object-cover rounded-xl border border-gray-200" />
+                <button type="button" onClick={() => { setPhotoFile(null); setPhotoPreview(null) }}
+                  className="absolute top-2 right-2 bg-white border border-gray-200 rounded-full w-7 h-7 flex items-center justify-center text-gray-500 hover:text-red-500 hover:border-red-300 transition text-sm font-bold shadow">
+                  ✕
+                </button>
+              </div>
+            ) : (
+              <label className="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-amber-400 hover:bg-amber-50 transition">
+                <span className="text-3xl mb-2">📷</span>
+                <span className="text-sm font-semibold text-gray-600">Click to upload a photo</span>
+                <span className="text-xs text-gray-400 mt-1">JPG, PNG — max 5MB</span>
+                <input type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
+              </label>
+            )}
           </div>
         </div>
 
