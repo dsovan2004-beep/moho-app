@@ -4,9 +4,32 @@ import { supabase, type Business } from '@/lib/supabase'
 import Link from 'next/link'
 
 const CATEGORIES = [
-  'All', 'Restaurants', 'Retail', 'Health & Wellness', 'Services',
-  'Education', 'Real Estate', 'Automotive', 'Beauty & Spa', 'Other',
+  { key: 'All',               emoji: '🗂️' },
+  { key: 'Restaurants',       emoji: '🍽️' },
+  { key: 'Health & Wellness', emoji: '🏥' },
+  { key: 'Beauty & Spa',      emoji: '💇' },
+  { key: 'Retail',            emoji: '🛍️' },
+  { key: 'Education',         emoji: '🏫' },
+  { key: 'Automotive',        emoji: '🚗' },
+  { key: 'Real Estate',       emoji: '🏠' },
 ]
+
+function getCategoryEmoji(cat: string): string {
+  const c = cat.toLowerCase()
+  if (c.includes('restaurant') || c.includes('food') || c.includes('dining')) return '🍽️'
+  if (c.includes('health') || c.includes('medical') || c.includes('doctor') || c.includes('dental') || c.includes('wellness')) return '🏥'
+  if (c.includes('beauty') || c.includes('salon') || c.includes('spa') || c.includes('hair')) return '💇'
+  if (c.includes('retail') || c.includes('shop') || c.includes('store')) return '🛍️'
+  if (c.includes('edu') || c.includes('school') || c.includes('tutor') || c.includes('child')) return '🏫'
+  if (c.includes('auto') || c.includes('car') || c.includes('vehicle')) return '🚗'
+  if (c.includes('real estate') || c.includes('housing')) return '🏠'
+  if (c.includes('home') || c.includes('plumb') || c.includes('electric') || c.includes('repair')) return '🔧'
+  if (c.includes('pet')) return '🐾'
+  if (c.includes('financial') || c.includes('bank') || c.includes('insurance')) return '💰'
+  if (c.includes('legal') || c.includes('law')) return '⚖️'
+  if (c.includes('tech') || c.includes('it ') || c.includes('software')) return '💻'
+  return '🏢'
+}
 
 const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca']
 
@@ -56,7 +79,7 @@ function BusinessCard({ biz }: { biz: Business }) {
         {biz.image_url ? (
           <img src={biz.image_url} alt={biz.name} className="w-full h-full object-cover" />
         ) : (
-          <span className="text-3xl">🏢</span>
+          <span className="text-3xl">{getCategoryEmoji(biz.category)}</span>
         )}
       </div>
 
@@ -143,17 +166,17 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
           <div>
             <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Category</p>
             <div className="flex flex-col gap-1">
-              {CATEGORIES.map((cat) => (
+              {CATEGORIES.map(({ key, emoji }) => (
                 <Link
-                  key={cat}
-                  href={`/directory?city=${encodeURIComponent(city)}&category=${encodeURIComponent(cat)}${query ? `&q=${encodeURIComponent(query)}` : ''}`}
+                  key={key}
+                  href={`/directory?city=${encodeURIComponent(city)}&category=${encodeURIComponent(key)}${query ? `&q=${encodeURIComponent(query)}` : ''}`}
                   className={`text-sm px-3 py-1.5 rounded-lg transition font-medium ${
-                    category === cat
+                    category === key
                       ? 'bg-blue-700 text-white'
                       : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >
-                  {cat}
+                  {emoji} {key}
                 </Link>
               ))}
             </div>
