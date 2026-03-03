@@ -189,6 +189,13 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
             <p className="text-sm text-gray-500">
               <span className="font-semibold text-gray-900">{businesses.length}</span> businesses found
             </p>
+            <Link
+              href="/submit-business"
+              className="flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-xl transition-all"
+              style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}
+            >
+              + Submit a Business
+            </Link>
           </div>
 
           {businesses.length === 0 ? (
