@@ -6,17 +6,16 @@ import Link from 'next/link'
 // ── Pet emoji map (matches index.html exactly) ───────────────────────────────
 function getPetEmoji(pet: LostAndFound): string {
   const breed = (pet.breed ?? pet.pet_type ?? '').toLowerCase()
-  const name = (pet.pet_name ?? '').toLowerCase()
+  const petKind = (pet.type ?? pet.pet_type ?? '').toLowerCase()
   const desc = (pet.coat_description ?? '').toLowerCase()
 
   if (breed.includes('poodle')) return '🐩'
   if (breed.includes('shepherd') || breed.includes('gsd')) return '🐕‍🦺'
   if (breed.includes('chihuahua') || breed.includes('french bulldog')) return '🐶'
-  if (breed.includes('siamese') || breed.includes('shorthair') || breed.includes('longhair') || breed.includes('tabby') || pet.pet_type?.toLowerCase() === 'cat') {
+  if (petKind === 'cat' || breed.includes('siamese') || breed.includes('shorthair') || breed.includes('longhair') || breed.includes('tabby')) {
     if (desc.includes('all black') || desc.includes('black ·') || breed.includes('black')) return '🐈‍⬛'
     return '🐈'
   }
-  if (pet.pet_type?.toLowerCase() === 'cat') return '🐈'
   // all dogs default
   return '🐕'
 }
