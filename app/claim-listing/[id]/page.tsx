@@ -109,7 +109,7 @@ export default function ClaimListingPage() {
         <div className="text-center max-w-sm">
           <div className="text-4xl mb-4">🔍</div>
           <h2 className="text-xl font-bold text-gray-900 mb-2">Listing not found</h2>
-          <p className="text-sm text-gray-500 mb-6">{loadError || 'We couldn't find that business listing.'}</p>
+          <p className="text-sm text-gray-500 mb-6">{loadError || "We couldn't find that business listing."}</p>
           <Link
             href="/directory"
             className="inline-block px-6 py-2.5 rounded-xl text-sm font-semibold text-white"
