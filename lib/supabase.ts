@@ -55,7 +55,8 @@ export interface LostAndFound {
   description: string
   city: string
   status: 'lost' | 'found' | 'reunited'
-  pet_type: string
+  type: string
+  pet_type?: string
   pet_name?: string
   breed?: string
   age?: string
