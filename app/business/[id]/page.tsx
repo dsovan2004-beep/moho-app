@@ -266,6 +266,15 @@ export default async function BusinessDetailPage({ params }: PageProps) {
             )}
           </div>
 
+          {/* Claim listing */}
+          {!(biz as any).claimed && (
+            <Link
+              href={`/claim-listing/${biz.id}`}
+              className="block w-full text-center text-sm font-medium py-2.5 rounded-xl border border-gray-200 text-gray-500 hover:border-gray-400 hover:text-gray-700 transition">
+              🏷️ Is this your business? Claim it
+            </Link>
+          )}
+
           {/* Back link */}
           <Link href="/directory"
             className="block text-center text-sm text-gray-400 hover:text-blue-600 transition py-2">
