@@ -89,10 +89,18 @@ function PetCard({ pet }: { pet: LostAndFound }) {
     >
       {/* Photo area */}
       <div
-        className="h-36 flex items-center justify-center relative"
+        className="h-36 flex items-center justify-center relative overflow-hidden"
         style={{ background: cfg.photoBg }}
       >
-        <span className="text-5xl">{emoji}</span>
+        {pet.image_url ? (
+          <img
+            src={pet.image_url}
+            alt={pet.pet_name || pet.title}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <span className="text-5xl">{emoji}</span>
+        )}
         <span
           className="absolute top-2.5 right-2.5 text-white text-[11px] font-bold px-2.5 py-1 rounded-full"
           style={{ backgroundColor: cfg.badgeBg }}
