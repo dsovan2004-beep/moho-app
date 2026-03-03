@@ -207,12 +207,13 @@ export default async function LostAndFoundPage({ searchParams }: PageProps) {
             All 4 cities · Post a lost or found pet · Celebrate reunions 🎉
           </p>
         </div>
-        <button
-          className="shrink-0 text-sm font-bold px-4 py-2 rounded-lg transition"
+        <Link
+          href="/post-lost-found"
+          className="shrink-0 text-sm font-bold px-4 py-2 rounded-lg transition hover:opacity-90"
           style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}
         >
           + Post Lost or Found Pet
-        </button>
+        </Link>
       </div>
 
       {/* ── Stats bar ── */}
