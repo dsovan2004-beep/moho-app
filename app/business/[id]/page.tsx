@@ -266,6 +266,30 @@ export default async function BusinessDetailPage({ params }: PageProps) {
             )}
           </div>
 
+          {/* Map & Directions */}
+          {biz.address && (
+            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+              <iframe
+                width="100%"
+                height="190"
+                loading="lazy"
+                allowFullScreen
+                style={{ border: 0 }}
+                src={`https://maps.google.com/maps?q=${encodeURIComponent(biz.address + ', ' + biz.city + ', CA')}&output=embed`}
+              />
+              <div className="p-3">
+                <a
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(biz.address + ', ' + biz.city + ', CA')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full text-center text-sm font-bold py-2.5 rounded-xl transition hover:opacity-90"
+                  style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}>
+                  📍 Get Directions
+                </a>
+              </div>
+            </div>
+          )}
+
           {/* Claim listing */}
           {!(biz as any).claimed && (
             <Link
