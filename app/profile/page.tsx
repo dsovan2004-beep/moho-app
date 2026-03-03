@@ -101,7 +101,8 @@ export default function ProfilePage() {
 
           {/* Avatar + info */}
           <div className="px-6 pb-6">
-            <div className="flex items-end gap-4 -mt-12 mb-4">
+            {/* Avatar — floats over banner independently */}
+            <div className="-mt-12 mb-3">
               {avatarUrl ? (
                 <img
                   src={avatarUrl}
@@ -116,10 +117,11 @@ export default function ProfilePage() {
                   {initials}
                 </div>
               )}
-              <div className="pb-1">
-                <h1 className="text-xl font-bold text-gray-900">{displayName}</h1>
-                <p className="text-sm text-gray-500">{user.email}</p>
-              </div>
+            </div>
+            {/* Name + email sit cleanly below the banner */}
+            <div className="mb-4">
+              <h1 className="text-xl font-bold text-gray-900">{displayName}</h1>
+              <p className="text-sm text-gray-500">{user.email}</p>
             </div>
 
             {/* Stats row */}
