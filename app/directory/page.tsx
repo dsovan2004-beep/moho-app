@@ -1,7 +1,12 @@
+'use client'
 export const runtime = 'edge'
 
+import { useState, useEffect, useRef } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { supabase, type Business } from '@/lib/supabase'
 import Link from 'next/link'
+
+const PAGE_SIZE = 20
 
 const CATEGORIES = [
   { key: 'All',               emoji: '🗂️' },
@@ -33,28 +38,6 @@ function getCategoryEmoji(cat: string): string {
 
 const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca']
 
-interface PageProps {
-  searchParams: Promise<{ city?: string; category?: string; q?: string }>
-}
-
-async function getBusinesses(city?: string, category?: string, query?: string) {
-  let req = supabase.from('businesses').select('*').order('name')
-
-  if (city && city !== 'All Cities') {
-    req = req.eq('city', city)
-  }
-  if (category && category !== 'All') {
-    req = req.eq('category', category)
-  }
-  if (query) {
-    req = req.ilike('name', `%${query}%`)
-  }
-
-  const { data, error } = await req
-  if (error) console.error(error)
-  return (data ?? []) as Business[]
-}
-
 function StarRating({ rating }: { rating?: number }) {
   if (!rating) return null
   const full = Math.floor(rating)
@@ -74,7 +57,6 @@ function BusinessCard({ biz }: { biz: Business }) {
       href={`/business/${biz.id}`}
       className="group flex gap-4 bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md hover:-translate-y-0.5 transition-all"
     >
-      {/* Image / Placeholder */}
       <div className="shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-blue-50 flex items-center justify-center">
         {biz.image_url ? (
           <img src={biz.image_url} alt={biz.name} className="w-full h-full object-cover" />
@@ -82,8 +64,6 @@ function BusinessCard({ biz }: { biz: Business }) {
           <span className="text-3xl">{getCategoryEmoji(biz.category)}</span>
         )}
       </div>
-
-      {/* Content */}
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-2">
           <h3 className="font-bold text-gray-900 group-hover:text-blue-700 transition truncate">
@@ -104,41 +84,112 @@ function BusinessCard({ biz }: { biz: Business }) {
   )
 }
 
-export default async function DirectoryPage({ searchParams }: PageProps) {
-  const params = await searchParams
-  const city = params.city ?? 'All Cities'
-  const category = params.category ?? 'All'
-  const query = params.q ?? ''
+export default function DirectoryPage() {
+  const searchParams = useSearchParams()
+  const router = useRouter()
 
-  const businesses = await getBusinesses(city, category, query)
+  const city = searchParams.get('city') ?? 'All Cities'
+  const category = searchParams.get('category') ?? 'All'
+  const query = searchParams.get('q') ?? ''
+
+  const [businesses, setBusinesses] = useState<Business[]>([])
+  const [total, setTotal] = useState(0)
+  const [offset, setOffset] = useState(0)
+  const [loading, setLoading] = useState(true)
+  const [loadingMore, setLoadingMore] = useState(false)
+
+  const [searchInput, setSearchInput] = useState(query)
+  const isFirstRender = useRef(true)
+
+  // Fetch first page whenever filters change
+  useEffect(() => {
+    setOffset(0)
+    setBusinesses([])
+    fetchPage(0, true)
+    setSearchInput(query)
+  }, [city, category, query])
+
+  async function fetchPage(from: number, reset = false) {
+    if (reset) setLoading(true)
+    else setLoadingMore(true)
+
+    const to = from + PAGE_SIZE - 1
+
+    let req = supabase
+      .from('businesses')
+      .select('*', { count: 'exact' })
+      .order('name')
+      .range(from, to)
+
+    if (city !== 'All Cities') req = req.eq('city', city)
+    if (category !== 'All') req = req.eq('category', category)
+    if (query) req = req.ilike('name', `%${query}%`)
+
+    const { data, count } = await req
+    const newBizs = (data ?? []) as Business[]
+
+    setBusinesses(prev => reset ? newBizs : [...prev, ...newBizs])
+    setTotal(count ?? 0)
+    setOffset(from + newBizs.length)
+    setLoading(false)
+    setLoadingMore(false)
+  }
+
+  function handleLoadMore() {
+    fetchPage(offset)
+  }
+
+  function handleSearch(e: React.FormEvent) {
+    e.preventDefault()
+    const params = new URLSearchParams()
+    params.set('city', city)
+    params.set('category', category)
+    if (searchInput.trim()) params.set('q', searchInput.trim())
+    router.push(`/directory?${params.toString()}`)
+  }
+
+  function filterUrl(newCity: string, newCat: string) {
+    const params = new URLSearchParams()
+    params.set('city', newCity)
+    params.set('category', newCat)
+    if (query) params.set('q', query)
+    return `/directory?${params.toString()}`
+  }
+
+  const hasMore = businesses.length < total
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-6">
         <h1 className="text-3xl font-extrabold text-gray-900">Business Directory</h1>
-        <p className="text-gray-500 mt-1">
-          Discover local businesses across San Joaquin County
-        </p>
+        <p className="text-gray-500 mt-1">Discover local businesses across San Joaquin County</p>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-6">
+
         {/* Sidebar Filters */}
         <aside className="lg:w-56 shrink-0 space-y-4">
+
           {/* Search */}
           <div>
             <label className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1 block">
               Search
             </label>
-            <form>
+            <form onSubmit={handleSearch} className="flex gap-1">
               <input
                 type="text"
-                name="q"
-                defaultValue={query}
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
                 placeholder="Search businesses…"
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
-              <input type="hidden" name="city" value={city} />
-              <input type="hidden" name="category" value={category} />
+              <button
+                type="submit"
+                className="px-3 py-2 rounded-lg text-sm font-semibold text-white transition"
+                style={{ backgroundColor: '#1e3a5f' }}
+              >
+                Go
+              </button>
             </form>
           </div>
 
@@ -149,7 +200,7 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
               {CITIES.map((c) => (
                 <Link
                   key={c}
-                  href={`/directory?city=${encodeURIComponent(c)}&category=${encodeURIComponent(category)}${query ? `&q=${encodeURIComponent(query)}` : ''}`}
+                  href={filterUrl(c, category)}
                   className={`text-sm px-3 py-1.5 rounded-lg transition font-medium ${
                     city === c
                       ? 'bg-blue-700 text-white'
@@ -169,7 +220,7 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
               {CATEGORIES.map(({ key, emoji }) => (
                 <Link
                   key={key}
-                  href={`/directory?city=${encodeURIComponent(city)}&category=${encodeURIComponent(key)}${query ? `&q=${encodeURIComponent(query)}` : ''}`}
+                  href={filterUrl(city, key)}
                   className={`text-sm px-3 py-1.5 rounded-lg transition font-medium ${
                     category === key
                       ? 'bg-blue-700 text-white'
@@ -185,9 +236,21 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
 
         {/* Listings */}
         <div className="flex-1 min-w-0">
+
+          {/* Header row */}
           <div className="flex items-center justify-between mb-4">
             <p className="text-sm text-gray-500">
-              <span className="font-semibold text-gray-900">{businesses.length}</span> businesses found
+              {loading ? (
+                <span className="text-gray-400">Loading…</span>
+              ) : (
+                <>
+                  Showing{' '}
+                  <span className="font-semibold text-gray-900">{businesses.length}</span>
+                  {' '}of{' '}
+                  <span className="font-semibold text-gray-900">{total}</span>
+                  {' '}businesses
+                </>
+              )}
             </p>
             <Link
               href="/submit-business"
@@ -198,18 +261,55 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
             </Link>
           </div>
 
-          {businesses.length === 0 ? (
+          {/* Business list */}
+          {loading ? (
+            <div className="space-y-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="bg-white rounded-xl border border-gray-200 p-4 flex gap-4 animate-pulse">
+                  <div className="shrink-0 w-20 h-20 rounded-lg bg-gray-100" />
+                  <div className="flex-1 space-y-2 py-1">
+                    <div className="h-4 bg-gray-100 rounded w-1/2" />
+                    <div className="h-3 bg-gray-100 rounded w-3/4" />
+                    <div className="h-3 bg-gray-100 rounded w-1/3" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : businesses.length === 0 ? (
             <div className="text-center py-20 text-gray-400">
               <p className="text-4xl mb-3">🔍</p>
               <p className="font-medium">No businesses found</p>
               <p className="text-sm mt-1">Try adjusting your filters</p>
             </div>
           ) : (
-            <div className="space-y-3">
-              {businesses.map((biz) => (
-                <BusinessCard key={biz.id} biz={biz} />
-              ))}
-            </div>
+            <>
+              <div className="space-y-3">
+                {businesses.map((biz) => (
+                  <BusinessCard key={biz.id} biz={biz} />
+                ))}
+              </div>
+
+              {/* Load More */}
+              {hasMore && (
+                <div className="mt-6 text-center">
+                  <button
+                    onClick={handleLoadMore}
+                    disabled={loadingMore}
+                    className="text-sm font-bold px-8 py-3 rounded-xl transition hover:opacity-90 disabled:opacity-60"
+                    style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}
+                  >
+                    {loadingMore ? 'Loading…' : `Load More (${total - businesses.length} remaining)`}
+                  </button>
+                </div>
+              )}
+
+              {/* All loaded message */}
+              {!hasMore && total > PAGE_SIZE && (
+                <p className="mt-6 text-center text-sm text-gray-400">
+                  ✅ All {total} businesses loaded
+                </p>
+              )}
+            </>
           )}
         </div>
       </div>
