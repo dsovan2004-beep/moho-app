@@ -67,7 +67,8 @@ function PostCard({ post }: { post: CommunityPost }) {
   const cityColor = CITY_COLORS[post.city] ?? 'bg-gray-50 text-gray-600'
 
   return (
-    <article className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-all">
+    <Link href={`/community/${post.id}`} className="block">
+    <article className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer">
       <div className="flex items-start gap-3">
         {/* Avatar */}
         <div className="shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-700 flex items-center justify-center text-white font-bold text-sm">
@@ -120,6 +121,7 @@ function PostCard({ post }: { post: CommunityPost }) {
         </div>
       </div>
     </article>
+    </Link>
   )
 }
 
