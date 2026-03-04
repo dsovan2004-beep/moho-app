@@ -93,6 +93,17 @@ function PostCard({ post }: { post: CommunityPost }) {
           <h3 className="font-bold text-gray-900 mb-1">{post.title}</h3>
           <p className="text-sm text-gray-600 line-clamp-3">{post.content}</p>
 
+          {/* Photo */}
+          {(post as any).image_url && (
+            <div className="mt-3 rounded-xl overflow-hidden border border-gray-100">
+              <img
+                src={(post as any).image_url}
+                alt={post.title}
+                className="w-full max-h-64 object-cover"
+              />
+            </div>
+          )}
+
           {/* Footer */}
           <div className="flex items-center gap-4 mt-3 text-xs text-gray-400">
             {post.reply_count !== undefined && (
