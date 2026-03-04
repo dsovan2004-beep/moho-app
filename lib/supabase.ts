@@ -85,6 +85,7 @@ export interface CommunityPost {
   created_at: string
   reply_count?: number
   likes?: number
+  image_url?: string
 }
 
 export interface LostAndFound {
