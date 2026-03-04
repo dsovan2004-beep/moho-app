@@ -2,6 +2,7 @@ export const runtime = 'edge'
 
 import { supabase, type CommunityPost } from '@/lib/supabase'
 import Link from 'next/link'
+import CommunityNewPost from '@/app/components/CommunityNewPost'
 
 const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca']
 
@@ -126,12 +127,7 @@ export default async function CommunityPage({ searchParams }: PageProps) {
             Conversations, recommendations & local news
           </p>
         </div>
-        <button
-          className="shrink-0 text-sm font-semibold px-4 py-2 rounded-full text-white transition"
-          style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}
-        >
-          + New Post
-        </button>
+        <CommunityNewPost currentCity={city} />
       </div>
 
       {/* City Filter */}
