@@ -76,6 +76,7 @@ export interface Event {
 
 export interface CommunityPost {
   id: string
+  user_id?: string
   title: string
   content: string
   city: string
