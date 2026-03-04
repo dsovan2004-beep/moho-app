@@ -3,6 +3,7 @@ export const runtime = 'edge'
 import { supabase, type Business } from '@/lib/supabase'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import ReviewSection from '@/app/components/ReviewSection'
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -209,24 +210,13 @@ export default async function BusinessDetailPage({ params }: PageProps) {
             </div>
           )}
 
-          {/* Reviews placeholder */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-6">
-            <h2 className="text-base font-bold text-gray-900 mb-1 flex items-center justify-between">
-              Reviews
-              {biz.rating && (
-                <span className="text-amber-500 text-sm font-semibold">
-                  ★ {biz.rating.toFixed(1)} · {biz.review_count ?? 0} reviews
-                </span>
-              )}
-            </h2>
-            <p className="text-sm text-gray-400 italic mt-3">
-              Community reviews coming soon — sign in to share your experience with {biz.name}.
-            </p>
-            <button
-              className="mt-4 text-sm font-semibold px-4 py-2 rounded-xl border border-gray-200 text-gray-600 hover:border-blue-400 hover:text-blue-700 transition">
-              ✍️ Write a Review
-            </button>
-          </div>
+          {/* Reviews */}
+          <ReviewSection
+            businessId={biz.id}
+            businessName={biz.name}
+            initialRating={biz.rating}
+            initialCount={biz.review_count}
+          />
         </div>
 
         {/* ── Sidebar ── */}
