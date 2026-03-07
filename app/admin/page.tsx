@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 
-const ADMIN_EMAIL = 'dsovan2004@gmail.com'
+const ADMIN_EMAILS = ['dsovan2004@gmail.com', 'danyoeur1983@gmail.com']
 
 interface PendingBusiness {
   id: string
@@ -46,7 +46,7 @@ export default function AdminPage() {
   // ── Auth check ──────────────────────────────────────────────────────────────
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
-      if (data.user?.email === ADMIN_EMAIL) {
+      if (data.user?.email && ADMIN_EMAILS.includes(data.user.email)) {
         setAuthorized(true)
       } else {
         router.replace('/')
