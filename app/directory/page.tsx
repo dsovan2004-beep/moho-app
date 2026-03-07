@@ -118,6 +118,7 @@ export default function DirectoryPage() {
     let req = supabase
       .from('businesses')
       .select('*', { count: 'exact' })
+      .eq('status', 'approved')
       .order('name')
       .range(from, to)
 
