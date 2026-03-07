@@ -183,22 +183,22 @@ const CITY_CONTENT: Record<
   },
 }
 
-// ── Checklist cards (shared across cities, content from index.html) ───────────
+// ── Checklist cards (shared across cities) ────────────────────────────────────
 const CHECKLIST = [
-  { icon: '⚡', title: 'Set Up Utilities', desc: 'PG&E, water, and trash pickup — links, account setup guides, and avg monthly costs.' },
-  { icon: '🏫', title: 'School Enrollment', desc: 'Find your local school district, enrollment forms, and school ratings.' },
-  { icon: '🏥', title: 'Find a Doctor', desc: 'Top-rated primary care, pediatricians, dentists, and urgent care nearby.' },
-  { icon: '🛒', title: 'Grocery & Shopping', desc: 'Nearest Costco, Target, Safeway, and specialty stores with drive times.' },
-  { icon: '🚌', title: 'Commute Options', desc: 'ACE Train, BART connections, highway routes, and morning commute tips.' },
-  { icon: '📱', title: 'Community Apps', desc: 'MoHo Local, city alert notifications, school apps, and local Facebook groups.' },
-  { icon: '🐕', title: 'Pet Resources', desc: 'Dog parks, vets, groomers, and pet-friendly trails in your city.' },
-  { icon: '🏘️', title: 'Know Your Neighborhood', desc: 'Local parks, community centers, events, and who to call for city services.' },
+  { icon: '⚡', title: 'Set Up Utilities', desc: 'PG&E, water, and trash pickup — links, account setup guides, and avg monthly costs.', href: '#utilities' },
+  { icon: '🏫', title: 'School Enrollment', desc: 'Find your local school district, enrollment forms, and school ratings.', href: '#schools' },
+  { icon: '🏥', title: 'Find a Doctor', desc: 'Top-rated primary care, pediatricians, dentists, and urgent care nearby.', href: '/directory?category=Health+%26+Wellness' },
+  { icon: '🛒', title: 'Grocery & Shopping', desc: 'Nearest Costco, Target, Safeway, and specialty stores with drive times.', href: '/directory?category=Retail' },
+  { icon: '🚌', title: 'Commute Options', desc: 'ACE Train, BART connections, highway routes, and morning commute tips.', href: '#tips' },
+  { icon: '📱', title: 'Community Apps', desc: 'MoHo Local, city alert notifications, school apps, and local Facebook groups.', href: '/community' },
+  { icon: '🐕', title: 'Pet Resources', desc: 'Dog parks, vets, groomers, and pet-friendly trails in your city.', href: '/directory?category=Pet+Services' },
+  { icon: '🏘️', title: 'Know Your Neighborhood', desc: 'Local parks, community centers, events, and who to call for city services.', href: '/events' },
 ]
 
 // ── Page ─────────────────────────────────────────────────────────────────────
 export default async function NewResidentPage({ searchParams }: PageProps) {
   const params = await searchParams
-  const rawCity = (params.city ?? '').toLowerCase().replace(/\s+/g, '')
+  const rawCity = decodeURIComponent(params.city ?? '').toLowerCase().replace(/\s+/g, '')
   const activeCity: City = CITY_KEYS[rawCity] ?? 'Mountain House'
 
   const style = CITY_STYLE[activeCity]
@@ -216,7 +216,7 @@ export default async function NewResidentPage({ searchParams }: PageProps) {
           return (
             <Link
               key={city}
-              href={`/new-resident?city=${city.toLowerCase().replace(' ', '')}`}
+              href={`/new-resident?city=${encodeURIComponent(city)}`}
               className={`text-sm font-semibold px-4 py-2 rounded-full border transition-all ${
                 isActive
                   ? 'text-white border-transparent shadow-md'
@@ -240,7 +240,7 @@ export default async function NewResidentPage({ searchParams }: PageProps) {
           <p className="text-sm opacity-90 max-w-xl">{content.sub}</p>
         </div>
         <Link
-          href="/directory"
+          href={`/directory?city=${encodeURIComponent(activeCity)}`}
           className="bg-white text-gray-900 font-bold text-sm px-5 py-2.5 rounded-xl shrink-0 hover:opacity-90 transition-all"
         >
           Explore Local Businesses →
@@ -250,15 +250,16 @@ export default async function NewResidentPage({ searchParams }: PageProps) {
       {/* ── New Resident Checklist ── */}
       <h2 className="text-lg font-bold text-gray-900 mb-4">Your New Resident Checklist</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-        {CHECKLIST.map(({ icon, title, desc }) => (
-          <div
+        {CHECKLIST.map(({ icon, title, desc, href }) => (
+          <Link
             key={title}
-            className="bg-white rounded-xl border border-gray-200 p-5 hover:-translate-y-0.5 hover:shadow-lg transition-all cursor-pointer"
+            href={href}
+            className="bg-white rounded-xl border border-gray-200 p-5 hover:-translate-y-0.5 hover:shadow-lg transition-all group"
           >
             <div className="text-3xl mb-3">{icon}</div>
-            <div className="font-bold text-sm text-gray-900 mb-1">{title}</div>
+            <div className="font-bold text-sm text-gray-900 mb-1 group-hover:text-blue-700 transition-colors">{title}</div>
             <div className="text-xs text-gray-500 leading-relaxed">{desc}</div>
-          </div>
+          </Link>
         ))}
       </div>
 
@@ -266,7 +267,7 @@ export default async function NewResidentPage({ searchParams }: PageProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
 
         {/* Utilities */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <div id="utilities" className="bg-white rounded-xl border border-gray-200 p-6">
           <h2 className="text-base font-bold text-gray-900 mb-4 flex items-center gap-2">
             ⚡ Utilities Setup
           </h2>
@@ -291,7 +292,7 @@ export default async function NewResidentPage({ searchParams }: PageProps) {
         </div>
 
         {/* Schools */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <div id="schools" className="bg-white rounded-xl border border-gray-200 p-6">
           <h2 className="text-base font-bold text-gray-900 mb-4 flex items-center gap-2">
             🏫 Schools in {activeCity}
           </h2>
@@ -327,7 +328,7 @@ export default async function NewResidentPage({ searchParams }: PageProps) {
       </div>
 
       {/* ── Local Tips ── */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6 mb-10">
+      <div id="tips" className="bg-white rounded-xl border border-gray-200 p-6 mb-10">
         <h2 className="text-base font-bold text-gray-900 mb-4">
           💡 Neighbor Tips for {activeCity}
         </h2>
@@ -352,7 +353,7 @@ export default async function NewResidentPage({ searchParams }: PageProps) {
         <p className="text-white/85 text-sm mb-5">Browse local businesses, upcoming events, and connect with your neighbors.</p>
         <div className="flex gap-3 justify-center flex-wrap">
           <Link
-            href="/directory"
+            href={`/directory?city=${encodeURIComponent(activeCity)}`}
             className="bg-white text-gray-900 font-bold text-sm px-5 py-2.5 rounded-xl hover:opacity-90 transition-all"
           >
             📋 Business Directory
