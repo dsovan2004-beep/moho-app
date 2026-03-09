@@ -1,13 +1,22 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
+// ─── Factory ──────────────────────────────────────────────────────────────────
+// IMPORTANT: Never call createClient() at module scope.
+// Next.js evaluates module graphs at build time (edge runtime) where env vars
+// are undefined, causing "supabaseKey is required". Always call this factory
+// inside functions/effects so it runs at request/render time only.
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
+export function getSupabaseClient() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  )
+}
 
 // ─── Auth Helpers ─────────────────────────────────────────────────────────────
 
 export async function signInWithGoogle() {
+  const supabase = getSupabaseClient()
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
@@ -18,11 +27,13 @@ export async function signInWithGoogle() {
 }
 
 export async function signInWithEmail(email: string, password: string) {
+  const supabase = getSupabaseClient()
   const { data, error } = await supabase.auth.signInWithPassword({ email, password })
   return { data, error }
 }
 
 export async function signUpWithEmail(email: string, password: string, fullName?: string) {
+  const supabase = getSupabaseClient()
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -32,11 +43,13 @@ export async function signUpWithEmail(email: string, password: string, fullName?
 }
 
 export async function signOut() {
+  const supabase = getSupabaseClient()
   const { error } = await supabase.auth.signOut()
   return { error }
 }
 
 export async function getUser() {
+  const supabase = getSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   return user
 }
@@ -55,6 +68,13 @@ export interface Business {
   rating?: number
   review_count?: number
   image_url?: string
+  status?: 'pending' | 'approved' | 'rejected'
+  slug?: string
+  verified?: boolean
+  featured?: boolean
+  contact_email?: string
+  hours?: string
+  claimed?: boolean
   created_at: string
 }
 
