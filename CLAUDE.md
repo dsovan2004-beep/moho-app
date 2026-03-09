@@ -29,32 +29,56 @@ You operate across these disciplines simultaneously:
 
 ---
 
-## 2. WORKFLOW
+## 2. WORKFLOW — GitHub-First Autonomous Engineering
 
-**Claude's responsibilities:**
-- Write and update code files in `~/Desktop/MoHoLocal/moho-app-scaffold/`
-- Provide SQL for the founder to run in Supabase SQL Editor
-- Output seed scripts for the founder to run from Mac terminal
-- Flag issues, suggest improvements, ask before building anything ambiguous
+**Target flow:** Claude writes code/SQL → founder runs one push command → Cloudflare deploys
 
-**Founder's responsibilities:**
-- Review all code changes before committing
-- Run push scripts from Mac terminal:
-  ```bash
-  # Single file (use this always):
-  bash ~/Desktop/MoHoLocal/push-one.sh "app/page.tsx" "commit message"
+### Claude's autonomous responsibilities
+Claude handles everything below without asking permission:
+- Write and update all code files in `moho-app-scaffold/`
+- Create SQL migration files in `supabase/migrations/`
+- Create audit SQL in `sql/audits/`
+- Create seed scripts in `sql/seeds/`
+- Non-destructive schema changes (ADD COLUMN IF NOT EXISTS, new indexes, new tables)
+- Page creation, UI updates, search improvements, bug fixes
 
-  # All files (PUSH ALL gate required):
-  sudo bash ~/Desktop/MoHoLocal/push-to-github.sh
-  ```
-- Run seed scripts: `python3 ~/Desktop/MoHoLocal/seed_xxx.py`
-- Run SQL in Supabase SQL Editor
+Claude does NOT autonomously handle:
+- Mass deletes or destructive SQL
+- Secrets rotation or auth redesign
+- DNS or account-level changes
+- Any SQL flagged 🔴 Destructive in the handoff
 
-**⚠️ Claude must NEVER:**
-- Auto-push or commit files
-- Run `push-to-github.sh` or `push-one.sh`
-- Run seed scripts
-- Execute SQL directly (VM can't reach Supabase — 403 proxy error)
+### SQL file structure (repo-tracked)
+```
+supabase/migrations/  ← schema changes (run in Supabase SQL Editor)
+sql/audits/           ← read-only audit queries (always safe to run)
+sql/seeds/            ← data insert/update scripts
+```
+**Never reference local Mac paths for SQL.** All SQL is either in the repo or pasted inline in the handoff.
+
+### Handoff format (every PR/commit)
+```
+## Handoff
+What changed:   [description]
+Files changed:  [list]
+Commit message: feat/fix/chore: [message]
+DB action:      None | ⚠️ Run migration: supabase/migrations/[file].sql
+Safety:         ✅ Safe | ⚠️ Review required | 🔴 Destructive
+Push command:   bash ~/Desktop/MoHoLocal/push-one.sh "file" "message"
+```
+
+### GitHub push (one command per batch)
+```bash
+# Single file:
+bash ~/Desktop/MoHoLocal/push-one.sh "app/page.tsx" "feat: description"
+
+# Multiple files at once:
+sudo bash ~/Desktop/MoHoLocal/push-to-github.sh
+```
+> ⚠️ GitHub API is blocked from the Cowork VM (403 proxy). Claude writes all files to the scaffold — founder runs one push command. This is the minimum possible manual step.
+
+### Supabase SQL
+Claude always pastes raw SQL inline in the handoff AND stores it in `supabase/migrations/` or `sql/audits/`. Never hand a file path to the SQL editor — paste the actual SQL.
 
 ---
 
@@ -62,6 +86,7 @@ You operate across these disciplines simultaneously:
 
 - **Live site:** https://www.moholocal.com
 - **GitHub:** github.com/dsovan2004-beep/moho-app (main branch)
+- **GitHub Token:** stored in `~/Desktop/MoHoLocal/push-one.sh` only — never commit to repo
 - **Supabase:** moholocal-db01 | ozjlfgipfzykzrjakwzb.supabase.co
 - **Cloudflare Pages:** moho-app project (auto-deploys on push to main)
 - **Target cities:** Mountain House, Tracy, Lathrop, Manteca
@@ -85,6 +110,37 @@ You operate across these disciplines simultaneously:
 - Output: `.vercel/output/static`
 - Compatibility flag (Functions settings): `nodejs_compat`
 - Node version: 18 or 20
+
+### Cloudflare Environment Variables
+These must be set in Cloudflare Pages → moho-app → Settings → Variables and Secrets:
+```
+NEXT_PUBLIC_SUPABASE_URL        = https://ozjlfgipfzykzrjakwzb.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY   = your_anon_key (public, safe for frontend)
+SUPABASE_SERVICE_ROLE_KEY       = your_service_role_key (server-only, keep secret)
+```
+> ⚠️ Old name `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` is wrong. Must be `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+
+### Cloudflare Deploy Hook (autonomous deploys)
+Create in Cloudflare → Pages → moho-app → Settings → Deploy Hooks → "moholocal-auto-deploy" (branch: main).
+Store the resulting URL here:
+```
+CLOUDFLARE_DEPLOY_HOOK = [paste hook URL here after creating it]
+```
+Once set, Claude can trigger a build directly from the VM:
+```bash
+curl -X POST "$CLOUDFLARE_DEPLOY_HOOK"
+```
+
+### Autonomous deploy flow
+```
+Claude writes files to scaffold
+    ↓
+Founder runs: bash push-one.sh "file" "message"
+    ↓
+GitHub commit → Cloudflare auto-builds
+    ↓ (or, with deploy hook)
+Claude runs: curl -X POST $DEPLOY_HOOK
+```
 
 ---
 
