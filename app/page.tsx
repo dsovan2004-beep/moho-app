@@ -54,14 +54,15 @@ const CITY_CFG: Record<
 
 // ── Categories ────────────────────────────────────────────────────────────────
 const CATEGORIES = [
-  { icon: '🔧', name: 'Home Services', cat: 'Home Services' },
-  { icon: '🍽️', name: 'Restaurants',   cat: 'Restaurants' },
+  { icon: '🍽️', name: 'Restaurants',       cat: 'Restaurants' },
+  { icon: '🔧', name: 'Home Services',     cat: 'Home Services' },
   { icon: '🏥', name: 'Health & Wellness', cat: 'Health & Wellness' },
-  { icon: '🐾', name: 'Pet Services',  cat: 'Pet Services' },
-  { icon: '💇', name: 'Beauty & Spa',  cat: 'Beauty & Spa' },
-  { icon: '🚗', name: 'Auto Services', cat: 'Automotive' },
-  { icon: '🏫', name: 'Education',     cat: 'Education' },
-  { icon: '🏠', name: 'Real Estate',   cat: 'Real Estate' },
+  { icon: '🐾', name: 'Pet Services',      cat: 'Pet Services' },
+  { icon: '💇', name: 'Beauty & Spa',      cat: 'Beauty & Spa' },
+  { icon: '🚗', name: 'Automotive',        cat: 'Automotive' },
+  { icon: '🏫', name: 'Education',         cat: 'Education' },
+  { icon: '🏠', name: 'Real Estate',       cat: 'Real Estate' },
+  { icon: '🛍️', name: 'Retail',            cat: 'Retail' },
 ]
 
 // ── Data fetching ─────────────────────────────────────────────────────────────
@@ -257,7 +258,7 @@ export default async function HomePage({ searchParams }: PageProps) {
 
       {/* ── Browse by Category ── */}
       <h2 className="text-lg font-bold text-gray-900 mb-4">Browse by Category</h2>
-      <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 gap-3 mb-8">
+      <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-3 mb-8">
         {CATEGORIES.map(({ icon, name, cat }) => {
           const count = catCountMap[cat] ?? 0
           return (

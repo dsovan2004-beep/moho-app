@@ -169,10 +169,50 @@ export default function DirectoryPage() {
         <p className="text-gray-500 mt-1">Discover local businesses across San Joaquin County</p>
       </div>
 
+      {/* ── Mobile filter chips (hidden on lg+) ── */}
+      <div className="lg:hidden mb-4 space-y-3">
+        {/* City chips */}
+        <div className="overflow-x-auto">
+          <div className="flex gap-2 pb-1 min-w-max">
+            {CITIES.map((c) => (
+              <Link
+                key={c}
+                href={filterUrl(c, category)}
+                className={`text-xs font-semibold px-3 py-1.5 rounded-full border whitespace-nowrap transition ${
+                  city === c
+                    ? 'bg-blue-700 text-white border-blue-700'
+                    : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300'
+                }`}
+              >
+                {c}
+              </Link>
+            ))}
+          </div>
+        </div>
+        {/* Category chips */}
+        <div className="overflow-x-auto">
+          <div className="flex gap-2 pb-1 min-w-max">
+            {CATEGORIES.map(({ key, emoji }) => (
+              <Link
+                key={key}
+                href={filterUrl(city, key)}
+                className={`text-xs font-semibold px-3 py-1.5 rounded-full border whitespace-nowrap transition ${
+                  category === key
+                    ? 'bg-blue-700 text-white border-blue-700'
+                    : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300'
+                }`}
+              >
+                {emoji} {key}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <div className="flex flex-col lg:flex-row gap-6">
 
         {/* Sidebar Filters */}
-        <aside className="lg:w-56 shrink-0 space-y-4">
+        <aside className="hidden lg:block lg:w-56 shrink-0 space-y-4">
 
           {/* Search */}
           <div>
@@ -241,6 +281,42 @@ export default function DirectoryPage() {
         {/* Listings */}
         <div className="flex-1 min-w-0">
 
+          {/* Active filter chips — mobile + desktop */}
+          {(city !== 'All Cities' || category !== 'All' || query) && (
+            <div className="flex flex-wrap gap-2 mb-3">
+              {city !== 'All Cities' && (
+                <Link
+                  href={filterUrl('All Cities', category)}
+                  className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition"
+                >
+                  📍 {city} <span className="ml-0.5 opacity-60">✕</span>
+                </Link>
+              )}
+              {category !== 'All' && (
+                <Link
+                  href={filterUrl(city, 'All')}
+                  className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition"
+                >
+                  {CATEGORIES.find(c => c.key === category)?.emoji ?? '📂'} {category} <span className="ml-0.5 opacity-60">✕</span>
+                </Link>
+              )}
+              {query && (
+                <Link
+                  href={filterUrl(city, category)}
+                  className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition"
+                >
+                  🔍 &ldquo;{query}&rdquo; <span className="ml-0.5 opacity-60">✕</span>
+                </Link>
+              )}
+              <Link
+                href="/directory"
+                className="text-xs text-gray-400 hover:text-red-500 transition px-1 py-1"
+              >
+                Clear all
+              </Link>
+            </div>
+          )}
+
           {/* Header row */}
           <div className="flex items-center justify-between mb-4">
             <p className="text-sm text-gray-500">
@@ -282,8 +358,16 @@ export default function DirectoryPage() {
           ) : businesses.length === 0 ? (
             <div className="text-center py-20 text-gray-400">
               <p className="text-4xl mb-3">🔍</p>
-              <p className="font-medium">No businesses found</p>
-              <p className="text-sm mt-1">Try adjusting your filters</p>
+              <p className="font-medium text-gray-700">No businesses found</p>
+              <p className="text-sm mt-1 mb-4">Try adjusting your filters or search term</p>
+              {(city !== 'All Cities' || category !== 'All' || query) && (
+                <Link
+                  href="/directory"
+                  className="inline-block text-sm font-semibold text-blue-600 hover:underline"
+                >
+                  ✕ Clear all filters
+                </Link>
+              )}
             </div>
           ) : (
             <>
