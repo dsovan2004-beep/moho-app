@@ -1,6 +1,6 @@
 export const runtime = 'edge'
 
-import { supabase, type Business } from '@/lib/supabase'
+import { getSupabaseClient, type Business } from '@/lib/supabase'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -106,6 +106,7 @@ export async function generateMetadata({ params }: PageProps) {
 // ── Data fetching ─────────────────────────────────────────────────────────────
 
 async function getBusinesses(city: string, category: string): Promise<Business[]> {
+  const supabase = getSupabaseClient()
   const { data, error } = await supabase
     .from('businesses')
     .select('*')

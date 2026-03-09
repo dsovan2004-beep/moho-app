@@ -5,7 +5,7 @@ export const runtime = 'edge'
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
+import { getSupabaseClient } from '@/lib/supabase'
 import type { Business } from '@/lib/supabase'
 
 const ROLES = ['Owner', 'Manager', 'Employee']
@@ -56,6 +56,7 @@ export default function ClaimListingPage() {
   // Fetch business
   useEffect(() => {
     if (!id) return
+    const supabase = getSupabaseClient()
     supabase
       .from('businesses')
       .select('*')
@@ -72,6 +73,7 @@ export default function ClaimListingPage() {
   }, [id])
 
   async function handleClaim(e: React.FormEvent) {
+    const supabase = getSupabaseClient()
     e.preventDefault()
     if (!business) return
     setSubmitting(true)

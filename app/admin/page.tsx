@@ -3,7 +3,7 @@ export const runtime = 'edge'
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { getSupabaseClient } from '@/lib/supabase'
 import Link from 'next/link'
 
 const ADMIN_EMAILS = ['dsovan2004@gmail.com', 'danyoeur1983@gmail.com']
@@ -45,6 +45,7 @@ export default function AdminPage() {
 
   // ── Auth check ──────────────────────────────────────────────────────────────
   useEffect(() => {
+    const supabase = getSupabaseClient()
     supabase.auth.getUser().then(({ data }) => {
       if (data.user?.email && ADMIN_EMAILS.includes(data.user.email)) {
         setAuthorized(true)
@@ -63,6 +64,7 @@ export default function AdminPage() {
   }, [authorized, tab])
 
   async function loadTab(status: string) {
+    const supabase = getSupabaseClient()
     setLoading(true)
     const { data } = await supabase
       .from('businesses')
@@ -74,6 +76,7 @@ export default function AdminPage() {
   }
 
   async function loadStats() {
+    const supabase = getSupabaseClient()
     const statuses = ['pending', 'approved', 'rejected']
     const counts: Record<string, number> = {}
     for (const s of statuses) {
@@ -87,6 +90,7 @@ export default function AdminPage() {
   }
 
   async function updateStatus(id: string, status: 'approved' | 'rejected') {
+    const supabase = getSupabaseClient()
     setActionId(id)
     const { error } = await supabase
       .from('businesses')

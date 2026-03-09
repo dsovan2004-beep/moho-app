@@ -1,6 +1,6 @@
 export const runtime = 'edge'
 
-import { supabase, type CommunityPost } from '@/lib/supabase'
+import { getSupabaseClient, type CommunityPost } from '@/lib/supabase'
 import Link from 'next/link'
 import CommunityNewPost from '@/app/components/CommunityNewPost'
 
@@ -35,6 +35,7 @@ interface PageProps {
 }
 
 async function getPosts(city?: string, category?: string) {
+  const supabase = getSupabaseClient()
   let req = supabase
     .from('community_posts')
     .select('*')

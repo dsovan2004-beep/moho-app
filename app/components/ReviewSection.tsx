@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { supabase } from '@/lib/supabase'
+import { getSupabaseClient } from '@/lib/supabase'
 import Link from 'next/link'
 
 interface Review {
@@ -67,6 +67,7 @@ export default function ReviewSection({ businessId, businessName, initialRating,
   const [submitError, setSubmitError] = useState('')
 
   useEffect(() => {
+    const supabase = getSupabaseClient()
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user)
       setAuthChecked(true)
@@ -75,6 +76,7 @@ export default function ReviewSection({ businessId, businessName, initialRating,
   }, [])
 
   async function loadReviews() {
+    const supabase = getSupabaseClient()
     setLoading(true)
     const { data } = await supabase
       .from('reviews')
@@ -86,6 +88,7 @@ export default function ReviewSection({ businessId, businessName, initialRating,
   }
 
   async function handleSubmit(e: React.FormEvent) {
+    const supabase = getSupabaseClient()
     e.preventDefault()
     if (!user) return
     setSubmitting(true)

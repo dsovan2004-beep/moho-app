@@ -5,7 +5,7 @@ export const runtime = 'edge'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
+import { getSupabaseClient } from '@/lib/supabase'
 import type { User } from '@supabase/supabase-js'
 
 const CITIES = ['Mountain House', 'Tracy', 'Lathrop', 'Manteca']
@@ -39,6 +39,7 @@ export default function ProfilePage() {
   const [errorMsg, setErrorMsg] = useState('')
 
   useEffect(() => {
+    const supabase = getSupabaseClient()
     supabase.auth.getUser().then(({ data: { user } }) => {
       if (!user) {
         router.replace('/login')
@@ -52,6 +53,7 @@ export default function ProfilePage() {
   }, [router])
 
   async function handleSave(e: React.FormEvent) {
+    const supabase = getSupabaseClient()
     e.preventDefault()
     setSaving(true)
     setSaveStatus('idle')

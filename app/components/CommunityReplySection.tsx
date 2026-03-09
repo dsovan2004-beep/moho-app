@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { getSupabaseClient } from '@/lib/supabase'
 import Link from 'next/link'
 
 interface Reply {
@@ -41,6 +41,7 @@ export default function CommunityReplySection({ postId, initialReplyCount }: Pro
   const [submitted, setSubmitted] = useState(false)
 
   useEffect(() => {
+    const supabase = getSupabaseClient()
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user)
       setAuthChecked(true)
@@ -49,6 +50,7 @@ export default function CommunityReplySection({ postId, initialReplyCount }: Pro
   }, [])
 
   async function loadReplies() {
+    const supabase = getSupabaseClient()
     setLoading(true)
     const { data } = await supabase
       .from('community_replies')
@@ -60,6 +62,7 @@ export default function CommunityReplySection({ postId, initialReplyCount }: Pro
   }
 
   async function handleSubmit(e: React.FormEvent) {
+    const supabase = getSupabaseClient()
     e.preventDefault()
     if (!content.trim() || !user) return
     setSubmitting(true)

@@ -4,7 +4,7 @@ export const runtime = 'edge'
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
+import { getSupabaseClient } from '@/lib/supabase'
 
 const CATEGORIES = [
   'Home Services',
@@ -53,6 +53,7 @@ export default function SubmitBusinessPage() {
   }
 
   async function handleSubmit(e: React.FormEvent) {
+    const supabase = getSupabaseClient()
     e.preventDefault()
     setSubmitting(true)
     setError(null)

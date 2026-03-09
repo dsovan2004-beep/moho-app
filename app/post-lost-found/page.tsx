@@ -3,7 +3,7 @@ export const runtime = 'edge'
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
+import { getSupabaseClient } from '@/lib/supabase'
 
 const CITIES = ['Mountain House', 'Tracy', 'Lathrop', 'Manteca']
 const PET_TYPES = ['Dog', 'Cat', 'Bird', 'Rabbit', 'Hamster', 'Other']
@@ -50,6 +50,7 @@ export default function PostLostFoundPage() {
   }
 
   async function handleSubmit(e: React.FormEvent) {
+    const supabase = getSupabaseClient()
     e.preventDefault()
     setSubmitting(true)
     setError('')

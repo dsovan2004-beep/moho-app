@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { getSupabaseClient } from '@/lib/supabase'
 
 const CATEGORIES = [
   'General', 'Recommendations', 'For Sale', 'Free Items',
@@ -35,6 +35,7 @@ export default function CommunityNewPost({ currentCity }: Props) {
   const [error, setError] = useState('')
 
   async function handleOpen() {
+    const supabase = getSupabaseClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
       router.push('/login')
@@ -67,6 +68,7 @@ export default function CommunityNewPost({ currentCity }: Props) {
   }
 
   async function uploadPhoto(userId: string): Promise<string | null> {
+    const supabase = getSupabaseClient()
     if (!photo) return null
     const ext = photo.name.split('.').pop()
     const path = `${userId}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
@@ -79,6 +81,7 @@ export default function CommunityNewPost({ currentCity }: Props) {
   }
 
   async function handleSubmit(e: React.FormEvent) {
+    const supabase = getSupabaseClient()
     e.preventDefault()
     if (!title.trim()) return
     setSubmitting(true)

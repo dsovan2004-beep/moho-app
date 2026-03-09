@@ -8,7 +8,7 @@ export const runtime = 'edge'
 
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { getSupabaseClient } from '@/lib/supabase'
 import { Suspense } from 'react'
 
 function CallbackHandler() {
@@ -29,6 +29,7 @@ function CallbackHandler() {
     }
 
     if (code) {
+      const supabase = getSupabaseClient()
       supabase.auth
         .exchangeCodeForSession(code)
         .then(({ error }) => {

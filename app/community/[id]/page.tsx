@@ -1,6 +1,6 @@
 export const runtime = 'edge'
 
-import { supabase, type CommunityPost } from '@/lib/supabase'
+import { getSupabaseClient, type CommunityPost } from '@/lib/supabase'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import CommunityReplySection from '@/app/components/CommunityReplySection'
@@ -41,6 +41,7 @@ function timeAgo(dateStr: string) {
 }
 
 async function getPost(id: string) {
+  const supabase = getSupabaseClient()
   const { data, error } = await supabase
     .from('community_posts')
     .select('*')

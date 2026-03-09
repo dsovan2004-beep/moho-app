@@ -1,6 +1,6 @@
 export const runtime = 'edge'
 
-import { supabase, type LostAndFound } from '@/lib/supabase'
+import { getSupabaseClient, type LostAndFound } from '@/lib/supabase'
 import Link from 'next/link'
 
 // ── Pet emoji map (matches index.html exactly) ───────────────────────────────
@@ -62,6 +62,7 @@ const CITY_EMOJI: Record<string, string> = {
 
 // ── Data fetching ─────────────────────────────────────────────────────────────
 async function getPets(city?: string, status?: string) {
+  const supabase = getSupabaseClient()
   let req = supabase
     .from('lost_and_found')
     .select('*')

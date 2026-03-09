@@ -5,7 +5,7 @@ export const runtime = 'edge'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { useState, useEffect, useRef, Suspense } from 'react'
-import { supabase, signOut } from '@/lib/supabase'
+import { getSupabaseClient, signOut } from '@/lib/supabase'
 import type { User } from '@supabase/supabase-js'
 import './globals.css'
 
@@ -76,6 +76,7 @@ function NavContent() {
 
   useEffect(() => {
     // Get initial session
+    const supabase = getSupabaseClient()
     supabase.auth.getUser().then(({ data: { user } }) => setUser(user))
 
     // Listen for auth changes

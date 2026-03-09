@@ -3,7 +3,7 @@ export const runtime = 'edge'
 
 import { useState, useEffect, useRef } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { supabase, type Business } from '@/lib/supabase'
+import { getSupabaseClient, type Business } from '@/lib/supabase'
 import Link from 'next/link'
 
 const PAGE_SIZE = 20
@@ -12,11 +12,13 @@ const CATEGORIES = [
   { key: 'All',               emoji: '🗂️' },
   { key: 'Restaurants',       emoji: '🍽️' },
   { key: 'Health & Wellness', emoji: '🏥' },
+  { key: 'Home Services',     emoji: '🔧' },
+  { key: 'Pet Services',      emoji: '🐾' },
   { key: 'Beauty & Spa',      emoji: '💇' },
-  { key: 'Retail',            emoji: '🛍️' },
-  { key: 'Education',         emoji: '🏫' },
   { key: 'Automotive',        emoji: '🚗' },
+  { key: 'Education',         emoji: '🏫' },
   { key: 'Real Estate',       emoji: '🏠' },
+  { key: 'Retail',            emoji: '🛍️' },
 ]
 
 function getCategoryEmoji(cat: string): string {
@@ -110,6 +112,7 @@ export default function DirectoryPage() {
   }, [city, category, query])
 
   async function fetchPage(from: number, reset = false) {
+    const supabase = getSupabaseClient()
     if (reset) setLoading(true)
     else setLoadingMore(true)
 
@@ -124,7 +127,7 @@ export default function DirectoryPage() {
 
     if (city !== 'All Cities') req = req.eq('city', city)
     if (category !== 'All') req = req.eq('category', category)
-    if (query) req = req.ilike('name', `%${query}%`)
+    if (query) req = req.or(`name.ilike.%${query}%,description.ilike.%${query}%,category.ilike.%${query}%`)
 
     const { data, count } = await req
     const newBizs = (data ?? []) as Business[]

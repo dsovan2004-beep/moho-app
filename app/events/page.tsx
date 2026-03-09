@@ -1,6 +1,6 @@
 export const runtime = 'edge'
 
-import { supabase, type Event } from '@/lib/supabase'
+import { getSupabaseClient, type Event } from '@/lib/supabase'
 import Link from 'next/link'
 
 const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca']
@@ -10,6 +10,7 @@ interface PageProps {
 }
 
 async function getEvents(city?: string) {
+  const supabase = getSupabaseClient()
   let req = supabase.from('events').select('*').order('start_date', { ascending: true })
 
   if (city && city !== 'All Cities') {

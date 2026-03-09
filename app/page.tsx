@@ -1,16 +1,16 @@
 export const runtime = 'edge'
 
-import { supabase } from '@/lib/supabase'
+import { getSupabaseClient, type Business } from '@/lib/supabase'
 import Link from 'next/link'
 
-// ── City config ──────────────────────────────────────────────────────────────
+// ── City config ───────────────────────────────────────────────────────────────
 const CITIES = ['Mountain House', 'Tracy', 'Lathrop', 'Manteca'] as const
 type City = (typeof CITIES)[number]
 
 const CITY_CFG: Record<
   City,
   {
-    key: string
+    slug: string          // URL slug: mountain-house, tracy, etc.
     emoji: string
     gradient: string
     chip: string
@@ -19,7 +19,7 @@ const CITY_CFG: Record<
   }
 > = {
   'Mountain House': {
-    key: 'mh',
+    slug: 'mountain-house',
     emoji: '🏘️',
     gradient: 'linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%)',
     chip: 'bg-blue-50 text-blue-700',
@@ -27,7 +27,7 @@ const CITY_CFG: Record<
     heroTitle: 'Your Mountain House Community Hub',
   },
   Tracy: {
-    key: 'tracy',
+    slug: 'tracy',
     emoji: '🌿',
     gradient: 'linear-gradient(135deg,#14532d 0%,#16a34a 100%)',
     chip: 'bg-green-50 text-green-700',
@@ -35,7 +35,7 @@ const CITY_CFG: Record<
     heroTitle: 'Your Tracy Community Hub',
   },
   Lathrop: {
-    key: 'lathrop',
+    slug: 'lathrop',
     emoji: '🔮',
     gradient: 'linear-gradient(135deg,#581c87 0%,#9333ea 100%)',
     chip: 'bg-purple-50 text-purple-700',
@@ -43,7 +43,7 @@ const CITY_CFG: Record<
     heroTitle: 'Your Lathrop Community Hub',
   },
   Manteca: {
-    key: 'manteca',
+    slug: 'manteca',
     emoji: '🍊',
     gradient: 'linear-gradient(135deg,#7c2d12 0%,#ea580c 100%)',
     chip: 'bg-orange-50 text-orange-700',
@@ -52,26 +52,27 @@ const CITY_CFG: Record<
   },
 }
 
-// ── Categories ───────────────────────────────────────────────────────────────
+// ── Categories ────────────────────────────────────────────────────────────────
 const CATEGORIES = [
   { icon: '🔧', name: 'Home Services', cat: 'Home Services' },
-  { icon: '🍽️', name: 'Restaurants', cat: 'Restaurants' },
+  { icon: '🍽️', name: 'Restaurants',   cat: 'Restaurants' },
   { icon: '🏥', name: 'Health & Wellness', cat: 'Health & Wellness' },
-  { icon: '👶', name: 'Childcare', cat: 'Education' },
-  { icon: '🐾', name: 'Pet Services', cat: 'Pet Services' },
-  { icon: '💇', name: 'Beauty & Spa', cat: 'Beauty & Spa' },
-  { icon: '🏫', name: 'Tutoring', cat: 'Education' },
+  { icon: '🐾', name: 'Pet Services',  cat: 'Pet Services' },
+  { icon: '💇', name: 'Beauty & Spa',  cat: 'Beauty & Spa' },
   { icon: '🚗', name: 'Auto Services', cat: 'Automotive' },
+  { icon: '🏫', name: 'Education',     cat: 'Education' },
+  { icon: '🏠', name: 'Real Estate',   cat: 'Real Estate' },
 ]
 
 // ── Data fetching ─────────────────────────────────────────────────────────────
-async function getData() {
-  const [bizTotalResult, bizByCityResult, eventsResult, catCountsResult] =
+async function getData(activeCity: City) {
+  const supabase = getSupabaseClient()
+  const [bizTotalResult, bizByCityResult, eventsResult, catCountsResult, popularResult] =
     await Promise.allSettled([
       // Total count
-      supabase.from('businesses').select('*', { count: 'exact', head: true }),
+      supabase.from('businesses').select('*', { count: 'exact', head: true }).eq('status', 'approved'),
       // City breakdown
-      supabase.from('businesses').select('city'),
+      supabase.from('businesses').select('city').eq('status', 'approved'),
       // Upcoming events (next 4)
       supabase
         .from('events')
@@ -80,7 +81,16 @@ async function getData() {
         .order('start_date', { ascending: true })
         .limit(4),
       // Category counts
-      supabase.from('businesses').select('category'),
+      supabase.from('businesses').select('category').eq('status', 'approved'),
+      // Popular businesses in active city
+      supabase
+        .from('businesses')
+        .select('*')
+        .eq('city', activeCity)
+        .eq('status', 'approved')
+        .not('rating', 'is', null)
+        .order('rating', { ascending: false })
+        .limit(6),
     ])
 
   const totalBiz =
@@ -103,7 +113,10 @@ async function getData() {
   const upcomingEvents =
     eventsResult.status === 'fulfilled' ? (eventsResult.value.data ?? []) : []
 
-  return { totalBiz, cityBizMap, upcomingEvents, catCountMap }
+  const popularBiz: Business[] =
+    popularResult.status === 'fulfilled' ? (popularResult.value.data ?? []) as Business[] : []
+
+  return { totalBiz, cityBizMap, upcomingEvents, catCountMap, popularBiz }
 }
 
 function formatEventDate(dateStr: string) {
@@ -114,30 +127,46 @@ function formatEventDate(dateStr: string) {
   }
 }
 
-// ── Page ─────────────────────────────────────────────────────────────────────
+function getCategoryEmoji(category: string): string {
+  const c = category.toLowerCase()
+  if (c.includes('restaurant') || c.includes('food')) return '🍽️'
+  if (c.includes('home') || c.includes('plumb') || c.includes('repair')) return '🔧'
+  if (c.includes('health') || c.includes('medical') || c.includes('dental')) return '🏥'
+  if (c.includes('pet')) return '🐾'
+  if (c.includes('beauty') || c.includes('salon') || c.includes('spa')) return '💇'
+  if (c.includes('auto') || c.includes('car')) return '🚗'
+  if (c.includes('edu') || c.includes('school') || c.includes('tutor')) return '🏫'
+  if (c.includes('real estate')) return '🏠'
+  if (c.includes('retail') || c.includes('shop')) return '🛍️'
+  return '🏢'
+}
+
+// ── Page ──────────────────────────────────────────────────────────────────────
 interface PageProps {
   searchParams: Promise<{ city?: string }>
 }
 
 export default async function HomePage({ searchParams }: PageProps) {
   const params = await searchParams
+
+  // Match city slug param to a valid city (e.g. ?city=mountain-house → 'Mountain House')
   const activeCity: City =
     (CITIES.find(
-      (c) => c.toLowerCase().replace(' ', '') === (params.city ?? '').toLowerCase()
+      (c) => CITY_CFG[c].slug === (params.city ?? '').toLowerCase()
     ) as City) ?? 'Mountain House'
 
   const cfg = CITY_CFG[activeCity]
-  const { totalBiz, cityBizMap, upcomingEvents, catCountMap } = await getData()
+  const { totalBiz, cityBizMap, upcomingEvents, catCountMap, popularBiz } = await getData(activeCity)
 
   return (
     <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
       {/* ── Hero ── */}
       <div
-        className="rounded-2xl px-8 py-14 text-center text-white mb-8"
+        className="rounded-2xl px-6 sm:px-8 py-12 text-center text-white mb-8"
         style={{ background: cfg.gradient }}
       >
-        <h1 className="text-3xl font-extrabold mb-2">{cfg.heroTitle}</h1>
+        <h1 className="text-2xl sm:text-3xl font-extrabold mb-2">{cfg.heroTitle}</h1>
         <p className="text-sm opacity-85 mb-6">
           Find local businesses, connect with neighbors, discover events — all in one place
         </p>
@@ -180,13 +209,13 @@ export default async function HomePage({ searchParams }: PageProps) {
           return (
             <Link
               key={city}
-              href={`/?city=${c.key}`}
+              href={`/${c.slug}`}
               className="rounded-2xl p-5 text-white relative overflow-hidden hover:-translate-y-1 hover:shadow-xl transition-all block"
               style={{ background: c.gradient }}
             >
               {isActive && (
                 <span className="absolute top-3 right-3 bg-white/25 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                  ✓ Active
+                  ✓ Selected
                 </span>
               )}
               <div className="text-base font-extrabold mb-1">{city}</div>
@@ -209,18 +238,16 @@ export default async function HomePage({ searchParams }: PageProps) {
       {/* ── Stats Bar ── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
         <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
-          <div className="text-3xl font-extrabold text-[#1e3a5f]">
-            {cityBizMap[activeCity] ?? 0}
-          </div>
-          <div className="text-xs text-gray-500 mt-1">Businesses in {activeCity}</div>
-        </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
           <div className="text-3xl font-extrabold text-[#1e3a5f]">{totalBiz}</div>
           <div className="text-xs text-gray-500 mt-1">Total Listings</div>
         </div>
         <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
           <div className="text-3xl font-extrabold text-[#1e3a5f]">4</div>
           <div className="text-xs text-gray-500 mt-1">Cities Covered</div>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
+          <div className="text-3xl font-extrabold text-[#1e3a5f]">9</div>
+          <div className="text-xs text-gray-500 mt-1">Categories</div>
         </div>
         <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
           <div className="text-3xl font-extrabold text-[#1e3a5f]">{upcomingEvents.length}</div>
@@ -230,7 +257,7 @@ export default async function HomePage({ searchParams }: PageProps) {
 
       {/* ── Browse by Category ── */}
       <h2 className="text-lg font-bold text-gray-900 mb-4">Browse by Category</h2>
-      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-8 gap-3 mb-8">
+      <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 gap-3 mb-8">
         {CATEGORIES.map(({ icon, name, cat }) => {
           const count = catCountMap[cat] ?? 0
           return (
@@ -242,14 +269,58 @@ export default async function HomePage({ searchParams }: PageProps) {
               <div className="text-2xl mb-2">{icon}</div>
               <div className="text-xs font-semibold text-gray-800 leading-tight">{name}</div>
               {count > 0 && (
-                <div className="text-[10px] text-gray-400 mt-1">{count} listings</div>
+                <div className="text-[10px] text-gray-400 mt-1">{count}</div>
               )}
             </Link>
           )
         })}
       </div>
 
-      {/* ── Upcoming Events (real data) ── */}
+      {/* ── Popular Near You ── */}
+      {popularBiz.length > 0 && (
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-bold text-gray-900">
+              Popular in {activeCity}
+            </h2>
+            <Link
+              href={`/directory?city=${encodeURIComponent(activeCity)}`}
+              className="text-sm text-blue-600 hover:underline font-medium"
+            >
+              View all →
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {popularBiz.map((biz) => (
+              <Link
+                key={biz.id}
+                href={`/business/${biz.id}`}
+                className="group bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md hover:-translate-y-0.5 transition-all"
+              >
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center text-xl mb-3 shadow-sm"
+                  style={{ background: cfg.gradient }}
+                >
+                  <span>{getCategoryEmoji(biz.category)}</span>
+                </div>
+                <h3 className="font-bold text-xs text-gray-900 group-hover:text-blue-700 transition leading-snug line-clamp-2 mb-1">
+                  {biz.name}
+                </h3>
+                <span className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full ${cfg.chip}`}>
+                  {biz.category}
+                </span>
+                {biz.rating && (
+                  <div className="text-xs text-amber-500 font-semibold mt-1.5">
+                    ★ {biz.rating.toFixed(1)}
+                  </div>
+                )}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ── Upcoming Events ── */}
       {upcomingEvents.length > 0 && (
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
