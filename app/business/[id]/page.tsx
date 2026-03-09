@@ -66,6 +66,7 @@ async function getBusiness(id: string) {
     .from('businesses')
     .select('*')
     .eq('id', id)
+    .eq('status', 'approved')
     .single()
   if (error) return null
   return data as Business

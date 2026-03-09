@@ -359,7 +359,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                 Sponsored
               </span>
             </div>
-            <Link href="/directory?featured=true" className="text-sm text-blue-600 hover:underline font-medium">
+            <Link href="/directory" className="text-sm text-blue-600 hover:underline font-medium">
               View all →
             </Link>
           </div>
