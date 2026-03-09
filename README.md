@@ -38,10 +38,13 @@ Architecture and product documentation are stored in the [`/docs`](./docs) folde
 |----------|-------------|
 | [PRODUCT_BIBLE.md](./docs/PRODUCT_BIBLE.md) | Vision, mission, product thesis, core modules, AI strategy, and strategic moat |
 | [ARCHITECTURE.md](./docs/ARCHITECTURE.md) | Tech stack, deployment pipeline, routes, UX principles, city branding, and Supabase config |
+| [SYSTEM_ARCHITECTURE.md](./docs/SYSTEM_ARCHITECTURE.md) | Platform stack, edge runtime strategy, multi-city architecture, and security model |
 | [DATA_MODEL.md](./docs/DATA_MODEL.md) | Full database schema — all tables, columns, constraints, and canonical values |
 | [ROADMAP.md](./docs/ROADMAP.md) | 6-phase product roadmap, current sprint priorities, and success metrics |
 | [PLAYBOOK_V1_PRODUCT.md](./docs/PLAYBOOK_V1_PRODUCT.md) | Product Playbook — Foundation phase engineering standards, QA checklist, data quality rules |
 | [PLAYBOOK_V2_GROWTH.md](./docs/PLAYBOOK_V2_GROWTH.md) | Growth Playbook — growth loops, SEO, monetization, and city expansion model |
+| [OPERATIONS.md](./docs/OPERATIONS.md) | Founder vs. coworker responsibilities, guardrails, release process, and DB operations |
+| [DEPLOYMENT.md](./docs/DEPLOYMENT.md) | Deployment architecture, build config, environment variables, and rollback procedure |
 
 ### QA Reports
 
