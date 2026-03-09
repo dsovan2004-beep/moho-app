@@ -43,6 +43,7 @@ const NAV_LINKS = [
   { href: '/community', label: 'Community' },
   { href: '/events', label: 'Events' },
   { href: '/lost-and-found', label: 'Lost & Found Pets' },
+  { href: '/activity', label: 'Activity' },
   { href: '/new-resident', label: 'New Resident' },
 ]
 
