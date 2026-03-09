@@ -40,6 +40,14 @@ function getCategoryEmoji(cat: string): string {
 
 const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca']
 
+// City badge chip colours — matches homepage / CLAUDE.md branding
+const CITY_CHIP: Record<string, string> = {
+  'Mountain House': 'bg-blue-50 text-blue-700',
+  'Tracy':          'bg-green-50 text-green-700',
+  'Lathrop':        'bg-purple-50 text-purple-700',
+  'Manteca':        'bg-orange-50 text-orange-700',
+}
+
 function StarRating({ rating }: { rating?: number }) {
   if (!rating) return null
   const full = Math.floor(rating)
@@ -77,9 +85,14 @@ function BusinessCard({ biz }: { biz: Business }) {
         </div>
         <StarRating rating={biz.rating} />
         <p className="text-sm text-gray-500 mt-1 line-clamp-2">{biz.description}</p>
-        <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
-          <span>📍 {biz.city}</span>
-          {biz.address && <span className="truncate">{biz.address}</span>}
+        <div className="flex items-center gap-2 mt-2 flex-wrap">
+          {/* City badge — city-branded colour */}
+          <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${CITY_CHIP[biz.city] ?? 'bg-gray-100 text-gray-600'}`}>
+            📍 {biz.city}
+          </span>
+          {biz.address && (
+            <span className="text-xs text-gray-400 truncate max-w-[180px]">{biz.address}</span>
+          )}
         </div>
       </div>
     </Link>
@@ -332,13 +345,21 @@ export default function DirectoryPage() {
                 </>
               )}
             </p>
-            <Link
-              href="/submit-business"
-              className="flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-xl transition-all"
-              style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}
-            >
-              + Submit a Business
-            </Link>
+            <div className="flex gap-2">
+              <Link
+                href="/suggest-business"
+                className="flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-xl border border-gray-200 text-gray-600 hover:border-gray-300 hover:text-gray-800 transition-all"
+              >
+                💡 Suggest
+              </Link>
+              <Link
+                href="/submit-business"
+                className="flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-xl transition-all"
+                style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}
+              >
+                + Submit a Business
+              </Link>
+            </div>
           </div>
 
           {/* Business list */}

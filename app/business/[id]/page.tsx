@@ -429,6 +429,14 @@ export default async function BusinessDetailPage({ params }: PageProps) {
             </Link>
           )}
 
+          {/* Report listing */}
+          <Link
+            href={`/report-listing/${biz.id}`}
+            className="block w-full text-center text-xs text-gray-400 hover:text-red-500 transition py-1"
+          >
+            🚩 Report this listing
+          </Link>
+
           {/* Back link */}
           <Link
             href="/directory"

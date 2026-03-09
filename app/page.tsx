@@ -65,34 +65,65 @@ const CATEGORIES = [
   { icon: '🛍️', name: 'Retail',            cat: 'Retail' },
 ]
 
+// ── Quick-search tags ─────────────────────────────────────────────────────────
+const QUICK_TAGS = [
+  { label: '🔧 Plumber',     href: '/directory?category=Home+Services' },
+  { label: '🍕 Restaurants', href: '/directory?category=Restaurants' },
+  { label: '🐾 Pet Care',    href: '/directory?category=Pet+Services' },
+  { label: '👶 Childcare',   href: '/directory?category=Education' },
+  { label: '💇 Salon',       href: '/directory?category=Beauty+%26+Spa' },
+  { label: '🏫 Tutors',      href: '/directory?category=Education' },
+  { label: '🏥 Doctors',     href: '/directory?category=Health+%26+Wellness' },
+]
+
 // ── Data fetching ─────────────────────────────────────────────────────────────
 async function getData(activeCity: City) {
   const supabase = getSupabaseClient()
-  const [bizTotalResult, bizByCityResult, eventsResult, catCountsResult, popularResult] =
-    await Promise.allSettled([
-      // Total count
-      supabase.from('businesses').select('*', { count: 'exact', head: true }).eq('status', 'approved'),
-      // City breakdown
-      supabase.from('businesses').select('city').eq('status', 'approved'),
-      // Upcoming events (next 4)
-      supabase
-        .from('events')
-        .select('*')
-        .gte('start_date', new Date().toISOString())
-        .order('start_date', { ascending: true })
-        .limit(4),
-      // Category counts
-      supabase.from('businesses').select('category').eq('status', 'approved'),
-      // Popular businesses in active city
-      supabase
-        .from('businesses')
-        .select('*')
-        .eq('city', activeCity)
-        .eq('status', 'approved')
-        .not('rating', 'is', null)
-        .order('rating', { ascending: false })
-        .limit(6),
-    ])
+  const [
+    bizTotalResult,
+    bizByCityResult,
+    eventsResult,
+    catCountsResult,
+    popularResult,
+    featuredResult,
+    communityCountResult,
+    lostFoundCountResult,
+  ] = await Promise.allSettled([
+    // Total count
+    supabase.from('businesses').select('*', { count: 'exact', head: true }).eq('status', 'approved'),
+    // City breakdown
+    supabase.from('businesses').select('city').eq('status', 'approved'),
+    // Upcoming events (next 4)
+    supabase
+      .from('events')
+      .select('*')
+      .gte('start_date', new Date().toISOString())
+      .order('start_date', { ascending: true })
+      .limit(4),
+    // Category counts
+    supabase.from('businesses').select('category').eq('status', 'approved'),
+    // Popular businesses in active city
+    supabase
+      .from('businesses')
+      .select('*')
+      .eq('city', activeCity)
+      .eq('status', 'approved')
+      .not('rating', 'is', null)
+      .order('rating', { ascending: false })
+      .limit(6),
+    // Featured businesses
+    supabase
+      .from('businesses')
+      .select('*')
+      .eq('status', 'approved')
+      .eq('featured', true)
+      .order('name')
+      .limit(6),
+    // Community posts count
+    supabase.from('community_posts').select('*', { count: 'exact', head: true }),
+    // Active lost & found count (not reunited)
+    supabase.from('lost_and_found').select('*', { count: 'exact', head: true }).neq('status', 'reunited'),
+  ])
 
   const totalBiz =
     bizTotalResult.status === 'fulfilled' ? (bizTotalResult.value.count ?? 0) : 0
@@ -117,7 +148,25 @@ async function getData(activeCity: City) {
   const popularBiz: Business[] =
     popularResult.status === 'fulfilled' ? (popularResult.value.data ?? []) as Business[] : []
 
-  return { totalBiz, cityBizMap, upcomingEvents, catCountMap, popularBiz }
+  const featuredBiz: Business[] =
+    featuredResult.status === 'fulfilled' ? (featuredResult.value.data ?? []) as Business[] : []
+
+  const communityPostCount =
+    communityCountResult.status === 'fulfilled' ? (communityCountResult.value.count ?? 0) : 0
+
+  const lostFoundCount =
+    lostFoundCountResult.status === 'fulfilled' ? (lostFoundCountResult.value.count ?? 0) : 0
+
+  return {
+    totalBiz,
+    cityBizMap,
+    upcomingEvents,
+    catCountMap,
+    popularBiz,
+    featuredBiz,
+    communityPostCount,
+    lostFoundCount,
+  }
 }
 
 function formatEventDate(dateStr: string) {
@@ -157,7 +206,16 @@ export default async function HomePage({ searchParams }: PageProps) {
     ) as City) ?? 'Mountain House'
 
   const cfg = CITY_CFG[activeCity]
-  const { totalBiz, cityBizMap, upcomingEvents, catCountMap, popularBiz } = await getData(activeCity)
+  const {
+    totalBiz,
+    cityBizMap,
+    upcomingEvents,
+    catCountMap,
+    popularBiz,
+    featuredBiz,
+    communityPostCount,
+    lostFoundCount,
+  } = await getData(activeCity)
 
   return (
     <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -171,27 +229,34 @@ export default async function HomePage({ searchParams }: PageProps) {
         <p className="text-sm opacity-85 mb-6">
           Find local businesses, connect with neighbors, discover events — all in one place
         </p>
-        <div className="flex gap-2 max-w-xl mx-auto mb-5 flex-col sm:flex-row">
+
+        {/* Task 1: Working search form — GET navigates to /directory?q=... */}
+        <form action="/directory" method="GET" className="flex gap-2 max-w-xl mx-auto mb-5 flex-col sm:flex-row">
           <input
+            name="q"
             type="text"
             placeholder="🔍  Search businesses, services..."
             className="flex-1 px-4 py-3 rounded-xl text-gray-900 text-sm outline-none border-0"
           />
-          <button className="bg-amber-400 text-[#1e3a5f] font-bold px-6 py-3 rounded-xl text-sm whitespace-nowrap">
+          <button
+            type="submit"
+            className="bg-amber-400 text-[#1e3a5f] font-bold px-6 py-3 rounded-xl text-sm whitespace-nowrap"
+          >
             Search
           </button>
-        </div>
+        </form>
+
+        {/* Task 3: Quick-search tags linked to /directory?category=... */}
         <div className="flex gap-2 justify-center flex-wrap">
-          {['🔧 Plumber', '🍕 Restaurants', '🐾 Pet Care', '👶 Childcare', '💇 Salon', '🏫 Tutors', '🏥 Doctors'].map(
-            (tag) => (
-              <span
-                key={tag}
-                className="bg-white/15 text-white px-3 py-1.5 rounded-full text-xs cursor-pointer hover:bg-white/25 transition-all"
-              >
-                {tag}
-              </span>
-            )
-          )}
+          {QUICK_TAGS.map(({ label, href }) => (
+            <Link
+              key={label}
+              href={href}
+              className="bg-white/15 text-white px-3 py-1.5 rounded-full text-xs hover:bg-white/25 transition-all"
+            >
+              {label}
+            </Link>
+          ))}
         </div>
       </div>
 
@@ -236,24 +301,30 @@ export default async function HomePage({ searchParams }: PageProps) {
         })}
       </div>
 
-      {/* ── Stats Bar ── */}
+      {/* ── Stats Bar (Task 11: real counts from DB) ── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
         <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
           <div className="text-3xl font-extrabold text-[#1e3a5f]">{totalBiz}</div>
           <div className="text-xs text-gray-500 mt-1">Total Listings</div>
         </div>
         <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
-          <div className="text-3xl font-extrabold text-[#1e3a5f]">4</div>
-          <div className="text-xs text-gray-500 mt-1">Cities Covered</div>
-        </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
-          <div className="text-3xl font-extrabold text-[#1e3a5f]">9</div>
-          <div className="text-xs text-gray-500 mt-1">Categories</div>
-        </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
           <div className="text-3xl font-extrabold text-[#1e3a5f]">{upcomingEvents.length}</div>
           <div className="text-xs text-gray-500 mt-1">Upcoming Events</div>
         </div>
+        <Link
+          href="/community"
+          className="bg-white rounded-xl border border-gray-200 p-5 text-center hover:border-blue-300 hover:shadow-sm transition-all"
+        >
+          <div className="text-3xl font-extrabold text-[#1e3a5f]">{communityPostCount}</div>
+          <div className="text-xs text-gray-500 mt-1">Community Posts</div>
+        </Link>
+        <Link
+          href="/lost-and-found"
+          className="bg-white rounded-xl border border-gray-200 p-5 text-center hover:border-blue-300 hover:shadow-sm transition-all"
+        >
+          <div className="text-3xl font-extrabold text-[#1e3a5f]">{lostFoundCount}</div>
+          <div className="text-xs text-gray-500 mt-1">Active Pet Listings</div>
+        </Link>
       </div>
 
       {/* ── Browse by Category ── */}
@@ -276,6 +347,55 @@ export default async function HomePage({ searchParams }: PageProps) {
           )
         })}
       </div>
+
+      {/* ── Featured Businesses (Task 12) ── */}
+      {featuredBiz.length > 0 && (
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">⭐</span>
+              <h2 className="text-lg font-bold text-gray-900">Featured Businesses</h2>
+              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">
+                Sponsored
+              </span>
+            </div>
+            <Link href="/directory?featured=true" className="text-sm text-blue-600 hover:underline font-medium">
+              View all →
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {featuredBiz.map((biz) => {
+              const c = CITY_CFG[biz.city as City] ?? CITY_CFG['Mountain House']
+              return (
+                <Link
+                  key={biz.id}
+                  href={`/business/${biz.id}`}
+                  className="group bg-white rounded-xl border-2 border-amber-300 p-4 hover:shadow-md hover:-translate-y-0.5 transition-all relative"
+                >
+                  <span className="absolute top-2 right-2 text-[9px] font-bold text-amber-600">⭐</span>
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center text-xl mb-3 shadow-sm"
+                    style={{ background: c.gradient }}
+                  >
+                    <span>{getCategoryEmoji(biz.category)}</span>
+                  </div>
+                  <h3 className="font-bold text-xs text-gray-900 group-hover:text-blue-700 transition leading-snug line-clamp-2 mb-1">
+                    {biz.name}
+                  </h3>
+                  <span className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full ${c.chip}`}>
+                    {biz.city}
+                  </span>
+                  {biz.rating && (
+                    <div className="text-xs text-amber-500 font-semibold mt-1.5">
+                      ★ {biz.rating.toFixed(1)}
+                    </div>
+                  )}
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+      )}
 
       {/* ── Popular Near You ── */}
       {popularBiz.length > 0 && (
