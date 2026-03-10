@@ -54,11 +54,20 @@ const CITY_DOT: Record<string, string> = {
 }
 
 const NAV_LINKS = [
-  { href: '/directory', label: 'Directory' },
-  { href: '/community', label: 'Community' },
-  { href: '/events', label: 'Events' },
+  { href: '/directory',    label: 'Directory' },
+  { href: '/community',    label: 'Community' },
+  { href: '/events',       label: 'Events' },
+  { href: '/new-resident', label: '🏡 New Residents' },
   { href: '/lost-and-found', label: 'Lost & Found' },
-  { href: '/activity', label: 'Activity' },
+  { href: '/activity',     label: 'Activity' },
+]
+
+const EXPLORE_LINKS = [
+  { slug: 'restaurants', label: 'Restaurants', emoji: '🍽️' },
+  { slug: 'coffee',      label: 'Coffee',      emoji: '☕' },
+  { slug: 'dentists',    label: 'Dentists',    emoji: '🦷' },
+  { slug: 'gyms',        label: 'Gyms',        emoji: '🏋️' },
+  { slug: 'hair-salons', label: 'Hair Salons', emoji: '💈' },
 ]
 
 function getUserDisplayName(user: User): string {
@@ -108,6 +117,10 @@ function NavContent() {
   const [cityPickerOpen, setCityPickerOpen] = useState(false)
   const cityPickerRef = useRef<HTMLDivElement>(null)
 
+  // Explore dropdown state
+  const [exploreOpen, setExploreOpen] = useState(false)
+  const exploreRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
     const supabase = getSupabaseClient()
     supabase.auth.getUser().then(({ data: { user } }) => setUser(user))
@@ -125,6 +138,9 @@ function NavContent() {
       }
       if (cityPickerRef.current && !cityPickerRef.current.contains(e.target as Node)) {
         setCityPickerOpen(false)
+      }
+      if (exploreRef.current && !exploreRef.current.contains(e.target as Node)) {
+        setExploreOpen(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
@@ -235,6 +251,58 @@ function NavContent() {
                   {link.label}
                 </Link>
               ))}
+
+              {/* Explore dropdown */}
+              <div className="relative" ref={exploreRef}>
+                <button
+                  onClick={() => setExploreOpen((o) => !o)}
+                  className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md transition-all font-medium whitespace-nowrap"
+                  style={
+                    exploreOpen
+                      ? { backgroundColor: 'rgba(255,255,255,0.2)', color: 'white' }
+                      : { color: 'rgba(255,255,255,0.8)' }
+                  }
+                >
+                  ⭐ Best Of
+                  <svg
+                    className="w-3 h-3 opacity-70 transition-transform"
+                    style={{ transform: exploreOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                    fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                {exploreOpen && (
+                  <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
+                    <div className="px-4 py-2.5 border-b border-gray-100">
+                      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+                        Best in {city}
+                      </p>
+                    </div>
+                    {EXPLORE_LINKS.map(({ slug, label, emoji }) => (
+                      <Link
+                        key={slug}
+                        href={`/best/${slug}/${city.toLowerCase().replace(/\s+/g, '-')}`}
+                        onClick={() => setExploreOpen(false)}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
+                      >
+                        <span>{emoji}</span>
+                        <span>Best {label}</span>
+                      </Link>
+                    ))}
+                    <div className="border-t border-gray-100 px-4 py-2.5">
+                      <Link
+                        href="/directory"
+                        onClick={() => setExploreOpen(false)}
+                        className="text-xs font-semibold text-blue-600 hover:underline"
+                      >
+                        Browse all categories →
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Auth Area */}
@@ -337,6 +405,17 @@ function NavContent() {
               }
             >
               {link.label}
+            </Link>
+          ))}
+          <span className="text-white/20 text-xs">|</span>
+          {EXPLORE_LINKS.map(({ slug, label, emoji }) => (
+            <Link
+              key={slug}
+              href={`/best/${slug}/${city.toLowerCase().replace(/\s+/g, '-')}`}
+              className="text-xs whitespace-nowrap font-medium"
+              style={{ color: 'rgba(255,255,255,0.55)' }}
+            >
+              {emoji} {label}
             </Link>
           ))}
         </div>
