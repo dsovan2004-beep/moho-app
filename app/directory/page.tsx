@@ -242,10 +242,13 @@ export default function DirectoryPage() {
               />
               <button
                 type="submit"
-                className="px-3 py-2 rounded-lg text-sm font-semibold text-white transition"
+                aria-label="Search"
+                className="px-3 py-2 rounded-lg text-white transition flex items-center justify-center shrink-0 hover:opacity-90"
                 style={{ backgroundColor: '#1e3a5f' }}
               >
-                Go
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1 0 6.5 6.5a7.5 7.5 0 0 0 10.15 10.15z" />
+                </svg>
               </button>
             </form>
           </div>
