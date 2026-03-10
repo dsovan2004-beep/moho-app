@@ -30,10 +30,20 @@ const TYPE_ICON: Record<ActivityItemType, string> = {
   lost_pet: '🐾',
 }
 
-const TYPE_HREF: Record<ActivityItemType, (id: string) => string> = {
-  community: (id) => `/community/${id}`,
-  event: () => `/events`,
-  lost_pet: () => `/lost-and-found`,
+function getHref(item: ActivityItem, currentCity?: string): string {
+  // Community posts have real detail pages — deep link directly
+  if (item.type === 'community') return `/community/${item.id}`
+
+  // Events and lost pets land on their list pages.
+  // Pass city context so the destination page can pre-filter.
+  const cityParam = currentCity
+    ? `?city=${encodeURIComponent(currentCity)}`
+    : item.city
+    ? `?city=${encodeURIComponent(item.city)}`
+    : ''
+
+  if (item.type === 'event') return `/events${cityParam}`
+  return `/lost-and-found${cityParam}`
 }
 
 function timeAgo(dateStr: string): string {
@@ -49,11 +59,18 @@ function timeAgo(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 
-export function ActivityCard({ item }: { item: ActivityItem }) {
+interface ActivityCardProps {
+  item: ActivityItem
+  /** The currently selected city filter, if any — used to carry city context into link hrefs */
+  currentCity?: string
+}
+
+export function ActivityCard({ item, currentCity }: ActivityCardProps) {
   const badge = TYPE_BADGE[item.type]
   const cityColor = CITY_BADGE[item.city] ?? 'bg-gray-50 text-gray-600'
   const icon = TYPE_ICON[item.type]
-  const href = TYPE_HREF[item.type](item.id)
+  const href = getHref(item, currentCity)
+  const showCityBadge = item.city && item.city.trim().length > 0
 
   return (
     <Link href={href} className="block group">
@@ -78,10 +95,12 @@ export function ActivityCard({ item }: { item: ActivityItem }) {
           </p>
         )}
 
-        {/* City badge */}
-        <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${cityColor}`}>
-          📍 {item.city}
-        </span>
+        {/* City badge — only rendered when city is a non-empty string */}
+        {showCityBadge && (
+          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${cityColor}`}>
+            📍 {item.city}
+          </span>
+        )}
       </article>
     </Link>
   )

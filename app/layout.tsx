@@ -42,9 +42,8 @@ const NAV_LINKS = [
   { href: '/directory', label: 'Directory' },
   { href: '/community', label: 'Community' },
   { href: '/events', label: 'Events' },
-  { href: '/lost-and-found', label: 'Lost & Found Pets' },
+  { href: '/lost-and-found', label: 'Lost & Found' },
   { href: '/activity', label: 'Activity' },
-  { href: '/new-resident', label: 'New Resident' },
 ]
 
 function getUserDisplayName(user: User): string {
@@ -300,7 +299,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <footer className="bg-gray-900 text-gray-400 text-sm py-8 mt-16">
           <div className="max-w-7xl mx-auto px-4 text-center">
             <p className="font-semibold text-white mb-1">MoHoLocal</p>
-            <p>Connecting Mountain House, Tracy, Lathrop &amp; Manteca</p>
+            <p className="mb-3">Connecting Mountain House, Tracy, Lathrop &amp; Manteca</p>
+            <Link
+              href="/new-resident"
+              className="text-xs text-gray-500 hover:text-gray-300 transition underline"
+            >
+              New to the area? Start here →
+            </Link>
           </div>
         </footer>
       </body>
