@@ -232,19 +232,18 @@ export default function DirectoryPage() {
             <label className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1 block">
               Search
             </label>
-            <form onSubmit={handleSearch} className="flex gap-1">
+            <form onSubmit={handleSearch} className="relative">
               <input
                 type="text"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 placeholder="Search businesses…"
-                className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full border border-gray-200 rounded-lg pl-3 pr-9 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
               <button
                 type="submit"
                 aria-label="Search"
-                className="px-3 py-2 rounded-lg text-white transition flex items-center justify-center shrink-0 hover:opacity-90"
-                style={{ backgroundColor: '#1e3a5f' }}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-700 transition"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1 0 6.5 6.5a7.5 7.5 0 0 0 10.15 10.15z" />
