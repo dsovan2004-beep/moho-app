@@ -106,7 +106,7 @@ export default async function ActivityPage({ searchParams }: PageProps) {
         <p className="text-gray-500 mt-1">
           {selectedCity
             ? `What's happening in ${selectedCity} — right now.`
-            : "What's happening across Mountain House, Tracy, Lathrop & Manteca — right now."}
+            : "What's happening across Mountain House, Tracy, Lathrop, Manteca & Brentwood — right now."}
         </p>
       </div>
 
