@@ -4,7 +4,7 @@ import { getSupabaseClient, type CommunityPost } from '@/lib/supabase'
 import Link from 'next/link'
 import CommunityNewPost from '@/app/components/CommunityNewPost'
 
-const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca']
+const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca', 'Brentwood']
 
 const CATEGORIES = [
   'All', 'General', 'Recommendations', 'For Sale', 'Free Items',
@@ -28,6 +28,7 @@ const CITY_COLORS: Record<string, string> = {
   Tracy: 'bg-green-50 text-green-700',
   Lathrop: 'bg-purple-50 text-purple-700',
   Manteca: 'bg-orange-50 text-orange-700',
+  Brentwood: 'bg-teal-50 text-teal-700',
 }
 
 interface PageProps {

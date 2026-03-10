@@ -4,7 +4,7 @@ import { getSupabaseClient } from '@/lib/supabase'
 import Link from 'next/link'
 import { ActivityCard, type ActivityItem } from '@/app/components/ActivityCard'
 
-const CITIES = ['Mountain House', 'Tracy', 'Lathrop', 'Manteca']
+const CITIES = ['Mountain House', 'Tracy', 'Lathrop', 'Manteca', 'Brentwood']
 
 // ─── Data fetching ────────────────────────────────────────────────────────────
 
@@ -129,6 +129,7 @@ export default async function ActivityPage({ searchParams }: PageProps) {
             Tracy:           isActive ? 'bg-green-700 text-white shadow-sm' : 'bg-white border border-gray-200 text-gray-600 hover:border-green-300 hover:text-green-700',
             Lathrop:         isActive ? 'bg-purple-700 text-white shadow-sm' : 'bg-white border border-gray-200 text-gray-600 hover:border-purple-300 hover:text-purple-700',
             Manteca:         isActive ? 'bg-orange-700 text-white shadow-sm' : 'bg-white border border-gray-200 text-gray-600 hover:border-orange-300 hover:text-orange-700',
+            Brentwood:       isActive ? 'bg-teal-700 text-white shadow-sm' : 'bg-white border border-gray-200 text-gray-600 hover:border-teal-300 hover:text-teal-700',
           }
           return (
             <Link
