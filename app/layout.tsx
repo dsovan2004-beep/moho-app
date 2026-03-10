@@ -224,7 +224,7 @@ function NavContent() {
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
-                  href={`${link.href}?city=${encodeURIComponent(city)}`}
+                  href={link.href}
                   className="text-sm px-3 py-1.5 rounded-md transition-all font-medium whitespace-nowrap"
                   style={
                     pathname === link.href
@@ -328,7 +328,7 @@ function NavContent() {
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
-              href={`${link.href}?city=${encodeURIComponent(city)}`}
+              href={link.href}
               className="text-xs whitespace-nowrap font-medium"
               style={
                 pathname === link.href
