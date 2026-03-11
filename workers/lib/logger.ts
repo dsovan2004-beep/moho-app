@@ -25,6 +25,7 @@ export function createLog(
     warnings:        [],
     run_at:          new Date().toISOString(),
     duration_ms:     0,
+    per_source:      {},
   }
 }
 

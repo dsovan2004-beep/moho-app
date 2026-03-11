@@ -132,6 +132,16 @@ export interface RunLog {
   warnings:        string[]
   run_at:          string  // ISO-8601
   duration_ms:     number
+  /** Per-adapter breakdown — keyed by adapter name */
+  per_source:      Record<string, PerSourceStats>
+}
+
+export interface PerSourceStats {
+  raw_items:   number   // items the adapter returned
+  inserted:    number
+  updated:     number
+  skipped:     number
+  flagged:     number
 }
 
 // ── Supabase REST helpers ─────────────────────────────────────────────────────

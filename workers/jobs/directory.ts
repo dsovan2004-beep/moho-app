@@ -2,13 +2,14 @@
 //
 // DEFAULT SOURCES (no credentials required — run every Monday 3am UTC):
 //   1. ManualFeedAdapter    — founder-controlled JSON endpoint (MANUAL_BUSINESS_FEED_URL)
-//   2. ChamberRssAdapter    — Tracy/Manteca/Lathrop chamber of commerce RSS (public)
+//   2. ChamberRssAdapter    — Tracy/Manteca/Lathrop/Brentwood chamber of commerce RSS (public)
 //
 // OPTIONAL ADAPTER (only runs when YELP_API_KEY secret is present):
 //   3. YelpAdapter          — Yelp Fusion API
 //
 // All ingested records land as status='pending' requiring admin review before
 // they appear publicly. High-confidence records are flagged for fast approval.
+// Per-source stats tracked and returned in /run/directory response.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import {
@@ -32,12 +33,14 @@ import {
   stripHtml,
   type SourceAdapter,
   type RawBusiness,
+  type AdapterResult,
 } from '../lib/sources'
 import {
   SUPPORTED_CITIES,
   type Env,
   type SupportedCity,
   type RunLog,
+  type PerSourceStats,
 } from '../lib/types'
 
 // ── Adapter 1: Manual curated JSON feed (DEFAULT) ────────────────────────────
@@ -219,29 +222,25 @@ const YelpAdapter: SourceAdapter<RawBusiness> = {
 // ── Main entry point ──────────────────────────────────────────────────────────
 
 export async function runDirectoryIngestion(env: Env): Promise<RunLog[]> {
-  const log    = createLog('directory', 'multi-source')
+  const log     = createLog('directory', 'multi-source')
   const startMs = Date.now()
 
-  const adapters: SourceAdapter<RawBusiness>[] = [
-    ManualFeedAdapter,
-    ChamberRssAdapter,
-    YelpAdapter,   // silently skipped unless YELP_API_KEY is set
-  ]
-
-  const adapterResults = await runAdapters(
-    adapters,
+  const adapterResults: AdapterResult<RawBusiness>[] = await runAdapters(
+    [ManualFeedAdapter, ChamberRssAdapter, YelpAdapter],
     env,
     (msg) => logWarning(log, msg),
   )
 
-  const allRaw = adapterResults.flatMap((r) => r.items)
-  log.discovered = allRaw.length
+  for (const result of adapterResults) {
+    log.per_source[result.source] = { raw_items: result.raw_count, inserted: 0, updated: 0, skipped: 0, flagged: 0 }
+    log.discovered += result.raw_count
 
-  for (const raw of allRaw) {
-    try {
-      await processBusiness(env, raw, log)
-    } catch (err) {
-      logError(log, `Error processing "${raw.name}": ${String(err)}`)
+    for (const raw of result.items) {
+      try {
+        await processBusiness(env, raw, log)
+      } catch (err) {
+        logError(log, `[${result.source}] Error processing "${raw.name}": ${String(err)}`)
+      }
     }
   }
 
@@ -256,11 +255,14 @@ async function processBusiness(
   raw: RawBusiness,
   log: RunLog,
 ): Promise<void> {
+  const src  = log.per_source[raw.source] as PerSourceStats | undefined
+  const bump = (field: keyof PerSourceStats) => { if (src) src[field]++ }
+
   const name = normalizeString(raw.name) ?? ''
-  if (!name) { log.skipped++; return }
+  if (!name) { log.skipped++; bump('skipped'); return }
 
   const city = normalizeCity(raw.city)
-  if (!city) { log.skipped++; return }   // not in a supported city
+  if (!city) { log.skipped++; bump('skipped'); return }   // not in a supported city
 
   const category = normalizeCategory(raw.category)
   const address  = normalizeAddress(raw.address)
@@ -277,7 +279,7 @@ async function processBusiness(
 
   const confidence = scoreConfidence({ name, city, category, address, phone, website, description: raw.description, image_url: imageUrl })
   const review     = needsReview(confidence)
-  if (review) log.flagged++
+  if (review) { log.flagged++; bump('flagged') }
 
   const existing = await findExistingBusiness(env, name, city, phone ?? undefined)
   const now      = new Date().toISOString()
@@ -289,7 +291,7 @@ async function processBusiness(
     if (!existing.website   && website)  patch.website  = website
     if (!existing.address   && address)  patch.address  = address
     await updateRow(env, 'businesses', String(existing.id), patch)
-    log.updated++
+    log.updated++; bump('updated')
   } else {
     const result = await upsertRow(env, 'businesses', {
       name,
@@ -309,10 +311,7 @@ async function processBusiness(
       needs_review:     review,
     }, 'name,city')
 
-    if (result.ok) log.inserted++
-    else           logError(log, `Insert failed for "${name}": ${result.error}`)
+    if (result.ok) { log.inserted++; bump('inserted') }
+    else           logError(log, `[${raw.source}] Insert failed for "${name}": ${result.error}`)
   }
 }
-
-// Re-export stripHtml for use in this file (imported from sources)
-import { stripHtml } from '../lib/sources'
