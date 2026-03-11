@@ -225,10 +225,29 @@ async function getData(activeCity: City) {
         }))
       : []
 
-  // Interleave posts + lost pets, dedup by id, take top 5
-  const activityItems: ActivityItem[] = [...rawPosts, ...rawLost]
+  // Events as fallback — pad the strip when community posts + lost pets are sparse
+  const rawEvents: ActivityItem[] = (
+    eventsResult.status === 'fulfilled' ? (eventsResult.value.data ?? []) : []
+  ).map((e: Record<string, unknown>) => ({
+    id:         String(e.id ?? ''),
+    title:      String(e.title ?? ''),
+    type:       'Event' as const,
+    city:       String(e.city ?? ''),
+    href:       '/events',
+    created_at: String(e.start_date ?? e.created_at ?? ''),
+  }))
+
+  // Interleave posts + lost pets; pad with events if fewer than 3 items, take top 5
+  const combinedBeforeEvents: ActivityItem[] = [...rawPosts, ...rawLost]
     .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-    .slice(0, 5)
+
+  const existingIds = new Set(combinedBeforeEvents.map((i) => i.id))
+  const eventPadding = rawEvents.filter((e) => !existingIds.has(e.id))
+
+  const activityItems: ActivityItem[] =
+    combinedBeforeEvents.length >= 3
+      ? combinedBeforeEvents.slice(0, 5)
+      : [...combinedBeforeEvents, ...eventPadding].slice(0, 5)
 
   return {
     totalBiz,
@@ -370,7 +389,7 @@ export default async function HomePage({ searchParams }: PageProps) {
           />
           <button
             type="submit"
-            className="bg-amber-400 text-[#1e3a5f] font-bold px-6 py-3 rounded-xl text-sm whitespace-nowrap"
+            className="bg-amber-400 hover:bg-amber-300 active:bg-amber-500 text-[#1e3a5f] font-bold px-6 py-3 rounded-xl text-sm whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-amber-300 focus:ring-offset-2"
           >
             Search
           </button>
@@ -432,14 +451,20 @@ export default async function HomePage({ searchParams }: PageProps) {
 
       {/* ── Stats Bar ── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
-        <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
+        <Link
+          href="/directory"
+          className="bg-white rounded-xl border border-gray-200 p-5 text-center hover:border-blue-300 hover:shadow-sm transition-all"
+        >
           <div className="text-3xl font-extrabold text-[#1e3a5f]">{totalBiz}</div>
           <div className="text-xs text-gray-500 mt-1">Total Listings</div>
-        </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
+        </Link>
+        <Link
+          href="/events"
+          className="bg-white rounded-xl border border-gray-200 p-5 text-center hover:border-blue-300 hover:shadow-sm transition-all"
+        >
           <div className="text-3xl font-extrabold text-[#1e3a5f]">{upcomingEvents.length}</div>
           <div className="text-xs text-gray-500 mt-1">Upcoming Events</div>
-        </div>
+        </Link>
         <Link
           href="/community"
           className="bg-white rounded-xl border border-gray-200 p-5 text-center hover:border-blue-300 hover:shadow-sm transition-all"
@@ -600,9 +625,10 @@ export default async function HomePage({ searchParams }: PageProps) {
               const { month, day } = formatEventDate(event.start_date)
               const c = CITY_CFG[event.city as City] ?? CITY_CFG['Mountain House']
               return (
-                <div
+                <Link
                   key={event.id}
-                  className="bg-white rounded-xl border border-gray-200 overflow-hidden flex hover:shadow-lg hover:-translate-y-0.5 transition-all cursor-pointer"
+                  href="/events"
+                  className="group bg-white rounded-xl border border-gray-200 overflow-hidden flex hover:shadow-lg hover:-translate-y-0.5 transition-all"
                 >
                   <div
                     className="text-white px-3 py-4 text-center min-w-[56px] flex flex-col items-center justify-center shrink-0"
@@ -612,7 +638,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                     <div className="text-2xl font-extrabold leading-none">{day}</div>
                   </div>
                   <div className="p-3 flex-1 min-w-0">
-                    <div className="font-bold text-sm text-gray-900 leading-snug mb-1 line-clamp-2">
+                    <div className="font-bold text-sm text-gray-900 group-hover:text-blue-700 transition-colors leading-snug mb-1 line-clamp-2">
                       {event.title}
                     </div>
                     {event.location && (
@@ -624,7 +650,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                       {event.city}
                     </span>
                   </div>
-                </div>
+                </Link>
               )
             })}
           </div>
@@ -652,7 +678,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                 'Community': { bg: 'bg-indigo-50', text: 'text-indigo-600', icon: '💬' },
                 'Lost Pet':  { bg: 'bg-red-50',    text: 'text-red-600',    icon: '🐾' },
                 'Event':     { bg: 'bg-emerald-50',text: 'text-emerald-600',icon: '📅' },
-              }[item.type]
+              }[item.type] ?? { bg: 'bg-gray-50', text: 'text-gray-600', icon: '📌' }
 
               return (
                 <Link
@@ -692,7 +718,7 @@ export default async function HomePage({ searchParams }: PageProps) {
       )}
 
       {/* ── Quick-nav cards ── */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
         {[
           { href: '/directory',    icon: '📋', label: 'Business Directory', desc: 'Find local services & shops' },
           { href: '/events',       icon: '📅', label: 'Events Calendar',    desc: "What's happening near you" },
