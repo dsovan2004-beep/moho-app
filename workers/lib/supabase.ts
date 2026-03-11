@@ -63,6 +63,34 @@ export async function upsertRow(
   return { ok: true, data: data[0] }
 }
 
+// ── Plain insert (no conflict resolution) ────────────────────────────────────
+// Used for community_submissions where every row is intentionally new.
+export async function insertRow(
+  env: Env,
+  table: string,
+  row: Record<string, unknown>,
+): Promise<{ ok: boolean; id?: string; error?: string }> {
+  const url = `${env.SUPABASE_URL}/rest/v1/${table}`
+  const res = await fetch(url, {
+    method:  'POST',
+    headers: {
+      apikey:         env.SUPABASE_SERVICE_ROLE_KEY,
+      Authorization:  `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+      'Content-Type': 'application/json',
+      Prefer:         'return=representation',
+    },
+    body: JSON.stringify(row),
+  })
+
+  if (!res.ok) {
+    const err = await res.text()
+    return { ok: false, error: `${res.status}: ${err}` }
+  }
+
+  const data = (await res.json()) as Array<{ id?: string }>
+  return { ok: true, id: data[0]?.id }
+}
+
 // ── Update existing row by ID ─────────────────────────────────────────────────
 export async function updateRow(
   env: Env,

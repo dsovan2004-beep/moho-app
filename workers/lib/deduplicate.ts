@@ -74,16 +74,12 @@ export async function findExistingEvent(
   city: string,
   startDate: string,
 ): Promise<SupabaseRow | null> {
-  // Query directly by exact title + city to avoid the limit=5 batch problem.
-  // The upsertRow ON CONFLICT clause is the final safety net regardless.
-  const rows = await selectRows<SupabaseRow>(env, 'events', { city, title })
-  if (rows.length > 0) return rows[0]
-
-  // Fallback: fuzzy date+title match for slightly different title formatting
+  // Match on title + city + date (date portion only, ignores time)
   const datePrefix = startDate.slice(0, 10)
-  const broader = await selectRows<SupabaseRow>(env, 'events', { city })
+  const rows = await selectRows<SupabaseRow>(env, 'events', { city })
+
   return (
-    broader.find((row) => {
+    rows.find((row) => {
       const rowDate = String(row.start_date ?? '').slice(0, 10)
       return rowDate === datePrefix && isSimilar(String(row.title ?? ''), title)
     }) ?? null
