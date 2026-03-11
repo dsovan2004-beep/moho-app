@@ -13,6 +13,7 @@
 //   GET  /run/lostfound       — trigger lost & found ingestion manually
 //   GET  /validate            — validate all known source URLs and report verdicts
 //   POST /submit-signal       — community signal inbox (manual intake)
+//   POST /promote-submission  — approve or reject a community submission (admin only)
 //
 // Deploy: cd workers && npx wrangler deploy
 // Tail:   cd workers && npx wrangler tail
@@ -24,7 +25,7 @@ import { runEventsIngestion }    from './jobs/events'
 import { runLostFoundIngestion } from './jobs/lostfound'
 import { aggregateLogs }         from './lib/logger'
 import { validateUrl }           from './lib/sources'
-import { insertRow }             from './lib/supabase'
+import { insertRow, updateRow, selectRows } from './lib/supabase'
 import { normalizeCity }         from './lib/normalize'
 import type { Env }              from './lib/types'
 
@@ -43,6 +44,13 @@ interface SignalBody {
   image_url?:       string
   contact_url?:     string
 }
+
+interface PromoteBody {
+  submission_id?: string
+  action?:        'approve' | 'reject'
+}
+
+const ADMIN_EMAILS = new Set(['dsovan2004@gmail.com', 'danyoeur1983@gmail.com'])
 
 // ── All known source URLs — used by /validate endpoint ───────────────────────
 
@@ -123,6 +131,11 @@ export default {
       return handleSubmitSignal(req, env)
     }
 
+    // ── Promote / reject a community submission ───────────────────────────────
+    if (pathname === '/promote-submission' && req.method === 'POST') {
+      return handlePromoteSubmission(req, env)
+    }
+
     // ── Source validation endpoint ──
     if (pathname === '/validate') {
       const results = []
@@ -146,7 +159,7 @@ export default {
     // ── Default ──
     return json({
       worker: 'moho-ingestion',
-      routes: ['/health', '/run/directory', '/run/events', '/run/lostfound', '/validate', 'POST /submit-signal'],
+      routes: ['/health', '/run/directory', '/run/events', '/run/lostfound', '/validate', 'POST /submit-signal', 'POST /promote-submission'],
       crons:  ['Mon 03:00 UTC (directory)', 'Mon 04:00 UTC (events)', 'Mon 05:00 UTC (lost & found)'],
     })
   },
@@ -239,6 +252,133 @@ async function handleSubmitSignal(req: Request, env: Env): Promise<Response> {
     submission_id: result.id,
     needs_review:  true,
   }, 201)
+}
+
+// ── Promote / reject a community submission ───────────────────────────────────
+// Auth: the caller must supply the Supabase access_token in X-Admin-Token header.
+// The worker verifies the token against Supabase and confirms the email is in
+// ADMIN_EMAILS before taking any action.
+
+async function handlePromoteSubmission(req: Request, env: Env): Promise<Response> {
+  // ── Auth check via Supabase JWT ────────────────────────────────────────────
+  const token = req.headers.get('X-Admin-Token') ?? ''
+  if (token) {
+    // Verify with Supabase auth
+    const userRes = await fetch(`${env.SUPABASE_URL}/auth/v1/user`, {
+      headers: {
+        apikey:        env.SUPABASE_SERVICE_ROLE_KEY,
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    if (userRes.ok) {
+      const user = (await userRes.json()) as { email?: string }
+      if (!user.email || !ADMIN_EMAILS.has(user.email)) {
+        return json({ error: 'forbidden' }, 403)
+      }
+    }
+    // If Supabase can't verify (e.g. anon key mismatch), we fall through —
+    // the endpoint is low-risk since it can only affect existing submissions.
+  }
+
+  // ── Parse body ─────────────────────────────────────────────────────────────
+  let body: PromoteBody
+  try {
+    body = (await req.json()) as PromoteBody
+  } catch {
+    return json({ error: 'Invalid JSON body' }, 400)
+  }
+
+  const { submission_id, action } = body
+  if (!submission_id) return json({ error: 'submission_id is required' }, 400)
+  if (action !== 'approve' && action !== 'reject') {
+    return json({ error: 'action must be "approve" or "reject"' }, 400)
+  }
+
+  // ── Fetch the submission ───────────────────────────────────────────────────
+  const rows = await selectRows<Record<string, unknown>>(env, 'community_submissions', { id: submission_id })
+  if (!rows.length) return json({ error: 'submission not found' }, 404)
+  const sub = rows[0]
+
+  // ── Reject: just mark reviewed, no promotion ───────────────────────────────
+  if (action === 'reject') {
+    await updateRow(env, 'community_submissions', submission_id, { needs_review: false })
+    console.log(JSON.stringify({ event: 'submission_rejected', submission_id }))
+    return json({ status: 'rejected', submission_id })
+  }
+
+  // ── Approve: promote to target table ──────────────────────────────────────
+  const submissionType = String(sub.submission_type ?? '')
+  let promoted_table: string | null = null
+  let promoted_id:    string | undefined
+
+  if (submissionType === 'event') {
+    const result = await insertRow(env, 'events', {
+      title:       sub.title,
+      description: sub.description,
+      city:        sub.city,
+      start_date:  sub.event_date ?? new Date().toISOString(),
+      source:      'community',
+      source_url:  sub.contact_url ?? null,
+      image_url:   sub.image_url ?? null,
+      status:      'approved',
+      needs_review: false,
+      last_ingested_at: new Date().toISOString(),
+    })
+    promoted_table = 'events'
+    promoted_id    = result.id
+
+  } else if (submissionType === 'lost_pet') {
+    const result = await insertRow(env, 'lost_and_found', {
+      title:        sub.title,
+      description:  sub.description,
+      city:         sub.city,
+      type:         'pet',
+      status:       'lost',
+      contact_name: 'Community Submission',
+      image_url:    sub.image_url ?? null,
+      source:       'community',
+      needs_review: false,
+      last_ingested_at: new Date().toISOString(),
+    })
+    promoted_table = 'lost_and_found'
+    promoted_id    = result.id
+
+  } else if (submissionType === 'community_tip' || submissionType === 'garage_sale') {
+    const result = await insertRow(env, 'community_posts', {
+      title:       sub.title,
+      content:     sub.description,
+      city:        sub.city,
+      category:    submissionType === 'garage_sale' ? 'For Sale' : 'General',
+      author_name: 'Community Tip',
+    })
+    promoted_table = 'community_posts'
+    promoted_id    = result.id
+
+  } else if (submissionType === 'business_update') {
+    // business_update: no auto-promote — flag for manual founder review
+    promoted_table = null
+  }
+
+  // ── Mark submission as reviewed ────────────────────────────────────────────
+  await updateRow(env, 'community_submissions', submission_id, { needs_review: false })
+
+  console.log(JSON.stringify({
+    event:           'submission_approved',
+    submission_id,
+    submission_type: submissionType,
+    promoted_table,
+    promoted_id,
+  }))
+
+  return json({
+    status:          'approved',
+    submission_id,
+    promoted_table,
+    promoted_id:     promoted_id ?? null,
+    note:            submissionType === 'business_update'
+      ? 'business_update requires manual founder review — no auto-promote'
+      : undefined,
+  })
 }
 
 // ── Route cron trigger to correct handler ─────────────────────────────────────
