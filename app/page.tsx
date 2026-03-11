@@ -4,27 +4,24 @@ import { getSupabaseClient, type Business } from '@/lib/supabase'
 import Link from 'next/link'
 
 // ── City config ───────────────────────────────────────────────────────────────
-const CITIES = ['Mountain House', 'Tracy', 'Lathrop', 'Manteca'] as const
+const CITIES = ['Mountain House', 'Tracy', 'Lathrop', 'Manteca', 'Brentwood'] as const
 type City = (typeof CITIES)[number]
 
-const CITY_CFG: Record<
-  City,
-  {
-    slug: string          // URL slug: mountain-house, tracy, etc.
-    emoji: string
-    gradient: string
-    chip: string
-    population: string
-    heroTitle: string
-  }
-> = {
+const CITY_CFG: Record<City, {
+  slug: string
+  emoji: string
+  gradient: string
+  chip: string
+  population: string
+  county: string
+}> = {
   'Mountain House': {
     slug: 'mountain-house',
     emoji: '🏘️',
     gradient: 'linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%)',
     chip: 'bg-blue-50 text-blue-700',
     population: '~31k',
-    heroTitle: 'Your Mountain House Community Hub',
+    county: 'San Joaquin County',
   },
   Tracy: {
     slug: 'tracy',
@@ -32,7 +29,7 @@ const CITY_CFG: Record<
     gradient: 'linear-gradient(135deg,#14532d 0%,#16a34a 100%)',
     chip: 'bg-green-50 text-green-700',
     population: '~103k',
-    heroTitle: 'Your Tracy Community Hub',
+    county: 'San Joaquin County',
   },
   Lathrop: {
     slug: 'lathrop',
@@ -40,7 +37,7 @@ const CITY_CFG: Record<
     gradient: 'linear-gradient(135deg,#581c87 0%,#9333ea 100%)',
     chip: 'bg-purple-50 text-purple-700',
     population: '~28k',
-    heroTitle: 'Your Lathrop Community Hub',
+    county: 'San Joaquin County',
   },
   Manteca: {
     slug: 'manteca',
@@ -48,7 +45,15 @@ const CITY_CFG: Record<
     gradient: 'linear-gradient(135deg,#7c2d12 0%,#ea580c 100%)',
     chip: 'bg-orange-50 text-orange-700',
     population: '~90k',
-    heroTitle: 'Your Manteca Community Hub',
+    county: 'San Joaquin County',
+  },
+  Brentwood: {
+    slug: 'brentwood',
+    emoji: '🌊',
+    gradient: 'linear-gradient(135deg,#134e4a 0%,#0d9488 100%)',
+    chip: 'bg-teal-50 text-teal-700',
+    population: '~65k',
+    county: 'Contra Costa County',
   },
 }
 
@@ -85,6 +90,7 @@ async function getData(activeCity: City) {
     eventsResult,
     catCountsResult,
     popularResult,
+    trendingResult,
     featuredResult,
     communityCountResult,
     lostFoundCountResult,
@@ -102,13 +108,23 @@ async function getData(activeCity: City) {
       .limit(4),
     // Category counts
     supabase.from('businesses').select('category').eq('status', 'approved'),
-    // Popular businesses in active city
+    // Popular: top rated in active city
     supabase
       .from('businesses')
       .select('*')
       .eq('city', activeCity)
       .eq('status', 'approved')
       .not('rating', 'is', null)
+      .order('rating', { ascending: false })
+      .limit(6),
+    // Trending: most reviewed in active city (proxy for most-visited/discussed)
+    supabase
+      .from('businesses')
+      .select('*')
+      .eq('city', activeCity)
+      .eq('status', 'approved')
+      .not('review_count', 'is', null)
+      .order('review_count', { ascending: false })
       .order('rating', { ascending: false })
       .limit(6),
     // Featured businesses
@@ -121,7 +137,7 @@ async function getData(activeCity: City) {
       .limit(6),
     // Community posts count
     supabase.from('community_posts').select('*', { count: 'exact', head: true }),
-    // Active lost & found count (not reunited)
+    // Active lost & found count
     supabase.from('lost_and_found').select('*', { count: 'exact', head: true }).neq('status', 'reunited'),
   ])
 
@@ -148,6 +164,14 @@ async function getData(activeCity: City) {
   const popularBiz: Business[] =
     popularResult.status === 'fulfilled' ? (popularResult.value.data ?? []) as Business[] : []
 
+  // Trending: deduplicate against popular to show different businesses
+  const popularIds = new Set(popularBiz.map((b) => b.id))
+  const trendingRaw: Business[] =
+    trendingResult.status === 'fulfilled' ? (trendingResult.value.data ?? []) as Business[] : []
+  const trendingBiz = trendingRaw.filter((b) => !popularIds.has(b.id)).slice(0, 6)
+  // If all trending overlaps with popular, just show trending as-is (better than empty)
+  const trendingFinal = trendingBiz.length >= 2 ? trendingBiz : trendingRaw.slice(0, 6)
+
   const featuredBiz: Business[] =
     featuredResult.status === 'fulfilled' ? (featuredResult.value.data ?? []) as Business[] : []
 
@@ -163,6 +187,7 @@ async function getData(activeCity: City) {
     upcomingEvents,
     catCountMap,
     popularBiz,
+    trendingFinal,
     featuredBiz,
     communityPostCount,
     lostFoundCount,
@@ -191,6 +216,47 @@ function getCategoryEmoji(category: string): string {
   return '🏢'
 }
 
+// ── Business mini-card (shared by Featured, Trending, Popular) ────────────────
+function BizMiniCard({
+  biz, gradientOverride, chipOverride, badge,
+}: {
+  biz: Business
+  gradientOverride?: string
+  chipOverride?: string
+  badge?: string
+}) {
+  const fallbackCfg = CITY_CFG[biz.city as City] ?? CITY_CFG['Mountain House']
+  const gradient = gradientOverride ?? fallbackCfg.gradient
+  const chip     = chipOverride     ?? fallbackCfg.chip
+  return (
+    <Link
+      href={`/business/${biz.id}`}
+      className="group bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md hover:-translate-y-0.5 transition-all relative"
+    >
+      {badge && (
+        <span className="absolute top-2 right-2 text-[9px] font-bold text-orange-500">{badge}</span>
+      )}
+      <div
+        className="w-10 h-10 rounded-xl flex items-center justify-center text-xl mb-3 shadow-sm"
+        style={{ background: gradient }}
+      >
+        <span>{getCategoryEmoji(biz.category)}</span>
+      </div>
+      <h3 className="font-bold text-xs text-gray-900 group-hover:text-blue-700 transition leading-snug line-clamp-2 mb-1">
+        {biz.name}
+      </h3>
+      <span className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full ${chip}`}>
+        {biz.category}
+      </span>
+      {biz.rating != null && (
+        <div className="text-xs text-amber-500 font-semibold mt-1.5">
+          ★ {biz.rating.toFixed(1)}
+        </div>
+      )}
+    </Link>
+  )
+}
+
 // ── Page ──────────────────────────────────────────────────────────────────────
 interface PageProps {
   searchParams: Promise<{ city?: string }>
@@ -199,7 +265,7 @@ interface PageProps {
 export default async function HomePage({ searchParams }: PageProps) {
   const params = await searchParams
 
-  // Match city slug param to a valid city (e.g. ?city=mountain-house → 'Mountain House')
+  // Resolve city from slug param
   const activeCity: City =
     (CITIES.find(
       (c) => CITY_CFG[c].slug === (params.city ?? '').toLowerCase()
@@ -212,6 +278,7 @@ export default async function HomePage({ searchParams }: PageProps) {
     upcomingEvents,
     catCountMap,
     popularBiz,
+    trendingFinal,
     featuredBiz,
     communityPostCount,
     lostFoundCount,
@@ -225,12 +292,13 @@ export default async function HomePage({ searchParams }: PageProps) {
         className="rounded-2xl px-6 sm:px-8 py-12 text-center text-white mb-8"
         style={{ background: cfg.gradient }}
       >
-        <h1 className="text-2xl sm:text-3xl font-extrabold mb-2">{cfg.heroTitle}</h1>
+        <h1 className="text-2xl sm:text-3xl font-extrabold mb-2">
+          Your Local Community Hub
+        </h1>
         <p className="text-sm opacity-85 mb-6">
-          Find local businesses, connect with neighbors, discover events — all in one place
+          Find local businesses, connect with neighbors, discover events across Mountain House, Tracy, Lathrop, Manteca &amp; Brentwood
         </p>
 
-        {/* Task 1: Working search form — GET navigates to /directory?q=... */}
         <form action="/directory" method="GET" className="flex gap-2 max-w-xl mx-auto mb-5 flex-col sm:flex-row">
           <input
             name="q"
@@ -246,7 +314,6 @@ export default async function HomePage({ searchParams }: PageProps) {
           </button>
         </form>
 
-        {/* Task 3: Quick-search tags linked to /directory?category=... */}
         <div className="flex gap-2 justify-center flex-wrap">
           {QUICK_TAGS.map(({ label, href }) => (
             <Link
@@ -267,7 +334,7 @@ export default async function HomePage({ searchParams }: PageProps) {
           All Cities →
         </Link>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
         {CITIES.map((city) => {
           const c = CITY_CFG[city]
           const count = cityBizMap[city] ?? 0
@@ -284,8 +351,8 @@ export default async function HomePage({ searchParams }: PageProps) {
                   ✓ Selected
                 </span>
               )}
-              <div className="text-base font-extrabold mb-1">{city}</div>
-              <div className="text-xs opacity-75 mb-3">San Joaquin County</div>
+              <div className="text-base font-extrabold mb-0.5">{city}</div>
+              <div className="text-[10px] opacity-70 mb-3">{c.county}</div>
               <div className="flex gap-4">
                 <div className="text-xs opacity-85">
                   <strong className="block text-base font-extrabold">{count || '—'}</strong>
@@ -301,7 +368,7 @@ export default async function HomePage({ searchParams }: PageProps) {
         })}
       </div>
 
-      {/* ── Stats Bar (Task 11: real counts from DB) ── */}
+      {/* ── Stats Bar ── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
         <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
           <div className="text-3xl font-extrabold text-[#1e3a5f]">{totalBiz}</div>
@@ -341,14 +408,16 @@ export default async function HomePage({ searchParams }: PageProps) {
               <div className="text-2xl mb-2">{icon}</div>
               <div className="text-xs font-semibold text-gray-800 leading-tight">{name}</div>
               {count > 0 && (
-                <div className="text-[10px] text-gray-400 mt-1">{count}</div>
+                <div className="text-[10px] font-semibold text-gray-400 mt-1 bg-gray-50 rounded-full px-1.5 py-0.5 inline-block">
+                  {count}
+                </div>
               )}
             </Link>
           )
         })}
       </div>
 
-      {/* ── Featured Businesses (Task 12) ── */}
+      {/* ── Featured Businesses ── */}
       {featuredBiz.length > 0 && (
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
@@ -385,7 +454,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                   <span className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full ${c.chip}`}>
                     {biz.city}
                   </span>
-                  {biz.rating && (
+                  {biz.rating != null && (
                     <div className="text-xs text-amber-500 font-semibold mt-1.5">
                       ★ {biz.rating.toFixed(1)}
                     </div>
@@ -397,7 +466,37 @@ export default async function HomePage({ searchParams }: PageProps) {
         </div>
       )}
 
-      {/* ── Popular Near You ── */}
+      {/* ── Trending in {City} ── */}
+      {trendingFinal.length > 0 && (
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <h2 className="text-lg font-bold text-gray-900">
+                🔥 Trending in {activeCity}
+              </h2>
+            </div>
+            <Link
+              href={`/directory?city=${encodeURIComponent(activeCity)}`}
+              className="text-sm text-blue-600 hover:underline font-medium"
+            >
+              View all →
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {trendingFinal.map((biz) => (
+              <BizMiniCard
+                key={biz.id}
+                biz={biz}
+                gradientOverride={cfg.gradient}
+                chipOverride={cfg.chip}
+                badge="🔥"
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ── Popular in {City} ── */}
       {popularBiz.length > 0 && (
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
@@ -413,29 +512,12 @@ export default async function HomePage({ searchParams }: PageProps) {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {popularBiz.map((biz) => (
-              <Link
+              <BizMiniCard
                 key={biz.id}
-                href={`/business/${biz.id}`}
-                className="group bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md hover:-translate-y-0.5 transition-all"
-              >
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center text-xl mb-3 shadow-sm"
-                  style={{ background: cfg.gradient }}
-                >
-                  <span>{getCategoryEmoji(biz.category)}</span>
-                </div>
-                <h3 className="font-bold text-xs text-gray-900 group-hover:text-blue-700 transition leading-snug line-clamp-2 mb-1">
-                  {biz.name}
-                </h3>
-                <span className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full ${cfg.chip}`}>
-                  {biz.category}
-                </span>
-                {biz.rating && (
-                  <div className="text-xs text-amber-500 font-semibold mt-1.5">
-                    ★ {biz.rating.toFixed(1)}
-                  </div>
-                )}
-              </Link>
+                biz={biz}
+                gradientOverride={cfg.gradient}
+                chipOverride={cfg.chip}
+              />
             ))}
           </div>
         </div>
@@ -475,9 +557,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                         📍 {event.location}
                       </div>
                     )}
-                    <span
-                      className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full mt-1.5 ${c.chip}`}
-                    >
+                    <span className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full mt-1.5 ${c.chip}`}>
                       {event.city}
                     </span>
                   </div>
@@ -491,10 +571,10 @@ export default async function HomePage({ searchParams }: PageProps) {
       {/* ── Quick-nav cards ── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
-          { href: '/directory', icon: '📋', label: 'Business Directory', desc: 'Find local services & shops' },
-          { href: '/events', icon: '📅', label: 'Events Calendar', desc: "What's happening near you" },
-          { href: '/community', icon: '💬', label: 'Community Board', desc: 'Connect with neighbors' },
-          { href: '/lost-and-found', icon: '🐾', label: 'Lost & Found', desc: 'Help reunite pets' },
+          { href: '/directory',    icon: '📋', label: 'Business Directory', desc: 'Find local services & shops' },
+          { href: '/events',       icon: '📅', label: 'Events Calendar',    desc: "What's happening near you" },
+          { href: '/community',    icon: '💬', label: 'Community Board',    desc: 'Connect with neighbors' },
+          { href: '/lost-and-found', icon: '🐾', label: 'Lost & Found',    desc: 'Help reunite pets' },
         ].map(({ href, icon, label, desc }) => (
           <Link
             key={href}

@@ -234,16 +234,45 @@ export default async function BestOfPage({ params }: PageProps) {
 
         {/* ── Business List ──────────────────────────────────────────────── */}
         {businesses.length > 0 ? (
-          <div className="space-y-4 mb-10">
-            {businesses.map((biz, i) => (
-              <BizCard key={biz.id} biz={biz} rank={i + 1} />
-            ))}
-          </div>
+          <>
+            <div className="space-y-4 mb-6">
+              {businesses.map((biz, i) => (
+                <BizCard key={biz.id} biz={biz} rank={i + 1} />
+              ))}
+            </div>
+
+            {/* Low data nudge — shown when fewer than 3 results */}
+            {businesses.length < 3 && (
+              <div className="rounded-xl border border-dashed border-gray-200 bg-gray-50 py-8 px-6 text-center mb-8">
+                <p className="text-2xl mb-2">🌱</p>
+                <p className="font-semibold text-gray-700 text-sm">
+                  We&apos;re still building this list.
+                </p>
+                <p className="text-xs text-gray-500 mt-1 mb-4">
+                  Know a great {catInfo.label.toLowerCase()} in {cityName}? Help your neighbors discover it.
+                </p>
+                <Link
+                  href="/submit-business"
+                  className="inline-block text-xs font-bold px-5 py-2 rounded-xl text-white hover:opacity-90 transition-all"
+                  style={{ backgroundColor: theme.accent }}
+                >
+                  + Submit a Business
+                </Link>
+              </div>
+            )}
+          </>
         ) : (
           <div className="rounded-xl border border-dashed border-gray-200 py-16 text-center text-gray-400 mb-10">
             <p className="text-4xl mb-3">{catInfo.emoji}</p>
             <p className="font-semibold text-lg text-gray-600">No listings yet in {cityName}</p>
-            <p className="text-sm mt-1">Be the first to add a {catInfo.label.toLowerCase()} business here.</p>
+            <p className="text-sm mt-1 mb-4">Be the first to add a {catInfo.label.toLowerCase()} business here.</p>
+            <Link
+              href="/submit-business"
+              className="inline-block text-xs font-bold px-5 py-2 rounded-xl text-white hover:opacity-90 transition-all"
+              style={{ backgroundColor: theme.accent }}
+            >
+              + Submit a Business
+            </Link>
           </div>
         )}
 
