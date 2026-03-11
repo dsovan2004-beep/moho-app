@@ -26,6 +26,7 @@ import {
   scoreConfidence,
   needsReview,
 } from '../lib/normalize'
+import { isCrimeContent, logCrimeSkip } from '../lib/content-filter'
 import { resolveEventImage } from '../lib/images'
 import { findExistingEvent } from '../lib/deduplicate'
 import { upsertRow, updateRow, archiveStaleEvents } from '../lib/supabase'
@@ -432,6 +433,13 @@ function newsRssToEvents(
   const results: RawEvent[] = []
   for (const item of items) {
     if (!item.title) continue
+
+    // ── Crime / violence filter ──────────────────────────────────────────────
+    if (isCrimeContent(item.title, item.description)) {
+      logCrimeSkip(source, item.title)
+      continue
+    }
+
     // Prefer explicit city match in text; fall back to defaultCity if provided
     const city = inferCity(item.title + ' ' + item.description) ?? defaultCity
     if (!city) continue

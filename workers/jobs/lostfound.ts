@@ -21,6 +21,7 @@ import {
   scoreConfidence,
   needsReview,
 } from '../lib/normalize'
+import { isCrimeContent, logCrimeSkip } from '../lib/content-filter'
 import { resolveLostFoundImage } from '../lib/images'
 import { findExistingLostFound } from '../lib/deduplicate'
 import { upsertRow, updateRow, archiveStaleLostFound } from '../lib/supabase'
@@ -80,6 +81,13 @@ function rssToLostFound(
   const results: RawLostFound[] = []
   for (const item of items) {
     if (!item.title) continue
+
+    // ── Crime / violence filter ──────────────────────────────────────────────
+    if (isCrimeContent(item.title, item.description)) {
+      logCrimeSkip(source, item.title)
+      continue
+    }
+
     const text = `${item.title} ${item.description ?? ''}`
     if (!hasPetKeyword(text)) continue
     // Prefer explicit city match in text; fall back to defaultCity if provided
