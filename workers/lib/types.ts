@@ -129,6 +129,7 @@ export interface RunLog {
   images_captured: number
   images_missing:  number
   errors:          string[]
+  warnings:        string[]
   run_at:          string  // ISO-8601
   duration_ms:     number
 }

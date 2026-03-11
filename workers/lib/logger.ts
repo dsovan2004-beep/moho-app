@@ -22,6 +22,7 @@ export function createLog(
     images_captured: 0,
     images_missing:  0,
     errors:          [],
+    warnings:        [],
     run_at:          new Date().toISOString(),
     duration_ms:     0,
   }
@@ -30,6 +31,12 @@ export function createLog(
 export function logError(log: RunLog, msg: string): void {
   log.errors.push(msg)
   console.error(`[${log.domain}][${log.city ?? 'all'}] ERROR: ${msg}`)
+}
+
+export function logWarning(log: RunLog, msg: string): void {
+  if (!log.warnings) log.warnings = []
+  log.warnings.push(msg)
+  console.warn(`[${log.domain}][${log.city ?? 'all'}] WARN: ${msg}`)
 }
 
 export function printLog(log: RunLog, startMs: number): void {
@@ -50,6 +57,9 @@ export function printLog(log: RunLog, startMs: number): void {
     `║ Flagged (review): ${log.flagged}`,
     `║ Images captured : ${log.images_captured}`,
     `║ Images missing  : ${log.images_missing}`,
+    log.warnings?.length > 0
+      ? `║ Warnings (${log.warnings.length}):\n${log.warnings.map((w) => `║   ⚠ ${w}`).join('\n')}`
+      : `║ Warnings        : 0`,
     log.errors.length > 0
       ? `║ Errors (${log.errors.length}):\n${log.errors.map((e) => `║   • ${e}`).join('\n')}`
       : `║ Errors          : 0`,
