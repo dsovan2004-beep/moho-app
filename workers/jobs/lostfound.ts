@@ -1,13 +1,17 @@
-// ── Lost & Found ingestion handler ───────────────────────────────────────────
-// Source priority:
-//   1. PetFinder API  (PETFINDER_CLIENT_ID + PETFINDER_CLIENT_SECRET required)
-//      → ingests "found" status animals reported in the 209/East Bay area
-//   2. 209times RSS feed (public fallback — scrapes lost pet articles)
+// ── Lost & Found ingestion handler ────────────────────────────────────────────
 //
-// After ingestion, stale records (older than 30 days, not reunited) are archived.
+// DEFAULT SOURCES (no credentials required — run every Monday 5am UTC):
+//   1. Times209RssAdapter    — 209times.com/feed filtered by pet/lost keywords (public)
+//   2. TracyPressRssAdapter  — tracypress.com/feed filtered by pet/lost keywords (public)
+//   3. PatchRssAdapter       — patch.com/california/[city]/rss.xml pet filter (public)
 //
-// All ingested records are inserted with status='lost' and needs_review=true.
-// The type NOT NULL constraint is satisfied — defaults to animal type string.
+// OPTIONAL ADAPTER (only runs when PETFINDER_CLIENT_ID + PETFINDER_CLIENT_SECRET are present):
+//   4. PetFinderAdapter      — PetFinder API OAuth2
+//
+// Stale records (older than 30 days, not reunited) are archived before ingestion.
+// ALL ingested records have needs_review=true — a human always reviews before publish.
+// The `type` column NOT NULL constraint is satisfied from inferred pet type.
+// ─────────────────────────────────────────────────────────────────────────────
 
 import {
   normalizeCity,
@@ -19,7 +23,15 @@ import {
 import { resolveLostFoundImage } from '../lib/images'
 import { findExistingLostFound } from '../lib/deduplicate'
 import { upsertRow, updateRow, archiveStaleLostFound } from '../lib/supabase'
-import { createLog, logError, printLog } from '../lib/logger'
+import { createLog, logError, logWarning, printLog } from '../lib/logger'
+import {
+  runAdapters,
+  fetchRss,
+  parseRssItems,
+  stripHtml,
+  type SourceAdapter,
+  type RawLostFound,
+} from '../lib/sources'
 import {
   SUPPORTED_CITIES,
   CITY_ZIPS,
@@ -28,43 +40,158 @@ import {
   type RunLog,
 } from '../lib/types'
 
-const PETFINDER_AUTH_URL = 'https://api.petfinder.com/v2/oauth2/token'
-const PETFINDER_ANIMALS_URL = 'https://api.petfinder.com/v2/animals'
+// ── Keyword filter ────────────────────────────────────────────────────────────
+// Applied to titles + descriptions to identify pet-related news RSS items.
 
-// ── PetFinder API shapes (partial) ───────────────────────────────────────────
+const PET_KEYWORDS = /\b(lost|found|missing|reward|stray|escaped|runaway|dog|puppy|cat|kitten|bird|rabbit|pet|animal)\b/i
+
+function hasPetKeyword(text: string): boolean {
+  return PET_KEYWORDS.test(text)
+}
+
+// ── City inference from text ──────────────────────────────────────────────────
+
+function inferCity(text: string): SupportedCity | null {
+  const lower = text.toLowerCase()
+  if (lower.includes('mountain house')) return 'Mountain House'
+  if (lower.includes('brentwood'))      return 'Brentwood'
+  if (lower.includes('lathrop'))        return 'Lathrop'
+  if (lower.includes('manteca'))        return 'Manteca'
+  if (lower.includes('tracy'))          return 'Tracy'
+  return null
+}
+
+// ── Pet type inference from text ──────────────────────────────────────────────
+
+function inferPetType(text: string): string {
+  const lower = text.toLowerCase()
+  if (/\bdog\b|\bpuppy\b|\bpuppies\b|\bcanine\b/.test(lower)) return 'Dog'
+  if (/\bcat\b|\bkitten\b|\bfeline\b/.test(lower))            return 'Cat'
+  if (/\bbird\b|\bparrot\b|\bcockatiel\b/.test(lower))        return 'Bird'
+  if (/\brabbit\b|\bbunny\b/.test(lower))                     return 'Rabbit'
+  return 'Pet'
+}
+
+// ── Lost/found status inference ───────────────────────────────────────────────
+
+function inferStatus(text: string): 'lost' | 'found' {
+  return /\bfound\b/i.test(text) && !/\blost\b/i.test(text) ? 'found' : 'lost'
+}
+
+// ── Shared RSS-to-RawLostFound converter ─────────────────────────────────────
+
+function rssItemsToLostFound(
+  items: ReturnType<typeof parseRssItems>,
+  defaultCity: SupportedCity | null,
+  source: string,
+): RawLostFound[] {
+  const results: RawLostFound[] = []
+
+  for (const item of items) {
+    if (!item.title) continue
+    const text = `${item.title} ${item.description ?? ''}`
+    if (!hasPetKeyword(text)) continue
+
+    const city = defaultCity ?? inferCity(text)
+    if (!city) continue   // can't attribute to a supported city — skip
+
+    results.push({
+      title:       item.title,
+      description: stripHtml(item.description).slice(0, 600),
+      type:        inferStatus(text),
+      petType:     inferPetType(text),
+      city,
+      imageUrl:    item.enclosureUrl,
+      sourceUrl:   item.link || undefined,
+      source,
+    })
+  }
+
+  return results
+}
+
+// ── Adapter 1: 209 Times RSS (DEFAULT) ───────────────────────────────────────
+
+const Times209RssAdapter: SourceAdapter<RawLostFound> = {
+  name:     '209times-rss',
+  type:     'rss',
+  required: false,
+
+  isAvailable: () => true,
+
+  async fetch() {
+    let xml: string
+    try { xml = await fetchRss('https://209times.com/feed/') } catch { return [] }
+    return rssItemsToLostFound(parseRssItems(xml), null, '209times-rss')
+  },
+}
+
+// ── Adapter 2: Tracy Press RSS (DEFAULT) ─────────────────────────────────────
+
+const TracyPressRssAdapter: SourceAdapter<RawLostFound> = {
+  name:     'tracy-press-rss',
+  type:     'rss',
+  required: false,
+
+  isAvailable: () => true,
+
+  async fetch() {
+    let xml: string
+    try { xml = await fetchRss('https://www.tracypress.com/feed/') } catch { return [] }
+    return rssItemsToLostFound(parseRssItems(xml), 'Tracy', 'tracy-press-rss')
+  },
+}
+
+// ── Adapter 3: Patch.com RSS (DEFAULT) ───────────────────────────────────────
+
+const PATCH_FEEDS: Array<{ city: SupportedCity; url: string }> = [
+  { city: 'Tracy',     url: 'https://patch.com/california/tracy/rss.xml' },
+  { city: 'Manteca',   url: 'https://patch.com/california/manteca/rss.xml' },
+  { city: 'Lathrop',   url: 'https://patch.com/california/lathrop/rss.xml' },
+  { city: 'Brentwood', url: 'https://patch.com/california/brentwood/rss.xml' },
+]
+
+const PatchRssAdapter: SourceAdapter<RawLostFound> = {
+  name:     'patch-rss',
+  type:     'rss',
+  required: false,
+
+  isAvailable: () => true,
+
+  async fetch() {
+    const results: RawLostFound[] = []
+    for (const feed of PATCH_FEEDS) {
+      let xml: string
+      try { xml = await fetchRss(feed.url) } catch { continue }
+      results.push(...rssItemsToLostFound(parseRssItems(xml), feed.city, 'patch-rss'))
+    }
+    return results
+  },
+}
+
+// ── Optional Adapter 4: PetFinder API ────────────────────────────────────────
+// Only runs when PETFINDER_CLIENT_ID + PETFINDER_CLIENT_SECRET are both present.
+
 interface PetFinderAnimal {
   id:           number
   name?:        string
   type?:        string
   species?:     string
-  breeds?:      { primary?: string; secondary?: string }
+  breeds?:      { primary?: string }
   age?:         string
   gender?:      string
   description?: string
-  contact?: {
-    name?:    string
-    phone?:   string
-    email?:   string
-  }
-  photos?: Array<{ full?: string; large?: string; medium?: string }>
-  url?:    string
-  published_at?: string
+  contact?: { name?: string; phone?: string }
+  photos?:  Array<{ full?: string; large?: string }>
+  url?:     string
 }
 
-// ── Get PetFinder OAuth token ─────────────────────────────────────────────────
-async function getPetFinderToken(
-  clientId: string,
-  clientSecret: string,
-): Promise<string | null> {
+async function getPetFinderToken(id: string, secret: string): Promise<string | null> {
   try {
-    const res = await fetch(PETFINDER_AUTH_URL, {
-      method: 'POST',
+    const res = await fetch('https://api.petfinder.com/v2/oauth2/token', {
+      method:  'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        grant_type:    'client_credentials',
-        client_id:     clientId,
-        client_secret: clientSecret,
-      }),
+      body:    new URLSearchParams({ grant_type: 'client_credentials', client_id: id, client_secret: secret }),
     })
     if (!res.ok) return null
     const json = (await res.json()) as { access_token?: string }
@@ -74,266 +201,156 @@ async function getPetFinderToken(
   }
 }
 
-// ── Fetch animals from PetFinder for a zip code ────────────────────────────────
-async function fetchPetFinderAnimals(
-  token: string,
-  zip: string,
-  status: 'adoptable' | 'found' = 'found',
-): Promise<PetFinderAnimal[]> {
-  const url =
-    `${PETFINDER_ANIMALS_URL}?location=${zip}&distance=15&status=${status}&limit=25&sort=recent`
+const PetFinderAdapter: SourceAdapter<RawLostFound> = {
+  name:     'petfinder-api',
+  type:     'api',
+  required: false,
 
-  const res = await fetch(url, {
-    headers: { Authorization: `Bearer ${token}` },
-  })
+  isAvailable: (env) => Boolean(env.PETFINDER_CLIENT_ID && env.PETFINDER_CLIENT_SECRET),
 
-  if (!res.ok) throw new Error(`PetFinder API error ${res.status}`)
-  const json = (await res.json()) as { animals?: PetFinderAnimal[] }
-  return json.animals ?? []
-}
+  async fetch(env) {
+    const token = await getPetFinderToken(env.PETFINDER_CLIENT_ID!, env.PETFINDER_CLIENT_SECRET!)
+    if (!token) {
+      console.warn('[petfinder] Token fetch failed')
+      return []
+    }
 
-// ── 209 times RSS fallback — parse lost pet mentions ─────────────────────────
-// 209times publishes a public RSS feed. We scan titles/descriptions for
-// "lost", "found", "missing", "pet", "dog", "cat" keywords.
+    const results: RawLostFound[] = []
 
-interface RssItem {
-  title?:       string
-  link?:        string
-  pubDate?:     string
-  description?: string
-  city?:        string
-}
+    for (const city of SUPPORTED_CITIES) {
+      for (const zip of CITY_ZIPS[city]) {
+        try {
+          const url = `https://api.petfinder.com/v2/animals?location=${zip}&distance=15&status=found&limit=25&sort=recent`
+          const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } })
+          if (!res.ok) continue
 
-const NEWS_RSS_FEEDS = [
-  'https://www.209times.com/feed',
-  'https://www.tracypress.com/feed',
-]
-
-const PET_KEYWORDS = /\b(lost|found|missing|pet|dog|cat|puppy|kitten|reward|stray)\b/i
-
-async function fetchNewsRssItems(): Promise<RssItem[]> {
-  const items: RssItem[] = []
-  for (const feedUrl of NEWS_RSS_FEEDS) {
-    try {
-      const res = await fetch(feedUrl, {
-        headers: { 'User-Agent': 'MoHoLocal-Bot/1.0 (+https://www.moholocal.com)' },
-      })
-      if (!res.ok) continue
-      const xml  = await res.text()
-      const matches = xml.matchAll(/<item[^>]*>([\s\S]*?)<\/item>/gi)
-      for (const m of matches) {
-        const block = m[1]
-        const get   = (tag: string) =>
-          block.match(new RegExp(`<${tag}[^>]*><!\\[CDATA\\[([\\s\\S]*?)\\]\\]></${tag}>`))?.[1]
-          ?? block.match(new RegExp(`<${tag}[^>]*>([^<]*)</${tag}>`))?.[1]
-        const title = get('title') ?? ''
-        const desc  = get('description') ?? ''
-        if (PET_KEYWORDS.test(title) || PET_KEYWORDS.test(desc)) {
-          items.push({
-            title:       title,
-            link:        get('link'),
-            pubDate:     get('pubDate'),
-            description: desc,
-          })
+          const json = (await res.json()) as { animals?: PetFinderAnimal[] }
+          for (const animal of json.animals ?? []) {
+            const petName   = normalizeString(animal.name) ?? 'Unknown'
+            const petType   = normalizeString(animal.type ?? animal.species) ?? 'Pet'
+            results.push({
+              title:       `Found ${petType}: ${petName}`,
+              description: animal.description?.slice(0, 600),
+              type:        'found',
+              petName,
+              petType,
+              city,
+              imageUrl:    animal.photos?.[0]?.full ?? animal.photos?.[0]?.large,
+              sourceUrl:   animal.url,
+              source:      'petfinder-api',
+              contactInfo: [animal.contact?.name, normalizePhone(animal.contact?.phone)]
+                .filter(Boolean).join(' · ') || undefined,
+            })
+          }
+        } catch (err) {
+          console.warn(`[petfinder] ${city}/${zip}: ${String(err)}`)
         }
       }
-    } catch { /* skip this feed */ }
-  }
-  return items
+    }
+
+    return results
+  },
 }
 
-// ── Guess city from title/description text ────────────────────────────────────
-function guessCityFromText(text: string): SupportedCity | null {
-  for (const city of SUPPORTED_CITIES) {
-    if (text.toLowerCase().includes(city.toLowerCase())) return city
-  }
-  return null
-}
+// ── Main entry point ──────────────────────────────────────────────────────────
 
-// ── Main lost & found ingestion ───────────────────────────────────────────────
 export async function runLostFoundIngestion(env: Env): Promise<RunLog[]> {
-  const logs: RunLog[] = []
+  const log     = createLog('lost_and_found', 'multi-source')
+  const startMs = Date.now()
 
   // Archive stale records first
   try {
     const archived = await archiveStaleLostFound(env)
     if (archived > 0) console.log(`[lost_and_found] Archived ${archived} stale records`)
   } catch (err) {
-    console.warn(`[lost_and_found] Archive step failed: ${String(err)}`)
+    logWarning(log, `Archive step failed: ${String(err)}`)
   }
 
-  // ── Source 1: PetFinder API ──────────────────────────────────────────────
-  if (env.PETFINDER_CLIENT_ID && env.PETFINDER_CLIENT_SECRET) {
-    const token = await getPetFinderToken(
-      env.PETFINDER_CLIENT_ID,
-      env.PETFINDER_CLIENT_SECRET,
-    )
+  const adapters: SourceAdapter<RawLostFound>[] = [
+    Times209RssAdapter,
+    TracyPressRssAdapter,
+    PatchRssAdapter,
+    PetFinderAdapter,   // silently skipped unless both PetFinder secrets are present
+  ]
 
-    if (!token) {
-      console.warn('[lost_and_found] PetFinder token fetch failed')
-    } else {
-      for (const city of SUPPORTED_CITIES) {
-        const cityLog = createLog('lost_and_found', 'petfinder', city)
-        const startMs = Date.now()
+  const adapterResults = await runAdapters(
+    adapters,
+    env,
+    (msg) => logWarning(log, msg),
+  )
 
-        const zips = CITY_ZIPS[city]
-        for (const zip of zips) {
-          let animals: PetFinderAnimal[]
-          try {
-            animals = await fetchPetFinderAnimals(token, zip, 'found')
-          } catch (err) {
-            logError(cityLog, `PetFinder fetch failed for zip ${zip}: ${String(err)}`)
-            continue
-          }
+  const allRaw = adapterResults.flatMap((r) => r.items)
+  log.discovered = allRaw.length
 
-          cityLog.discovered += animals.length
-          for (const animal of animals) {
-            try {
-              await processPetFinderAnimal(env, city, animal, cityLog)
-            } catch (err) {
-              logError(cityLog, `Error processing animal ${animal.id}: ${String(err)}`)
-            }
-          }
-        }
-
-        printLog(cityLog, startMs)
-        logs.push(cityLog)
-      }
-    }
-  } else {
-    console.warn('[lost_and_found] PetFinder keys not set — using RSS fallback only')
-  }
-
-  // ── Source 2: 209 area news RSS fallback ────────────────────────────────
-  const newsLog = createLog('lost_and_found', '209-news-rss')
-  const startMs = Date.now()
-  const rssItems = await fetchNewsRssItems()
-  newsLog.discovered = rssItems.length
-
-  for (const item of rssItems) {
+  for (const raw of allRaw) {
     try {
-      await processNewsRssItem(env, item, newsLog)
+      await processLostFound(env, raw, log)
     } catch (err) {
-      logError(newsLog, `RSS item error: ${String(err)}`)
+      logError(log, `Error processing "${raw.title}": ${String(err)}`)
     }
   }
 
-  printLog(newsLog, startMs)
-  logs.push(newsLog)
-
-  return logs
+  printLog(log, startMs)
+  return [log]
 }
 
-// ── Process a PetFinder animal ────────────────────────────────────────────────
-async function processPetFinderAnimal(
-  env: Env,
-  city: SupportedCity,
-  raw: PetFinderAnimal,
-  log: RunLog,
-): Promise<void> {
-  const petName   = normalizeString(raw.name) ?? 'Unknown'
-  const animalType = normalizeString(raw.type ?? raw.species) ?? 'Dog'
-  const title     = `Found ${animalType}: ${petName}`
+// ── Process a single raw lost/found record ────────────────────────────────────
+
+async function processLostFound(env: Env, raw: RawLostFound, log: RunLog): Promise<void> {
+  const title = normalizeString(raw.title) ?? ''
+  if (!title) { log.skipped++; return }
+
+  const city = normalizeCity(raw.city)
+  if (!city) { log.skipped++; return }
 
   const { url: imageUrl, source: imageSource } = await resolveLostFoundImage({
-    apiImage:  raw.photos?.[0]?.full ?? raw.photos?.[0]?.large,
-    sourceUrl: raw.url,
+    apiImage:  raw.imageUrl,
+    sourceUrl: raw.sourceUrl,
   })
   if (imageUrl) log.images_captured++
   else          log.images_missing++
 
+  const petType = raw.petType ?? inferPetType(title + ' ' + (raw.description ?? ''))
+
   const confidence = scoreConfidence({
-    title, city, type: animalType, pet_name: petName,
-    image_url: imageUrl, description: raw.description,
+    title,
+    city,
+    type:      petType,
+    pet_name:  raw.petName,
+    image_url: imageUrl,
+    description: raw.description,
   })
   const review = needsReview(confidence)
   if (review) log.flagged++
 
-  const existing = await findExistingLostFound(env, city, petName, title)
+  const existing = await findExistingLostFound(env, city, raw.petName, title)
+  const now      = new Date().toISOString()
+
   if (existing) {
-    const patch: Record<string, unknown> = { last_ingested_at: new Date().toISOString() }
+    const patch: Record<string, unknown> = { last_ingested_at: now }
     if (!existing.image_url && imageUrl) { patch.image_url = imageUrl; patch.image_source = imageSource }
     await updateRow(env, 'lost_and_found', String(existing.id), patch)
     log.updated++
-    return
+  } else {
+    const result = await upsertRow(env, 'lost_and_found', {
+      title,
+      description:      raw.description ? stripHtml(raw.description).slice(0, 800) : null,
+      city,
+      status:           raw.type,      // 'lost' | 'found'
+      type:             petType,       // NOT NULL — required by schema
+      pet_name:         raw.petName ?? null,
+      contact_name:     'MoHoLocal',
+      image_url:        imageUrl   ?? null,
+      image_source:     imageSource !== 'none' ? imageSource : null,
+      source:           raw.source,
+      source_url:       raw.sourceUrl ?? null,
+      last_ingested_at: now,
+      confidence_score: confidence,
+      needs_review:     true,          // ALL external lost/found requires human review
+      ingestion_status: 'active',
+    }, 'title,city')
+
+    if (result.ok) log.inserted++
+    else           logError(log, `Insert failed for "${title}": ${result.error}`)
   }
-
-  const row = {
-    title,
-    description:      normalizeString(raw.description) ?? null,
-    city,
-    status:           'found',    // PetFinder "found" status = animal was found
-    type:             animalType, // NOT NULL — required by schema
-    pet_name:         petName,
-    breed:            raw.breeds?.primary ?? null,
-    age:              raw.age ?? null,
-    gender:           raw.gender ?? null,
-    contact_name:     normalizeString(raw.contact?.name) ?? 'MoHoLocal',
-    contact_phone:    normalizePhone(raw.contact?.phone) ?? null,
-    image_url:        imageUrl ?? null,
-    image_source:     imageSource !== 'none' ? imageSource : null,
-    source:           'petfinder',
-    source_url:       raw.url ?? null,
-    last_ingested_at: new Date().toISOString(),
-    confidence_score: confidence,
-    needs_review:     true,    // Always review external lost/found records
-  }
-
-  const result = await upsertRow(env, 'lost_and_found', row, 'pet_name,city')
-  if (result.ok) log.inserted++
-  else           logError(log, `Insert failed for "${title}": ${result.error}`)
-}
-
-// ── Process a news RSS item mentioning a lost/found pet ──────────────────────
-async function processNewsRssItem(
-  env: Env,
-  raw: RssItem,
-  log: RunLog,
-): Promise<void> {
-  const title = normalizeString(raw.title) ?? ''
-  if (!title) { log.skipped++; return }
-
-  const text = `${title} ${raw.description ?? ''}`
-  const city = guessCityFromText(text)
-  if (!city) { log.skipped++; return }  // can't assign to a city — skip
-
-  // Determine if lost or found
-  const statusGuess = /\bfound\b/i.test(title) ? 'found' : 'lost'
-
-  // Guess pet type from content
-  let animalType = 'Pet'
-  if (/\bdog\b|\bpuppy\b/i.test(text)) animalType = 'Dog'
-  else if (/\bcat\b|\bkitten\b/i.test(text)) animalType = 'Cat'
-
-  const { url: imageUrl, source: imageSource } = await resolveLostFoundImage({
-    sourceUrl: raw.link,
-  })
-  if (imageUrl) log.images_captured++
-  else          log.images_missing++
-
-  const confidence = scoreConfidence({ title, city, type: animalType, image_url: imageUrl })
-  if (needsReview(confidence)) log.flagged++
-
-  const existing = await findExistingLostFound(env, city, undefined, title)
-  if (existing) { log.skipped++; return }
-
-  const row = {
-    title,
-    description:      normalizeString(raw.description) ?? null,
-    city,
-    status:           statusGuess,
-    type:             animalType,   // NOT NULL
-    contact_name:     '209 Area News',
-    image_url:        imageUrl ?? null,
-    image_source:     imageSource !== 'none' ? imageSource : null,
-    source:           'news-rss',
-    source_url:       raw.link ?? null,
-    last_ingested_at: new Date().toISOString(),
-    confidence_score: confidence,
-    needs_review:     true,
-  }
-
-  const result = await upsertRow(env, 'lost_and_found', row, 'title,city')
-  if (result.ok) log.inserted++
-  else           logError(log, `RSS insert failed for "${title}": ${result.error}`)
 }

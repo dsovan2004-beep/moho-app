@@ -1,14 +1,15 @@
 // ── Directory ingestion handler ───────────────────────────────────────────────
-// Source priority:
-//   1. Yelp Fusion API  (YELP_API_KEY required)
-//   2. Graceful skip    (logs warning if no key)
 //
-// Each business goes through:
-//   fetch → normalize → deduplicate → upsert → log
+// DEFAULT SOURCES (no credentials required — run every Monday 3am UTC):
+//   1. ManualFeedAdapter    — founder-controlled JSON endpoint (MANUAL_BUSINESS_FEED_URL)
+//   2. ChamberRssAdapter    — Tracy/Manteca/Lathrop chamber of commerce RSS (public)
 //
-// New records inserted with status='pending' so they require admin review
-// before appearing publicly (status='approved').
-// High-confidence records (≥0.75) are auto-flagged for fast approval.
+// OPTIONAL ADAPTER (only runs when YELP_API_KEY secret is present):
+//   3. YelpAdapter          — Yelp Fusion API
+//
+// All ingested records land as status='pending' requiring admin review before
+// they appear publicly. High-confidence records are flagged for fast approval.
+// ─────────────────────────────────────────────────────────────────────────────
 
 import {
   normalizeCity,
@@ -23,194 +24,295 @@ import {
 import { resolveBusinessImage } from '../lib/images'
 import { findExistingBusiness } from '../lib/deduplicate'
 import { upsertRow, updateRow } from '../lib/supabase'
-import { createLog, logError, printLog } from '../lib/logger'
+import { createLog, logError, logWarning, printLog } from '../lib/logger'
+import {
+  runAdapters,
+  fetchRss,
+  parseRssItems,
+  stripHtml,
+  type SourceAdapter,
+  type RawBusiness,
+} from '../lib/sources'
 import {
   SUPPORTED_CITIES,
-  CITY_ZIPS,
   type Env,
   type SupportedCity,
   type RunLog,
 } from '../lib/types'
 
-// Yelp categories to query per ingestion run (mapped to canonical categories)
-const YELP_QUERIES: Array<{ term: string; limit: number }> = [
-  { term: 'restaurants',       limit: 20 },
-  { term: 'home services',     limit: 15 },
-  { term: 'health wellness',   limit: 15 },
-  { term: 'beauty salon',      limit: 10 },
-  { term: 'pet services',      limit: 10 },
-  { term: 'automotive',        limit: 10 },
-  { term: 'real estate',       limit: 10 },
-  { term: 'education tutoring',limit: 10 },
-  { term: 'retail',            limit: 10 },
-]
+// ── Adapter 1: Manual curated JSON feed (DEFAULT) ────────────────────────────
+// The founder publishes a JSON array of RawBusiness objects to any HTTPS URL
+// (e.g. a GitHub raw file or Cloudflare R2 object).
+// Format: [ { name, city, category, address, phone, website, description, image_url } ]
 
-const YELP_BASE = 'https://api.yelp.com/v3/businesses/search'
+const ManualFeedAdapter: SourceAdapter<RawBusiness> = {
+  name:     'manual-json-feed',
+  type:     'manual',
+  required: false,
 
-// ── Fetch businesses from Yelp for a city + term ─────────────────────────────
-async function fetchYelpBusinesses(
-  apiKey: string,
-  city: SupportedCity,
-  term: string,
-  limit: number,
-): Promise<YelpBusiness[]> {
-  try {
-    const url =
-      `${YELP_BASE}?location=${encodeURIComponent(city + ', CA')}&term=${encodeURIComponent(term)}` +
-      `&limit=${limit}&sort_by=rating`
+  isAvailable: (env) => Boolean(env.MANUAL_BUSINESS_FEED_URL),
 
-    const res = await fetch(url, {
-      headers: { Authorization: `Bearer ${apiKey}` },
-    })
-
-    if (res.status === 401) throw new Error('Yelp API key invalid or expired')
-    if (!res.ok)           throw new Error(`Yelp API error ${res.status}`)
-
-    const json = (await res.json()) as { businesses?: YelpBusiness[] }
-    return json.businesses ?? []
-  } catch (err) {
-    throw err
-  }
+  async fetch(env) {
+    const url = env.MANUAL_BUSINESS_FEED_URL!
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), 10_000)
+    try {
+      const res = await fetch(url, {
+        signal: controller.signal,
+        headers: { 'User-Agent': 'MoHoLocal-Ingestion/1.0 (+https://moholocal.com)' },
+      })
+      if (!res.ok) throw new Error(`HTTP ${res.status} fetching manual feed`)
+      const data = (await res.json()) as RawBusiness[]
+      return Array.isArray(data)
+        ? data.map((r) => ({ ...r, source: 'manual-json-feed' }))
+        : []
+    } finally {
+      clearTimeout(timer)
+    }
+  },
 }
 
-// ── Yelp API response shape (partial) ────────────────────────────────────────
+// ── Adapter 2: Chamber of Commerce RSS feeds (DEFAULT) ───────────────────────
+// Public RSS feeds from local chambers and business associations.
+// All are public — no API key required.
+
+const CHAMBER_RSS_FEEDS: Array<{ city: SupportedCity; name: string; url: string }> = [
+  {
+    city: 'Tracy',
+    name: 'Tracy Chamber of Commerce',
+    url:  'https://www.tracychamber.org/feed/',
+  },
+  {
+    city: 'Manteca',
+    name: 'Manteca Chamber of Commerce',
+    url:  'https://www.mantecachamber.org/feed/',
+  },
+  {
+    city: 'Lathrop',
+    name: 'Lathrop-Manteca Chamber',
+    url:  'https://www.lathropchamber.com/feed/',
+  },
+  {
+    city: 'Brentwood',
+    name: 'Brentwood Chamber of Commerce',
+    url:  'https://www.brentwoodchamber.com/feed/',
+  },
+]
+
+const ChamberRssAdapter: SourceAdapter<RawBusiness> = {
+  name:     'chamber-rss',
+  type:     'rss',
+  required: false,
+
+  isAvailable: () => true,  // always attempt — gracefully skips feeds that 404
+
+  async fetch() {
+    const results: RawBusiness[] = []
+
+    for (const feed of CHAMBER_RSS_FEEDS) {
+      let xml: string
+      try {
+        xml = await fetchRss(feed.url)
+      } catch {
+        // Feed may not exist or may be unavailable — skip silently
+        continue
+      }
+
+      const items = parseRssItems(xml)
+      for (const item of items) {
+        if (!item.title) continue
+        results.push({
+          name:        item.title,
+          description: stripHtml(item.description).slice(0, 500),
+          city:        feed.city,
+          website:     item.link || undefined,
+          imageUrl:    item.enclosureUrl || undefined,
+          sourceUrl:   item.link || undefined,
+          source:      'chamber-rss',
+        })
+      }
+    }
+
+    return results
+  },
+}
+
+// ── Optional Adapter 3: Yelp Fusion API ──────────────────────────────────────
+// Only runs when YELP_API_KEY secret is present.
+// Must be explicitly approved and configured before use.
+
+const YELP_QUERIES: Array<{ term: string; limit: number }> = [
+  { term: 'restaurants',        limit: 20 },
+  { term: 'home services',      limit: 15 },
+  { term: 'health wellness',    limit: 15 },
+  { term: 'beauty salon',       limit: 10 },
+  { term: 'pet services',       limit: 10 },
+  { term: 'automotive',         limit: 10 },
+  { term: 'real estate',        limit: 10 },
+  { term: 'education tutoring', limit: 10 },
+  { term: 'retail',             limit: 10 },
+]
+
 interface YelpBusiness {
-  id:          string
-  name:        string
-  rating?:     number
+  id:            string
+  name:          string
+  rating?:       number
   review_count?: number
-  phone?:      string
-  image_url?:  string
-  url?:        string
-  categories?: Array<{ alias: string; title: string }>
+  phone?:        string
+  image_url?:    string
+  url?:          string
+  categories?:   Array<{ alias: string; title: string }>
   location?: {
-    address1?: string
-    city?:     string
-    state?:    string
-    zip_code?: string
+    address1?:        string
+    city?:            string
+    zip_code?:        string
     display_address?: string[]
   }
 }
 
-// ── Main directory ingestion function ─────────────────────────────────────────
-export async function runDirectoryIngestion(env: Env): Promise<RunLog[]> {
-  const logs: RunLog[] = []
+const YelpAdapter: SourceAdapter<RawBusiness> = {
+  name:     'yelp-api',
+  type:     'api',
+  required: false,
 
-  if (!env.YELP_API_KEY) {
-    console.warn('[directory] YELP_API_KEY not set — skipping Yelp ingestion')
-    const log = createLog('directory', 'yelp-skipped')
-    logError(log, 'YELP_API_KEY environment secret not configured')
-    printLog(log, Date.now())
-    logs.push(log)
-    return logs
-  }
+  isAvailable: (env) => Boolean(env.YELP_API_KEY),
 
-  for (const city of SUPPORTED_CITIES) {
-    const cityLog = createLog('directory', 'yelp', city)
-    const startMs = Date.now()
+  async fetch(env) {
+    const results: RawBusiness[] = []
+    const base = 'https://api.yelp.com/v3/businesses/search'
 
-    for (const { term, limit } of YELP_QUERIES) {
-      let raw: YelpBusiness[]
-      try {
-        raw = await fetchYelpBusinesses(env.YELP_API_KEY, city, term, limit)
-      } catch (err) {
-        logError(cityLog, `Yelp fetch failed for term "${term}": ${String(err)}`)
-        continue
-      }
-
-      cityLog.discovered += raw.length
-
-      for (const biz of raw) {
+    for (const city of SUPPORTED_CITIES) {
+      for (const { term, limit } of YELP_QUERIES) {
         try {
-          await processYelpBusiness(env, city, biz, cityLog)
+          const url = `${base}?location=${encodeURIComponent(city + ', CA')}&term=${encodeURIComponent(term)}&limit=${limit}&sort_by=rating`
+          const res = await fetch(url, {
+            headers: { Authorization: `Bearer ${env.YELP_API_KEY}` },
+          })
+          if (res.status === 401) throw new Error('Yelp API key invalid')
+          if (!res.ok) throw new Error(`Yelp API error ${res.status}`)
+          const json = (await res.json()) as { businesses?: YelpBusiness[] }
+
+          for (const biz of json.businesses ?? []) {
+            results.push({
+              name:        biz.name,
+              category:    biz.categories?.[0]?.title,
+              city:        biz.location?.city ?? city,
+              address:     biz.location?.display_address?.join(', ') ?? biz.location?.address1,
+              phone:       biz.phone,
+              website:     biz.url,
+              imageUrl:    biz.image_url,
+              sourceUrl:   biz.url,
+              source:      'yelp-api',
+            })
+          }
         } catch (err) {
-          logError(cityLog, `Error processing "${biz.name}": ${String(err)}`)
+          // Log but continue with remaining queries
+          console.warn(`[yelp] ${city}/${term}: ${String(err)}`)
         }
       }
     }
 
-    printLog(cityLog, startMs)
-    logs.push(cityLog)
-  }
-
-  return logs
+    return results
+  },
 }
 
-// ── Process a single Yelp business ───────────────────────────────────────────
-async function processYelpBusiness(
+// ── Main entry point ──────────────────────────────────────────────────────────
+
+export async function runDirectoryIngestion(env: Env): Promise<RunLog[]> {
+  const log    = createLog('directory', 'multi-source')
+  const startMs = Date.now()
+
+  const adapters: SourceAdapter<RawBusiness>[] = [
+    ManualFeedAdapter,
+    ChamberRssAdapter,
+    YelpAdapter,   // silently skipped unless YELP_API_KEY is set
+  ]
+
+  const adapterResults = await runAdapters(
+    adapters,
+    env,
+    (msg) => logWarning(log, msg),
+  )
+
+  const allRaw = adapterResults.flatMap((r) => r.items)
+  log.discovered = allRaw.length
+
+  for (const raw of allRaw) {
+    try {
+      await processBusiness(env, raw, log)
+    } catch (err) {
+      logError(log, `Error processing "${raw.name}": ${String(err)}`)
+    }
+  }
+
+  printLog(log, startMs)
+  return [log]
+}
+
+// ── Process a single raw business record ─────────────────────────────────────
+
+async function processBusiness(
   env: Env,
-  city: SupportedCity,
-  raw: YelpBusiness,
+  raw: RawBusiness,
   log: RunLog,
 ): Promise<void> {
-  // 1. Normalize
-  const name        = normalizeString(raw.name) ?? ''
+  const name = normalizeString(raw.name) ?? ''
   if (!name) { log.skipped++; return }
 
-  const normalCity  = normalizeCity(raw.location?.city ?? city)
-  if (!normalCity)  { log.skipped++; return }   // outside supported cities
+  const city = normalizeCity(raw.city)
+  if (!city) { log.skipped++; return }   // not in a supported city
 
-  const category    = normalizeCategory(raw.categories?.[0]?.title)
-  const address     = normalizeAddress(
-    raw.location?.display_address?.join(', ') ?? raw.location?.address1,
-  )
-  const phone       = normalizePhone(raw.phone)
-  const website     = normalizeUrl(raw.url)
+  const category = normalizeCategory(raw.category)
+  const address  = normalizeAddress(raw.address)
+  const phone    = normalizePhone(raw.phone)
+  const website  = normalizeUrl(raw.website)
 
-  // 2. Resolve image
+  // Resolve image — API direct → og:image scrape → null
   const { url: imageUrl, source: imageSource } = await resolveBusinessImage({
-    apiImage:   raw.image_url,
+    apiImage:   raw.imageUrl,
     websiteUrl: website,
   })
   if (imageUrl) log.images_captured++
   else          log.images_missing++
 
-  // 3. Confidence + review flag
-  const fields = { name, city: normalCity, category, address, phone, website, description: undefined, image_url: imageUrl }
-  const confidence = scoreConfidence(fields)
+  const confidence = scoreConfidence({ name, city, category, address, phone, website, description: raw.description, image_url: imageUrl })
   const review     = needsReview(confidence)
   if (review) log.flagged++
 
-  // 4. Deduplication
-  const existing = await findExistingBusiness(env, name, normalCity, phone ?? undefined)
-
-  const now = new Date().toISOString()
+  const existing = await findExistingBusiness(env, name, city, phone ?? undefined)
+  const now      = new Date().toISOString()
 
   if (existing) {
-    // UPDATE — fill in missing fields, refresh metadata
     const patch: Record<string, unknown> = { last_ingested_at: now }
-    if (!existing.image_url  && imageUrl) { patch.image_url  = imageUrl;  patch.image_source = imageSource }
-    if (!existing.phone      && phone)    patch.phone      = phone
-    if (!existing.website    && website)  patch.website    = website
-    if (!existing.address    && address)  patch.address    = address
-
+    if (!existing.image_url && imageUrl) { patch.image_url = imageUrl; patch.image_source = imageSource }
+    if (!existing.phone     && phone)    patch.phone    = phone
+    if (!existing.website   && website)  patch.website  = website
+    if (!existing.address   && address)  patch.address  = address
     await updateRow(env, 'businesses', String(existing.id), patch)
     log.updated++
   } else {
-    // INSERT — new record
-    const row = {
+    const result = await upsertRow(env, 'businesses', {
       name,
+      description:      raw.description ? stripHtml(raw.description).slice(0, 800) : null,
       category,
-      city:              normalCity,
-      address:           address    ?? null,
-      phone:             phone      ?? null,
-      website:           website    ?? null,
-      image_url:         imageUrl   ?? null,
-      image_source:      imageSource !== 'none' ? imageSource : null,
-      status:            'pending',
-      source:            'yelp',
-      source_url:        raw.url    ?? null,
-      last_ingested_at:  now,
-      confidence_score:  confidence,
-      needs_review:      review,
-      ingestion_status:  review ? 'flagged' : 'inserted',
-      // Preserve Yelp rating as a signal (admin can validate)
-      rating:            raw.rating      ?? null,
-      review_count:      raw.review_count ?? null,
-    }
+      city,
+      address:          address  ?? null,
+      phone:            phone    ?? null,
+      website:          website  ?? null,
+      image_url:        imageUrl ?? null,
+      image_source:     imageSource !== 'none' ? imageSource : null,
+      status:           'pending',
+      source:           raw.source,
+      source_url:       raw.sourceUrl ?? null,
+      last_ingested_at: now,
+      confidence_score: confidence,
+      needs_review:     review,
+    }, 'name,city')
 
-    const result = await upsertRow(env, 'businesses', row, 'name,city')
     if (result.ok) log.inserted++
     else           logError(log, `Insert failed for "${name}": ${result.error}`)
   }
 }
+
+// Re-export stripHtml for use in this file (imported from sources)
+import { stripHtml } from '../lib/sources'

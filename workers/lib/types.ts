@@ -2,13 +2,27 @@
 
 // ── Env bindings (Cloudflare Worker env) ─────────────────────────────────────
 export interface Env {
-  SUPABASE_URL:             string   // var — set in wrangler.toml
-  SUPABASE_SERVICE_ROLE_KEY: string  // secret — wrangler secret put
-  YELP_API_KEY?:            string   // secret — optional
-  EVENTBRITE_API_KEY?:      string   // secret — optional
-  PETFINDER_CLIENT_ID?:     string   // secret — optional
-  PETFINDER_CLIENT_SECRET?: string   // secret — optional
-  APP_ENV?:                 string   // var — "production" | "staging"
+  // Required — worker will not run without these
+  SUPABASE_URL:              string   // var — set in wrangler.toml
+  SUPABASE_SERVICE_ROLE_KEY: string   // secret — wrangler secret put
+  APP_ENV:                   string   // var — "production" | "preview" | "dev"
+
+  // Default source config — optional, no credentials required
+  /**
+   * Founder-controlled HTTPS URL returning a JSON array of RawBusiness objects.
+   * Can be a GitHub raw URL, Cloudflare R2 public URL, or any HTTPS JSON endpoint.
+   * When absent the ManualFeedAdapter is silently skipped.
+   */
+  MANUAL_BUSINESS_FEED_URL?: string
+
+  // Optional third-party API adapters
+  // These are NOT required. The worker runs safely without them.
+  // Each adapter checks for its own key and skips gracefully if absent.
+  // Add later via: npx wrangler secret put <KEY>
+  YELP_API_KEY?:             string   // Yelp Fusion API  — business directory
+  EVENTBRITE_API_KEY?:       string   // Eventbrite API   — events
+  PETFINDER_CLIENT_ID?:      string   // PetFinder OAuth2 — lost & found
+  PETFINDER_CLIENT_SECRET?:  string   // PetFinder OAuth2 — lost & found
 }
 
 // ── Canonical city / category lists ──────────────────────────────────────────
