@@ -94,6 +94,8 @@ async function getData(activeCity: City) {
     featuredResult,
     communityCountResult,
     lostFoundCountResult,
+    activityPostsResult,
+    activityLostResult,
   ] = await Promise.allSettled([
     // Total count
     supabase.from('businesses').select('*', { count: 'exact', head: true }).eq('status', 'approved'),
@@ -139,6 +141,19 @@ async function getData(activeCity: City) {
     supabase.from('community_posts').select('*', { count: 'exact', head: true }),
     // Active lost & found count
     supabase.from('lost_and_found').select('*', { count: 'exact', head: true }).neq('status', 'reunited'),
+    // Recent community posts for activity strip
+    supabase
+      .from('community_posts')
+      .select('id, title, category, city, created_at')
+      .order('created_at', { ascending: false })
+      .limit(4),
+    // Recent lost & found for activity strip
+    supabase
+      .from('lost_and_found')
+      .select('id, pet_name, type, city, created_at, status')
+      .neq('status', 'reunited')
+      .order('created_at', { ascending: false })
+      .limit(3),
   ])
 
   const totalBiz =
@@ -181,6 +196,40 @@ async function getData(activeCity: City) {
   const lostFoundCount =
     lostFoundCountResult.status === 'fulfilled' ? (lostFoundCountResult.value.count ?? 0) : 0
 
+  // ── Activity strip items ─────────────────────────────────────────────────────
+  type ActivityItem = {
+    id: string; title: string; type: 'Community' | 'Lost Pet' | 'Event'
+    city: string; href: string; created_at: string
+  }
+  const rawPosts: ActivityItem[] =
+    activityPostsResult.status === 'fulfilled'
+      ? (activityPostsResult.value.data ?? []).map((p: Record<string, unknown>) => ({
+          id:         String(p.id ?? ''),
+          title:      String(p.title ?? ''),
+          type:       'Community' as const,
+          city:       String(p.city ?? ''),
+          href:       `/community/${p.id}`,
+          created_at: String(p.created_at ?? ''),
+        }))
+      : []
+
+  const rawLost: ActivityItem[] =
+    activityLostResult.status === 'fulfilled'
+      ? (activityLostResult.value.data ?? []).map((l: Record<string, unknown>) => ({
+          id:         String(l.id ?? ''),
+          title:      `Lost ${l.type ?? 'pet'}: ${l.pet_name ?? 'Unknown'}`,
+          type:       'Lost Pet' as const,
+          city:       String(l.city ?? ''),
+          href:       '/lost-and-found',
+          created_at: String(l.created_at ?? ''),
+        }))
+      : []
+
+  // Interleave posts + lost pets, dedup by id, take top 5
+  const activityItems: ActivityItem[] = [...rawPosts, ...rawLost]
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .slice(0, 5)
+
   return {
     totalBiz,
     cityBizMap,
@@ -191,7 +240,19 @@ async function getData(activeCity: City) {
     featuredBiz,
     communityPostCount,
     lostFoundCount,
+    activityItems,
   }
+}
+
+function timeAgo(dateStr: string): string {
+  const diff = Date.now() - new Date(dateStr).getTime()
+  const mins = Math.floor(diff / 60000)
+  if (mins < 60)  return `${mins}m ago`
+  const hrs = Math.floor(mins / 60)
+  if (hrs < 24)   return `${hrs}h ago`
+  const days = Math.floor(hrs / 24)
+  if (days < 7)   return `${days}d ago`
+  return 'Recently'
 }
 
 function formatEventDate(dateStr: string) {
@@ -282,6 +343,7 @@ export default async function HomePage({ searchParams }: PageProps) {
     featuredBiz,
     communityPostCount,
     lostFoundCount,
+    activityItems,
   } = await getData(activeCity)
 
   return (
@@ -334,7 +396,7 @@ export default async function HomePage({ searchParams }: PageProps) {
           All Cities →
         </Link>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-12">
         {CITIES.map((city) => {
           const c = CITY_CFG[city]
           const count = cityBizMap[city] ?? 0
@@ -369,7 +431,7 @@ export default async function HomePage({ searchParams }: PageProps) {
       </div>
 
       {/* ── Stats Bar ── */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
         <div className="bg-white rounded-xl border border-gray-200 p-5 text-center">
           <div className="text-3xl font-extrabold text-[#1e3a5f]">{totalBiz}</div>
           <div className="text-xs text-gray-500 mt-1">Total Listings</div>
@@ -396,7 +458,7 @@ export default async function HomePage({ searchParams }: PageProps) {
 
       {/* ── Browse by Category ── */}
       <h2 className="text-lg font-bold text-gray-900 mb-4">Browse by Category</h2>
-      <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-3 mb-8">
+      <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-3 mb-12">
         {CATEGORIES.map(({ icon, name, cat }) => {
           const count = catCountMap[cat] ?? 0
           return (
@@ -419,12 +481,13 @@ export default async function HomePage({ searchParams }: PageProps) {
 
       {/* ── Featured Businesses ── */}
       {featuredBiz.length > 0 && (
-        <div className="mb-8">
+        <div className="mb-12">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <span className="text-lg">⭐</span>
               <h2 className="text-lg font-bold text-gray-900">Featured Businesses</h2>
-              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">
+              {/* Sponsored label — intentional paid placement indicator */}
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-300 bg-amber-50 text-amber-700 tracking-wide uppercase">
                 Sponsored
               </span>
             </div>
@@ -468,7 +531,7 @@ export default async function HomePage({ searchParams }: PageProps) {
 
       {/* ── Trending in {City} ── */}
       {trendingFinal.length > 0 && (
-        <div className="mb-8">
+        <div className="mb-12">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <h2 className="text-lg font-bold text-gray-900">
@@ -498,7 +561,7 @@ export default async function HomePage({ searchParams }: PageProps) {
 
       {/* ── Popular in {City} ── */}
       {popularBiz.length > 0 && (
-        <div className="mb-8">
+        <div className="mb-12">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-gray-900">
               Popular in {activeCity}
@@ -525,7 +588,7 @@ export default async function HomePage({ searchParams }: PageProps) {
 
       {/* ── Upcoming Events ── */}
       {upcomingEvents.length > 0 && (
-        <div className="mb-8">
+        <div className="mb-12">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-gray-900">Upcoming Events</h2>
             <Link href="/events" className="text-sm text-blue-600 hover:underline font-medium">
@@ -564,6 +627,66 @@ export default async function HomePage({ searchParams }: PageProps) {
                 </div>
               )
             })}
+          </div>
+        </div>
+      )}
+
+      {/* ── People are talking about… (Activity Strip) ── */}
+      {activityItems.length > 0 && (
+        <div className="mb-12">
+          <div className="mb-4">
+            <h2 className="text-lg font-bold text-gray-900">People are talking about…</h2>
+            <p className="text-xs text-gray-400 mt-0.5">Recent local buzz from across the community</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {activityItems.map((item) => {
+              const cityColor = {
+                'Mountain House': { bg: 'bg-blue-50',   text: 'text-blue-700'   },
+                'Tracy':          { bg: 'bg-green-50',  text: 'text-green-700'  },
+                'Lathrop':        { bg: 'bg-purple-50', text: 'text-purple-700' },
+                'Manteca':        { bg: 'bg-orange-50', text: 'text-orange-700' },
+                'Brentwood':      { bg: 'bg-teal-50',   text: 'text-teal-700'   },
+              }[item.city] ?? { bg: 'bg-gray-50', text: 'text-gray-600' }
+
+              const typeBadge = {
+                'Community': { bg: 'bg-indigo-50', text: 'text-indigo-600', icon: '💬' },
+                'Lost Pet':  { bg: 'bg-red-50',    text: 'text-red-600',    icon: '🐾' },
+                'Event':     { bg: 'bg-emerald-50',text: 'text-emerald-600',icon: '📅' },
+              }[item.type]
+
+              return (
+                <Link
+                  key={`${item.type}-${item.id}`}
+                  href={item.href}
+                  className="group flex items-start gap-3 bg-white rounded-xl border border-gray-200 px-4 py-3.5 hover:shadow-md hover:-translate-y-0.5 transition-all"
+                >
+                  <span className="text-xl mt-0.5 shrink-0">{typeBadge.icon}</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-700 line-clamp-2 leading-snug mb-1.5 transition-colors">
+                      {item.title}
+                    </p>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${typeBadge.bg} ${typeBadge.text}`}>
+                        {item.type}
+                      </span>
+                      {item.city && (
+                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${cityColor.bg} ${cityColor.text}`}>
+                          {item.city}
+                        </span>
+                      )}
+                      <span className="text-[10px] text-gray-400 ml-auto">
+                        {timeAgo(item.created_at)}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+          <div className="mt-3 text-right">
+            <Link href="/community" className="text-xs text-blue-500 hover:underline font-medium">
+              See all community posts →
+            </Link>
           </div>
         </div>
       )}

@@ -10,26 +10,36 @@ interface PageProps {
 }
 
 // ── City config ───────────────────────────────────────────────────────────────
-const CITY_CFG: Record<string, { gradient: string; chip: string; emoji: string }> = {
+const CITY_CFG: Record<string, { gradient: string; chip: string; emoji: string; accent: string }> = {
   'Mountain House': {
     gradient: 'linear-gradient(135deg,#1e3a5f 0%,#1e40af 100%)',
     chip: 'bg-blue-50 text-blue-700',
     emoji: '🏘️',
+    accent: '#1e40af',
   },
   Tracy: {
     gradient: 'linear-gradient(135deg,#14532d 0%,#15803d 100%)',
     chip: 'bg-green-50 text-green-700',
     emoji: '🌿',
+    accent: '#15803d',
   },
   Lathrop: {
     gradient: 'linear-gradient(135deg,#581c87 0%,#7e22ce 100%)',
     chip: 'bg-purple-50 text-purple-700',
     emoji: '🔮',
+    accent: '#7e22ce',
   },
   Manteca: {
     gradient: 'linear-gradient(135deg,#7c2d12 0%,#c2410c 100%)',
     chip: 'bg-orange-50 text-orange-700',
     emoji: '🍊',
+    accent: '#c2410c',
+  },
+  Brentwood: {
+    gradient: 'linear-gradient(135deg,#134e4a 0%,#0d9488 100%)',
+    chip: 'bg-teal-50 text-teal-700',
+    emoji: '🌊',
+    accent: '#0d9488',
   },
 }
 
@@ -420,14 +430,29 @@ export default async function BusinessDetailPage({ params }: PageProps) {
             </div>
           )}
 
-          {/* Claim listing */}
+          {/* ── Claim listing CTA ─────────────────────────────────────── */}
           {!biz.claimed && (
-            <Link
-              href={`/claim-listing/${biz.id}`}
-              className="block w-full text-center text-sm font-medium py-2.5 rounded-xl border border-gray-200 text-gray-500 hover:border-gray-400 hover:text-gray-700 transition"
-            >
-              🏷️ Is this your business? Claim it
-            </Link>
+            <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
+              <div className="flex items-start gap-3 mb-3">
+                <span className="text-2xl">🏷️</span>
+                <div>
+                  <p className="text-sm font-bold text-gray-900 leading-snug">
+                    Is this your business?
+                  </p>
+                  <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">
+                    Claim this listing to add contact info, photos, hours, and respond to reviews.
+                  </p>
+                </div>
+              </div>
+              <Link
+                href={`/claim-listing/${biz.id}`}
+                className="block w-full text-center text-sm font-bold py-2.5 rounded-xl text-white transition hover:opacity-90"
+                style={{ backgroundColor: city.accent }}
+              >
+                Claim This Business →
+              </Link>
+              <p className="text-[10px] text-gray-400 text-center mt-2">Free · Takes 2 minutes</p>
+            </div>
           )}
 
           {/* Report listing */}
