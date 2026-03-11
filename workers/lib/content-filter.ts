@@ -42,6 +42,14 @@ const CRIME_KEYWORDS: string[] = [
   // Incidents
   'crash', 'fatal crash', 'deadly', 'death', 'deaths', 'fatality',
   'overdose', 'casualty',
+  // Political scandal / controversy
+  'crooked', 'scandal', 'corruption', 'misconduct', 'controversy',
+  'paid leave', 'placed on leave', 'resign', 'resigned', 'fired',
+  'abuse of', 'lavish spending', 'inexplicably',
+  // Racism / discrimination incidents
+  'racist', 'racial slur', 'hate crime', 'discrimination',
+  // Outside-area cities that frequently appear in 209times national/regional coverage
+  'stockton unified', 'stanislaus', 'modesto', 'lodi city',
 ]
 
 // Pre-compile to lowercase once at module load for fast matching
