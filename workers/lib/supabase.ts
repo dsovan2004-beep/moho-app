@@ -40,16 +40,17 @@ export async function selectRows<T extends SupabaseRow>(
 
 // ── Generic upsert ────────────────────────────────────────────────────────────
 // onConflict specifies the unique column(s) used for the upsert merge.
+// NOTE: on_conflict must be a URL query param, NOT a Prefer header directive.
 export async function upsertRow(
   env: Env,
   table: string,
   row: Record<string, unknown>,
   onConflict: string,
 ): Promise<{ ok: boolean; data?: SupabaseRow; error?: string }> {
-  const url = `${env.SUPABASE_URL}/rest/v1/${table}`
+  const url = `${env.SUPABASE_URL}/rest/v1/${table}?on_conflict=${encodeURIComponent(onConflict)}`
   const res = await fetch(url, {
     method:  'POST',
-    headers: headers(env, { Prefer: `return=representation,resolution=merge-duplicates,on_conflict=${onConflict}` }),
+    headers: headers(env),
     body:    JSON.stringify(row),
   })
 
