@@ -136,13 +136,20 @@ export interface RawLostFound {
 
 // ── RSS fetch utility ─────────────────────────────────────────────────────────
 
-export async function fetchRss(url: string, timeoutMs = 8_000): Promise<string> {
+const DEFAULT_UA  = 'MoHoLocal-Ingestion/1.0 (+https://moholocal.com)'
+const BROWSER_UA  = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
+
+export async function fetchRss(
+  url: string,
+  timeoutMs = 8_000,
+  extraHeaders?: Record<string, string>,
+): Promise<string> {
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), timeoutMs)
   try {
     const res = await fetch(url, {
       signal:  controller.signal,
-      headers: { 'User-Agent': 'MoHoLocal-Ingestion/1.0 (+https://moholocal.com)' },
+      headers: { 'User-Agent': DEFAULT_UA, ...extraHeaders },
     })
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     return await res.text()
@@ -151,11 +158,16 @@ export async function fetchRss(url: string, timeoutMs = 8_000): Promise<string> 
   }
 }
 
-/** Try each URL in order, return the first that returns valid RSS */
-export async function fetchFirstWorkingRss(urls: string[]): Promise<{ xml: string; url: string } | null> {
+/** Try each URL in order, return the first that returns valid RSS.
+ *  Pass useBrowserUA=true to send a real browser User-Agent (helps bypass bot detection). */
+export async function fetchFirstWorkingRss(
+  urls: string[],
+  useBrowserUA = false,
+): Promise<{ xml: string; url: string } | null> {
+  const extraHeaders = useBrowserUA ? { 'User-Agent': BROWSER_UA } : undefined
   for (const url of urls) {
     try {
-      const xml = await fetchRss(url, 6_000)
+      const xml = await fetchRss(url, 6_000, extraHeaders)
       if (/<(?:rss|feed|channel)\b/i.test(xml)) return { xml, url }
     } catch {
       // try next

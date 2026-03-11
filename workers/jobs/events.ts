@@ -186,6 +186,8 @@ const SJCountyAdapter: SourceAdapter<RawEvent> = {
 const TRACYPRESS_URLS = [
   'https://www.tracypress.com/feed/',
   'https://tracypress.com/feed/',
+  'https://www.tracypress.com/category/news/feed/',
+  'https://www.tracypress.com/category/local/feed/',
   'https://www.tracypress.com/rss.xml',
 ]
 
@@ -196,7 +198,8 @@ const TracyPressAdapter: SourceAdapter<RawEvent> = {
   isAvailable: () => true,
 
   async fetch() {
-    const found = await fetchFirstWorkingRss(TRACYPRESS_URLS)
+    // tracypress.com blocks our default User-Agent — try with browser UA first
+    const found = await fetchFirstWorkingRss(TRACYPRESS_URLS, true)
     if (!found) return []
     return newsRssToEvents(parseRssItems(found.xml), 'Tracy', 'tracy-press-rss')
   },
@@ -219,17 +222,20 @@ const Times209Adapter: SourceAdapter<RawEvent> = {
   async fetch() {
     const found = await fetchFirstWorkingRss(TIMES209_URLS)
     if (!found) return []
-    return newsRssToEvents(parseRssItems(found.xml), null, '209times-rss')
+    // 209times covers the entire 209 area — use Tracy as fallback for articles
+    // that don't explicitly name a supported city in the headline.
+    return newsRssToEvents(parseRssItems(found.xml), 'Tracy', '209times-rss')
   },
 }
 
 // ── Adapter 5: Patch.com RSS (DEFAULT) ───────────────────────────────────────
 
-const PATCH_FEEDS: Array<{ city: SupportedCity; url: string }> = [
-  { city: 'Tracy',     url: 'https://patch.com/california/tracy/rss.xml' },
-  { city: 'Manteca',   url: 'https://patch.com/california/manteca/rss.xml' },
-  { city: 'Lathrop',   url: 'https://patch.com/california/lathrop/rss.xml' },
-  { city: 'Brentwood', url: 'https://patch.com/california/brentwood/rss.xml' },
+// Patch.com dropped /rss.xml — try multiple URL formats per city.
+const PATCH_FEEDS: Array<{ city: SupportedCity; urls: string[] }> = [
+  { city: 'Tracy',     urls: ['https://patch.com/california/tracy/rss.xml', 'https://patch.com/california/tracy/feed', 'https://patch.com/california/tracy/rss'] },
+  { city: 'Manteca',   urls: ['https://patch.com/california/manteca/rss.xml', 'https://patch.com/california/manteca/feed', 'https://patch.com/california/manteca/rss'] },
+  { city: 'Lathrop',   urls: ['https://patch.com/california/lathrop/rss.xml', 'https://patch.com/california/lathrop/feed', 'https://patch.com/california/lathrop/rss'] },
+  { city: 'Brentwood', urls: ['https://patch.com/california/brentwood/rss.xml', 'https://patch.com/california/brentwood/feed', 'https://patch.com/california/brentwood/rss'] },
 ]
 
 const PatchAdapter: SourceAdapter<RawEvent> = {
@@ -241,9 +247,9 @@ const PatchAdapter: SourceAdapter<RawEvent> = {
   async fetch() {
     const results: RawEvent[] = []
     for (const feed of PATCH_FEEDS) {
-      let xml: string
-      try { xml = await fetchRss(feed.url) } catch { continue }
-      results.push(...newsRssToEvents(parseRssItems(xml), feed.city, 'patch-rss'))
+      const found = await fetchFirstWorkingRss(feed.urls)
+      if (!found) continue
+      results.push(...newsRssToEvents(parseRssItems(found.xml), feed.city, 'patch-rss'))
     }
     return results
   },
@@ -426,7 +432,8 @@ function newsRssToEvents(
   const results: RawEvent[] = []
   for (const item of items) {
     if (!item.title) continue
-    const city = defaultCity ?? inferCity(item.title + ' ' + item.description)
+    // Prefer explicit city match in text; fall back to defaultCity if provided
+    const city = inferCity(item.title + ' ' + item.description) ?? defaultCity
     if (!city) continue
     const startDate = tryParseDate(item.pubDate)
     if (!startDate) continue

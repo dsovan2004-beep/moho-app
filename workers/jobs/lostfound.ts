@@ -82,7 +82,8 @@ function rssToLostFound(
     if (!item.title) continue
     const text = `${item.title} ${item.description ?? ''}`
     if (!hasPetKeyword(text)) continue
-    const city = defaultCity ?? inferCity(text)
+    // Prefer explicit city match in text; fall back to defaultCity if provided
+    const city = inferCity(text) ?? defaultCity
     if (!city) continue
     results.push({
       title:       item.title,
@@ -155,7 +156,8 @@ const Times209Adapter: SourceAdapter<RawLostFound> = {
   async fetch() {
     const found = await fetchFirstWorkingRss(TIMES209_URLS)
     if (!found) return []
-    return rssToLostFound(parseRssItems(found.xml), null, '209times-rss')
+    // 209times covers the entire 209 area — use Tracy as fallback city
+    return rssToLostFound(parseRssItems(found.xml), 'Tracy', '209times-rss')
   },
 }
 
@@ -164,6 +166,8 @@ const Times209Adapter: SourceAdapter<RawLostFound> = {
 const TRACYPRESS_URLS = [
   'https://www.tracypress.com/feed/',
   'https://tracypress.com/feed/',
+  'https://www.tracypress.com/category/news/feed/',
+  'https://www.tracypress.com/category/community/feed/',
   'https://www.tracypress.com/rss.xml',
 ]
 
@@ -174,7 +178,8 @@ const TracyPressAdapter: SourceAdapter<RawLostFound> = {
   isAvailable: () => true,
 
   async fetch() {
-    const found = await fetchFirstWorkingRss(TRACYPRESS_URLS)
+    // tracypress.com blocks our default User-Agent — try with browser UA
+    const found = await fetchFirstWorkingRss(TRACYPRESS_URLS, true)
     if (!found) return []
     return rssToLostFound(parseRssItems(found.xml), 'Tracy', 'tracy-press-rss')
   },
