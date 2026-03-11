@@ -444,16 +444,131 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <NavContent />
         </Suspense>
         <main>{children}</main>
-        <footer className="bg-gray-900 text-gray-400 text-sm py-8 mt-16">
-          <div className="max-w-7xl mx-auto px-4 text-center">
-            <p className="font-semibold text-white mb-1">MoHoLocal</p>
-            <p className="mb-3">Connecting Mountain House, Tracy, Lathrop, Manteca &amp; Brentwood</p>
-            <Link
-              href="/new-resident"
-              className="text-xs text-gray-500 hover:text-gray-300 transition underline"
-            >
-              New to the area? Start here →
-            </Link>
+        <footer className="bg-gray-900 text-gray-400 text-sm mt-16">
+          {/* ── Main 4-column grid ── */}
+          <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-14 pb-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+
+              {/* Col 1 — Brand */}
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-xs font-bold px-2 py-1 rounded" style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}>MH</span>
+                  <span className="text-white font-extrabold text-lg tracking-tight">
+                    MoHo<span style={{ color: '#f59e0b' }}>Local</span>
+                  </span>
+                </div>
+                <p className="text-gray-400 text-sm leading-relaxed mb-5">
+                  Find local businesses, connect with neighbors, and discover what&apos;s happening nearby.
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {[
+                    { label: 'Mountain House', slug: 'mountain-house', color: '#2563eb' },
+                    { label: 'Tracy',          slug: 'tracy',          color: '#16a34a' },
+                    { label: 'Lathrop',        slug: 'lathrop',        color: '#9333ea' },
+                    { label: 'Manteca',        slug: 'manteca',        color: '#ea580c' },
+                    { label: 'Brentwood',      slug: 'brentwood',      color: '#0d9488' },
+                  ].map(({ label, color }) => (
+                    <span
+                      key={label}
+                      className="text-xs font-semibold px-2.5 py-1 rounded-full"
+                      style={{ backgroundColor: `${color}22`, color, border: `1px solid ${color}44` }}
+                    >
+                      {label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Col 2 — Directory */}
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Directory</h3>
+                <ul className="space-y-2.5">
+                  {[
+                    { label: 'Home Services',    href: '/directory?category=Home+Services' },
+                    { label: 'Restaurants',       href: '/directory?category=Restaurants' },
+                    { label: 'Health & Wellness', href: '/directory?category=Health+%26+Wellness' },
+                    { label: 'Pet Services',      href: '/directory?category=Pet+Services' },
+                    { label: 'All Categories',    href: '/directory' },
+                  ].map(({ label, href }) => (
+                    <li key={label}>
+                      <Link href={href} className="text-gray-400 hover:text-white transition-colors">
+                        {label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Col 3 — Community */}
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Community</h3>
+                <ul className="space-y-2.5">
+                  {[
+                    { label: 'Community Board',   href: '/community' },
+                    { label: 'Events Calendar',   href: '/events' },
+                    { label: 'Lost & Found',      href: '/lost-and-found' },
+                    { label: 'New Resident Guide', href: '/new-resident' },
+                    { label: 'Activity Feed',     href: '/activity' },
+                  ].map(({ label, href }) => (
+                    <li key={label}>
+                      <Link href={href} className="text-gray-400 hover:text-white transition-colors">
+                        {label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Col 4 — Business Owners */}
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Business Owners</h3>
+                <ul className="space-y-2.5">
+                  {[
+                    { label: 'List Your Business', href: '/submit-business' },
+                    { label: 'Claim a Listing',    href: '/submit-business' },
+                    { label: 'Featured Listings',  href: '/submit-business' },
+                    { label: 'Contact Us',         href: '/submit-business' },
+                  ].map(({ label, href }) => (
+                    <li key={label}>
+                      <Link href={href} className="text-gray-400 hover:text-white transition-colors">
+                        {label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA pill */}
+                <div className="mt-6">
+                  <Link
+                    href="/submit-business"
+                    className="inline-block text-xs font-bold px-4 py-2 rounded-full transition-all"
+                    style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}
+                  >
+                    + List Your Business Free
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ── Bottom utility row ── */}
+          <div className="border-t border-gray-800">
+            <div className="max-w-7xl mx-auto px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <p className="text-xs text-gray-600 text-center sm:text-left">
+                © {new Date().getFullYear()} MoHoLocal · Serving Mountain House, Tracy, Lathrop, Manteca &amp; Brentwood
+              </p>
+              <div className="flex items-center gap-4">
+                {[
+                  { label: 'Privacy', href: '/privacy' },
+                  { label: 'Terms',   href: '/terms' },
+                  { label: 'Contact', href: '/submit-business' },
+                ].map(({ label, href }) => (
+                  <Link key={label} href={href} className="text-xs text-gray-600 hover:text-gray-300 transition-colors">
+                    {label}
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
         </footer>
       </body>
