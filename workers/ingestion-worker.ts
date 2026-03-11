@@ -43,6 +43,11 @@ interface SignalBody {
   event_date?:      string
   image_url?:       string
   contact_url?:     string
+  // Screenshot Signal Inbox traceability fields (optional)
+  source_file?:     string   // original filename from signals-inbox/raw/
+  raw_text?:        string   // raw OCR-extracted text
+  ocr_confidence?:  number   // 0–1 normalized OCR confidence
+  confidence_score?: number  // override classification confidence
 }
 
 interface PromoteBody {
@@ -225,9 +230,14 @@ async function handleSubmitSignal(req: Request, env: Env): Promise<Response> {
   }
 
   // Optional fields — only include if provided
-  if (body.event_date)  row.event_date  = body.event_date
-  if (body.image_url)   row.image_url   = body.image_url.trim()
-  if (body.contact_url) row.contact_url = body.contact_url.trim()
+  if (body.event_date)    row.event_date    = body.event_date
+  if (body.image_url)     row.image_url     = body.image_url.trim()
+  if (body.contact_url)   row.contact_url   = body.contact_url.trim()
+  // Screenshot Signal Inbox traceability
+  if (body.source_file)   row.source_file   = body.source_file.trim()
+  if (body.raw_text)      row.raw_text      = body.raw_text.slice(0, 3000)
+  if (typeof body.ocr_confidence === 'number')  row.ocr_confidence  = body.ocr_confidence
+  if (typeof body.confidence_score === 'number') row.confidence_score = body.confidence_score
 
   const result = await insertRow(env, 'community_submissions', row)
 
