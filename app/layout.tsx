@@ -121,6 +121,10 @@ function NavContent() {
   const [exploreOpen, setExploreOpen] = useState(false)
   const exploreRef = useRef<HTMLDivElement>(null)
 
+  // Mobile Best Of dropdown state
+  const [bestOfMobileOpen, setBestOfMobileOpen] = useState(false)
+  const bestOfMobileRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
     const supabase = getSupabaseClient()
     supabase.auth.getUser().then(({ data: { user } }) => setUser(user))
@@ -130,21 +134,29 @@ function NavContent() {
     return () => subscription.unsubscribe()
   }, [])
 
-  // Close both dropdowns when clicking outside
+  // Close dropdowns when clicking/tapping outside (mousedown + touchstart for Android)
   useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+    function handleClickOutside(e: MouseEvent | TouchEvent) {
+      const target = e.target as Node
+      if (dropdownRef.current && !dropdownRef.current.contains(target)) {
         setDropdownOpen(false)
       }
-      if (cityPickerRef.current && !cityPickerRef.current.contains(e.target as Node)) {
+      if (cityPickerRef.current && !cityPickerRef.current.contains(target)) {
         setCityPickerOpen(false)
       }
-      if (exploreRef.current && !exploreRef.current.contains(e.target as Node)) {
+      if (exploreRef.current && !exploreRef.current.contains(target)) {
         setExploreOpen(false)
+      }
+      if (bestOfMobileRef.current && !bestOfMobileRef.current.contains(target)) {
+        setBestOfMobileOpen(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
+    document.addEventListener('touchstart', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('touchstart', handleClickOutside)
+    }
   }, [])
 
   function handleCitySelect(c: string) {
@@ -392,7 +404,7 @@ function NavContent() {
         </div>
 
         {/* Mobile nav links */}
-        <div className="md:hidden border-t border-white/10 px-4 py-2 flex gap-3 overflow-x-auto">
+        <div className="md:hidden border-t border-white/10 px-4 py-2 flex gap-3 overflow-x-auto items-center">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
@@ -407,17 +419,55 @@ function NavContent() {
               {link.label}
             </Link>
           ))}
-          <span className="text-white/20 text-xs">|</span>
-          {EXPLORE_LINKS.map(({ slug, label, emoji }) => (
-            <Link
-              key={slug}
-              href={`/best/${slug}/${city.toLowerCase().replace(/\s+/g, '-')}`}
-              className="text-xs whitespace-nowrap font-medium"
-              style={{ color: 'rgba(255,255,255,0.55)' }}
+          <span className="text-white/20 text-xs shrink-0">|</span>
+
+          {/* Best Of dropdown — mobile */}
+          <div className="relative shrink-0" ref={bestOfMobileRef}>
+            <button
+              onClick={() => setBestOfMobileOpen((o) => !o)}
+              className="flex items-center gap-1 text-xs font-medium whitespace-nowrap"
+              style={{ color: bestOfMobileOpen ? '#f59e0b' : 'rgba(255,255,255,0.75)' }}
             >
-              {emoji} {label}
-            </Link>
-          ))}
+              ⭐ Best Of
+              <svg
+                className="w-2.5 h-2.5 opacity-70 transition-transform"
+                style={{ transform: bestOfMobileOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {bestOfMobileOpen && (
+              <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
+                <div className="px-4 py-2.5 border-b border-gray-100">
+                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+                    Best in {city}
+                  </p>
+                </div>
+                {EXPLORE_LINKS.map(({ slug, label, emoji }) => (
+                  <Link
+                    key={slug}
+                    href={`/best/${slug}/${city.toLowerCase().replace(/\s+/g, '-')}`}
+                    onClick={() => setBestOfMobileOpen(false)}
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
+                  >
+                    <span>{emoji}</span>
+                    <span>Best {label}</span>
+                  </Link>
+                ))}
+                <div className="border-t border-gray-100 px-4 py-2.5">
+                  <Link
+                    href="/directory"
+                    onClick={() => setBestOfMobileOpen(false)}
+                    className="text-xs font-semibold text-blue-600 hover:underline"
+                  >
+                    Browse all categories →
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </nav>
 
