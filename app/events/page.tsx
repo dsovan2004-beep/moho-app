@@ -3,7 +3,7 @@ export const runtime = 'edge'
 import { getSupabaseClient, type Event } from '@/lib/supabase'
 import Link from 'next/link'
 
-const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca']
+const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca', 'Brentwood']
 
 interface PageProps {
   searchParams: Promise<{ city?: string }>
@@ -36,6 +36,7 @@ const CITY_COLORS: Record<string, string> = {
   Tracy: 'bg-green-100 text-green-800',
   Lathrop: 'bg-purple-100 text-purple-800',
   Manteca: 'bg-orange-100 text-orange-800',
+  Brentwood: 'bg-teal-100 text-teal-800',
 }
 
 function EventCard({ event }: { event: Event }) {
