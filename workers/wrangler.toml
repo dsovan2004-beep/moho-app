@@ -1,0 +1,46 @@
+# ── MoHoLocal Ingestion Worker — Cloudflare Worker Configuration ──────────────
+name              = "moho-ingestion"
+main              = "ingestion-worker.ts"
+compatibility_date = "2024-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ── Cron Triggers ─────────────────────────────────────────────────────────────
+# All times UTC.  Sequence is intentional — each job runs 1 hour apart so
+# Supabase write load is spread out and logs are easy to distinguish in Dash.
+[triggers]
+crons = [
+  "0 3 * * 1",   # Monday 03:00 UTC — Directory ingestion
+  "0 4 * * 1",   # Monday 04:00 UTC — Events ingestion
+  "0 5 * * 1",   # Monday 05:00 UTC — Lost & Found ingestion
+]
+
+# ── Non-secret vars (safe to commit) ─────────────────────────────────────────
+[vars]
+SUPABASE_URL = "https://ozjlfgipfzykzrjakwzb.supabase.co"
+APP_ENV      = "production"
+
+# ── Secrets — set via wrangler CLI (never commit these) ──────────────────────
+# Run from the /workers directory:
+#
+#   wrangler secret put SUPABASE_SERVICE_ROLE_KEY
+#   wrangler secret put YELP_API_KEY
+#   wrangler secret put EVENTBRITE_API_KEY
+#   wrangler secret put PETFINDER_CLIENT_ID
+#   wrangler secret put PETFINDER_CLIENT_SECRET
+#
+# Required:
+#   SUPABASE_SERVICE_ROLE_KEY  — Supabase service role key (Settings → API)
+#
+# Optional (worker gracefully skips sources whose keys are absent):
+#   YELP_API_KEY               — Yelp Fusion API key (console.yelp.com)
+#   EVENTBRITE_API_KEY         — Eventbrite private token (eventbrite.com/account-settings)
+#   PETFINDER_CLIENT_ID        — PetFinder API client ID (petfinder.com/developers)
+#   PETFINDER_CLIENT_SECRET    — PetFinder API client secret
+
+# ── Observability ─────────────────────────────────────────────────────────────
+# View logs in real time: wrangler tail
+# View in Cloudflare Dashboard: Workers & Pages → moho-ingestion → Logs
+
+# ── Local development ─────────────────────────────────────────────────────────
+# Test scheduled event: wrangler dev --test-scheduled
+# Then POST:           curl "http://localhost:8787/__scheduled?cron=0+3+*+*+1"
