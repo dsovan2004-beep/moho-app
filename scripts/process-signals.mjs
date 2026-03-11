@@ -153,6 +153,62 @@ function extractTitle(text, type) {
   return labels[type] ?? 'Community Submission'
 }
 
+// ── Content quality checks ────────────────────────────────────────────────────
+
+/**
+ * Returns true if OCR text looks like a Facebook screenshot (not a real signal).
+ * Facebook screenshots produce garbage OCR: group names, nav chrome, emoji reactions.
+ */
+function isFacebookScreenshot(text) {
+  const lower = text.toLowerCase()
+  const indicators = [
+    'facebook.com/groups',
+    'facebook.com/group',
+    '/groups/mountainhouse',
+    '/groups/tracy',
+    '/groups/manteca',
+    '/groups/lathrop',
+    'search facebook',
+    'write a comment',
+    'like comment share',
+    'most relevant',
+    'top contributor',
+    'see more',
+    'view full post',
+    'reactions',
+    '· follow',
+    'years ago',
+    'months ago',
+    'days ago',
+  ]
+  const matches = indicators.filter(i => lower.includes(i)).length
+  return matches >= 2
+}
+
+/**
+ * Returns true if OCR text is too garbled to be useful.
+ * Detects high ratio of noise characters (|, <, >, =, ~, ^).
+ */
+function isGarbledText(text) {
+  const noiseChars = (text.match(/[|<>=~^\\]{1}/g) || []).length
+  const ratio = noiseChars / Math.max(text.length, 1)
+  return ratio > 0.08  // more than 8% noise chars = garbled
+}
+
+/**
+ * Returns true if the article contains crime or violence content.
+ */
+function isCrimeContent(text) {
+  const lower = text.toLowerCase()
+  const crimeKeywords = [
+    'arrest', 'arrested', 'shooting', 'shot', 'stabbing', 'stabbed',
+    'killed', 'murder', 'homicide', 'assault', 'robbery', 'bomb',
+    'arson', 'charged', 'convicted', 'sentenced', 'jail', 'prison',
+    'suspect', 'investigation', 'fatal', 'overdose',
+  ]
+  return crimeKeywords.some(k => lower.includes(k))
+}
+
 function extractDescription(text) {
   return text.replace(/\s{3,}/g, '\n\n').trim().slice(0, 1500)
 }
@@ -241,6 +297,28 @@ async function processFile(filename, log) {
     log.push(`  OCR produced too little text (${ocrText.length} chars) — moving to failed`)
     moveFile(srcPath, path.join(FAILED_DIR, filename))
     return { status: 'failed', reason: 'ocr_empty' }
+  }
+
+  // ── Content quality checks ────────────────────────────────────────────────
+  if (isFacebookScreenshot(ocrText)) {
+    log.push(`  REJECTED — Facebook screenshot detected (not a valid community signal)`)
+    moveFile(srcPath, path.join(FAILED_DIR, filename))
+    log.push(`  → moved to failed/`)
+    return { status: 'failed', reason: 'facebook_screenshot' }
+  }
+
+  if (isGarbledText(ocrText)) {
+    log.push(`  REJECTED — OCR text too garbled to be useful (noise ratio too high)`)
+    moveFile(srcPath, path.join(FAILED_DIR, filename))
+    log.push(`  → moved to failed/`)
+    return { status: 'failed', reason: 'garbled_text' }
+  }
+
+  if (isCrimeContent(ocrText)) {
+    log.push(`  REJECTED — Crime/violence content detected — skipping`)
+    moveFile(srcPath, path.join(FAILED_DIR, filename))
+    log.push(`  → moved to failed/`)
+    return { status: 'failed', reason: 'crime_content' }
   }
 
   // ── Classify ──────────────────────────────────────────────────────────────

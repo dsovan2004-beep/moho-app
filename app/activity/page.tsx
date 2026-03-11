@@ -15,18 +15,35 @@ async function fetchActivityFeed(city?: string): Promise<ActivityItem[]> {
   const postsQuery = supabase
     .from('community_posts')
     .select('id, title, content, city, created_at')
+    .not('title', 'ilike', '%facebook%')
+    .not('title', 'ilike', '%facebook.com%')
+    .not('content', 'ilike', '%facebook.com/groups%')
     .order('created_at', { ascending: false })
     .limit(20)
 
   const eventsQuery = supabase
     .from('events')
     .select('id, title, description, city, created_at')
+    .not('title', 'ilike', '%stabbing%')
+    .not('title', 'ilike', '%shooting%')
+    .not('title', 'ilike', '%killed%')
+    .not('title', 'ilike', '%murder%')
+    .not('title', 'ilike', '%arrested%')
+    .not('title', 'ilike', '%bomb%')
+    .not('title', 'ilike', '%arson%')
     .order('created_at', { ascending: false })
     .limit(20)
 
   const lostQuery = supabase
     .from('lost_and_found')
     .select('id, title, description, city, created_at')
+    .not('title', 'ilike', '%stabbing%')
+    .not('title', 'ilike', '%shooting%')
+    .not('title', 'ilike', '%killed%')
+    .not('title', 'ilike', '%murder%')
+    .not('title', 'ilike', '%arrested%')
+    .not('title', 'ilike', '%bomb%')
+    .not('title', 'ilike', '%arson%')
     .order('created_at', { ascending: false })
     .limit(20)
 
