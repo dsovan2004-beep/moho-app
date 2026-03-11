@@ -110,6 +110,11 @@ export default {
   async fetch(req: Request, env: Env): Promise<Response> {
     const { pathname } = new URL(req.url)
 
+    // ── CORS preflight ──
+    if (req.method === 'OPTIONS') {
+      return corsPreflightResponse()
+    }
+
     // ── Health check ──
     if (pathname === '/health') {
       return json({ status: 'ok', worker: 'moho-ingestion', ts: new Date().toISOString() })
@@ -420,11 +425,21 @@ async function handleScheduled(event: ScheduledEvent, env: Env): Promise<void> {
 
 // ── Response helpers ──────────────────────────────────────────────────────────
 
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin':  '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Token',
+}
+
 function json(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data, null, 2), {
     status,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
   })
+}
+
+function corsPreflightResponse(): Response {
+  return new Response(null, { status: 204, headers: CORS_HEADERS })
 }
 
 function buildRunResponse(job: string, logs: ReturnType<typeof Array.prototype.flatMap>) {
