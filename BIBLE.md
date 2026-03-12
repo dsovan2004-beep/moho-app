@@ -277,5 +277,98 @@ If the agent is uncertain whether a piece of content or a product decision belon
 
 ---
 
-MoHoLocal Product Bible v1
+## Founder Vision and Success Metric
+
+MoHoLocal is being built as a scalable hyperlocal discovery platform that connects residents with local businesses, events, and community activity across neighboring cities.
+
+The founder objective is to grow MoHoLocal into a profitable regional platform.
+
+**Primary founder goal: Generate $1,000,000 in annual revenue within the next 6–12 months.**
+
+---
+
+## Primary Revenue Model
+
+The fastest path to revenue for MoHoLocal is the local business discovery engine.
+
+The platform already contains a seeded business directory across multiple cities. Revenue will be generated through:
+
+- Featured business listings
+- Sponsored placement in "Best Of" pages
+- Sponsored event promotion
+- Local advertising packages
+- Business profile upgrades
+- Lead generation for service providers
+
+**Example pricing model:**
+
+| Product | Price |
+|---------|-------|
+| Featured Listing | $49–$99 / month |
+| Category Sponsorship | $199–$399 / month |
+| Sponsored Events | $50–$200 / listing |
+| Local Ads | $100–$500 / month |
+
+With 200–500 paying local businesses across multiple cities, the platform can reach $1M in annual revenue.
+
+---
+
+## Growth Strategy
+
+MoHoLocal grows through local discovery.
+
+Key traffic sources:
+- Local SEO pages (Best Of pages)
+- Community signals and events
+- Neighborhood discovery
+- New Resident Guides
+- Local business directory
+
+AI development agents should prioritize building features that increase:
+- Local search traffic
+- Business visibility
+- Discovery of local services
+- Directory engagement
+- City expansion
+
+---
+
+## High Priority Features for Platform Growth
+
+AI agents should prioritize development work that directly supports revenue and growth:
+
+- Directory discoverability
+- Best Of category pages
+- City SEO pages
+- Business profile pages
+- Featured listing system
+- Sponsored placement logic
+- Event promotion tools
+
+These features directly support revenue generation and should be prioritized above all other work.
+
+---
+
+## Lower Priority Features
+
+AI agents should avoid spending significant development time on features that do not contribute to growth or monetization:
+
+- Complex social feeds
+- Generic news aggregation
+- Low-value UI experiments
+- Features unrelated to local discovery
+
+When deciding what to build next, the first question is always: **does this help a resident discover a local business, event, or community signal?** If not, it is low priority.
+
+---
+
+## Platform Principle
+
+MoHoLocal exists to help residents discover local businesses, events, and community signals.
+
+Businesses gain visibility. Residents gain useful local information. The platform succeeds when it connects these two groups efficiently and at scale.
+
+---
+
+MoHoLocal Product Bible v2
 Confidential — March 2026
