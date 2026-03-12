@@ -101,6 +101,15 @@ export interface Business {
   created_at: string
 }
 
+export interface BusinessImage {
+  id: string
+  business_id: string
+  image_url: string
+  alt_text?: string
+  position: number
+  created_at: string
+}
+
 export interface Event {
   id: string
   title: string
