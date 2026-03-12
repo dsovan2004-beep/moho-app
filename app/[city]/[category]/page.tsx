@@ -154,6 +154,7 @@ async function getBusinesses(city: string, category: string): Promise<Business[]
     .eq('city', city)
     .eq('category', category)
     .eq('status', 'approved')
+    .eq('verified', true)
     .order('rating', { ascending: false })
   if (error) return []
   return (data ?? []) as Business[]
