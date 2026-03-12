@@ -177,6 +177,10 @@ function isNoiseLine(line) {
   if (alphaRatio < 0.5 && line.length < 30) return true
   // Lines containing trademark/registered/copyright symbols (logo OCR garbage)
   if (/[®©™]/.test(line)) return true
+  // Facebook post number prefix: "#5, Johnny Coaches ~"
+  if (/^#\d+[,.\s]/.test(line)) return true
+  // Lines containing "at [time]" — social media timestamps embedded in content
+  if (/\bat\s+\d{1,2}:\d{2}\s*(am|pm)/i.test(line) && line.length < 60) return true
   // Stylized flyer graphic text: most words are ≤3 chars (e.g. "pA Ce ES RIE wv")
   const words = line.trim().split(/\s+/).filter(w => w.replace(/[^a-zA-Z0-9]/g, '').length > 0)
   if (words.length >= 3) {

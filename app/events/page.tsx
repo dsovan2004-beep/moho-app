@@ -52,7 +52,7 @@ function EventCard({ event }: { event: Event }) {
           <img
             src={event.image_url}
             alt={event.title}
-            className="w-full h-full object-cover object-top"
+            className="w-full h-full object-cover object-center"
           />
         </div>
       )}
