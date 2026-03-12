@@ -1260,39 +1260,60 @@ BUSINESSES = [
 ]
 
 
+def get_existing(city):
+    """Return a set of lowercased names already in DB for this city."""
+    try:
+        res = supabase.table("businesses").select("name").eq("city", city).execute()
+        return {r["name"].lower() for r in (res.data or [])}
+    except Exception as e:
+        print(f"  WARNING: could not prefetch existing for {city}: {e}")
+        return set()
+
+
 def main():
     print(f"Seeding {len(BUSINESSES)} businesses (Mountain House + Tracy)...")
+
+    # Prefetch existing names per city to avoid duplicates
+    existing = {}
+    for city in ["Mountain House", "Tracy"]:
+        existing[city] = get_existing(city)
+        print(f"  {city}: {len(existing[city])} businesses already in DB")
+
     success = 0
+    skipped = 0
     failed = 0
 
     for i, biz in enumerate(BUSINESSES):
+        name = biz["name"]
+        city = biz["city"]
+
+        # Skip if already exists
+        if name.lower() in existing.get(city, set()):
+            skipped += 1
+            continue
+
         try:
             record = {
-                "name": biz["name"],
+                "name": name,
                 "description": biz.get("description", ""),
                 "category": biz["category"],
-                "city": biz["city"],
+                "city": city,
                 "address": biz.get("address", ""),
                 "phone": biz.get("phone", ""),
                 "website": biz.get("website", ""),
-                "image_url": biz.get("image_url", ""),
                 "status": "approved",
                 "claimed": False,
                 "verified": False,
             }
-            # Upsert on name + city to avoid duplicates
-            result = supabase.table("businesses").upsert(
-                record,
-                on_conflict="name,city"
-            ).execute()
+            supabase.table("businesses").insert(record).execute()
             success += 1
-            if (i + 1) % 25 == 0:
-                print(f"  {i + 1}/{len(BUSINESSES)} inserted...")
+            if success % 25 == 0:
+                print(f"  {success} inserted so far...")
         except Exception as e:
-            print(f"  FAILED: {biz['name']} ({biz['city']}) — {e}")
+            print(f"  FAILED: {name} ({city}) — {e}")
             failed += 1
 
-    print(f"\nDone. {success} succeeded, {failed} failed.")
+    print(f"\nDone. {success} inserted, {skipped} skipped (already exist), {failed} failed.")
     print("Run: SELECT city, count(*) FROM businesses WHERE status='approved' GROUP BY city;")
 
 

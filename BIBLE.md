@@ -390,7 +390,7 @@ The business directory is the foundation of the platform. Every additional listi
 
 | Phase | Target |
 |-------|--------|
-| Current | ~401 listings |
+| Current | ~986 listings |
 | Phase 1 | 1,500 listings |
 | Phase 2 | 3,000+ listings |
 
