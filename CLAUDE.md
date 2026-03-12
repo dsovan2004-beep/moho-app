@@ -536,13 +536,64 @@ All signals land here first. Nothing goes live until promoted by a human moderat
 Gallery images for business listings.
 
 Fields:
-- id, business_id, image_url, alt_text, position, created_at
+- id, business_id, image_url, alt_text, position, source, source_reference, verified, created_at
 
-Storage: ~3,994 Unsplash stock photos currently seeded but gallery rendering is disabled via hotfix.
+New columns (added 2026-03-12):
+- `source` — TEXT, one of: `google_places`, `owner_upload`, `admin_verified`, `unknown`
+- `source_reference` — TEXT, stores the Google Place ID or upload reference
+- `verified` — BOOLEAN, default false. Only `verified = true` images render in gallery.
 
-Component: `app/components/ImageGallery.tsx` exists but renders zero images until verified image pipeline is built.
+**Current state:** All ~3,994 Unsplash stock photos have been deleted. Table is empty and ready for verified photos only.
 
-**Rule:** Never re-enable gallery rendering with unverified images. Acceptable sources: owner uploads, admin-approved photos, Google Business profile images. Stock photos and AI-generated images are prohibited.
+**Gallery query filter (in `getBusinessImages()`):**
+```ts
+.eq('verified', true)
+.in('source', ['google_places', 'owner_upload', 'admin_verified'])
+```
+
+Component: `app/components/ImageGallery.tsx` renders verified images. The previous hotfix (`verifiedImages = []`) has been removed.
+
+**Google Places Photo Pipeline:**
+
+Script: `verify_business_places.py` (in project root)
+
+Pipeline flow:
+```
+Verified business → Find Place from Text API → Place ID
+→ Place Details API → Photo references (max 5)
+→ Place Photos API → Download JPEG
+→ Supabase Storage (business-images bucket)
+→ INSERT into business_images (source=google_places, verified=true)
+```
+
+Usage:
+```bash
+# All verified businesses
+python3 verify_business_places.py
+
+# Single city
+python3 verify_business_places.py --city "Mountain House"
+
+# Single business
+python3 verify_business_places.py --business-id "<uuid>"
+
+# Dry run
+python3 verify_business_places.py --dry-run
+```
+
+Requires `GOOGLE_PLACES_API_KEY` in `.env.local`.
+
+**Acceptable image sources:**
+- `google_places` — via verified pipeline
+- `owner_upload` — via claim listing flow (future)
+- `admin_verified` — manually approved by founder
+
+**Prohibited image sources:**
+- Stock photos (Unsplash, Pexels, etc.)
+- AI-generated images
+- Generic category placeholders
+
+**Rule:** Never insert images with `verified = false` or `source = 'unknown'` into the gallery rendering path.
 
 ---
 
@@ -684,7 +735,7 @@ All submissions must pass moderation before publishing. No automated publishing.
 13. `image_url` column may not appear in Supabase schema cache for INSERT — omit null columns from payload
 14. GitHub API blocked in Cowork VM — use `push-one.sh` or batch push scripts from Mac terminal (GitHub REST API with PAT)
 15. Never seed businesses without verifying against Google Maps first — 63% of original Mountain House seeds were fake
-16. Gallery images hotfixed to zero — do not re-enable until verified image pipeline exists
+16. Gallery images now filtered by `verified=true` + `source in (google_places, owner_upload, admin_verified)` — never render unverified or stock images
 17. All public business queries must include both `.eq('status', 'approved')` AND `.eq('verified', true)` — enforced on 9 pages
 18. Verification SQL must use exact UUIDs — never ILIKE or name pattern matching (Supabase SQL Editor corrupts `%` in ILIKE patterns when pasted from chat)
 
