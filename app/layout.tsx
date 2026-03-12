@@ -172,9 +172,9 @@ function NavContent() {
     setDropdownOpen(false)
     await signOut()
     setUser(null)
-    // Redirect to homepage so the user is never left on a protected page
-    // (e.g. /profile) after signing out.
-    router.push('/')
+    // No router.push here — the profile page's onAuthStateChange handles
+    // the redirect (→ /) on SIGNED_OUT. A competing push here caused a race
+    // condition that landed users on /login instead of the homepage.
   }
 
   return (

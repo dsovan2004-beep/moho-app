@@ -53,12 +53,13 @@ export default function ProfilePage() {
       setLoading(false)
     })
 
-    // Subscribe to auth state changes — if the user signs out while on this
-    // page, redirect them to /login immediately instead of leaving the
-    // profile content visible.
+    // Subscribe to auth state changes — if the user signs out (or the session
+    // expires) while on this page, redirect to the homepage so they are not
+    // left looking at their profile. Sending to '/' (not '/login') keeps UX
+    // consistent with a normal logout experience.
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_OUT' || !session) {
-        router.replace('/login')
+        router.replace('/')
       } else if (session?.user) {
         setUser(session.user)
       }
