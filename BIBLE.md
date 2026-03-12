@@ -443,6 +443,53 @@ If the answer is no, it is not a growth priority.
 
 ---
 
+## AI-Powered Local Signal Engine
+
+MoHoLocal is an **AI-powered hyperlocal discovery platform** that continuously collects and organizes local signals across supported cities.
+
+Rather than relying on manual curation, MoHoLocal uses AI systems to ingest signals from multiple sources simultaneously:
+
+- Community submissions from residents
+- Screenshot signal pipelines (flyers, event graphics, school announcements)
+- Public event feeds and local calendars
+- Business directory datasets and public business data
+
+The AI layer classifies and structures this raw information into useful local knowledge:
+
+- Business listings with category, location, and contact data
+- Events with accurate dates, cities, and descriptions
+- Lost and found pet alerts with location and owner contact
+- Neighborhood activity and community tips
+- New business openings and local business updates
+
+This approach allows MoHoLocal to scale local discovery much faster than traditional directories that depend entirely on manual entry.
+
+---
+
+### Platform Operating Model
+
+```
+Automation collects signals
+AI classifies and structures signals
+Humans review and approve content before publication
+```
+
+This hybrid model ensures both **scale** and **quality**. The AI layer removes the bottleneck of manual signal discovery. The human moderation layer ensures only accurate, positive, community-appropriate content reaches residents.
+
+Neither layer can be removed without degrading the platform. AI without moderation produces noise. Moderation without AI cannot scale.
+
+---
+
+### Platform Differentiation
+
+Traditional directories rely on manual curation and static listings. Once created, a listing sits unchanged until someone manually updates it.
+
+MoHoLocal uses AI to continuously discover and organize local information, creating a **living knowledge layer** for each city. Events are discovered as they are announced. New businesses are captured as they open. Community signals surface as neighbors share them.
+
+This continuous signal collection is what separates MoHoLocal from a static business directory. The platform is not a snapshot of local life — it is a continuously updated local knowledge system.
+
+---
+
 ## Current Product Focus
 
 The current product phase prioritizes:
