@@ -83,7 +83,7 @@ export function ActivityCard({ item, currentCity }: ActivityCardProps) {
             <img
               src={item.image_url}
               alt={item.title}
-              className="w-full h-full object-cover object-top"
+              className="w-full h-full object-cover object-center"
             />
           </div>
         )}
