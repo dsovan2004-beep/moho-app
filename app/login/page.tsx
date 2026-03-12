@@ -5,14 +5,24 @@ export const runtime = 'edge'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { signInWithGoogle, signInWithEmail } from '@/lib/supabase'
+import { signInWithGoogle, signInWithFacebook, signInWithEmail } from '@/lib/supabase'
+
+// ── Facebook F SVG icon ───────────────────────────────────────────────────────
+function FacebookIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
+      <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.268h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+    </svg>
+  )
+}
 
 export default function LoginPage() {
   const router = useRouter()
-  const [email, setEmail] = useState('')
+  const [email, setEmail]       = useState('')
   const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [googleLoading, setGoogleLoading] = useState(false)
+  const [loading, setLoading]           = useState(false)
+  const [googleLoading, setGoogleLoading]   = useState(false)
+  const [facebookLoading, setFacebookLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   async function handleGoogleLogin() {
@@ -23,7 +33,18 @@ export default function LoginPage() {
       setError(error.message)
       setGoogleLoading(false)
     }
-    // On success, browser is redirected by Supabase — no need to push
+    // On success, browser is redirected by Supabase → /auth/callback → /
+  }
+
+  async function handleFacebookLogin() {
+    setFacebookLoading(true)
+    setError(null)
+    const { error } = await signInWithFacebook()
+    if (error) {
+      setError(error.message)
+      setFacebookLoading(false)
+    }
+    // On success, browser is redirected by Supabase → /auth/callback → /
   }
 
   async function handleEmailLogin(e: React.FormEvent) {
@@ -39,10 +60,12 @@ export default function LoginPage() {
     }
   }
 
+  const anyLoading = loading || googleLoading || facebookLoading
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
-      {/* Card */}
       <div className="max-w-md w-full mx-auto">
+
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2">
@@ -61,11 +84,12 @@ export default function LoginPage() {
         </div>
 
         <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-8">
-          {/* Google Button */}
+
+          {/* Google */}
           <button
             onClick={handleGoogleLogin}
-            disabled={googleLoading}
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl border-2 border-gray-200 bg-white text-gray-700 font-semibold text-sm hover:border-gray-300 hover:bg-gray-50 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+            disabled={anyLoading}
+            className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl border-2 border-gray-200 bg-white text-gray-700 font-semibold text-sm hover:border-gray-300 hover:bg-gray-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed mb-3"
           >
             {googleLoading ? (
               <svg className="animate-spin h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24">
@@ -80,7 +104,31 @@ export default function LoginPage() {
                 <path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.3 5.5l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.7-.4-3.9z"/>
               </svg>
             )}
-            Continue with Google
+            {googleLoading ? 'Redirecting…' : 'Continue with Google'}
+          </button>
+
+          {/* Facebook */}
+          <button
+            onClick={handleFacebookLogin}
+            disabled={anyLoading}
+            className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ backgroundColor: '#1877F2', color: 'white' }}
+            onMouseEnter={(e) => {
+              if (!facebookLoading) (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#166FE5'
+            }}
+            onMouseLeave={(e) => {
+              if (!facebookLoading) (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#1877F2'
+            }}
+          >
+            {facebookLoading ? (
+              <svg className="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              </svg>
+            ) : (
+              <FacebookIcon />
+            )}
+            {facebookLoading ? 'Redirecting…' : 'Continue with Facebook'}
           </button>
 
           {/* Divider */}
@@ -140,7 +188,7 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={anyLoading}
               className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold transition-all disabled:opacity-60 disabled:cursor-not-allowed mt-2"
               style={{ backgroundColor: '#1e3a5f', color: 'white' }}
               onMouseEnter={(e) => !loading && ((e.target as HTMLElement).style.backgroundColor = '#1e40af')}
@@ -152,7 +200,7 @@ export default function LoginPage() {
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
               ) : null}
-              Sign In
+              {loading ? 'Signing in…' : 'Sign In'}
             </button>
           </form>
         </div>
@@ -160,7 +208,7 @@ export default function LoginPage() {
         {/* Footer link */}
         <p className="text-center mt-6 text-sm text-gray-500">
           Don&apos;t have an account?{' '}
-          <Link href="/register" className="font-semibold" style={{ color: '#f59e0b' }}>
+          <Link href="/register" className="font-semibold hover:underline" style={{ color: '#f59e0b' }}>
             Join free
           </Link>
         </p>

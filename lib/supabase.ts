@@ -38,6 +38,17 @@ export async function signInWithGoogle() {
   return { error }
 }
 
+export async function signInWithFacebook() {
+  const supabase = getSupabaseClient()
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'facebook',
+    options: {
+      redirectTo: `${window.location.origin}/auth/callback`,
+    },
+  })
+  return { error }
+}
+
 export async function signInWithEmail(email: string, password: string) {
   const supabase = getSupabaseClient()
   const { data, error } = await supabase.auth.signInWithPassword({ email, password })
