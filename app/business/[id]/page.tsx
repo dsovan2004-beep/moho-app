@@ -1,12 +1,78 @@
 export const runtime = 'edge'
 
-import { getSupabaseClient, type Business } from '@/lib/supabase'
+import { getSupabaseClient, type Business, type BusinessImage } from '@/lib/supabase'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import ReviewSection from '@/app/components/ReviewSection'
+import ImageGallery from '@/app/components/ImageGallery'
+
+import type { Metadata } from 'next'
 
 interface PageProps {
   params: Promise<{ id: string }>
+}
+
+// ── JSON-LD builder ──────────────────────────────────────────────────────────
+function buildJsonLd(biz: Business) {
+  const isRestaurant = biz.category?.toLowerCase().includes('restaurant')
+  const schema: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': isRestaurant ? 'Restaurant' : 'LocalBusiness',
+    name: biz.name,
+    ...(biz.description && { description: biz.description }),
+    ...(biz.image_url && { image: biz.image_url }),
+    ...(biz.phone && { telephone: biz.phone }),
+    ...(biz.website && { url: biz.website }),
+    address: {
+      '@type': 'PostalAddress',
+      ...(biz.address && { streetAddress: biz.address }),
+      addressLocality: biz.city,
+      addressRegion: 'CA',
+      addressCountry: 'US',
+    },
+  }
+  if (biz.rating && biz.review_count && biz.review_count > 0) {
+    schema.aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: biz.rating.toFixed(1),
+      reviewCount: biz.review_count,
+      bestRating: '5',
+      worstRating: '1',
+    }
+  }
+  if (biz.category) {
+    schema.additionalType = biz.category
+  }
+  return schema
+}
+
+// ── Metadata ─────────────────────────────────────────────────────────────────
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { id } = await params
+  const biz = await getBusiness(id)
+  if (!biz) return { title: 'Business Not Found | MoHo Local' }
+
+  const title = `${biz.name} — ${biz.category} in ${biz.city}, CA | MoHo Local`
+  const description = biz.description
+    ? biz.description.slice(0, 160)
+    : `Find ${biz.name} in ${biz.city}, CA. Browse ${biz.category.toLowerCase()} listings on MoHo Local — your hyperlocal community directory for the 209.`
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+      url: `https://www.moholocal.com/business/${id}`,
+      ...(biz.image_url && { images: [{ url: biz.image_url }] }),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    },
+  }
 }
 
 // ── City config ───────────────────────────────────────────────────────────────
@@ -96,6 +162,16 @@ async function getRelated(city: string, category: string, excludeId: string) {
   return (data ?? []) as Business[]
 }
 
+async function getBusinessImages(businessId: string) {
+  const supabase = getSupabaseClient()
+  const { data } = await supabase
+    .from('business_images')
+    .select('*')
+    .eq('business_id', businessId)
+    .order('position', { ascending: true })
+  return (data ?? []) as BusinessImage[]
+}
+
 // ── Star rating ───────────────────────────────────────────────────────────────
 function StarRating({ rating, reviewCount }: { rating?: number; reviewCount?: number }) {
   if (!rating) return null
@@ -150,14 +226,29 @@ export default async function BusinessDetailPage({ params }: PageProps) {
   const biz = await getBusiness(id)
   if (!biz) notFound()
 
-  const related = await getRelated(biz.city, biz.category, biz.id)
+  const [related, images] = await Promise.all([
+    getRelated(biz.city, biz.category, biz.id),
+    getBusinessImages(biz.id),
+  ])
   const city = CITY_CFG[biz.city] ?? CITY_CFG['Mountain House']
   const catEmoji = getCategoryEmoji(biz.category)
   const hasContact = !!(biz.phone || biz.website || biz.contact_email)
   const hoursList = biz.hours ? parseHours(biz.hours) : []
 
+  const jsonLd = buildJsonLd(biz)
+  // Enhance JSON-LD with gallery images when available
+  if (images.length > 0) {
+    jsonLd.image = images.map((img) => img.image_url)
+  }
+
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      {/* JSON-LD structured data for Google rich results */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* Breadcrumb */}
       <nav className="text-sm text-gray-400 mb-5 flex items-center gap-2 flex-wrap">
@@ -259,6 +350,17 @@ export default async function BusinessDetailPage({ params }: PageProps) {
           </div>
         </div>
       </div>
+
+      {/* ── Photo Gallery ── */}
+      {images.length > 0 && (
+        <div className="mb-8">
+          <ImageGallery
+            images={images}
+            businessName={biz.name}
+            accentColor={city.accent}
+          />
+        </div>
+      )}
 
       <div className="flex flex-col lg:flex-row gap-8">
 
