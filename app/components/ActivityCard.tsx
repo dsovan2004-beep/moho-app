@@ -44,7 +44,7 @@ function getHref(item: ActivityItem, currentCity?: string): string {
     ? `?city=${encodeURIComponent(item.city)}`
     : ''
 
-  if (item.type === 'event') return `/events${cityParam}`
+  if (item.type === 'event') return `/events/${item.id}`
   return `/lost-and-found${cityParam}`
 }
 

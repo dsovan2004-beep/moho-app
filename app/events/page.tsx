@@ -44,7 +44,8 @@ function EventCard({ event }: { event: Event }) {
   const cityColor = CITY_COLORS[event.city] ?? 'bg-gray-100 text-gray-700'
 
   return (
-    <article className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all">
+    <Link href={`/events/${event.id}`} className="block group">
+    <article className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all">
       {/* Flyer / screenshot image — shown when present */}
       {event.image_url && (
         <div className="w-full h-48 bg-gray-100 overflow-hidden">
@@ -94,6 +95,7 @@ function EventCard({ event }: { event: Event }) {
         </div>
       </div>
     </article>
+    </Link>
   )
 }
 
