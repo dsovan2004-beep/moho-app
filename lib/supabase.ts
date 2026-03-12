@@ -1,28 +1,16 @@
-import { createClient, type SupabaseClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js'
 
-// ─── Browser singleton ────────────────────────────────────────────────────────
-// One GoTrueClient per browser context — avoids "Multiple GoTrueClient
-// instances detected" warning. The variable lives at module scope but is
-// never initialised at build time (typeof window guard) so edge runtime is safe.
+// ─── Factory ──────────────────────────────────────────────────────────────────
+// IMPORTANT: Never call createClient() at module scope.
+// Next.js evaluates module graphs at build time (edge runtime) where env vars
+// are undefined, causing "supabaseKey is required". Always call this factory
+// inside functions/effects so it runs at request/render time only.
 
-let _browserClient: SupabaseClient | null = null
-
-export function getSupabaseClient(): SupabaseClient {
-  // Server / edge build-time: always create a fresh instance (no window)
-  if (typeof window === 'undefined') {
-    return createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    )
-  }
-  // Browser: reuse singleton
-  if (!_browserClient) {
-    _browserClient = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    )
-  }
-  return _browserClient
+export function getSupabaseClient() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  )
 }
 
 // ─── Auth Helpers ─────────────────────────────────────────────────────────────

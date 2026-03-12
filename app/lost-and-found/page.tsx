@@ -51,7 +51,6 @@ const CITY_CHIP: Record<string, string> = {
   Tracy: 'bg-green-50 text-green-700',
   Lathrop: 'bg-purple-50 text-purple-700',
   Manteca: 'bg-orange-50 text-orange-700',
-  Brentwood: 'bg-teal-50 text-teal-700',
 }
 
 const CITY_EMOJI: Record<string, string> = {
@@ -59,7 +58,6 @@ const CITY_EMOJI: Record<string, string> = {
   Tracy: '🌿',
   Lathrop: '🔮',
   Manteca: '🍊',
-  Brentwood: '🌊',
 }
 
 // ── Data fetching ─────────────────────────────────────────────────────────────
@@ -185,7 +183,7 @@ interface PageProps {
   searchParams: Promise<{ city?: string; status?: string }>
 }
 
-const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca', 'Brentwood']
+const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca']
 const STATUSES = [
   { key: 'All', label: 'All' },
   { key: 'lost', label: '🚨 Lost' },
@@ -215,7 +213,7 @@ export default async function LostAndFoundPage({ searchParams }: PageProps) {
         <div>
           <h1 className="text-2xl font-extrabold text-gray-900">🐾 Lost &amp; Found Pets</h1>
           <p className="text-gray-500 text-sm mt-1">
-            All 5 cities · Post a lost or found pet · Celebrate reunions 🎉
+            All 4 cities · Post a lost or found pet · Celebrate reunions 🎉
           </p>
         </div>
         <Link
