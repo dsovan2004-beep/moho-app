@@ -138,20 +138,92 @@ function detectCity(text) {
   return null
 }
 
-function extractTitle(text, type) {
-  const lines = text
+/**
+ * Returns true if a line looks like OCR noise / social-media UI chrome.
+ * Filters out Facebook timestamps, reaction counts, UI buttons, etc.
+ */
+function isNoiseLine(line) {
+  if (line.length < 5) return true
+  // Social media metadata
+  if (/^(yesterday|today|just now|\d+\s*(hour|minute|day|week|month)s?\s*ago)/i.test(line)) return true
+  // Timestamps like "1:51PM", "11:00AM"
+  if (/^\d{1,2}:\d{2}\s*(am|pm)?$/i.test(line)) return true
+  // Facebook OCR artifacts: f=], [f], f[, etc.
+  if (/^f[=\[\(]|^\[f\]|^f=\]/.test(line)) return true
+  // Lines starting with noise symbols
+  if (/^[#~=\[\]|<>\\@]{1,3}\s/.test(line) && line.length < 30) return true
+  // Multiple consecutive noise chars anywhere
+  if (/[=\[\]~|\\]{3,}/.test(line)) return true
+  // Social UI buttons
+  if (/^(like|comment|share|follow|react|reply|view|see more|load more|write a)(\s|$)/i.test(line)) return true
+  // Reaction counts: "14 · 2 comments"
+  if (/^\d+\s*[·•]\s*\d+\s*(comment|share|react)/i.test(line)) return true
+  // Lines that are mostly non-alphanumeric
+  const alphaRatio = (line.match(/[a-zA-Z0-9\s]/g) || []).length / line.length
+  if (alphaRatio < 0.5 && line.length < 30) return true
+  return false
+}
+
+/**
+ * Returns cleaned OCR lines — strips noise rows and trims whitespace.
+ */
+function cleanOcrLines(text) {
+  return text
     .split('\n')
     .map((l) => l.trim())
-    .filter((l) => l.length > 4 && !/^[\W\d]+$/.test(l))
+    .filter((l) => l.length > 0 && !isNoiseLine(l))
+}
 
-  const first = lines[0] ?? ''
-  if (first.length >= 10) return first.slice(0, 120)
+/**
+ * Tries to generate a smart event title from keywords in the text.
+ * Used as a fallback when all OCR lines look like noise.
+ */
+function inferEventTitle(text, city) {
+  const lower = text.toLowerCase()
+  const cityPart = city ? ` — ${city}` : ''
 
-  // Fallback: combine first two lines
-  const combined = lines.slice(0, 2).join(' ').trim()
-  if (combined.length >= 5) return combined.slice(0, 120)
+  if (lower.includes('volleyball'))       return `Youth Volleyball Clinic${cityPart}`
+  if (lower.includes('food truck'))       return `Food Truck Event${cityPart}`
+  if (lower.includes('farmers market'))   return `Farmers Market${cityPart}`
+  if (lower.includes('carnival'))         return `Community Carnival${cityPart}`
+  if (lower.includes('block party'))      return `Block Party${cityPart}`
+  if (lower.includes('trunk or treat'))   return `Trunk or Treat${cityPart}`
+  if (lower.includes('garage sale'))      return `Garage Sale${cityPart}`
+  if (lower.includes('yard sale'))        return `Yard Sale${cityPart}`
+  if (lower.includes('workshop'))         return `Community Workshop${cityPart}`
+  if (lower.includes('class'))            return `Community Class${cityPart}`
+  if (lower.includes('festival'))         return `Local Festival${cityPart}`
+  if (lower.includes('fundraiser'))       return `Community Fundraiser${cityPart}`
+  if (lower.includes('meetup'))           return `Community Meetup${cityPart}`
+  if (lower.includes('concert'))          return `Live Concert${cityPart}`
+  if (lower.includes('grand opening'))    return `Grand Opening${cityPart}`
+  if (lower.includes('now open'))         return `New Business Opening${cityPart}`
+  if (lower.includes('lost') && lower.includes('dog')) return 'Lost Dog'
+  if (lower.includes('lost') && lower.includes('cat')) return 'Lost Cat'
+  if (lower.includes('found') && lower.includes('dog')) return 'Found Dog'
+  if (lower.includes('found') && lower.includes('cat')) return 'Found Cat'
+  return null
+}
 
-  // Last resort generic title
+function extractTitle(text, type, city) {
+  const cleanLines = cleanOcrLines(text)
+
+  // Look for the best title line: meaningful length, not metadata-looking
+  for (const line of cleanLines) {
+    if (line.length >= 12 && line.length <= 120) {
+      // Skip lines that look like dates, times, or numeric metadata
+      if (/^\d{1,2}\/\d{1,2}/.test(line)) continue
+      if (/^(saturday|sunday|monday|tuesday|wednesday|thursday|friday)\s*[,·]/i.test(line)) continue
+      if (/^\d+\s*(am|pm)/i.test(line)) continue
+      return line.slice(0, 120)
+    }
+  }
+
+  // Fallback: try keyword-based smart title
+  const inferred = inferEventTitle(text, city)
+  if (inferred) return inferred
+
+  // Last resort generic titles
   const labels = {
     event:           'Community Event',
     lost_pet:        'Lost or Found Pet',
@@ -219,7 +291,9 @@ function isCrimeContent(text) {
 }
 
 function extractDescription(text) {
-  return text.replace(/\s{3,}/g, '\n\n').trim().slice(0, 1500)
+  // Use cleaned lines — strips Facebook chrome, noise symbols, timestamps
+  const cleaned = cleanOcrLines(text).join('\n')
+  return cleaned.replace(/\s{3,}/g, '\n\n').trim().slice(0, 1500)
 }
 
 function extractEventDate(text) {
@@ -375,7 +449,7 @@ async function processFile(filename, log) {
 
   // ── Extract fields ────────────────────────────────────────────────────────
   const city        = detectCity(ocrText)
-  const title       = extractTitle(ocrText, classification.type)
+  const title       = extractTitle(ocrText, classification.type, city)
   const description = extractDescription(ocrText)
   const eventDate   = extractEventDate(ocrText)
   const contactUrl  = extractContactUrl(ocrText)
