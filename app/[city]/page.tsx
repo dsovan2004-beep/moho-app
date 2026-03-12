@@ -11,6 +11,15 @@ const CITY_MAP: Record<string, string> = {
   'tracy':          'Tracy',
   'lathrop':        'Lathrop',
   'manteca':        'Manteca',
+  'brentwood':      'Brentwood',
+}
+
+const COUNTY_MAP: Record<string, string> = {
+  'Mountain House': 'San Joaquin County',
+  'Tracy':          'San Joaquin County',
+  'Lathrop':        'San Joaquin County',
+  'Manteca':        'San Joaquin County',
+  'Brentwood':      'Contra Costa County',
 }
 
 const CITY_CFG: Record<string, {
@@ -52,6 +61,14 @@ const CITY_CFG: Record<string, {
     description: 'A family-friendly city with proud agricultural roots, a booming dining scene, and neighborhoods that still feel like hometown America.',
     population: '~90k',
     tagline: 'Find local businesses in Manteca, CA',
+  },
+  Brentwood: {
+    gradient: 'linear-gradient(135deg,#0f5040 0%,#0d9488 100%)',
+    chip: 'bg-teal-50 text-teal-700',
+    emoji: '🌾',
+    description: 'A fast-growing East Bay gem in Contra Costa County — known for its U-pick farms, top-rated schools, and a welcoming small-town spirit just 50 miles from San Francisco.',
+    population: '~65k',
+    tagline: 'Find local businesses in Brentwood, CA',
   },
 }
 
@@ -149,7 +166,7 @@ export async function generateMetadata({ params }: PageProps) {
   const cfg = CITY_CFG[cityName]
   return {
     title: `${cityName} Local Businesses & Directory | MoHoLocal`,
-    description: `Find the best local businesses in ${cityName}, CA — restaurants, home services, health & wellness, automotive, and more. Your hyperlocal 209 directory.`,
+    description: `Find the best local businesses in ${cityName}, CA — restaurants, home services, health & wellness, automotive, and more. Your hyperlocal ${COUNTY_MAP[cityName] ?? 'California'} directory.`,
     openGraph: {
       title: `${cityName} Local Directory | MoHoLocal`,
       description: cfg.tagline,
@@ -237,7 +254,7 @@ export default async function CityPage({ params }: PageProps) {
           <h1 className="text-3xl sm:text-4xl font-extrabold mb-2">{cityName}, CA</h1>
           <p className="text-white/80 text-sm leading-relaxed mb-2">{cfg.description}</p>
           <p className="text-white/50 text-xs mb-6">
-            Population {cfg.population} · San Joaquin County · {total > 0 ? `${total} local businesses listed` : 'Growing fast'}
+            Population {cfg.population} · {COUNTY_MAP[cityName] ?? 'California'} · {total > 0 ? `${total} local businesses listed` : 'Growing fast'}
           </p>
           <div className="flex flex-wrap gap-3">
             <Link
@@ -314,7 +331,7 @@ export default async function CityPage({ params }: PageProps) {
 
       {/* ── Nearby Cities ── */}
       <div className="mb-8">
-        <h2 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Also in the 209</h2>
+        <h2 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Explore Nearby Cities</h2>
         <div className="flex flex-wrap gap-3">
           {Object.entries(CITY_MAP)
             .filter(([slug]) => slug !== citySlug)

@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+# Block private / utility routes
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/
+Disallow: /login
+Disallow: /register
+Disallow: /profile
+Disallow: /auth/
+Disallow: /claim-listing/
+
+# Sitemaps
+Sitemap: https://www.moholocal.com/sitemap.xml
+Sitemap: https://www.moholocal.com/api/sitemap
