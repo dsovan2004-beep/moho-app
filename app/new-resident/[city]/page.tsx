@@ -310,15 +310,15 @@ export default async function NewResidentCityPage({ params }: PageProps) {
     const [healthRes, foodRes, essentialRes] = await Promise.all([
       supabase
         .from('businesses').select('*')
-        .eq('city', cityName).eq('category', 'Health & Wellness').eq('status', 'approved')
+        .eq('city', cityName).eq('category', 'Health & Wellness').eq('status', 'approved').eq('verified', true)
         .order('rating', { ascending: false }).limit(6),
       supabase
         .from('businesses').select('*')
-        .eq('city', cityName).eq('category', 'Restaurants').eq('status', 'approved')
+        .eq('city', cityName).eq('category', 'Restaurants').eq('status', 'approved').eq('verified', true)
         .order('rating', { ascending: false }).limit(6),
       supabase
         .from('businesses').select('*')
-        .eq('city', cityName).eq('status', 'approved')
+        .eq('city', cityName).eq('status', 'approved').eq('verified', true)
         .in('category', ['Home Services', 'Pet Services', 'Automotive', 'Beauty & Spa', 'Retail', 'Education', 'Real Estate'])
         .order('rating', { ascending: false }).limit(8),
     ])
