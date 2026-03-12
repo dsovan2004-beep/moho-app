@@ -61,6 +61,8 @@ export default function ClaimListingPage() {
       .from('businesses')
       .select('*')
       .eq('id', id)
+      .eq('status', 'approved')
+      .eq('verified', true)
       .single()
       .then(({ data, error }) => {
         if (error || !data) {
@@ -83,6 +85,8 @@ export default function ClaimListingPage() {
       .from('businesses')
       .update({ claimed: true })
       .eq('id', business.id)
+      .eq('status', 'approved')
+      .eq('verified', true)
 
     if (error) {
       setSubmitError(error.message)
