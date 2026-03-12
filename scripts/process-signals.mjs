@@ -30,12 +30,26 @@ import { config as dotenvConfig } from 'dotenv'
 
 const __dirname    = path.dirname(fileURLToPath(import.meta.url))
 
-// Load Next.js env vars from scaffold root .env.local
-dotenvConfig({ path: path.join(__dirname, '..', '.env.local') })
-dotenvConfig({ path: path.join(__dirname, '..', '.env') })  // fallback
+// Load Next.js env vars — try multiple locations
+const ENV_CANDIDATES = [
+  path.join(__dirname, '..', '.env.local'),
+  path.join(__dirname, '..', '.env'),
+  path.join(process.env.HOME || '', 'Desktop', 'MoHoLocal', 'moho-app-scaffold', '.env.local'),
+  path.join(process.env.HOME || '', 'Desktop', 'MoHoLocal', 'moho-app-scaffold', '.env'),
+]
 
-const SUPABASE_URL      = process.env.NEXT_PUBLIC_SUPABASE_URL
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+let loadedEnvFile = null
+for (const f of ENV_CANDIDATES) {
+  if (fs.existsSync(f)) {
+    dotenvConfig({ path: f })
+    loadedEnvFile = f
+    break
+  }
+}
+
+// Support NEXT_PUBLIC_ prefix (Next.js) or plain names (some setups)
+const SUPABASE_URL      = process.env.NEXT_PUBLIC_SUPABASE_URL      || process.env.SUPABASE_URL
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY
 const SCAFFOLD_DIR = path.resolve(__dirname, '..')
 const SIGNALS_DIR  = path.join(SCAFFOLD_DIR, 'signals-inbox')
 const RAW_DIR      = path.join(SIGNALS_DIR, 'raw')
@@ -582,6 +596,13 @@ async function main() {
   }
 
   console.log(`\n📸 MoHoLocal Screenshot Signal Processor`)
+  if (loadedEnvFile) {
+    console.log(`   📄  Env: ${loadedEnvFile}`)
+  } else {
+    console.log(`   ⚠️  No .env.local found — Supabase image upload will be skipped`)
+    console.log(`       Expected: ~/Desktop/MoHoLocal/moho-app-scaffold/.env.local`)
+    console.log(`       Must contain: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY`)
+  }
   console.log(`   Found ${imageFiles.length} image(s) to process\n`)
 
   // Track results
