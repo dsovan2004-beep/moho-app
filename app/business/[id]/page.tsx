@@ -143,6 +143,7 @@ async function getBusiness(id: string) {
     .select('*')
     .eq('id', id)
     .eq('status', 'approved')
+    .eq('verified', true)
     .single()
   if (error) return null
   return data as Business
@@ -155,7 +156,8 @@ async function getRelated(city: string, category: string, excludeId: string) {
     .select('*')
     .eq('city', city)
     .eq('category', category)
-    .eq('status', 'approved')   // ← bug fix: was missing
+    .eq('status', 'approved')
+    .eq('verified', true)
     .neq('id', excludeId)
     .order('rating', { ascending: false })
     .limit(4)
