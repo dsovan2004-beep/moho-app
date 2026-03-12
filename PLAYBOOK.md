@@ -487,28 +487,47 @@ WHERE id = '<exact-uuid>';
 
 ---
 
-## Step 11 — Image Verification
+## Step 11 — Image Verification (Google Places Pipeline)
 
-Business gallery images are currently disabled site-wide via a hotfix.
+Business gallery images are now served through a verified pipeline.
 
-**Current state:**
+**Current state (as of 2026-03-12):**
 
-- `business_images` table exists with ~3,994 Unsplash stock photos seeded
-- `ImageGallery` component exists but renders zero images (hotfix: `verifiedImages = []`)
-- Stock photos proved misleading (wrong images for businesses)
+- All ~3,994 Unsplash stock photos deleted from `business_images`
+- `business_images` table has new columns: `source`, `source_reference`, `verified`
+- Gallery hotfix removed — `getBusinessImages()` now filters by `verified=true` + approved sources
+- `ImageGallery` component renders only verified images
 
-**Before re-enabling galleries:**
+**Running the photo pipeline:**
 
-1. Delete all stock/Unsplash images from `business_images` table
-2. Build image upload flow for business owners (via claim listing)
-3. Add admin approval step for uploaded images
-4. Only then remove the gallery hotfix
+```bash
+# All verified businesses
+python3 ~/Desktop/MoHoLocal/verify_business_places.py
+
+# Single city
+python3 ~/Desktop/MoHoLocal/verify_business_places.py --city "Mountain House"
+
+# Dry run first
+python3 ~/Desktop/MoHoLocal/verify_business_places.py --dry-run
+```
+
+Requires `GOOGLE_PLACES_API_KEY` in `moho-app-scaffold/.env.local`.
+
+**Pipeline flow:**
+
+```
+Verified business → Find Place from Text → Place ID
+→ Place Details → Photo references (max 5)
+→ Place Photos → Download JPEG
+→ Supabase Storage (business-images bucket)
+→ INSERT verified row into business_images
+```
 
 **Acceptable image sources:**
 
-- Business owner uploads
-- Admin-approved photos
-- Google Business profile images
+- `google_places` — via verified pipeline script
+- `owner_upload` — via claim listing flow (future)
+- `admin_verified` — manually approved by founder
 
 **Prohibited image sources:**
 
@@ -516,7 +535,7 @@ Business gallery images are currently disabled site-wide via a hotfix.
 - AI-generated images
 - Generic category placeholders
 
-Never re-enable galleries with unverified images. The system must block misleading photos before they go live.
+The gallery query enforces source validation at the database level. Unverified images never render.
 
 ---
 
