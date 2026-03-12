@@ -445,5 +445,152 @@ https://dash.cloudflare.com → Pages → moho-app
 
 ---
 
-MoHoLocal Operations Playbook v1
+## Step 10 — Business Verification Audit
+
+Before any new city's businesses go live or any new batch of businesses is seeded, every listing must be verified against an authoritative source.
+
+**Verification process:**
+
+1. Export all `status = 'approved'` businesses for the target city from Supabase
+2. Cross-check each business name + address against Google Maps
+3. Classify each as VERIFIED, SUSPECT, or FAKE
+4. Write SQL using exact UUIDs to set `verified = true` on confirmed businesses
+5. Output SQL as text — founder runs in Supabase SQL Editor
+6. Only verified businesses appear on the live site
+
+**Verification SQL pattern (always use exact IDs, never name matching):**
+
+```sql
+UPDATE businesses SET verified = true,
+  verification_source = 'google_maps_audit_YYYY-MM-DD',
+  verified_at = now()
+WHERE id = '<exact-uuid>';
+```
+
+**Rules:**
+
+- Never use ILIKE or pattern matching in verification SQL — exact UUIDs only
+- Never assume a seeded business is real without checking
+- If a business cannot be found on Google Maps, it stays `verified = false` (hidden)
+- Track the audit date in `verification_source` for provenance
+- Duplicates found during audit should be deleted by exact UUID
+
+**Current audit status:**
+
+| City | Status | Verified | Total |
+|------|--------|----------|-------|
+| Mountain House | Audited 2026-03-12 | 17 | 142 |
+| Tracy | Not yet audited | 0 | ~200 |
+| Lathrop | Not yet audited | 0 | ~200 |
+| Manteca | Not yet audited | 0 | ~200 |
+| Brentwood | Not yet audited | 0 | ~200 |
+
+---
+
+## Step 11 — Image Verification
+
+Business gallery images are currently disabled site-wide via a hotfix.
+
+**Current state:**
+
+- `business_images` table exists with ~3,994 Unsplash stock photos seeded
+- `ImageGallery` component exists but renders zero images (hotfix: `verifiedImages = []`)
+- Stock photos proved misleading (wrong images for businesses)
+
+**Before re-enabling galleries:**
+
+1. Delete all stock/Unsplash images from `business_images` table
+2. Build image upload flow for business owners (via claim listing)
+3. Add admin approval step for uploaded images
+4. Only then remove the gallery hotfix
+
+**Acceptable image sources:**
+
+- Business owner uploads
+- Admin-approved photos
+- Google Business profile images
+
+**Prohibited image sources:**
+
+- Stock photos (Unsplash, Pexels, etc.)
+- AI-generated images
+- Generic category placeholders
+
+Never re-enable galleries with unverified images. The system must block misleading photos before they go live.
+
+---
+
+## Step 12 — SEO Page Distribution
+
+After deploying new city pages, category pages, or Best Of pages, distribute them to local communities for organic traffic and backlinks.
+
+**Distribution channels:**
+
+- Local Facebook groups (Mountain House Community, Tracy Neighbors, etc.)
+- Community newsletters and email lists
+- Reddit local threads (r/209, r/BayArea, r/CentralValley)
+- Neighborhood forums and community boards
+- School parent groups
+
+**Highest-value pages for distribution:**
+
+- Best Of pages (e.g. `/best/restaurants/mountain-house`)
+- New Resident Guides (e.g. `/new-resident/tracy`)
+- City hub pages (e.g. `/mountain-house`)
+
+These pages provide immediate utility and generate organic backlinks that strengthen domain authority.
+
+---
+
+## Deployment Notes
+
+### Normal deployment flow
+
+```
+Claude commits code
+→ Push to GitHub main branch
+→ Cloudflare Pages auto-builds
+→ Live at moholocal.com
+```
+
+### Fallback deployment (when Cowork VM cannot access GitHub API)
+
+The Cowork VM proxy blocks `api.github.com`. When this happens, use push scripts from the founder's Mac terminal.
+
+**Push a single file:**
+```bash
+cd ~/Desktop/MoHoLocal
+bash push-one.sh app/page.tsx "commit message here"
+```
+
+**Push multiple files in batch:**
+```bash
+cd ~/Desktop/MoHoLocal
+bash push-verified-patch.sh
+```
+
+**Push scripts:**
+
+| Script | Purpose |
+|--------|---------|
+| `push-one.sh` | Push a single file with a commit message |
+| `push-to-github.sh` | Push a single file (alternate) |
+| `push-verified-patch.sh` | Batch push for verified filter files (9 files) |
+
+These scripts use the GitHub REST API with a PAT stored in the script file. The PAT has no expiration.
+
+**How it works:**
+
+1. Script reads file from `moho-app-scaffold/`
+2. Base64 encodes the content
+3. Fetches current SHA from GitHub API
+4. PUTs the file via GitHub Contents API
+5. Each push creates a commit on `main`
+6. Cloudflare auto-builds from the last commit
+
+Each file push triggers a separate Cloudflare build. Only the last build matters. Scripts include a 1-second delay between files to avoid rate limiting.
+
+---
+
+MoHoLocal Operations Playbook v2
 March 2026
