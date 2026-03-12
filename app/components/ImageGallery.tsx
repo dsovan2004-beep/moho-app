@@ -7,6 +7,9 @@ interface GalleryImage {
   image_url: string
   alt_text?: string
   position: number
+  source?: string
+  source_reference?: string
+  verified?: boolean
 }
 
 interface ImageGalleryProps {
