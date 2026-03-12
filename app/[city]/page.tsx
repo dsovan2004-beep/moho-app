@@ -114,6 +114,7 @@ async function getCityData(cityName: string) {
       .select('*')
       .eq('city', cityName)
       .eq('status', 'approved')
+      .eq('verified', true)
       .not('rating', 'is', null)
       .order('rating', { ascending: false })
       .limit(6),
@@ -123,6 +124,7 @@ async function getCityData(cityName: string) {
       .select('*')
       .eq('city', cityName)
       .eq('status', 'approved')
+      .eq('verified', true)
       .order('created_at', { ascending: false })
       .limit(4),
     // Category counts for this city
@@ -130,7 +132,8 @@ async function getCityData(cityName: string) {
       .from('businesses')
       .select('category')
       .eq('city', cityName)
-      .eq('status', 'approved'),
+      .eq('status', 'approved')
+      .eq('verified', true),
   ])
 
   const popular = popularResult.status === 'fulfilled'
