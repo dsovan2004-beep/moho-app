@@ -98,9 +98,9 @@ async function getData(activeCity: City) {
     activityLostResult,
   ] = await Promise.allSettled([
     // Total count
-    supabase.from('businesses').select('*', { count: 'exact', head: true }).eq('status', 'approved'),
+    supabase.from('businesses').select('*', { count: 'exact', head: true }).eq('status', 'approved').eq('verified', true),
     // City breakdown
-    supabase.from('businesses').select('city').eq('status', 'approved'),
+    supabase.from('businesses').select('city').eq('status', 'approved').eq('verified', true),
     // Upcoming events (next 4)
     supabase
       .from('events')
@@ -109,13 +109,14 @@ async function getData(activeCity: City) {
       .order('start_date', { ascending: true })
       .limit(4),
     // Category counts
-    supabase.from('businesses').select('category').eq('status', 'approved'),
+    supabase.from('businesses').select('category').eq('status', 'approved').eq('verified', true),
     // Popular: top rated in active city
     supabase
       .from('businesses')
       .select('*')
       .eq('city', activeCity)
       .eq('status', 'approved')
+      .eq('verified', true)
       .not('rating', 'is', null)
       .order('rating', { ascending: false })
       .limit(6),
@@ -125,6 +126,7 @@ async function getData(activeCity: City) {
       .select('*')
       .eq('city', activeCity)
       .eq('status', 'approved')
+      .eq('verified', true)
       .not('review_count', 'is', null)
       .order('review_count', { ascending: false })
       .order('rating', { ascending: false })
@@ -134,6 +136,7 @@ async function getData(activeCity: City) {
       .from('businesses')
       .select('*')
       .eq('status', 'approved')
+      .eq('verified', true)
       .eq('featured', true)
       .order('name')
       .limit(6),
