@@ -136,6 +136,7 @@ export default function DirectoryPage() {
       .from('businesses')
       .select('*', { count: 'exact' })
       .eq('status', 'approved')
+      .eq('verified', true)
       .order('name')
       .range(from, to)
 
