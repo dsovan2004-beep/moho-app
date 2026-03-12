@@ -404,28 +404,31 @@ function NavContent() {
         </div>
 
         {/* Mobile nav links */}
-        <div className="md:hidden border-t border-white/10 px-4 py-2 flex gap-3 overflow-x-auto items-center">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-xs whitespace-nowrap font-medium"
-              style={
-                pathname === link.href
-                  ? { color: '#f59e0b' }
-                  : { color: 'rgba(255,255,255,0.75)' }
-              }
-            >
-              {link.label}
-            </Link>
-          ))}
-          <span className="text-white/20 text-xs shrink-0">|</span>
+        <div className="md:hidden border-t border-white/10 flex items-stretch">
 
-          {/* Best Of dropdown — mobile */}
-          <div className="relative shrink-0" ref={bestOfMobileRef}>
+          {/* Scrollable section — nav links only, no dropdowns inside overflow container */}
+          <div className="flex gap-3 px-4 py-2 overflow-x-auto items-center flex-1 min-w-0">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-xs whitespace-nowrap font-medium shrink-0"
+                style={
+                  pathname === link.href
+                    ? { color: '#f59e0b' }
+                    : { color: 'rgba(255,255,255,0.75)' }
+                }
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Best Of — outside overflow container so dropdown renders freely */}
+          <div className="relative shrink-0 border-l border-white/10" ref={bestOfMobileRef}>
             <button
               onClick={() => setBestOfMobileOpen((o) => !o)}
-              className="flex items-center gap-1 text-xs font-medium whitespace-nowrap"
+              className="flex items-center gap-1 text-xs font-medium whitespace-nowrap h-full px-3"
               style={{ color: bestOfMobileOpen ? '#f59e0b' : 'rgba(255,255,255,0.75)' }}
             >
               ⭐ Best Of
@@ -439,7 +442,7 @@ function NavContent() {
             </button>
 
             {bestOfMobileOpen && (
-              <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
+              <div className="absolute right-0 top-full mt-1 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
                 <div className="px-4 py-2.5 border-b border-gray-100">
                   <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
                     Best in {city}
