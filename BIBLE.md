@@ -490,6 +490,66 @@ This continuous signal collection is what separates MoHoLocal from a static busi
 
 ---
 
+## Data Moat
+
+MoHoLocal's long-term competitive advantage is not its codebase — it is the continuously growing dataset of local signals and structured community knowledge that the platform accumulates over time.
+
+Every business listing, event, lost pet alert, community tip, and neighborhood signal that enters the platform strengthens a local data layer that becomes increasingly difficult for competitors to replicate. Code can be copied. A living, city-specific dataset built over years cannot.
+
+MoHoLocal builds a living knowledge graph of each city by continuously collecting, organizing, and moderating signals including:
+
+- Local businesses across every category and neighborhood
+- Events and recurring community gatherings
+- Lost and found pets with location history
+- Community tips and neighborhood activity
+- New resident information and city-specific knowledge
+
+Over time this creates a structured local intelligence layer that grows more valuable with every signal added.
+
+---
+
+### Local Knowledge Graph
+
+Each supported city gradually develops its own knowledge graph consisting of interconnected local data:
+
+- Business listings with categories, ratings, and review history
+- Category rankings and Best Of page performance data
+- Event histories showing recurring local activity patterns
+- Community signals tied to specific neighborhoods and streets
+- User activity and engagement patterns by city
+
+The value of the platform increases as these datasets grow and interconnect. A business listing becomes more valuable when it has reviews. A Best Of page becomes more useful when it has ranking history. An event record becomes more meaningful when it shows recurring community patterns.
+
+This interconnected local knowledge is the product. The website is just the interface.
+
+---
+
+### Network Effect
+
+MoHoLocal's data moat is reinforced by compounding network effects:
+
+**More businesses** → more listings, more categories, more Best Of pages
+**More signals** → more useful discovery pages, better search coverage
+**More users** → more submissions, more reviews, more community activity
+
+As these layers grow together, each new signal becomes more valuable because it connects to an existing web of local knowledge. The platform becomes increasingly useful and increasingly difficult to reproduce from scratch.
+
+A competitor starting today would need years of continuous signal collection to approach the same local coverage — assuming they could build the same community trust and submission pipeline.
+
+---
+
+### Strategic Principle
+
+MoHoLocal's long-term moat is its structured local data.
+
+Engineering decisions should prioritize collecting, organizing, and preserving local signals that strengthen this data layer. Features that help the platform gather more signals, improve signal quality, or make signals more discoverable are always high priority.
+
+Features that do not contribute to the data layer should be evaluated critically before any engineering time is invested.
+
+> The platform that owns the most useful structured local knowledge wins the local discovery market.
+
+---
+
 ## Current Product Focus
 
 The current product phase prioritizes:
