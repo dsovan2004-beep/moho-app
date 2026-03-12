@@ -107,6 +107,9 @@ export interface BusinessImage {
   image_url: string
   alt_text?: string
   position: number
+  source?: 'google_places' | 'owner_upload' | 'admin_verified' | 'unknown'
+  source_reference?: string
+  verified?: boolean
   created_at: string
 }
 
