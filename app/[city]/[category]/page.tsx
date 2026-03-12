@@ -11,6 +11,7 @@ const CITY_MAP: Record<string, string> = {
   'tracy':          'Tracy',
   'lathrop':        'Lathrop',
   'manteca':        'Manteca',
+  'brentwood':      'Brentwood',
 }
 
 const CATEGORY_MAP: Record<string, string> = {
@@ -60,6 +61,11 @@ const CITY_CFG: Record<string, { gradient: string; chip: string; emoji: string }
     gradient: 'linear-gradient(135deg,#7c2d12 0%,#c2410c 100%)',
     chip: 'bg-orange-50 text-orange-700',
     emoji: '🍊',
+  },
+  Brentwood: {
+    gradient: 'linear-gradient(135deg,#134e4a 0%,#0d9488 100%)',
+    chip: 'bg-teal-50 text-teal-700',
+    emoji: '🌊',
   },
 }
 
@@ -246,8 +252,9 @@ export default async function CityLandingPage({ params }: PageProps) {
       {/* ── SEO intro paragraph ── */}
       <p className="text-gray-600 text-sm leading-relaxed mb-8">
         Looking for {category.toLowerCase()} in {city}, CA? MoHoLocal is your local guide to the
-        best businesses in Mountain House, Tracy, Lathrop, and Manteca — San Joaquin County&apos;s
-        fastest-growing communities. Browse verified listings below, call direct, or get directions.
+        best businesses in Mountain House, Tracy, Lathrop, Manteca, and Brentwood — San Joaquin
+        County and East Bay&apos;s fastest-growing communities. Browse verified listings below, call
+        direct, or get directions.
       </p>
 
       {/* ── Business list or empty state ── */}

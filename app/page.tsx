@@ -627,7 +627,7 @@ export default async function HomePage({ searchParams }: PageProps) {
               return (
                 <Link
                   key={event.id}
-                  href="/events"
+                  href={`/events/${event.id}`}
                   className="group bg-white rounded-xl border border-gray-200 overflow-hidden flex hover:shadow-lg hover:-translate-y-0.5 transition-all"
                 >
                   <div

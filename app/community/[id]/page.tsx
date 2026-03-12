@@ -26,6 +26,7 @@ const CITY_COLORS: Record<string, string> = {
   Tracy: 'bg-green-50 text-green-700',
   Lathrop: 'bg-purple-50 text-purple-700',
   Manteca: 'bg-orange-50 text-orange-700',
+  Brentwood: 'bg-teal-50 text-teal-700',
 }
 
 function timeAgo(dateStr: string) {

@@ -198,10 +198,16 @@ export default async function LostAndFoundPage({ searchParams }: PageProps) {
   const city = params.city ?? 'All Cities'
   const status = params.status ?? 'All'
 
-  const [allPets, filteredPets] = await Promise.all([
-    getPets(city),
-    getPets(city, status),
-  ])
+  let allPets: LostAndFound[] = []
+  let filteredPets: LostAndFound[] = []
+  try {
+    ;[allPets, filteredPets] = await Promise.all([
+      getPets(city),
+      getPets(city, status),
+    ])
+  } catch (err) {
+    console.error('LostAndFoundPage fetch failed:', err)
+  }
 
   const lostCount = allPets.filter((p) => p.status === 'lost').length
   const foundCount = allPets.filter((p) => p.status === 'found').length
