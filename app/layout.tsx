@@ -172,6 +172,9 @@ function NavContent() {
     setDropdownOpen(false)
     await signOut()
     setUser(null)
+    // Redirect to homepage so the user is never left on a protected page
+    // (e.g. /profile) after signing out.
+    router.push('/')
   }
 
   return (

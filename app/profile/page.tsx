@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { getSupabaseClient } from '@/lib/supabase'
 import type { User } from '@supabase/supabase-js'
 
-const CITIES = ['Mountain House', 'Tracy', 'Lathrop', 'Manteca']
+const CITIES = ['Mountain House', 'Tracy', 'Lathrop', 'Manteca', 'Brentwood']
 
 function formatMemberSince(dateStr: string) {
   return new Date(dateStr).toLocaleDateString('en-US', {
@@ -40,6 +40,8 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const supabase = getSupabaseClient()
+
+    // Initial session check — redirect immediately if not authenticated
     supabase.auth.getUser().then(({ data: { user } }) => {
       if (!user) {
         router.replace('/login')
@@ -50,6 +52,19 @@ export default function ProfilePage() {
       setCity(user.user_metadata?.city || 'Mountain House')
       setLoading(false)
     })
+
+    // Subscribe to auth state changes — if the user signs out while on this
+    // page, redirect them to /login immediately instead of leaving the
+    // profile content visible.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT' || !session) {
+        router.replace('/login')
+      } else if (session?.user) {
+        setUser(session.user)
+      }
+    })
+
+    return () => subscription.unsubscribe()
   }, [router])
 
   async function handleSave(e: React.FormEvent) {
