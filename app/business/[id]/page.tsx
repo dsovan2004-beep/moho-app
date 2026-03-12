@@ -236,10 +236,11 @@ export default async function BusinessDetailPage({ params }: PageProps) {
   const hoursList = biz.hours ? parseHours(biz.hours) : []
 
   const jsonLd = buildJsonLd(biz)
-  // Enhance JSON-LD with gallery images when available
-  if (images.length > 0) {
-    jsonLd.image = images.map((img) => img.image_url)
-  }
+  // HOTFIX: Only show gallery images that have been explicitly verified.
+  // Unverified placeholder/stock images must not appear on business pages.
+  // To re-enable: add a `verified` boolean column to business_images,
+  // then filter here with .eq('verified', true) in getBusinessImages().
+  const verifiedImages: typeof images = [] // disabled until image verification pipeline exists
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -351,11 +352,11 @@ export default async function BusinessDetailPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* ── Photo Gallery ── */}
-      {images.length > 0 && (
+      {/* ── Photo Gallery ── HOTFIX: disabled until verified image pipeline exists */}
+      {verifiedImages.length > 0 && (
         <div className="mb-8">
           <ImageGallery
-            images={images}
+            images={verifiedImages}
             businessName={biz.name}
             accentColor={city.accent}
           />
