@@ -161,6 +161,14 @@ function isNoiseLine(line) {
   // Lines that are mostly non-alphanumeric
   const alphaRatio = (line.match(/[a-zA-Z0-9\s]/g) || []).length / line.length
   if (alphaRatio < 0.5 && line.length < 30) return true
+  // Lines containing trademark/registered/copyright symbols (logo OCR garbage)
+  if (/[®©™]/.test(line)) return true
+  // Stylized flyer graphic text: most words are ≤3 chars (e.g. "pA Ce ES RIE wv")
+  const words = line.trim().split(/\s+/).filter(w => w.replace(/[^a-zA-Z0-9]/g, '').length > 0)
+  if (words.length >= 3) {
+    const shortWords = words.filter(w => w.replace(/[^a-zA-Z0-9]/g, '').length <= 3)
+    if (shortWords.length / words.length >= 0.7) return true  // 70%+ short words = noise
+  }
   return false
 }
 
@@ -342,7 +350,14 @@ function logFilename() {
  * Returns the public URL, or null if upload is unavailable/fails.
  */
 async function uploadScreenshotImage(imagePath, filename) {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return null
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+    console.log('  ⚠️  Image upload skipped — missing env vars:',
+      !SUPABASE_URL ? 'NEXT_PUBLIC_SUPABASE_URL' : '',
+      !SUPABASE_ANON_KEY ? 'NEXT_PUBLIC_SUPABASE_ANON_KEY' : '')
+    return null
+  }
+
+  console.log(`  🔑  Supabase URL: ${SUPABASE_URL.slice(0, 40)}…`)
 
   try {
     const supabase    = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
@@ -354,22 +369,28 @@ async function uploadScreenshotImage(imagePath, filename) {
     const safeName    = filename.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9._-]/g, '')
     const storagePath = `signals/${Date.now()}_${safeName}`
 
-    const { error } = await supabase.storage
+    console.log(`  📤  Uploading ${imageBuffer.length} bytes → community-images/${storagePath}`)
+
+    const { data: uploadData, error } = await supabase.storage
       .from('community-images')
       .upload(storagePath, imageBuffer, { contentType: mimeType, upsert: false })
 
     if (error) {
-      console.error('  ⚠️  Image upload skipped:', error.message)
+      console.error(`  ❌  Upload failed: [${error.statusCode ?? '?'}] ${error.message}`)
+      if (error.error) console.error(`      Detail: ${error.error}`)
       return null
     }
+
+    console.log(`  ✅  Upload success: ${uploadData?.path}`)
 
     const { data: { publicUrl } } = supabase.storage
       .from('community-images')
       .getPublicUrl(storagePath)
 
+    console.log(`  🌐  Public URL: ${publicUrl}`)
     return publicUrl
   } catch (err) {
-    console.error('  ⚠️  Image upload error:', err.message)
+    console.error('  ❌  Upload exception:', err.message)
     return null
   }
 }
