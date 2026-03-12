@@ -565,5 +565,140 @@ The platform has the features it needs. What it needs now is **density, coverage
 
 ---
 
-MoHoLocal Product Bible v2
+## Local Authority SEO Model
+
+MoHoLocal grows by becoming the **authoritative local knowledge hub** for each city it serves. The platform does not compete on features — it competes on structured local knowledge that Google indexes and residents trust.
+
+Authority is built through a layered page architecture where every city generates multiple indexable discovery pages:
+
+```
+/[city]                        — City hub page
+/[city]/[category]             — Category page (e.g. /mountain-house/restaurants)
+/best/[category]/[city]        — Best Of page (e.g. /best/dentists/tracy)
+/new-resident/[city]           — New resident guide
+/events (filtered by city)     — Local events
+/business/[id]                 — Individual business profiles
+```
+
+Each page targets a specific local search intent. When a resident searches "best pizza in Mountain House" or "dentists near Tracy CA", MoHoLocal's structured pages are designed to capture that traffic.
+
+The more pages indexed with accurate local data, the more Google treats MoHoLocal as the authoritative source for that city. This compounds over time.
+
+---
+
+### Local Authority Loop
+
+MoHoLocal's growth engine is a compounding authority loop:
+
+```
+Local content (businesses, events, signals)
+→ Google indexes structured city/category pages
+→ Residents discover pages via local search
+→ Local mentions and backlinks from community sharing
+→ Google trust increases for moholocal.com
+→ Higher rankings for local queries
+→ More organic discovery
+→ More listings, events, and signals contributed
+→ Authority compounds
+```
+
+This loop is the core growth mechanism. Every verified business listing, every accurate event, and every community signal strengthens it. Low-quality or fake data breaks it.
+
+---
+
+## Trust-First Directory Rule
+
+The MoHoLocal business directory operates on a **trust-first model**. No business listing is visible to residents unless it has been independently verified.
+
+**Non-negotiable rules:**
+
+- Every business in the `businesses` table defaults to `verified = false`
+- Only businesses with both `status = 'approved'` AND `verified = true` appear on any public-facing page
+- Verification requires cross-checking against Google Maps, Yelp, or the CA Secretary of State
+- Seed scripts must never generate fictional businesses — every seeded listing must correspond to a real, operating business at a real address in the correct city
+- The system blocks unverified data before it goes live — the founder should never have to manually catch fake listings after publication
+
+**Verification fields on the `businesses` table:**
+
+| Field | Purpose |
+|-------|---------|
+| `verified` | Boolean gate — `false` = hidden from all public pages |
+| `verification_source` | Audit trail — e.g. `google_maps_audit_2026-03-12` |
+| `verified_at` | Timestamp of when verification occurred |
+| `google_place_id` | Optional — links to Google Maps for future automation |
+
+**Pages enforcing the verified filter (9 total):**
+
+- `/` (homepage)
+- `/directory`
+- `/business/[id]`
+- `/[city]`
+- `/[city]/[category]`
+- `/best/[category]/[city]`
+- `/new-resident/[city]`
+- `/claim-listing/[id]`
+- `/report-listing/[id]`
+
+The admin page (`/admin`) intentionally does NOT filter by verified — moderators need full visibility.
+
+---
+
+## Image Integrity Rule
+
+Business photos must meet one of these criteria to display publicly:
+
+- Owner uploaded (via claim listing flow)
+- Admin approved
+- Sourced from a verified business profile (e.g. Google Business)
+
+**The following are prohibited:**
+
+- Stock photos (e.g. Unsplash, Pexels)
+- AI-generated business images
+- Generic category placeholder images
+
+The `business_images` table exists and contains ~3,994 Unsplash stock photos from an earlier seeding attempt. Gallery rendering is currently disabled via a hotfix (`verifiedImages = []` in `business/[id]/page.tsx`). Galleries must not be re-enabled until a verified image pipeline is built.
+
+---
+
+## Distribution Strategy
+
+MoHoLocal SEO is amplified by distributing key pages to local communities where residents already gather:
+
+- Local Facebook groups (Mountain House Community, Tracy Neighbors, etc.)
+- Community newsletters and email lists
+- Reddit local threads (r/209, r/BayArea, r/CentralValley)
+- Neighborhood forums and community boards
+- School parent groups
+
+Best Of pages and New Resident Guides are the highest-value pages for distribution because they provide immediate utility to residents and generate organic backlinks.
+
+---
+
+## City Expansion Strategy — Density Before Expansion
+
+MoHoLocal prioritizes **depth over breadth**. A city should have dense, verified directory coverage before the platform expands to additional cities.
+
+**Current launch focus order:**
+
+1. Mountain House (audit complete — 17 verified businesses)
+2. Tracy (audit pending)
+3. Lathrop (audit pending)
+4. Manteca (audit pending)
+5. Brentwood (audit pending)
+
+**Expansion readiness checklist for each city:**
+
+- [ ] Business directory seeded with real, verified businesses
+- [ ] Google Maps audit completed
+- [ ] `verified = true` set on confirmed businesses
+- [ ] New Resident Guide populated with city-specific content
+- [ ] Best Of pages generating with verified listings
+- [ ] City hub page (`/[city]`) rendering correctly
+
+No new city should be added until the existing 5 cities have verified directory coverage.
+
+---
+
+MoHoLocal Product Bible v3
 Confidential — March 2026
