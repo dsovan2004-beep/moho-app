@@ -201,6 +201,7 @@ export default async function BestOfPage({ params }: PageProps) {
     .eq('city', cityName)
     .eq('category', catInfo.dbCategory)
     .eq('status', 'approved')
+    .eq('verified', true)
     .order('rating', { ascending: false })
     .limit(10)
 
