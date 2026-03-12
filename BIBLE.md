@@ -370,5 +370,93 @@ Businesses gain visibility. Residents gain useful local information. The platfor
 
 ---
 
+---
+
+## Growth Phase — Directory & Best Of Strategy
+
+MoHoLocal's immediate growth strategy focuses on expanding the business directory and strengthening "Best Of" discovery pages. These two systems drive the majority of organic discovery and local search traffic.
+
+Rather than adding new product features, the priority is increasing the density and quality of listings and ranking content so the platform becomes the most useful discovery tool for local residents.
+
+The platform is no longer a prototype. Core features are functional across 5 cities. The next phase is growth through content density and search discoverability — not engineering expansion.
+
+---
+
+### Growth Lever 1 — Directory Seeding
+
+The business directory is the foundation of the platform. Every additional listing increases the platform's utility for residents and its credibility with businesses.
+
+**Directory expansion targets:**
+
+| Phase | Target |
+|-------|--------|
+| Current | ~401 listings |
+| Phase 1 | 1,500 listings |
+| Phase 2 | 3,000+ listings |
+
+Increasing directory density directly improves:
+- Local search discoverability (more pages indexed by Google)
+- User utility (more useful results when residents search)
+- Business visibility (more businesses aware of the platform)
+- Platform credibility (a denser directory signals an established platform)
+
+Directory expansion is a **strategic priority**. Seeding effort should be continuous and should cover all supported cities evenly. No city should have a significantly thinner directory than others.
+
+---
+
+### Growth Lever 2 — Best Of Pages (SEO Discovery)
+
+Best Of pages are one of the most important traffic acquisition systems on the platform.
+
+These pages function as search entry points for residents looking for recommendations in their city. When a resident searches "best coffee in Mountain House" or "best preschools in Tracy", a well-structured Best Of page is the most likely result to capture that traffic.
+
+**Examples of high-value Best Of pages:**
+
+```
+/best/coffee/mountain-house
+/best/restaurants/tracy
+/best/dentists/lathrop
+/best/preschools/manteca
+/best/hair-salons/brentwood
+/best/pediatricians/mountain-house
+/best/pizza/tracy
+/best/auto-repair/manteca
+```
+
+Best Of pages should be generated for multiple categories across every supported city. Each page should be structured, SEO-optimized, and populated with real local listings from the directory.
+
+These pages are not marketing content — they are structured discovery tools that directly serve residents and capture organic search traffic.
+
+---
+
+## Platform Growth Principle
+
+MoHoLocal grows when residents discover useful local information and businesses gain visibility. The platform succeeds by connecting these two groups through searchable, structured local knowledge.
+
+Growth comes from increasing useful local signals — businesses, events, and community information — rather than adding unnecessary product features.
+
+Every engineering decision should be evaluated against this question:
+
+> Does this help more residents discover local businesses, events, or community signals?
+
+If the answer is no, it is not a growth priority.
+
+---
+
+## Current Product Focus
+
+The current product phase prioritizes:
+
+- Expanding the business directory toward 1,500+ listings
+- Strengthening Best Of discovery pages across all supported cities and categories
+- Improving local search visibility and SEO coverage
+- Increasing platform coverage across all supported cities
+
+Engineering effort should favor improvements that enhance discovery, SEO, and listing quality. Feature development should only be considered when the directory seeding strategy and Best Of coverage are advancing consistently.
+
+The platform has the features it needs. What it needs now is **density, coverage, and discoverability.**
+
+---
+
 MoHoLocal Product Bible v2
 Confidential — March 2026
