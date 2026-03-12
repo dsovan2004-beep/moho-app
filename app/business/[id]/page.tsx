@@ -170,6 +170,8 @@ async function getBusinessImages(businessId: string) {
     .from('business_images')
     .select('*')
     .eq('business_id', businessId)
+    .eq('verified', true)
+    .in('source', ['google_places', 'owner_upload', 'admin_verified'])
     .order('position', { ascending: true })
   return (data ?? []) as BusinessImage[]
 }
@@ -238,11 +240,9 @@ export default async function BusinessDetailPage({ params }: PageProps) {
   const hoursList = biz.hours ? parseHours(biz.hours) : []
 
   const jsonLd = buildJsonLd(biz)
-  // HOTFIX: Only show gallery images that have been explicitly verified.
-  // Unverified placeholder/stock images must not appear on business pages.
-  // To re-enable: add a `verified` boolean column to business_images,
-  // then filter here with .eq('verified', true) in getBusinessImages().
-  const verifiedImages: typeof images = [] // disabled until image verification pipeline exists
+  // Gallery images are now filtered at query level:
+  // getBusinessImages() only returns verified=true + source in (google_places, owner_upload, admin_verified)
+  const verifiedImages = images
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -354,7 +354,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* ── Photo Gallery ── HOTFIX: disabled until verified image pipeline exists */}
+      {/* ── Photo Gallery ── only verified Google Places / owner / admin images */}
       {verifiedImages.length > 0 && (
         <div className="mb-8">
           <ImageGallery
