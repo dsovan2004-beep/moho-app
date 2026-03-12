@@ -7,14 +7,15 @@ import Link from 'next/link'
 import { getSupabaseClient } from '@/lib/supabase'
 
 const CATEGORIES = [
-  'Home Services',
   'Restaurants',
   'Health & Wellness',
-  'Childcare',
-  'Pet Services',
   'Beauty & Spa',
-  'Tutoring',
-  'Auto Services',
+  'Home Services',
+  'Automotive',
+  'Pet Services',
+  'Real Estate',
+  'Education',
+  'Retail',
 ]
 
 const CITIES = ['Mountain House', 'Tracy', 'Lathrop', 'Manteca']

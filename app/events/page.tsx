@@ -3,7 +3,7 @@ export const runtime = 'edge'
 import { getSupabaseClient, type Event } from '@/lib/supabase'
 import Link from 'next/link'
 
-const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca']
+const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca', 'Brentwood']
 
 interface PageProps {
   searchParams: Promise<{ city?: string }>
@@ -36,6 +36,7 @@ const CITY_COLORS: Record<string, string> = {
   Tracy: 'bg-green-100 text-green-800',
   Lathrop: 'bg-purple-100 text-purple-800',
   Manteca: 'bg-orange-100 text-orange-800',
+  Brentwood: 'bg-teal-100 text-teal-800',
 }
 
 function EventCard({ event }: { event: Event }) {
@@ -43,42 +44,58 @@ function EventCard({ event }: { event: Event }) {
   const cityColor = CITY_COLORS[event.city] ?? 'bg-gray-100 text-gray-700'
 
   return (
-    <article className="group flex gap-4 bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md hover:-translate-y-0.5 transition-all">
-      {/* Date Column */}
-      <div className="shrink-0 w-14 text-center">
-        <div className="bg-blue-700 text-white rounded-t-lg py-0.5 text-xs font-bold tracking-wider">
-          {month}
+    <Link href={`/events/${event.id}`} className="block group">
+    <article className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all">
+      {/* Flyer / screenshot image — shown when present */}
+      {event.image_url && (
+        <div className="w-full h-48 bg-gray-100 overflow-hidden">
+          <img
+            src={event.image_url}
+            alt={event.title}
+            className="w-full h-full object-cover object-center"
+          />
         </div>
-        <div className="border border-t-0 border-gray-200 rounded-b-lg py-1 text-2xl font-extrabold text-gray-900">
-          {day}
-        </div>
-      </div>
+      )}
 
-      {/* Content */}
-      <div className="flex-1 min-w-0">
-        <div className="flex items-start gap-2 flex-wrap">
-          <h3 className="font-bold text-gray-900 group-hover:text-blue-700 transition flex-1">
-            {event.title}
-          </h3>
-          <span className={`text-xs font-medium px-2 py-0.5 rounded-full shrink-0 ${cityColor}`}>
-            {event.city}
-          </span>
+      {/* Content row */}
+      <div className="flex gap-4 p-4">
+        {/* Date Column */}
+        <div className="shrink-0 w-14 text-center">
+          <div className="bg-blue-700 text-white rounded-t-lg py-0.5 text-xs font-bold tracking-wider">
+            {month}
+          </div>
+          <div className="border border-t-0 border-gray-200 rounded-b-lg py-1 text-2xl font-extrabold text-gray-900">
+            {day}
+          </div>
         </div>
-        {event.category && (
-          <span className="inline-block text-xs font-medium text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full mt-1">
-            {event.category}
-          </span>
-        )}
-        <p className="text-sm text-gray-500 mt-1.5 line-clamp-2">{event.description}</p>
-        <div className="flex items-center gap-4 mt-2 text-xs text-gray-400">
-          <span>📅 {full}</span>
-          {event.start_date.includes('T') && (
-            <span>🕐 {new Date(event.start_date).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</span>
+
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start gap-2 flex-wrap">
+            <h3 className="font-bold text-gray-900 group-hover:text-blue-700 transition flex-1">
+              {event.title}
+            </h3>
+            <span className={`text-xs font-medium px-2 py-0.5 rounded-full shrink-0 ${cityColor}`}>
+              {event.city}
+            </span>
+          </div>
+          {event.category && (
+            <span className="inline-block text-xs font-medium text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full mt-1">
+              {event.category}
+            </span>
           )}
-          {event.location && <span>📍 {event.location}</span>}
+          <p className="text-sm text-gray-500 mt-1.5 line-clamp-2">{event.description}</p>
+          <div className="flex items-center gap-4 mt-2 text-xs text-gray-400">
+            <span>📅 {full}</span>
+            {event.start_date.includes('T') && (
+              <span>🕐 {new Date(event.start_date).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</span>
+            )}
+            {event.location && <span>📍 {event.location}</span>}
+          </div>
         </div>
       </div>
     </article>
+    </Link>
   )
 }
 

@@ -38,7 +38,16 @@ function getCategoryEmoji(cat: string): string {
   return '🏢'
 }
 
-const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca']
+const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca', 'Brentwood']
+
+// City badge chip colours — matches homepage / CLAUDE.md branding
+const CITY_CHIP: Record<string, string> = {
+  'Mountain House': 'bg-blue-50 text-blue-700',
+  'Tracy':          'bg-green-50 text-green-700',
+  'Lathrop':        'bg-purple-50 text-purple-700',
+  'Manteca':        'bg-orange-50 text-orange-700',
+  'Brentwood':      'bg-teal-50 text-teal-700',
+}
 
 function StarRating({ rating }: { rating?: number }) {
   if (!rating) return null
@@ -77,9 +86,14 @@ function BusinessCard({ biz }: { biz: Business }) {
         </div>
         <StarRating rating={biz.rating} />
         <p className="text-sm text-gray-500 mt-1 line-clamp-2">{biz.description}</p>
-        <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
-          <span>📍 {biz.city}</span>
-          {biz.address && <span className="truncate">{biz.address}</span>}
+        <div className="flex items-center gap-2 mt-2 flex-wrap">
+          {/* City badge — city-branded colour */}
+          <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${CITY_CHIP[biz.city] ?? 'bg-gray-100 text-gray-600'}`}>
+            📍 {biz.city}
+          </span>
+          {biz.address && (
+            <span className="text-xs text-gray-400 truncate max-w-[180px]">{biz.address}</span>
+          )}
         </div>
       </div>
     </Link>
@@ -169,30 +183,72 @@ export default function DirectoryPage() {
         <p className="text-gray-500 mt-1">Discover local businesses across San Joaquin County</p>
       </div>
 
+      {/* ── Mobile filter chips (hidden on lg+) ── */}
+      <div className="lg:hidden mb-4 space-y-3">
+        {/* City chips */}
+        <div className="overflow-x-auto">
+          <div className="flex gap-2 pb-1 min-w-max">
+            {CITIES.map((c) => (
+              <Link
+                key={c}
+                href={filterUrl(c, category)}
+                className={`text-xs font-semibold px-3 py-1.5 rounded-full border whitespace-nowrap transition ${
+                  city === c
+                    ? 'bg-blue-700 text-white border-blue-700'
+                    : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300'
+                }`}
+              >
+                {c}
+              </Link>
+            ))}
+          </div>
+        </div>
+        {/* Category chips */}
+        <div className="overflow-x-auto">
+          <div className="flex gap-2 pb-1 min-w-max">
+            {CATEGORIES.map(({ key, emoji }) => (
+              <Link
+                key={key}
+                href={filterUrl(city, key)}
+                className={`text-xs font-semibold px-3 py-1.5 rounded-full border whitespace-nowrap transition ${
+                  category === key
+                    ? 'bg-blue-700 text-white border-blue-700'
+                    : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300'
+                }`}
+              >
+                {emoji} {key}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <div className="flex flex-col lg:flex-row gap-6">
 
         {/* Sidebar Filters */}
-        <aside className="lg:w-56 shrink-0 space-y-4">
+        <aside className="hidden lg:block lg:w-56 shrink-0 space-y-4">
 
           {/* Search */}
           <div>
             <label className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1 block">
               Search
             </label>
-            <form onSubmit={handleSearch} className="flex gap-1">
+            <form onSubmit={handleSearch} className="relative">
               <input
                 type="text"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 placeholder="Search businesses…"
-                className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full border border-gray-200 rounded-lg pl-3 pr-9 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
               <button
                 type="submit"
-                className="px-3 py-2 rounded-lg text-sm font-semibold text-white transition"
-                style={{ backgroundColor: '#1e3a5f' }}
+                aria-label="Search"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-700 transition"
               >
-                Go
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1 0 6.5 6.5a7.5 7.5 0 0 0 10.15 10.15z" />
+                </svg>
               </button>
             </form>
           </div>
@@ -241,6 +297,42 @@ export default function DirectoryPage() {
         {/* Listings */}
         <div className="flex-1 min-w-0">
 
+          {/* Active filter chips — mobile + desktop */}
+          {(city !== 'All Cities' || category !== 'All' || query) && (
+            <div className="flex flex-wrap gap-2 mb-3">
+              {city !== 'All Cities' && (
+                <Link
+                  href={filterUrl('All Cities', category)}
+                  className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition"
+                >
+                  📍 {city} <span className="ml-0.5 opacity-60">✕</span>
+                </Link>
+              )}
+              {category !== 'All' && (
+                <Link
+                  href={filterUrl(city, 'All')}
+                  className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition"
+                >
+                  {CATEGORIES.find(c => c.key === category)?.emoji ?? '📂'} {category} <span className="ml-0.5 opacity-60">✕</span>
+                </Link>
+              )}
+              {query && (
+                <Link
+                  href={filterUrl(city, category)}
+                  className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition"
+                >
+                  🔍 &ldquo;{query}&rdquo; <span className="ml-0.5 opacity-60">✕</span>
+                </Link>
+              )}
+              <Link
+                href="/directory"
+                className="text-xs text-gray-400 hover:text-red-500 transition px-1 py-1"
+              >
+                Clear all
+              </Link>
+            </div>
+          )}
+
           {/* Header row */}
           <div className="flex items-center justify-between mb-4">
             <p className="text-sm text-gray-500">
@@ -256,13 +348,21 @@ export default function DirectoryPage() {
                 </>
               )}
             </p>
-            <Link
-              href="/submit-business"
-              className="flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-xl transition-all"
-              style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}
-            >
-              + Submit a Business
-            </Link>
+            <div className="flex gap-2">
+              <Link
+                href="/suggest-business"
+                className="flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-xl border border-gray-200 text-gray-600 hover:border-gray-300 hover:text-gray-800 transition-all"
+              >
+                💡 Suggest
+              </Link>
+              <Link
+                href="/submit-business"
+                className="flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-xl transition-all"
+                style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}
+              >
+                + Submit a Business
+              </Link>
+            </div>
           </div>
 
           {/* Business list */}
@@ -282,8 +382,16 @@ export default function DirectoryPage() {
           ) : businesses.length === 0 ? (
             <div className="text-center py-20 text-gray-400">
               <p className="text-4xl mb-3">🔍</p>
-              <p className="font-medium">No businesses found</p>
-              <p className="text-sm mt-1">Try adjusting your filters</p>
+              <p className="font-medium text-gray-700">No businesses found</p>
+              <p className="text-sm mt-1 mb-4">Try adjusting your filters or search term</p>
+              {(city !== 'All Cities' || category !== 'All' || query) && (
+                <Link
+                  href="/directory"
+                  className="inline-block text-sm font-semibold text-blue-600 hover:underline"
+                >
+                  ✕ Clear all filters
+                </Link>
+              )}
             </div>
           ) : (
             <>

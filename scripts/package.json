@@ -1,0 +1,14 @@
+{
+  "name": "moholocal-scripts",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "MoHoLocal processing scripts — run locally, not deployed",
+  "scripts": {
+    "process-signals": "node process-signals.mjs"
+  },
+  "dependencies": {
+    "tesseract.js": "^5.1.1",
+    "@supabase/supabase-js": "^2.45.0",
+    "dotenv": "^16.4.5"
+  }
+}

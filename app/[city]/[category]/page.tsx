@@ -34,8 +34,8 @@ const CATEGORY_MAP: Record<string, string> = {
   'housing':              'Real Estate',
   'pet-services':         'Pet Services',
   'vets':                 'Pet Services',
-  'childcare':            'Childcare',
-  'daycares':             'Childcare',
+  'childcare':            'Education',
+  'daycares':             'Education',
 }
 
 // ── City config ───────────────────────────────────────────────────────────────
@@ -112,6 +112,7 @@ async function getBusinesses(city: string, category: string): Promise<Business[]
     .select('*')
     .eq('city', city)
     .eq('category', category)
+    .eq('status', 'approved')
     .order('rating', { ascending: false })
   if (error) return []
   return (data ?? []) as Business[]
@@ -301,10 +302,18 @@ export default async function CityLandingPage({ params }: PageProps) {
         <div className="flex flex-wrap gap-2">
           {['Restaurants', 'Health & Wellness', 'Beauty & Spa', 'Home Services', 'Automotive', 'Pet Services', 'Real Estate', 'Education', 'Retail'].map((cat) => {
             if (cat === category) return null
-            const slug = cat.toLowerCase()
-              .replace(/ & /g, '-')
-              .replace(/ /g, '-')
-              .replace(/[^a-z0-9-]/g, '')
+            const CAT_SLUG: Record<string, string> = {
+            'Restaurants': 'restaurants',
+            'Health & Wellness': 'health-wellness',
+            'Beauty & Spa': 'beauty-spa',
+            'Home Services': 'home-services',
+            'Automotive': 'automotive',
+            'Pet Services': 'pet-services',
+            'Real Estate': 'real-estate',
+            'Education': 'education',
+            'Retail': 'retail',
+          }
+          const slug = CAT_SLUG[cat] ?? cat.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-').replace(/[^a-z0-9-]/g, '')
             return (
               <Link
                 key={cat}
