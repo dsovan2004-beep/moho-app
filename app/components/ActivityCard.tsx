@@ -9,6 +9,7 @@ export interface ActivityItem {
   description: string
   city: string
   created_at: string
+  image_url?: string
 }
 
 const TYPE_BADGE: Record<ActivityItemType, { label: string; classes: string }> = {
@@ -75,33 +76,46 @@ export function ActivityCard({ item, currentCity }: ActivityCardProps) {
 
   return (
     <Link href={href} className="block group">
-      <article className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md hover:-translate-y-0.5 transition-all">
-        {/* Top row: type badge + timestamp */}
-        <div className="flex items-center justify-between mb-3">
-          <span className={`text-xs font-bold px-2.5 py-1 rounded-full tracking-wide ${badge.classes}`}>
-            {icon} {badge.label}
-          </span>
-          <span className="text-xs text-gray-400">{timeAgo(item.created_at)}</span>
+      <article className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all">
+        {/* Flyer / screenshot thumbnail — shown when present */}
+        {item.image_url && (
+          <div className="w-full h-40 bg-gray-100 overflow-hidden">
+            <img
+              src={item.image_url}
+              alt={item.title}
+              className="w-full h-full object-cover object-top"
+            />
+          </div>
+        )}
+
+        <div className="p-5">
+          {/* Top row: type badge + timestamp */}
+          <div className="flex items-center justify-between mb-3">
+            <span className={`text-xs font-bold px-2.5 py-1 rounded-full tracking-wide ${badge.classes}`}>
+              {icon} {badge.label}
+            </span>
+            <span className="text-xs text-gray-400">{timeAgo(item.created_at)}</span>
+          </div>
+
+          {/* Title */}
+          <h3 className="font-bold text-gray-900 text-base mb-1 group-hover:text-blue-700 transition-colors line-clamp-2">
+            {item.title}
+          </h3>
+
+          {/* Description snippet */}
+          {item.description && (
+            <p className="text-sm text-gray-600 line-clamp-2 mb-3">
+              {item.description}
+            </p>
+          )}
+
+          {/* City badge — only rendered when city is a non-empty string */}
+          {showCityBadge && (
+            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${cityColor}`}>
+              📍 {item.city}
+            </span>
+          )}
         </div>
-
-        {/* Title */}
-        <h3 className="font-bold text-gray-900 text-base mb-1 group-hover:text-blue-700 transition-colors line-clamp-2">
-          {item.title}
-        </h3>
-
-        {/* Description snippet */}
-        {item.description && (
-          <p className="text-sm text-gray-600 line-clamp-2 mb-3">
-            {item.description}
-          </p>
-        )}
-
-        {/* City badge — only rendered when city is a non-empty string */}
-        {showCityBadge && (
-          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${cityColor}`}>
-            📍 {item.city}
-          </span>
-        )}
       </article>
     </Link>
   )

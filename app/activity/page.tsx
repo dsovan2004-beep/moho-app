@@ -23,7 +23,7 @@ async function fetchActivityFeed(city?: string): Promise<ActivityItem[]> {
 
   const eventsQuery = supabase
     .from('events')
-    .select('id, title, description, city, created_at')
+    .select('id, title, description, city, created_at, image_url')
     .not('title', 'ilike', '%stabbing%')
     .not('title', 'ilike', '%shooting%')
     .not('title', 'ilike', '%killed%')
@@ -84,6 +84,7 @@ async function fetchActivityFeed(city?: string): Promise<ActivityItem[]> {
     description: e.description ?? '',
     city: e.city ?? '',
     created_at: e.created_at,
+    image_url: e.image_url ?? undefined,
   }))
 
   const lostPets: ActivityItem[] = (lostResult.data ?? []).map((l: any) => ({

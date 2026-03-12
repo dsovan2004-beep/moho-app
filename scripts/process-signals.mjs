@@ -20,13 +20,22 @@
  */
 
 import Tesseract from 'tesseract.js'
+import { createClient } from '@supabase/supabase-js'
 import fs        from 'fs'
 import path      from 'path'
 import { fileURLToPath } from 'url'
+import { config as dotenvConfig } from 'dotenv'
 
 // ── Config ────────────────────────────────────────────────────────────────────
 
 const __dirname    = path.dirname(fileURLToPath(import.meta.url))
+
+// Load Next.js env vars from scaffold root .env.local
+dotenvConfig({ path: path.join(__dirname, '..', '.env.local') })
+dotenvConfig({ path: path.join(__dirname, '..', '.env') })  // fallback
+
+const SUPABASE_URL      = process.env.NEXT_PUBLIC_SUPABASE_URL
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 const SCAFFOLD_DIR = path.resolve(__dirname, '..')
 const SIGNALS_DIR  = path.join(SCAFFOLD_DIR, 'signals-inbox')
 const RAW_DIR      = path.join(SIGNALS_DIR, 'raw')
@@ -252,6 +261,45 @@ function logFilename() {
   return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}.log`
 }
 
+// ── Supabase image upload ─────────────────────────────────────────────────────
+
+/**
+ * Uploads the screenshot to Supabase community-images bucket.
+ * Returns the public URL, or null if upload is unavailable/fails.
+ */
+async function uploadScreenshotImage(imagePath, filename) {
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return null
+
+  try {
+    const supabase    = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    const imageBuffer = fs.readFileSync(imagePath)
+    const ext         = path.extname(filename).toLowerCase()
+    const mimeType    = (ext === '.jpg' || ext === '.jpeg') ? 'image/jpeg'
+                      : ext === '.webp'                      ? 'image/webp'
+                      : 'image/png'
+    const safeName    = filename.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9._-]/g, '')
+    const storagePath = `signals/${Date.now()}_${safeName}`
+
+    const { error } = await supabase.storage
+      .from('community-images')
+      .upload(storagePath, imageBuffer, { contentType: mimeType, upsert: false })
+
+    if (error) {
+      console.error('  ⚠️  Image upload skipped:', error.message)
+      return null
+    }
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('community-images')
+      .getPublicUrl(storagePath)
+
+    return publicUrl
+  } catch (err) {
+    console.error('  ⚠️  Image upload error:', err.message)
+    return null
+  }
+}
+
 // ── OCR ───────────────────────────────────────────────────────────────────────
 
 async function runOcr(imagePath) {
@@ -337,6 +385,15 @@ async function processFile(filename, log) {
   if (eventDate)  log.push(`  Event date: ${eventDate}`)
   if (contactUrl) log.push(`  Contact URL: ${contactUrl}`)
 
+  // ── Upload screenshot image to Supabase storage ──────────────────────────
+  log.push(`  Uploading screenshot image…`)
+  const imageUrl = await uploadScreenshotImage(srcPath, filename)
+  if (imageUrl) {
+    log.push(`  Image uploaded: ${imageUrl}`)
+  } else {
+    log.push(`  Image upload skipped (no Supabase env vars or upload failed)`)
+  }
+
   // ── Build submission payload ──────────────────────────────────────────────
   const payload = {
     title,
@@ -351,6 +408,7 @@ async function processFile(filename, log) {
 
   if (eventDate)  payload.event_date  = eventDate
   if (contactUrl) payload.contact_url = contactUrl
+  if (imageUrl)   payload.image_url   = imageUrl
 
   // If city unknown, lower confidence to trigger review
   if (!city) {
