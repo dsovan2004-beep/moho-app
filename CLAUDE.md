@@ -889,7 +889,7 @@ The business directory uses a trust-first model. No listing appears publicly unl
 |------|--------|----------|-------|
 | Mountain House | Audited 2026-03-12 | 17 | 142 |
 | Tracy | Audited 2026-03-13 | — | ~186 |
-| Lathrop | Audit in progress 2026-03-13 | 0 | ~200 |
+| Lathrop | Audited 2026-03-13 | 145 | 145 |
 | Manteca | Pending | 0 | ~200 |
 | Brentwood | Pending | 0 | ~200 |
 
@@ -1042,7 +1042,7 @@ MoHoLocal prioritizes **density before expansion**. A city must have verified di
 
 1. Mountain House (audit complete)
 2. Tracy (audit complete)
-3. Lathrop (begin audit)
+3. Lathrop (audit complete)
 4. Manteca (audit pending)
 5. Brentwood (audit pending)
 
