@@ -49,8 +49,8 @@ async function fetchAll(
   filters: Record<string, string> = {}
 ): Promise<Record<string, string>[]> {
   const headers = {
-    apikey: serviceKey,
-    Authorization: `Bearer ${serviceKey}`,
+    apikey: anonKey,
+    Authorization: `Bearer ${anonKey}`,
     'Content-Type': 'application/json',
   }
 
@@ -89,7 +89,7 @@ function urlTag(entry: SitemapEntry): string {
 
 export async function GET() {
   const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? '').replace(/\/$/, '')
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? ''
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ''
 
   const entries: SitemapEntry[] = []
 
@@ -131,7 +131,7 @@ export async function GET() {
   }
 
   // ── Dynamic pages (fetched from Supabase) ───────────────────────────
-  if (supabaseUrl && serviceKey) {
+  if (supabaseUrl && anonKey) {
     // Businesses
     try {
       const businesses = await fetchAll(
