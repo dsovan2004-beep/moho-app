@@ -11,6 +11,5 @@ Disallow: /profile
 Disallow: /auth/
 Disallow: /claim-listing/
 
-# Sitemaps
+# Sitemap (canonical location — dynamic, includes all business/event pages)
 Sitemap: https://www.moholocal.com/sitemap.xml
-Sitemap: https://www.moholocal.com/api/sitemap
