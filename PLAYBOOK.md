@@ -678,5 +678,38 @@ Each file push triggers a separate Cloudflare build. Only the last build matters
 
 ---
 
-MoHoLocal Operations Playbook v3
+## Step 13 — Cron & Worker Trust Model Compliance
+
+All automated jobs in the `moho-ingestion` Cloudflare Worker have been audited against the verified-business / verified-photo trust model (March 2026).
+
+**Safe jobs (no changes needed):**
+
+1. **Directory ingestion** (Mon 03:00 UTC) — All records land as `status='pending'`. Never touches `business_images`. Never sets `verified=true`. The `image_url` field stores an external URL reference only (not a gallery photo).
+
+2. **Events ingestion** (Mon 04:00 UTC) — Most records land as `ingestion_status='pending'`. Eventbrite auto-approve for high-confidence events is acceptable. Does not touch businesses or business_images.
+
+3. **Lost & Found ingestion** (Mon 05:00 UTC) — All records land with `needs_review=true`. No auto-approval. Does not touch businesses or business_images.
+
+4. **Community Signal Inbox** (`POST /submit-signal`) — All submissions require admin approval. `business_update` type never auto-promotes.
+
+**Fixed jobs:**
+
+5. **Sitemap generation** (`GET /api/sitemap`) — Was filtering businesses by `status='approved'` only. Now filters `status='approved' AND verified=true`. Without this fix, unverified businesses would appear in Google's index.
+
+**Retired scripts:**
+
+6. `seed_businesses_5.py` → `.DISABLED` — Was inserting businesses with Unsplash stock `image_url` + `verified: false`
+7. `seed_businesses_6.py` → `.DISABLED` — Same as above
+
+**Rules for future cron jobs:**
+
+Any new automated job that touches businesses, images, or public-facing content must comply with:
+- Only `verified=true` businesses treated as public
+- No stock, placeholder, or unverified images
+- Allowed image sources: `google_places`, `owner_upload`, `admin_verified`
+- Public counts/listings must filter `verified=true`
+
+---
+
+MoHoLocal Operations Playbook v4
 March 2026
