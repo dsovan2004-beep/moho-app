@@ -487,55 +487,122 @@ WHERE id = '<exact-uuid>';
 
 ---
 
-## Step 11 — Image Verification (Google Places Pipeline)
+## Step 11 — Verified Photo Pipeline (Google Places)
 
-Business gallery images are now served through a verified pipeline.
+The Google Places photo pipeline is live and operational as of 2026-03-12. Business gallery images are served exclusively from verified sources.
 
-**Current state (as of 2026-03-12):**
+**Current state:**
 
-- All ~3,994 Unsplash stock photos deleted from `business_images`
-- `business_images` table has new columns: `source`, `source_reference`, `verified`
-- Gallery hotfix removed — `getBusinessImages()` now filters by `verified=true` + approved sources
-- `ImageGallery` component renders only verified images
+- All ~3,994 Unsplash stock photos permanently deleted from `business_images`
+- `business_images` table columns: `id`, `business_id`, `image_url`, `alt_text`, `position`, `source`, `source_reference`, `verified`, `created_at`
+- `seed_business_images.py` permanently disabled (renamed to `.DISABLED`)
+- Gallery renders only verified images via query-level enforcement
+- Mountain House pipeline complete: 6 businesses, 25 verified photos live
 
-**Running the photo pipeline:**
+**Supabase Storage setup:**
 
+- Bucket: `business-images` (public read)
+- Uploads: Service Role Key (bypasses RLS)
+- Image path format: `{business_uuid}/{0-4}.jpg`
+- Photos are permanent Supabase Storage URLs (not transient Google API URLs)
+
+**Production workflow:**
+
+Step 1 — Verify businesses in DB (`verified = true` via Google Maps audit — see Step 10)
+
+Step 2 — Dry run:
 ```bash
-# All verified businesses
-python3 ~/Desktop/MoHoLocal/verify_business_places.py
-
-# Single city
-python3 ~/Desktop/MoHoLocal/verify_business_places.py --city "Mountain House"
-
-# Dry run first
-python3 ~/Desktop/MoHoLocal/verify_business_places.py --dry-run
+cd ~/Desktop/MoHoLocal
+python3.11 verify_business_places.py --city "CITY_NAME" --dry-run
 ```
 
-Requires `GOOGLE_PLACES_API_KEY` in `moho-app-scaffold/.env.local`.
+Step 3 — Review the output. For each business, confirm:
+- Name match is confident (not a city page, not ambiguous)
+- Address is in the correct city
+- No false positives accepted
+
+Step 4 — Real import:
+```bash
+cd ~/Desktop/MoHoLocal
+python3.11 verify_business_places.py --city "CITY_NAME"
+```
+
+Step 5 — Confirm galleries render on moholocal.com. Visit business detail pages for the processed city.
 
 **Pipeline flow:**
 
 ```
-Verified business → Find Place from Text → Place ID
-→ Place Details → Photo references (max 5)
-→ Place Photos → Download JPEG
-→ Supabase Storage (business-images bucket)
-→ INSERT verified row into business_images
+Verified business (verified=true, google_place_id IS NULL)
+→ Google Find Place from Text API → candidate
+→ Name match validation (ratio >= 0.55, not a city page)
+→ Address city validation (must contain expected city)
+→ Resolve Place ID → save to businesses.google_place_id
+→ Google Place Details API → photo references (max 5)
+→ Google Place Photos API → download JPEG bytes
+→ Upload to Supabase Storage (business-images/{uuid}/{n}.jpg)
+→ INSERT into business_images (source='google_places', source_reference=photo_reference, verified=true)
 ```
 
-**Acceptable image sources:**
+**Pipeline guardrails:**
 
-- `google_places` — via verified pipeline script
-- `owner_upload` — via claim listing flow (future)
-- `admin_verified` — manually approved by founder
+| Guardrail | How it works |
+|-----------|-------------|
+| Never overwrite existing `google_place_id` | UPDATE uses `.is_("google_place_id", "null")` — existing values reused |
+| Only process verified businesses | Query filters `.eq("verified", True)` at load time |
+| Reject city/region results | `is_city_or_region_name()` blocks "Mountain House CA" etc. |
+| Reject multiple candidates | `len(candidates) > 1` → skip entire business |
+| Reject weak name matches | `SequenceMatcher` ratio < 0.55 → skip |
+| Reject loose containment | Shorter string must be >= 60% of longer string length |
+| Reject wrong-city addresses | Google address must contain expected city name |
+| Max 5 photos per business | `photos[:5]` hard cap |
+| Rate limit | 1 second between API calls |
+| `source_reference` = `photo_reference` | Not the Place ID (that lives on `businesses` table) |
 
-**Prohibited image sources:**
+**Mountain House results (2026-03-12):**
 
-- Stock photos (Unsplash, Pexels, etc.)
-- AI-generated images
-- Generic category placeholders
+| Business | Photos | Match |
+|----------|--------|-------|
+| Assure Primary and Urgent Care | 1 | exact (1.00) |
+| Browfie & Beauty Bar | 5 | "Browfie Salon" (0.58) |
+| Great Clips | 5 | exact (1.00) |
+| JEI Learning Center | 4 | exact (1.00) |
+| Kumon Math & Reading Center | 5 | "Kumon Math and Reading Center of MH" (0.69) |
+| Little Champs Preschool | 5 | exact (1.00) |
 
-The gallery query enforces source validation at the database level. Unverified images never render.
+11 businesses correctly skipped (no match, wrong city, ambiguous, or city page).
+
+**Scaling to additional cities:**
+
+```bash
+# Tracy (after verification audit)
+python3.11 verify_business_places.py --city "Tracy" --dry-run
+python3.11 verify_business_places.py --city "Tracy"
+
+# Lathrop
+python3.11 verify_business_places.py --city "Lathrop" --dry-run
+python3.11 verify_business_places.py --city "Lathrop"
+
+# Manteca
+python3.11 verify_business_places.py --city "Manteca" --dry-run
+python3.11 verify_business_places.py --city "Manteca"
+```
+
+Each city must complete its business verification audit (Step 10) before running the photo pipeline.
+
+**Gallery rendering:**
+
+The business detail page query (`getBusinessImages()`) enforces:
+
+```ts
+.eq('verified', true)
+.in('source', ['google_places', 'owner_upload', 'admin_verified'])
+```
+
+If a business has zero matching images, no gallery renders. No placeholders. No fallbacks.
+
+**Acceptable image sources:** `google_places`, `owner_upload`, `admin_verified`
+
+**Prohibited:** stock photos, AI-generated images, scraped images, category placeholders, any image not tied to a verified business identity.
 
 ---
 
@@ -611,5 +678,5 @@ Each file push triggers a separate Cloudflare build. Only the last build matters
 
 ---
 
-MoHoLocal Operations Playbook v2
+MoHoLocal Operations Playbook v3
 March 2026
