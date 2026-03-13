@@ -540,10 +540,10 @@ Fields:
 
 New columns (added 2026-03-12):
 - `source` — TEXT, one of: `google_places`, `owner_upload`, `admin_verified`, `unknown`
-- `source_reference` — TEXT, stores the Google Place ID or upload reference
+- `source_reference` — TEXT, stores the Google `photo_reference` string (not the Place ID — Place ID lives on `businesses.google_place_id`)
 - `verified` — BOOLEAN, default false. Only `verified = true` images render in gallery.
 
-**Current state:** All ~3,994 Unsplash stock photos have been deleted. Table is empty and ready for verified photos only.
+**Current state (as of 2026-03-12):** All ~3,994 Unsplash stock photos permanently deleted. Mountain House pipeline complete: 6 businesses, 25 verified Google Places photos live. `seed_business_images.py` permanently disabled.
 
 **Gallery query filter (in `getBusinessImages()`):**
 ```ts
@@ -738,6 +738,7 @@ All submissions must pass moderation before publishing. No automated publishing.
 16. Gallery images now filtered by `verified=true` + `source in (google_places, owner_upload, admin_verified)` — never render unverified or stock images
 17. All public business queries must include both `.eq('status', 'approved')` AND `.eq('verified', true)` — enforced on 9 pages
 18. Verification SQL must use exact UUIDs — never ILIKE or name pattern matching (Supabase SQL Editor corrupts `%` in ILIKE patterns when pasted from chat)
+19. `verify_business_places.py` must run from the founder's Mac terminal — the Cowork VM proxy blocks both Supabase REST and Google Places API calls
 
 ---
 
@@ -891,19 +892,41 @@ The business directory uses a trust-first model. No listing appears publicly unl
 | Manteca | Pending | 0 | ~200 |
 | Brentwood | Pending | 0 | ~200 |
 
-## Image Integrity System
+## Image Integrity System (Live — March 2026)
 
-Business gallery images are disabled site-wide. The `ImageGallery` component renders zero images via hotfix.
+The verified Google Places photo pipeline is operational. Galleries render on business detail pages for businesses with verified images.
 
-Acceptable image sources when galleries are re-enabled:
-- Business owner uploads (via claim listing)
-- Admin-approved photos
-- Google Business profile images
+**Supabase Storage:**
+- Bucket: `business-images` (public read)
+- Image path: `{business_uuid}/{0-4}.jpg`
+- Uploads: Service Role Key (bypasses RLS)
 
-Prohibited:
-- Stock photos (Unsplash, Pexels)
-- AI-generated images
-- Generic category placeholders
+**Gallery query enforcement (`getBusinessImages()`):**
+```ts
+.eq('verified', true)
+.in('source', ['google_places', 'owner_upload', 'admin_verified'])
+```
+
+**Pipeline script:** `verify_business_places.py` (project root, runs on Mac — not in Cowork VM)
+
+**Pipeline guardrails:**
+- Never overwrite existing `google_place_id`
+- Only process `verified = true` businesses
+- Reject city/region pages (e.g. "Mountain House CA")
+- Reject multiple candidates (ambiguous)
+- Reject name similarity < 0.55
+- Reject wrong-city Google addresses
+- Max 5 photos per business
+- 1 second rate limit between API calls
+- `source_reference` = Google `photo_reference` (not Place ID)
+
+**Acceptable sources:** `google_places`, `owner_upload`, `admin_verified`
+
+**Prohibited:** stock photos, AI-generated images, scraped images, category placeholders
+
+**Seed script lockdown:** `seed_business_images.py` permanently disabled (`.DISABLED`). No seed script may insert images.
+
+**Mountain House results:** 6 businesses, 25 photos, 0 false matches
 
 ---
 
@@ -932,5 +955,5 @@ No new city should be added until the existing 5 cities have verified directory 
 
 ---
 
-MoHoLocal Project Bible v10
+MoHoLocal Project Bible v11
 Confidential — March 2026
