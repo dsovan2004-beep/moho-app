@@ -891,7 +891,7 @@ The business directory uses a trust-first model. No listing appears publicly unl
 | Tracy | Audited 2026-03-13 | — | ~186 |
 | Lathrop | Audited 2026-03-13 | 145 | 145 |
 | Manteca | Audited 2026-03-13 | 199 | 199 |
-| Brentwood | Pending | 0 | ~200 |
+| Brentwood | Audited 2026-03-13 | 252 | 252 |
 
 ## Image Integrity System (Live — March 2026)
 
@@ -1044,7 +1044,7 @@ MoHoLocal prioritizes **density before expansion**. A city must have verified di
 2. Tracy (audit complete)
 3. Lathrop (audit complete)
 4. Manteca (audit complete)
-5. Brentwood (audit pending)
+5. Brentwood (audit complete)
 
 **Expansion readiness checklist:**
 
