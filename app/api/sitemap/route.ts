@@ -137,7 +137,7 @@ export async function GET() {
       const businesses = await fetchAll(
         supabaseUrl, serviceKey,
         'businesses', 'id,updated_at',
-        { status: 'approved' }
+        { status: 'approved', verified: 'true' }
       )
       for (const biz of businesses) {
         const lm = (biz.updated_at ?? '').slice(0, 10) || undefined
