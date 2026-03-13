@@ -830,5 +830,22 @@ All automated jobs have been reviewed against the verified-business / verified-p
 
 ---
 
-MoHoLocal Product Bible v5
+## Operational Rule — Environment Variables & Keys
+
+Before requesting any API key, secret, or environment variable from the user, the system must verify the following:
+
+1. Check the local `.env` configuration.
+2. Check Cloudflare Pages environment variables.
+3. Check existing code paths referencing the key.
+4. Check prior successful deployments or runs that may indicate the key already exists.
+
+Keys must never be requested repeatedly without verification.
+
+Authentication changes (for example switching from `SUPABASE_SERVICE_ROLE_KEY` to `NEXT_PUBLIC_SUPABASE_ANON_KEY`) must not be proposed based on assumptions. Any authentication change must be justified by a verified failure or confirmed missing environment variable.
+
+If a workflow has previously succeeded, treat that as evidence the credentials may already exist and verify before requesting them again.
+
+---
+
+MoHoLocal Product Bible v6
 Confidential — March 2026

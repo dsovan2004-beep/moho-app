@@ -1059,5 +1059,22 @@ No new city should be added until the existing 5 cities have verified directory 
 
 ---
 
-MoHoLocal Project Bible v12
+# 27. KEY REQUEST POLICY
+
+Claude must not repeatedly request API keys or secrets.
+
+Before requesting any key:
+
+- Verify whether the key is already defined in the repository or deployment environment.
+- Check previous successful runs that indicate the key exists.
+- Inspect environment configuration files.
+- Confirm the variable name used in code matches the deployment environment variable.
+
+Keys should only be requested if verification proves they are missing.
+
+Authentication architecture must never be changed based on assumptions.
+
+---
+
+MoHoLocal Project Bible v13
 Confidential — March 2026

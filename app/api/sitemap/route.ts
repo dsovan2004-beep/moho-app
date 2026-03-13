@@ -1,5 +1,13 @@
 export const runtime = 'edge'
 
+/**
+ * Dynamic sitemap at /api/sitemap (legacy endpoint).
+ * Canonical sitemap is now at /sitemap.xml.
+ * Uses getSupabaseClient() — same auth pattern as the rest of the app.
+ */
+
+import { getSupabaseClient } from '@/lib/supabase'
+
 const BASE = 'https://www.moholocal.com'
 
 const CITIES = [
@@ -41,43 +49,6 @@ interface SitemapEntry {
   lastmod?: string
 }
 
-async function fetchAll(
-  supabaseUrl: string,
-  serviceKey: string,
-  table: string,
-  select: string,
-  filters: Record<string, string> = {}
-): Promise<Record<string, string>[]> {
-  const headers = {
-    apikey: anonKey,
-    Authorization: `Bearer ${anonKey}`,
-    'Content-Type': 'application/json',
-  }
-
-  const results: Record<string, string>[] = []
-  const pageSize = 1000
-  let offset = 0
-
-  while (true) {
-    let qs = `select=${select}`
-    for (const [k, v] of Object.entries(filters)) {
-      qs += `&${k}=eq.${v}`
-    }
-    qs += `&limit=${pageSize}&offset=${offset}`
-
-    const url = `${supabaseUrl}/rest/v1/${table}?${qs}`
-    const res = await fetch(url, { headers })
-    if (!res.ok) break
-
-    const batch: Record<string, string>[] = await res.json()
-    results.push(...batch)
-    if (batch.length < pageSize) break
-    offset += pageSize
-  }
-
-  return results
-}
-
 function urlTag(entry: SitemapEntry): string {
   const lastmod = entry.lastmod ? `\n    <lastmod>${entry.lastmod}</lastmod>` : ''
   return `  <url>
@@ -88,9 +59,7 @@ function urlTag(entry: SitemapEntry): string {
 }
 
 export async function GET() {
-  const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? '').replace(/\/$/, '')
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ''
-
+  const supabase = getSupabaseClient()
   const entries: SitemapEntry[] = []
 
   const add = (loc: string, priority: string, changefreq: string, lastmod?: string) => {
@@ -130,44 +99,52 @@ export async function GET() {
     add(`${BASE}/new-resident/${city}`, '0.6', 'monthly')
   }
 
-  // ── Dynamic pages (fetched from Supabase) ───────────────────────────
-  if (supabaseUrl && anonKey) {
-    // Businesses
-    try {
-      const businesses = await fetchAll(
-        supabaseUrl, serviceKey,
-        'businesses', 'id,updated_at',
-        { status: 'approved', verified: 'true' }
-      )
+  // ── Dynamic pages (fetched from Supabase via anon key, same as all pages) ──
+  try {
+    const { data: businesses } = await supabase
+      .from('businesses')
+      .select('id, updated_at')
+      .eq('status', 'approved')
+      .eq('verified', true)
+
+    if (businesses) {
       for (const biz of businesses) {
         const lm = (biz.updated_at ?? '').slice(0, 10) || undefined
         add(`${BASE}/business/${biz.id}`, '0.7', 'monthly', lm)
       }
-    } catch {
-      // non-fatal — static pages already added above
     }
+  } catch {
+    // non-fatal — static pages already added above
+  }
 
-    // Events
-    try {
-      const events = await fetchAll(supabaseUrl, serviceKey, 'events', 'id,updated_at')
+  try {
+    const { data: events } = await supabase
+      .from('events')
+      .select('id, updated_at')
+
+    if (events) {
       for (const ev of events) {
         const lm = (ev.updated_at ?? '').slice(0, 10) || undefined
         add(`${BASE}/events/${ev.id}`, '0.6', 'weekly', lm)
       }
-    } catch {
-      // non-fatal
     }
+  } catch {
+    // non-fatal
+  }
 
-    // Lost & found
-    try {
-      const laf = await fetchAll(supabaseUrl, serviceKey, 'lost_and_found', 'id,updated_at')
+  try {
+    const { data: laf } = await supabase
+      .from('lost_and_found')
+      .select('id, updated_at')
+
+    if (laf) {
       for (const item of laf) {
         const lm = (item.updated_at ?? '').slice(0, 10) || undefined
         add(`${BASE}/lost-and-found/${item.id}`, '0.5', 'weekly', lm)
       }
-    } catch {
-      // non-fatal
     }
+  } catch {
+    // non-fatal
   }
 
   // ── Build XML ────────────────────────────────────────────────────────
@@ -182,7 +159,6 @@ export async function GET() {
   return new Response(xml, {
     headers: {
       'Content-Type': 'application/xml; charset=utf-8',
-      // Cache for 12 hours on Cloudflare edge; revalidate every hour
       'Cache-Control': 'public, max-age=3600, s-maxage=43200, stale-while-revalidate=3600',
     },
   })

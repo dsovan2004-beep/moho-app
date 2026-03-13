@@ -711,5 +711,21 @@ Any new automated job that touches businesses, images, or public-facing content 
 
 ---
 
-MoHoLocal Operations Playbook v4
+## Step 14 — Environment Variable Verification Procedure
+
+When an API request fails:
+
+1. Verify the environment variable exists in the runtime environment.
+2. Confirm the variable name matches the code reference.
+3. Confirm the variable exists in the deployment environment (Cloudflare Pages / Workers).
+4. Confirm prior deployments using the same key succeeded.
+5. Only after these checks may a new key be requested.
+
+Do not change authentication models (for example service role → anon key) unless verification confirms the key is unavailable.
+
+Troubleshooting must always follow **verify → diagnose → fix**, never assume → change → redeploy.
+
+---
+
+MoHoLocal Operations Playbook v5
 March 2026
