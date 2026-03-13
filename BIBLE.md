@@ -794,5 +794,41 @@ Repeat for Lathrop, Manteca, Brentwood. Each city must complete its business ver
 
 ---
 
-MoHoLocal Product Bible v4
+## Cron & Worker Trust Model Audit (March 2026)
+
+All automated jobs have been reviewed against the verified-business / verified-photo architecture.
+
+**Cloudflare Worker `moho-ingestion` — 3 cron jobs:**
+
+| Job | Schedule | Verdict | Notes |
+|-----|----------|---------|-------|
+| Directory ingestion | Mon 03:00 UTC | Safe | All records land as `status='pending'`, never touches `business_images` |
+| Events ingestion | Mon 04:00 UTC | Safe | Most records pending; Eventbrite auto-approve is acceptable (structured trusted source) |
+| Lost & Found ingestion | Mon 05:00 UTC | Safe | All records land with `needs_review=true` |
+| Community Signal Inbox | HTTP POST | Safe | All submissions require admin approval |
+
+**Sitemap generation (`/api/sitemap`):**
+
+| Before | After | Verdict |
+|--------|-------|---------|
+| `status='approved'` only | `status='approved' AND verified=true` | **Fixed** |
+
+**Seed scripts retired:**
+
+| Script | Status | Reason |
+|--------|--------|--------|
+| `seed_business_images.py` | `.DISABLED` | Was inserting Unsplash stock gallery photos |
+| `seed_businesses_5.py` | `.DISABLED` | Was inserting businesses with stock `image_url` + `verified: false` |
+| `seed_businesses_6.py` | `.DISABLED` | Same as above |
+
+**Rules for all future automated jobs:**
+1. Only `verified=true` businesses may be treated as public
+2. No job may attach stock, placeholder, or unverified images
+3. No job may reintroduce seed_business_images.py behavior
+4. Allowed image sources: `google_places`, `owner_upload`, `admin_verified`
+5. Public-facing counts, listings, or pages must filter `verified=true`
+
+---
+
+MoHoLocal Product Bible v5
 Confidential — March 2026
