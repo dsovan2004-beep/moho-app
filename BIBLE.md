@@ -647,17 +647,42 @@ The admin page (`/admin`) intentionally does NOT filter by verified — moderato
 
 Business photos must meet one of these criteria to display publicly:
 
-- Owner uploaded (via claim listing flow)
-- Admin approved
-- Sourced from a verified business profile (e.g. Google Business)
+- Sourced from Google Places API via verified pipeline (`source = 'google_places'`)
+- Owner uploaded via claim listing flow (`source = 'owner_upload'`)
+- Admin approved by founder (`source = 'admin_verified'`)
 
 **The following are prohibited:**
 
 - Stock photos (e.g. Unsplash, Pexels)
 - AI-generated business images
 - Generic category placeholder images
+- Scraped website images
+- Any image not tied to a verified business identity
 
-The `business_images` table exists and contains ~3,994 Unsplash stock photos from an earlier seeding attempt. Gallery rendering is currently disabled via a hotfix (`verifiedImages = []` in `business/[id]/page.tsx`). Galleries must not be re-enabled until a verified image pipeline is built.
+**Current state (as of 2026-03-12):**
+
+The verified Google Places photo pipeline is live and operational. All ~3,994 Unsplash stock photos have been permanently deleted. The `business_images` table now contains only verified photos sourced from Google Places API.
+
+Gallery rendering is active on business detail pages. The `getBusinessImages()` query enforces:
+
+```ts
+.eq('verified', true)
+.in('source', ['google_places', 'owner_upload', 'admin_verified'])
+```
+
+If a business has zero verified images, no gallery renders. No placeholders. No fallbacks.
+
+**Image storage:**
+
+- Supabase Storage bucket: `business-images` (public read)
+- Image path format: `{business_uuid}/{0-4}.jpg`
+- Uploads use Service Role Key (bypasses RLS)
+- `source_reference` stores the Google `photo_reference` string (not the Place ID)
+- Place ID is stored on `businesses.google_place_id` (not duplicated on images)
+
+**Seed script lockdown:**
+
+`seed_business_images.py` has been permanently disabled (renamed to `.DISABLED`). No seed script may ever insert images into `business_images`. Only the verified pipeline (`verify_business_places.py`) and future owner upload / admin approval flows may insert images.
 
 ---
 
@@ -672,6 +697,57 @@ MoHoLocal SEO is amplified by distributing key pages to local communities where 
 - School parent groups
 
 Best Of pages and New Resident Guides are the highest-value pages for distribution because they provide immediate utility to residents and generate organic backlinks.
+
+---
+
+## Verified Photo Pipeline — Production Workflow
+
+The Google Places photo pipeline is the only approved method for adding business photos at scale. It runs locally on the founder's Mac (not in the Cowork VM, which blocks Supabase and Google APIs).
+
+**Step 1 — Verify businesses in DB**
+
+Businesses must have `verified = true` before the photo pipeline will process them. Run a Google Maps verification audit first (see PLAYBOOK.md Step 10).
+
+**Step 2 — Dry run**
+
+```bash
+cd ~/Desktop/MoHoLocal
+python3.11 verify_business_places.py --city "CITY_NAME" --dry-run
+```
+
+The dry run calls Google APIs to evaluate matches and count photos but writes nothing to Supabase.
+
+**Step 3 — Review matches**
+
+For each business, verify the output shows a confident match (not a city page, not a wrong-city address, not an ambiguous multi-candidate result). Any business the pipeline skips is a correct safety decision — do not override.
+
+**Step 4 — Real import**
+
+```bash
+cd ~/Desktop/MoHoLocal
+python3.11 verify_business_places.py --city "CITY_NAME"
+```
+
+Photos are downloaded from Google, uploaded to Supabase Storage (`business-images` bucket), and inserted into `business_images` with `source = 'google_places'`, `verified = true`.
+
+**Step 5 — Confirm galleries render**
+
+Visit business detail pages on moholocal.com. Verified businesses with photos should show the image gallery with thumbnail strip.
+
+**Pipeline guardrails (non-negotiable):**
+
+| Guardrail | Enforcement |
+|-----------|-------------|
+| Never overwrite existing `google_place_id` | UPDATE uses `.is_("google_place_id", "null")` |
+| Only process `verified = true` businesses | Query filters `.eq("verified", True)` |
+| Reject city/region page results | `is_city_or_region_name()` check |
+| Reject multiple candidates | `len(candidates) > 1` → skip |
+| Reject weak name matches | `SequenceMatcher` ratio < 0.55 → skip |
+| Reject containment matches where shorter < 60% of longer | Prevents "Mountain House CA" matching business names |
+| Reject wrong-city addresses | Google address must contain expected city name |
+| Max 5 photos per business | `photos[:MAX_PHOTOS_PER_BUSINESS]` |
+| 1 second rate limit | `time.sleep(1.0)` between requests |
+| `source_reference` stores `photo_reference` | Not the Place ID (Place ID lives on `businesses` table) |
 
 ---
 
@@ -692,13 +768,31 @@ MoHoLocal prioritizes **depth over breadth**. A city should have dense, verified
 - [ ] Business directory seeded with real, verified businesses
 - [ ] Google Maps audit completed
 - [ ] `verified = true` set on confirmed businesses
+- [ ] Photo pipeline dry run completed and reviewed
+- [ ] Photo pipeline real run completed (verified images live)
 - [ ] New Resident Guide populated with city-specific content
 - [ ] Best Of pages generating with verified listings
 - [ ] City hub page (`/[city]`) rendering correctly
 
 No new city should be added until the existing 5 cities have verified directory coverage.
 
+**Scaling photo pipeline to additional cities:**
+
+```bash
+# Step 1: Complete business verification audit for the city
+# Step 2: Dry run
+python3.11 verify_business_places.py --city "Tracy" --dry-run
+
+# Step 3: Review output, confirm no false matches
+# Step 4: Real run
+python3.11 verify_business_places.py --city "Tracy"
+
+# Step 5: Check galleries on moholocal.com
+```
+
+Repeat for Lathrop, Manteca, Brentwood. Each city must complete its business verification audit before the photo pipeline can run.
+
 ---
 
-MoHoLocal Product Bible v3
+MoHoLocal Product Bible v4
 Confidential — March 2026
