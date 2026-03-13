@@ -267,6 +267,21 @@ export default function AdminPage() {
 
       <div className="max-w-5xl mx-auto px-4 py-8">
 
+        {/* City Audit link */}
+        <Link
+          href="/admin/audit"
+          className="mb-6 flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition group"
+        >
+          <span className="text-xl">🔍</span>
+          <div className="flex-1">
+            <span className="text-sm font-semibold text-gray-900 group-hover:text-blue-700 transition">City Audit Dashboard</span>
+            <span className="block text-xs text-gray-500 mt-0.5">Verify businesses city-by-city before expansion</span>
+          </div>
+          <svg className="w-4 h-4 text-gray-400 group-hover:text-blue-500 transition" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+          </svg>
+        </Link>
+
         {/* Section switcher pills */}
         <div className="flex gap-3 mb-6">
           <button
