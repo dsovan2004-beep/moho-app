@@ -52,7 +52,6 @@ export default function CityAuditPage() {
   const [search,      setSearch]      = useState('')
   const [togglingId,  setTogglingId]  = useState<string | null>(null)
   const [toast,       setToast]       = useState<{ msg: string; ok: boolean } | null>(null)
-  const [bulkMode,    setBulkMode]    = useState(false)
   const [selected,    setSelected]    = useState<Set<string>>(new Set())
 
   // ── Auth ──────────────────────────────────────────────────────────────────
@@ -88,7 +87,7 @@ export default function CityAuditPage() {
     if (authorized) loadBusinesses()
   }, [authorized, loadBusinesses])
 
-  // ── Toggle verified ───────────────────────────────────────────────────────
+  // ── Toggle single verified ────────────────────────────────────────────────
   async function toggleVerified(id: string, currentlyVerified: boolean) {
     const supabase = getSupabaseClient()
     setTogglingId(id)
@@ -108,34 +107,40 @@ export default function CityAuditPage() {
     setTogglingId(null)
   }
 
-  // ── Bulk verify ───────────────────────────────────────────────────────────
+  // ── Bulk verify selected ──────────────────────────────────────────────────
   async function bulkVerify() {
     if (selected.size === 0) return
     const supabase = getSupabaseClient()
     setTogglingId('bulk')
 
     const ids = Array.from(selected)
-    const { error } = await supabase
-      .from('businesses')
-      .update({ verified: true })
-      .in('id', ids)
 
-    if (!error) {
+    // Supabase .in() has a limit — batch in groups of 50
+    let hasError = false
+    for (let i = 0; i < ids.length; i += 50) {
+      const batch = ids.slice(i, i + 50)
+      const { error } = await supabase
+        .from('businesses')
+        .update({ verified: true })
+        .in('id', batch)
+      if (error) { hasError = true; break }
+    }
+
+    if (!hasError) {
       setBusinesses((prev) =>
         prev.map((b) => (ids.includes(b.id) ? { ...b, verified: true } : b))
       )
-      showToast(`✅ ${ids.length} businesses verified`, true)
+      showToast(`✅ ${ids.length} businesses verified!`, true)
       setSelected(new Set())
-      setBulkMode(false)
     } else {
-      showToast('Error — try again', false)
+      showToast('Error — some updates may have failed', false)
     }
     setTogglingId(null)
   }
 
   function showToast(msg: string, ok: boolean) {
     setToast({ msg, ok })
-    setTimeout(() => setToast(null), 2500)
+    setTimeout(() => setToast(null), 3000)
   }
 
   // ── Filter + sort ─────────────────────────────────────────────────────────
@@ -161,9 +166,22 @@ export default function CityAuditPage() {
     })
 
   // ── Stats ─────────────────────────────────────────────────────────────────
-  const total    = businesses.length
-  const verified = businesses.filter((b) => b.verified).length
-  const pct      = total > 0 ? Math.round((verified / total) * 100) : 0
+  const total      = businesses.length
+  const verified   = businesses.filter((b) => b.verified).length
+  const pct        = total > 0 ? Math.round((verified / total) * 100) : 0
+  const unverifiedInView = filtered.filter((b) => !b.verified)
+  const allUnverifiedSelected = unverifiedInView.length > 0 && unverifiedInView.every((b) => selected.has(b.id))
+
+  // ── Select all / deselect all (only unverified in current view) ───────────
+  function toggleSelectAll() {
+    if (allUnverifiedSelected) {
+      setSelected(new Set())
+    } else {
+      const next = new Set(selected)
+      for (const b of unverifiedInView) next.add(b.id)
+      setSelected(next)
+    }
+  }
 
   // ── Render ────────────────────────────────────────────────────────────────
 
@@ -178,7 +196,7 @@ export default function CityAuditPage() {
   if (!authorized || !cityInfo) return null
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50" style={{ paddingBottom: selected.size > 0 ? '80px' : '0' }}>
       {/* Toast */}
       {toast && (
         <div
@@ -274,25 +292,13 @@ export default function CityAuditPage() {
             <option value="verified">Sort: Verified first</option>
           </select>
 
-          {/* Bulk mode toggle */}
-          <button
-            onClick={() => { setBulkMode(!bulkMode); setSelected(new Set()) }}
-            className={`ml-auto px-3 py-1.5 rounded-lg text-xs font-medium transition ${
-              bulkMode
-                ? 'bg-blue-600 text-white'
-                : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
-            }`}
-          >
-            {bulkMode ? 'Cancel Bulk' : 'Bulk Verify'}
-          </button>
-
-          {bulkMode && selected.size > 0 && (
+          {/* Select All */}
+          {unverifiedInView.length > 0 && (
             <button
-              onClick={bulkVerify}
-              disabled={togglingId === 'bulk'}
-              className="px-4 py-1.5 rounded-lg text-xs font-medium bg-green-600 text-white hover:bg-green-700 transition disabled:opacity-50"
+              onClick={toggleSelectAll}
+              className="ml-auto px-3 py-1.5 rounded-lg text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:bg-gray-50 transition"
             >
-              {togglingId === 'bulk' ? 'Verifying…' : `Verify ${selected.size} Selected`}
+              {allUnverifiedSelected ? `Deselect All (${unverifiedInView.length})` : `Select All Unverified (${unverifiedInView.length})`}
             </button>
           )}
         </div>
@@ -315,12 +321,16 @@ export default function CityAuditPage() {
               <div
                 key={biz.id}
                 className={`bg-white rounded-xl border transition-all ${
-                  biz.verified ? 'border-green-200' : 'border-gray-200'
+                  selected.has(biz.id)
+                    ? 'border-blue-300 bg-blue-50/30'
+                    : biz.verified
+                      ? 'border-green-200'
+                      : 'border-gray-200'
                 } hover:shadow-sm`}
               >
                 <div className="flex items-center gap-4 p-4">
-                  {/* Bulk checkbox */}
-                  {bulkMode && !biz.verified && (
+                  {/* Checkbox — always visible for unverified */}
+                  {!biz.verified ? (
                     <input
                       type="checkbox"
                       checked={selected.has(biz.id)}
@@ -330,12 +340,15 @@ export default function CityAuditPage() {
                         else next.delete(biz.id)
                         setSelected(next)
                       }}
-                      className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer flex-shrink-0"
                     />
+                  ) : (
+                    <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                    </div>
                   )}
-
-                  {/* Status indicator */}
-                  <div className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${biz.verified ? 'bg-green-500' : 'bg-gray-300'}`} />
 
                   {/* Business info */}
                   <div className="flex-1 min-w-0">
@@ -415,6 +428,32 @@ export default function CityAuditPage() {
           </div>
         )}
       </div>
+
+      {/* ── Sticky bulk action bar ──────────────────────────────────────────── */}
+      {selected.size > 0 && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg">
+          <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div className="text-sm text-gray-700">
+              <strong>{selected.size}</strong> business{selected.size > 1 ? 'es' : ''} selected
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setSelected(new Set())}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition"
+              >
+                Clear Selection
+              </button>
+              <button
+                onClick={bulkVerify}
+                disabled={togglingId === 'bulk'}
+                className="px-6 py-2 rounded-lg text-sm font-bold bg-green-600 text-white hover:bg-green-700 transition disabled:opacity-50"
+              >
+                {togglingId === 'bulk' ? 'Verifying…' : `✓ Verify ${selected.size} Business${selected.size > 1 ? 'es' : ''}`}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
