@@ -76,9 +76,9 @@ export default function CityAuditPage() {
     setLoading(true)
     const { data } = await supabase
       .from('businesses')
-      .select('id,name,address,phone,website,category,verified,google_place_id,image_url,status')
+      .select('*')
       .eq('city', cityInfo.name)
-      .eq('status', 'approved')
+      .in('status', ['approved', 'pending'])
       .order('name', { ascending: true })
     setBusinesses((data as AuditBusiness[]) ?? [])
     setLoading(false)
