@@ -739,6 +739,7 @@ All submissions must pass moderation before publishing. No automated publishing.
 17. All public business queries must include both `.eq('status', 'approved')` AND `.eq('verified', true)` — enforced on 9 pages
 18. Verification SQL must use exact UUIDs — never ILIKE or name pattern matching (Supabase SQL Editor corrupts `%` in ILIKE patterns when pasted from chat)
 19. `verify_business_places.py` must run from the founder's Mac terminal — the Cowork VM proxy blocks both Supabase REST and Google Places API calls
+20. Sitemap (`/api/sitemap`) must filter businesses by BOTH `status='approved'` AND `verified=true` — fixed March 2026
 
 ---
 
@@ -924,13 +925,116 @@ The verified Google Places photo pipeline is operational. Galleries render on bu
 
 **Prohibited:** stock photos, AI-generated images, scraped images, category placeholders
 
-**Seed script lockdown:** `seed_business_images.py` permanently disabled (`.DISABLED`). No seed script may insert images.
+**Seed script lockdown:** All image/business seed scripts permanently disabled:
+- `seed_business_images.py.DISABLED` — was inserting Unsplash stock photos
+- `seed_businesses_5.py.DISABLED` — was inserting businesses with Unsplash stock `image_url` + `verified: false`
+- `seed_businesses_6.py.DISABLED` — same as above
+
+No seed script may insert images or unverified businesses.
 
 **Mountain House results:** 6 businesses, 25 photos, 0 false matches
 
 ---
 
-# 25. CITY EXPANSION STRATEGY
+# 25. CRON & WORKER AUDIT (March 2026)
+
+All automated jobs reviewed against the verified-business / verified-photo trust model.
+
+## Cloudflare Worker: `moho-ingestion`
+
+Cron schedule (UTC):
+- `0 3 * * 1` — Monday 03:00 — Directory ingestion
+- `0 4 * * 1` — Monday 04:00 — Events ingestion
+- `0 5 * * 1` — Monday 05:00 — Lost & Found ingestion
+
+Manual triggers: `/run/directory`, `/run/events`, `/run/lostfound`
+
+### Job 1: Directory Ingestion — SAFE
+
+Sources: Manual JSON feed, Chamber RSS, Yelp API (optional)
+
+Trust model compliance:
+- All records land as `status='pending'` — never auto-approved
+- Never touches `business_images` table
+- Never inserts stock/placeholder images into gallery
+- `image_url` on businesses table is an external URL reference (Yelp, og:image) — not a gallery photo
+- `verified` flag is NOT set by the worker — requires manual founder verification
+- Low-confidence records flagged with `needs_review=true`
+
+Verdict: **Safe as-is. No changes required.**
+
+### Job 2: Events Ingestion — SAFE
+
+Sources: City calendars, SJ County, Tracy Press, 209times, Patch, Eventbrite (optional)
+
+Trust model compliance:
+- Most records land as `ingestion_status='pending'`
+- Only Eventbrite events with high confidence auto-approve — this is acceptable because events don't have a `verified` field and Eventbrite is a trusted structured source
+- Crime content filter blocks harmful content
+- Stale events (7+ days past) auto-archived
+- Does not touch businesses or business_images
+
+Verdict: **Safe as-is. No changes required.**
+
+### Job 3: Lost & Found Ingestion — SAFE
+
+Sources: SJ Animal Services, 209times, Tracy Press, Patch, PetFinder (optional)
+
+Trust model compliance:
+- ALL records land with `needs_review=true` — no auto-approval
+- Does not touch businesses or business_images
+- Stale records (30+ days) auto-archived
+
+Verdict: **Safe as-is. No changes required.**
+
+### Community Signal Inbox — SAFE
+
+Endpoint: `POST /submit-signal`
+
+Trust model compliance:
+- All submissions land with `needs_review=true`
+- Admin approval required via `POST /promote-submission` (Supabase JWT auth)
+- `business_update` type never auto-promotes — requires founder review
+- Does not touch business_images
+
+Verdict: **Safe as-is. No changes required.**
+
+### Sitemap Generation — FIXED
+
+Endpoint: `GET /api/sitemap`
+
+Issue found: Was filtering businesses by `status='approved'` only, without `verified=true`. This meant unverified businesses could appear in the sitemap and get indexed by Google.
+
+Fix applied: Added `verified: 'true'` to the filter, so only `status='approved' AND verified=true` businesses appear in the sitemap.
+
+Verdict: **Fixed. Now compliant with trust model.**
+
+### Seed Scripts — RETIRED
+
+Scripts disabled (renamed to `.DISABLED`):
+- `seed_business_images.py` — was inserting Unsplash stock gallery photos
+- `seed_businesses_5.py` — was inserting businesses with stock `image_url` + `verified: false`
+- `seed_businesses_6.py` — same as above
+
+Remaining seed scripts (`seed_businesses.py` through `seed_businesses_4.py`, `seed_events.py`, `seed_lost_and_found*.py`) are founder-manual only and do not insert images into `business_images`.
+
+Verdict: **Dangerous scripts retired. Remaining scripts are manual-only.**
+
+### Frontend Pages — VERIFIED SAFE
+
+All public-facing business listing pages already enforce both filters:
+- `app/[city]/[category]/page.tsx` — `.eq('status', 'approved').eq('verified', true)`
+- `app/best/[category]/[city]/page.tsx` — `.eq('status', 'approved').eq('verified', true)`
+- `app/business/[id]/page.tsx` — gallery: `.eq('verified', true).in('source', [...])`
+- `app/directory/page.tsx` — `.eq('status', 'approved').eq('verified', true)` (enforced in previous patch)
+
+### Worker Image Handling — SAFE
+
+The `workers/lib/images.ts` module only resolves external image URLs (Yelp API, og:image, schema.org). It never downloads image binaries, never uploads to Supabase Storage, and never writes to `business_images`. The resolved `image_url` is stored as a string reference on the `businesses`/`events`/`lost_and_found` table row — this is the hero/thumbnail image, not the gallery.
+
+---
+
+# 26. CITY EXPANSION STRATEGY
 
 MoHoLocal prioritizes **density before expansion**. A city must have verified directory coverage before appearing publicly on the platform.
 
@@ -955,5 +1059,5 @@ No new city should be added until the existing 5 cities have verified directory 
 
 ---
 
-MoHoLocal Project Bible v11
+MoHoLocal Project Bible v12
 Confidential — March 2026
