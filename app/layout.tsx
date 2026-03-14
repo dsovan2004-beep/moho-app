@@ -54,12 +54,12 @@ const CITY_DOT: Record<string, string> = {
 }
 
 const NAV_LINKS = [
-  { href: '/ask',           label: '✨ Ask MoHo',    mobileLabel: 'Ask MoHo'    },
-  { href: '/directory',     label: 'Directory',       mobileLabel: 'Directory'   },
-  { href: '/community',     label: 'Community',       mobileLabel: 'Community'   },
-  { href: '/events',        label: 'Events',          mobileLabel: 'Events'      },
-  { href: '/new-resident',  label: '🏡 New Residents', mobileLabel: 'New Here?'  },
-  { href: '/lost-and-found', label: 'Lost & Found',  mobileLabel: 'Lost & Found' },
+  { href: '/ask',            label: '✨ Ask MoHo',     mobileLabel: 'Ask MoHo',    showOnMobile: true  },
+  { href: '/directory',      label: 'Directory',        mobileLabel: 'Directory',   showOnMobile: true  },
+  { href: '/community',      label: 'Community',        mobileLabel: 'Community',   showOnMobile: true  },
+  { href: '/events',         label: 'Events',           mobileLabel: 'Events',      showOnMobile: true  },
+  { href: '/new-resident',   label: '🏡 New Residents', mobileLabel: 'New Here?',   showOnMobile: false },
+  { href: '/lost-and-found', label: 'Lost & Found',     mobileLabel: 'Lost & Found', showOnMobile: false },
 ]
 
 const EXPLORE_LINKS = [
@@ -211,7 +211,7 @@ function NavContent() {
                 <span>📍</span>
                 {/* Full name on sm+, first word only on xs */}
                 <span className="hidden sm:inline">{city}</span>
-                <span className="sm:hidden">{city.split(' ')[0]}</span>
+                <span className="sm:hidden">{city.replace('Mountain House', 'MH')}</span>
                 <svg
                   className="w-3 h-3 opacity-70 transition-transform"
                   style={{ transform: cityPickerOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
@@ -412,10 +412,10 @@ function NavContent() {
           {/* Scrollable section — nav links only, no dropdowns inside overflow container */}
           {/* Wrapper adds right-fade gradient to hint that more items are scrollable */}
           <div className="relative flex-1 min-w-0">
-            <div className="flex gap-2 pl-3 pr-8 py-2 overflow-x-auto items-center scrollbar-hide"
+            <div className="flex gap-2 pl-3 pr-4 py-2 overflow-x-auto items-center"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-              {NAV_LINKS.map((link) => (
+              {NAV_LINKS.filter((l) => l.showOnMobile).map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
