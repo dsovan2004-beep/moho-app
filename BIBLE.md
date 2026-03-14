@@ -982,5 +982,43 @@ Ask MoHo is the natural language query interface for MoHoLocal's knowledge graph
 
 ---
 
-MoHoLocal Product Bible v7
+## Seed Script Governance
+
+All seed scripts that insert data into MoHoLocal's Supabase database must enforce the following rules at the code level. These are not suggestions — they are mandatory safeguards.
+
+**Trust Policy Guard (required in every seed script)**
+
+Every seed script must include a `validate_trust_policy()` function that runs before any network call and hard-aborts (`SystemExit(1)`) if any record has:
+- `status` != `'pending'`
+- `verified` != `False`
+
+No business, event, or listing may be inserted as `status='approved'` or `verified=True` through a seed script. Approval is a human action only.
+
+**Duplicate Detection (required in every seed script)**
+
+Every seed script must include a `get_existing_phones()` pre-flight check that queries the database for phone numbers already present and skips them. This makes all seed scripts idempotent — running a script twice must never create duplicate records.
+
+**Operational Safety Protocol**
+
+Before running any bulk UPDATE or DELETE against the businesses table:
+1. Run a SELECT to preview affected rows
+2. Confirm the row count matches expectations
+3. Only then run the mutating query
+
+No bulk UPDATE or DELETE may be run without completing steps 1 and 2 first.
+
+**Phone Number Naming Convention**
+
+Seed batches must use reserved phone suffix ranges to prevent collisions with existing data:
+- Batch 1–4: `(xxx) xxx-8xxx` range
+- Batch 5+: `(xxx) xxx-9xxx` range
+- Do not reuse phone suffixes across batches or cities
+
+**Future Seed Scripts**
+
+All future seed scripts must be modeled after `seed_businesses_5.py` and `seed_businesses_6.py` which include the above safeguards. A seed script that lacks `validate_trust_policy()` and `get_existing_phones()` must not be run.
+
+---
+
+MoHoLocal Product Bible v8
 Confidential — March 2026
