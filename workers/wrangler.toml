@@ -10,8 +10,9 @@ compatibility_flags = ["nodejs_compat"]
 [triggers]
 crons = [
   "0 3 * * 1",   # Monday 03:00 UTC — Directory ingestion
-  "0 4 * * 1",   # Monday 04:00 UTC — Events ingestion
+  "0 4 * * 1",   # Monday 04:00 UTC — Events ingestion (weekly refresh)
   "0 5 * * 1",   # Monday 05:00 UTC — Lost & Found ingestion
+  "0 4 * * 4",   # Thursday 04:00 UTC — Events ingestion (mid-week refresh)
 ]
 
 # ── Non-secret vars (safe to commit) ─────────────────────────────────────────

@@ -120,6 +120,7 @@ export async function GET() {
     const { data: events } = await supabase
       .from('events')
       .select('id, updated_at')
+      .eq('ingestion_status', 'approved')   // only surface approved events to Google
 
     if (events) {
       for (const ev of events) {

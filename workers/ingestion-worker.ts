@@ -3,8 +3,9 @@
 //
 // Cron schedule (all times UTC):
 //   0 3 * * 1  →  Monday 03:00 — Directory ingestion
-//   0 4 * * 1  →  Monday 04:00 — Events ingestion
+//   0 4 * * 1  →  Monday 04:00 — Events ingestion (full weekly refresh)
 //   0 5 * * 1  →  Monday 05:00 — Lost & Found ingestion
+//   0 4 * * 4  →  Thursday 04:00 — Events ingestion (mid-week catch-up)
 //
 // HTTP routes:
 //   GET  /health              — health check
@@ -407,8 +408,10 @@ async function handleScheduled(event: ScheduledEvent, env: Env): Promise<void> {
       console.log('[ingestion-worker] Starting directory ingestion…')
       const logs = await runDirectoryIngestion(env)
       aggregateLogs(logs)
-    } else if (cron === '0 4 * * 1') {
-      console.log('[ingestion-worker] Starting events ingestion…')
+    } else if (cron === '0 4 * * 1' || cron === '0 4 * * 4') {
+      // Runs Monday (full weekly refresh) AND Thursday (mid-week catch-up).
+      // Thursday run picks up events announced Tue/Wed and refreshes farmers market dates.
+      console.log(`[ingestion-worker] Starting events ingestion (${cron === '0 4 * * 4' ? 'Thursday mid-week' : 'Monday full'} run)…`)
       const logs = await runEventsIngestion(env)
       aggregateLogs(logs)
     } else if (cron === '0 5 * * 1') {
