@@ -37,6 +37,52 @@ Do not invent new tasks unless `docs/ROADMAP.md` is updated first.
 
 ---
 
+# VERIFY → THEN IMPLEMENT RULE
+
+Before implementing any feature or sprint task, always verify the current implementation first.
+
+**Step 1 — Verify Current State**
+
+Check both:
+- The live UI page
+- The relevant code and components
+
+Confirm whether the feature already exists before making any change.
+
+Examples of things to verify: existing UI elements, page components, previously implemented features.
+
+**Step 2 — Report Verification**
+
+Provide a short verification summary before implementing anything.
+
+Example format:
+
+```
+Verification Results
+Feature A: present / missing
+Feature B: present / missing
+```
+
+Do not implement changes until verification is completed.
+
+**Step 3 — Implement Only What Is Missing**
+
+If the feature already exists, do not rebuild or modify it unless a bug is identified.
+
+Only implement the feature if it is confirmed missing.
+
+**Step 4 — After Implementation**
+
+After completing the task:
+- Commit changes
+- Push to main
+- Return the commit hash
+- Summarize modified files
+
+**Purpose:** Prevent repeated work, incorrect assumptions, and instruction loops during development.
+
+---
+
 # 1. WHAT IS MOHOLOCAL
 
 MoHoLocal is an **AI-powered hyperlocal signal platform** that organizes real community information across multiple neighboring cities in San Joaquin County and East Bay, CA.

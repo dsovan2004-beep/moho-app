@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import ReviewSection from '@/app/components/ReviewSection'
 import ImageGallery from '@/app/components/ImageGallery'
+import ShareButton from '@/app/components/ShareButton'
 
 import type { Metadata } from 'next'
 
@@ -399,6 +400,8 @@ export default async function BusinessDetailPage({ params }: PageProps) {
                 📍 Get Directions
               </a>
             )}
+            <ShareButton businessName={biz.name} />
+
             {!hasContact && (
               <Link
                 href={`/claim-listing/${biz.id}`}
