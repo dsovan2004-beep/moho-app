@@ -1,7 +1,7 @@
 'use client'
 export const runtime = 'edge'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { getSupabaseClient, type Business } from '@/lib/supabase'
 import Link from 'next/link'
@@ -40,7 +40,7 @@ function getCategoryEmoji(cat: string): string {
 
 const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca', 'Brentwood']
 
-// City badge chip colours — matches homepage / CLAUDE.md branding
+// City badge chip colours — matches city branding
 const CITY_CHIP: Record<string, string> = {
   'Mountain House': 'bg-blue-50 text-blue-700',
   'Tracy':          'bg-green-50 text-green-700',
@@ -49,6 +49,36 @@ const CITY_CHIP: Record<string, string> = {
   'Brentwood':      'bg-teal-50 text-teal-700',
 }
 
+// Sort options (only visible when no search query — relevance is automatic when searching)
+const SORT_OPTIONS = [
+  { value: 'rating', label: '⭐ Top Rated' },
+  { value: 'name',   label: '🔤 A–Z'       },
+  { value: 'newest', label: '🆕 Newest'    },
+]
+
+// ── Client-side relevance sort ────────────────────────────────────────────────
+// Tier 0: name starts with query       (strongest signal)
+// Tier 1: name contains query          (name match)
+// Tier 2: category contains query      (category match)
+// Tier 3: everything else (description/city/address match)
+// Within each tier: secondary sort by rating DESC
+function sortByRelevance(bizs: Business[], q: string): Business[] {
+  const lower = q.toLowerCase()
+  return [...bizs].sort((a, b) => {
+    const tier = (biz: Business): number => {
+      const name = biz.name.toLowerCase()
+      if (name.startsWith(lower))                    return 0
+      if (name.includes(lower))                      return 1
+      if (biz.category.toLowerCase().includes(lower)) return 2
+      return 3
+    }
+    const tDiff = tier(a) - tier(b)
+    if (tDiff !== 0) return tDiff
+    return (b.rating ?? 0) - (a.rating ?? 0)
+  })
+}
+
+// ── Star rating ───────────────────────────────────────────────────────────────
 function StarRating({ rating }: { rating?: number }) {
   if (!rating) return null
   const full = Math.floor(rating)
@@ -62,7 +92,13 @@ function StarRating({ rating }: { rating?: number }) {
   )
 }
 
-function BusinessCard({ biz }: { biz: Business }) {
+// ── Business card ─────────────────────────────────────────────────────────────
+function BusinessCard({ biz, activeCategory }: { biz: Business; activeCategory: string }) {
+  // Category chip: amber highlight when the active filter matches this business's category
+  const catChip = activeCategory !== 'All' && biz.category === activeCategory
+    ? 'bg-amber-50 text-amber-800 border border-amber-200'
+    : 'bg-gray-100 text-gray-700'
+
   return (
     <Link
       href={`/business/${biz.id}`}
@@ -80,7 +116,8 @@ function BusinessCard({ biz }: { biz: Business }) {
           <h3 className="font-bold text-gray-900 group-hover:text-blue-700 transition truncate">
             {biz.name}
           </h3>
-          <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 shrink-0">
+          {/* Category chip — highlighted when matching active filter */}
+          <span className={`text-xs font-medium px-2 py-0.5 rounded-full shrink-0 ${catChip}`}>
             {biz.category}
           </span>
         </div>
@@ -100,35 +137,36 @@ function BusinessCard({ biz }: { biz: Business }) {
   )
 }
 
+// ── Page ──────────────────────────────────────────────────────────────────────
 export default function DirectoryPage() {
   const searchParams = useSearchParams()
   const router = useRouter()
 
-  const city = searchParams.get('city') ?? 'All Cities'
+  const city     = searchParams.get('city')     ?? 'All Cities'
   const category = searchParams.get('category') ?? 'All'
-  const query = searchParams.get('q') ?? ''
+  const query    = searchParams.get('q')        ?? ''
+  const sortBy   = searchParams.get('sort')     ?? 'rating'
 
   const [businesses, setBusinesses] = useState<Business[]>([])
   const [total, setTotal] = useState(0)
   const [offset, setOffset] = useState(0)
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
-
   const [searchInput, setSearchInput] = useState(query)
-  const isFirstRender = useRef(true)
 
-  // Fetch first page whenever filters change
+  // Refetch whenever any filter/sort/query changes
   useEffect(() => {
     setOffset(0)
     setBusinesses([])
     fetchPage(0, true)
     setSearchInput(query)
-  }, [city, category, query])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [city, category, query, sortBy])
 
   async function fetchPage(from: number, reset = false) {
     const supabase = getSupabaseClient()
     if (reset) setLoading(true)
-    else setLoadingMore(true)
+    else       setLoadingMore(true)
 
     const to = from + PAGE_SIZE - 1
 
@@ -137,15 +175,38 @@ export default function DirectoryPage() {
       .select('*', { count: 'exact' })
       .eq('status', 'approved')
       .eq('verified', true)
-      .order('name')
       .range(from, to)
 
     if (city !== 'All Cities') req = req.eq('city', city)
-    if (category !== 'All') req = req.eq('category', category)
-    if (query) req = req.or(`name.ilike.%${query}%,description.ilike.%${query}%,category.ilike.%${query}%`)
+    if (category !== 'All')    req = req.eq('category', category)
+
+    if (query) {
+      // Expand search to name, description, category, city, and address
+      req = req.or(
+        `name.ilike.%${query}%,description.ilike.%${query}%,category.ilike.%${query}%,city.ilike.%${query}%,address.ilike.%${query}%`
+      )
+      // Fetch alphabetically; relevance re-sort happens client-side below
+      req = req.order('name', { ascending: true })
+    } else {
+      // No search: respect the user's sort selection
+      if (sortBy === 'name') {
+        req = req.order('name', { ascending: true })
+      } else if (sortBy === 'newest') {
+        req = req.order('created_at', { ascending: false })
+      } else {
+        // Default — Top Rated: rating DESC (nulls last), then name ASC
+        req = req.order('rating', { ascending: false, nullsFirst: false })
+                 .order('name',   { ascending: true })
+      }
+    }
 
     const { data, count } = await req
-    const newBizs = (data ?? []) as Business[]
+    let newBizs = (data ?? []) as Business[]
+
+    // Client-side relevance re-sort when search query is active
+    if (query && newBizs.length > 0) {
+      newBizs = sortByRelevance(newBizs, query)
+    }
 
     setBusinesses(prev => reset ? newBizs : [...prev, ...newBizs])
     setTotal(count ?? 0)
@@ -154,16 +215,18 @@ export default function DirectoryPage() {
     setLoadingMore(false)
   }
 
-  function handleLoadMore() {
-    fetchPage(offset)
-  }
+  function handleLoadMore() { fetchPage(offset) }
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault()
     const params = new URLSearchParams()
     params.set('city', city)
     params.set('category', category)
-    if (searchInput.trim()) params.set('q', searchInput.trim())
+    if (searchInput.trim()) {
+      params.set('q', searchInput.trim())
+    } else {
+      params.set('sort', sortBy)
+    }
     router.push(`/directory?${params.toString()}`)
   }
 
@@ -172,6 +235,16 @@ export default function DirectoryPage() {
     params.set('city', newCity)
     params.set('category', newCat)
     if (query) params.set('q', query)
+    else       params.set('sort', sortBy)
+    return `/directory?${params.toString()}`
+  }
+
+  function sortUrl(newSort: string) {
+    const params = new URLSearchParams()
+    params.set('city', city)
+    params.set('category', category)
+    if (query) params.set('q', query)
+    params.set('sort', newSort)
     return `/directory?${params.toString()}`
   }
 
@@ -181,11 +254,31 @@ export default function DirectoryPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-6">
         <h1 className="text-3xl font-extrabold text-gray-900">Business Directory</h1>
-        <p className="text-gray-500 mt-1">Discover local businesses across San Joaquin County</p>
+        <p className="text-gray-500 mt-1">Discover local businesses across the 209 and East Bay</p>
       </div>
 
-      {/* ── Mobile filter chips (hidden on lg+) ── */}
+      {/* ── Mobile: search + filter chips ── */}
       <div className="lg:hidden mb-4 space-y-3">
+        {/* Mobile search bar */}
+        <form onSubmit={handleSearch} className="relative">
+          <input
+            type="text"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            placeholder="Search by name, category, or city…"
+            className="w-full border border-gray-200 rounded-xl pl-4 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          <button
+            type="submit"
+            aria-label="Search"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-700 transition"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1 0 6.5 6.5a7.5 7.5 0 0 0 10.15 10.15z" />
+            </svg>
+          </button>
+        </form>
+
         {/* City chips */}
         <div className="overflow-x-auto">
           <div className="flex gap-2 pb-1 min-w-max">
@@ -204,6 +297,7 @@ export default function DirectoryPage() {
             ))}
           </div>
         </div>
+
         {/* Category chips */}
         <div className="overflow-x-auto">
           <div className="flex gap-2 pb-1 min-w-max">
@@ -226,7 +320,7 @@ export default function DirectoryPage() {
 
       <div className="flex flex-col lg:flex-row gap-6">
 
-        {/* Sidebar Filters */}
+        {/* ── Sidebar Filters (desktop) ── */}
         <aside className="hidden lg:block lg:w-56 shrink-0 space-y-4">
 
           {/* Search */}
@@ -239,7 +333,7 @@ export default function DirectoryPage() {
                 type="text"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
-                placeholder="Search businesses…"
+                placeholder="Search by name, category, or city…"
                 className="w-full border border-gray-200 rounded-lg pl-3 pr-9 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
               <button
@@ -253,6 +347,28 @@ export default function DirectoryPage() {
               </button>
             </form>
           </div>
+
+          {/* Sort — hidden when query is active (relevance sort is automatic) */}
+          {!query && (
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Sort By</p>
+              <div className="flex flex-col gap-1">
+                {SORT_OPTIONS.map(({ value, label }) => (
+                  <Link
+                    key={value}
+                    href={sortUrl(value)}
+                    className={`text-sm px-3 py-1.5 rounded-lg transition font-medium ${
+                      sortBy === value
+                        ? 'bg-blue-700 text-white'
+                        : 'text-gray-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* City Filter */}
           <div>
@@ -295,10 +411,10 @@ export default function DirectoryPage() {
           </div>
         </aside>
 
-        {/* Listings */}
+        {/* ── Listings ── */}
         <div className="flex-1 min-w-0">
 
-          {/* Active filter chips — mobile + desktop */}
+          {/* Active filter chips */}
           {(city !== 'All Cities' || category !== 'All' || query) && (
             <div className="flex flex-wrap gap-2 mb-3">
               {city !== 'All Cities' && (
@@ -339,6 +455,12 @@ export default function DirectoryPage() {
             <p className="text-sm text-gray-500">
               {loading ? (
                 <span className="text-gray-400">Loading…</span>
+              ) : query ? (
+                <>
+                  <span className="font-semibold text-gray-900">{total}</span>
+                  {' '}result{total !== 1 ? 's' : ''} for{' '}
+                  <span className="font-semibold text-gray-900">&ldquo;{query}&rdquo;</span>
+                </>
               ) : (
                 <>
                   Showing{' '}
@@ -365,6 +487,13 @@ export default function DirectoryPage() {
               </Link>
             </div>
           </div>
+
+          {/* Relevance sort indicator */}
+          {query && !loading && businesses.length > 0 && (
+            <p className="text-xs text-gray-400 mb-3">
+              Sorted by relevance — name matches first, then by rating
+            </p>
+          )}
 
           {/* Business list */}
           {loading ? (
@@ -398,7 +527,7 @@ export default function DirectoryPage() {
             <>
               <div className="space-y-3">
                 {businesses.map((biz) => (
-                  <BusinessCard key={biz.id} biz={biz} />
+                  <BusinessCard key={biz.id} biz={biz} activeCategory={category} />
                 ))}
               </div>
 
@@ -416,7 +545,7 @@ export default function DirectoryPage() {
                 </div>
               )}
 
-              {/* All loaded message */}
+              {/* All loaded */}
               {!hasMore && total > PAGE_SIZE && (
                 <p className="mt-6 text-center text-sm text-gray-400">
                   ✅ All {total} businesses loaded
