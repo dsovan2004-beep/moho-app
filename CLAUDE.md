@@ -649,7 +649,11 @@ Business data is dynamically pulled from the Supabase `businesses` table.
 
 # 16. BUSINESS DIRECTORY
 
-Brentwood directory: 200 businesses seeded (March 2026)
+**Current database state (March 2026):**
+- ~784 businesses live (status='approved' AND verified=true) across all 5 cities
+- ~250 businesses in pending audit queue (status='pending', verified=false) — awaiting city-by-city Google Maps verification
+- Mountain House: audit complete (17 verified from 142 seeded)
+- Tracy, Lathrop, Manteca, Brentwood: seeded, audit in progress
 
 Each business record includes: city, category, image, description, contact links, hours, status.
 
@@ -705,16 +709,18 @@ All submissions must pass moderation before publishing. No automated publishing.
 
 # 19. CURRENT PRIORITIES
 
-1. Data quality improvements
-2. Business detail page UX
-3. SEO category pages
-4. Mobile responsiveness
-5. Directory search improvements
-6. Email notifications
-7. Community board improvements
-8. Worker cron agents for events
-9. Featured listings monetization
-10. Expand signal pipeline coverage
+1. ~~Data quality improvements~~ — ✅ Complete (trust policy enforced, dual-filter on all 9 public pages, audit workflow live, seed script governance in place)
+2. Pending queue audit — Tracy, Lathrop, Manteca, Brentwood (~50 records each awaiting Google Maps verification)
+3. Business detail page UX
+4. Image gallery UI — run verify_business_places.py for remaining verified cities
+5. Mobile polish
+6. SEO category pages
+7. Activity feed / neighborhood digest
+8. Directory search improvements
+9. Email notifications
+10. Community board improvements
+11. Worker cron agents for events
+12. Featured listings monetization
 
 ---
 

@@ -58,9 +58,9 @@ The primary directory table. Only `status = 'approved'` records appear in public
 | `featured` | boolean | Whether listing appears in Featured section |
 | `created_at` | timestamptz | Creation timestamp |
 
-**~202 records seeded as of March 2026.**
+**~784 approved+verified records as of March 2026. ~250 additional records in pending audit queue (batches 5–6).**
 
-**Query rule:** All public directory queries must filter `.eq('status', 'approved')`.
+**Query rule:** All public directory queries must filter `.eq('status', 'approved').eq('verified', true)`. Both conditions are required. Setting only one is a no-op — the business will not appear publicly.
 
 #### Canonical Categories
 
@@ -87,6 +87,7 @@ Mountain House
 Tracy
 Lathrop
 Manteca
+Brentwood
 ```
 
 ---
@@ -302,10 +303,14 @@ seed_businesses.py
 seed_businesses_2.py
 seed_businesses_3.py
 seed_businesses_4.py
+seed_businesses_5.py   ← trust-policy hardened, defaults to pending/unverified
+seed_businesses_6.py   ← trust-policy hardened, defaults to pending/unverified
 seed_events.py
 seed_lost_and_found.py
 seed_lost_and_found_2.py
 ```
+
+**Trust policy (enforced in code):** All seed scripts must default to `status='pending'` and `verified=False`. Scripts contain a `validate_trust_policy()` guard that hard-aborts before any network call if a record violates this rule. Scripts also contain `get_existing_phones()` dedup check to prevent duplicate inserts.
 
 ---
 

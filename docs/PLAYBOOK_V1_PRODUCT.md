@@ -77,13 +77,14 @@ const supabase = createClient(...)  // module scope
 
 ### Status Filter Rule
 
-All public business queries must filter by approved status:
+All public business queries must filter by **both** approved status and verified flag:
 
 ```ts
 .eq('status', 'approved')
+.eq('verified', true)
 ```
 
-This applies to: `/directory`, `/business/[id]`, `/[city]/page.tsx`, `/[city]/[category]/page.tsx`, homepage popular and featured sections.
+Both conditions are required. Setting only one is a no-op — the business will not appear publicly. This applies to: `/directory`, `/business/[id]`, `/[city]/page.tsx`, `/[city]/[category]/page.tsx`, homepage popular and featured sections, and the sitemap.
 
 ### Category Validation
 
@@ -96,10 +97,10 @@ Automotive | Pet Services | Real Estate | Education | Retail
 
 ### City Validation
 
-Only the 4 canonical cities are valid:
+Only the 5 canonical cities are valid:
 
 ```
-Mountain House | Tracy | Lathrop | Manteca
+Mountain House | Tracy | Lathrop | Manteca | Brentwood
 ```
 
 ---
@@ -148,7 +149,7 @@ Run through this checklist before committing any new page or feature:
 
 - [ ] JSX syntax is valid (no unclosed tags, correct prop types)
 - [ ] `export const runtime = 'edge'` is present
-- [ ] All business queries include `.eq('status', 'approved')`
+- [ ] All business queries include `.eq('status', 'approved').eq('verified', true)`
 - [ ] `getSupabaseClient()` called inside functions only (not module scope)
 - [ ] Page is mobile responsive (tested at 375px width)
 - [ ] Loading states present for async data
@@ -209,7 +210,10 @@ fix: add status filter to business detail page
 3. Cloudflare auto-builds and deploys to `moholocal.com`
 4. Deployment is live within ~2 minutes
 
-**Note on git lock files:** If `.git/index.lock` or `.git/HEAD.lock` exist, use the `git commit-tree` + `git push <hash>:refs/heads/main` workaround. Do not attempt to remove lock files manually.
+**Note on git lock files:** The Cowork VM cannot delete lock files on the Mac-mounted repo directory. If `.git/index.lock` or `.git/HEAD.lock` block a commit, run this from your **Mac terminal** to clear all locks and commit in one shot:
+```bash
+rm -f ~/Desktop/MoHoLocal/moho-app-scaffold/.git/*.lock 2>/dev/null; git add <files> && git commit -m "message" && git push origin main
+```
 
 ---
 

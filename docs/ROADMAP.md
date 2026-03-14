@@ -19,7 +19,7 @@ The MoHoLocal roadmap is organized into 6 sequential phases, progressing from pl
 - Default All Cities behavior
 - Directory search and keyword filtering
 - Category chip navigation
-- Approved listing enforcement (`status = 'approved'` on all public queries)
+- Approved listing enforcement (`status = 'approved'` AND `verified = true` on all public queries)
 - Edge runtime on all pages
 - Mobile responsiveness baseline
 
@@ -74,10 +74,11 @@ The MoHoLocal roadmap is organized into 6 sequential phases, progressing from pl
 
 **Goal:** Replicate the city model across new markets.
 
-- Tracy (San Joaquin County)
-- Lathrop (San Joaquin County)
-- Manteca (San Joaquin County)
-- Stockton (San Joaquin County)
+- ✅ Tracy (San Joaquin County) — seeded, audit in progress
+- ✅ Lathrop (San Joaquin County) — seeded, audit in progress
+- ✅ Manteca (San Joaquin County) — seeded, audit in progress
+- ✅ Brentwood (Contra Costa County) — seeded, audit in progress
+- Stockton (San Joaquin County) — future
 - Repeatable city launch model
 
 ---
@@ -86,7 +87,7 @@ The MoHoLocal roadmap is organized into 6 sequential phases, progressing from pl
 
 From CLAUDE.md §10 — active engineering focus:
 
-1. Data quality improvements
+1. ~~Data quality improvements~~ — ✅ Largely complete (trust policy enforced, ~784 approved+verified, audit workflow live)
 2. Business detail page UX
 3. SEO category pages (`/[city]/[category]`)
 4. Mobile responsiveness
@@ -95,6 +96,7 @@ From CLAUDE.md §10 — active engineering focus:
 7. Community board improvements
 8. Worker cron agents for event ingestion
 9. Featured listings monetization
+10. Pending queue audit — Tracy, Lathrop, Manteca, Brentwood (~200 records each awaiting review)
 
 ---
 

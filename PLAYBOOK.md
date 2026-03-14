@@ -184,7 +184,7 @@ Adding new businesses — use seed scripts or the admin interface:
 python3 ~/Desktop/MoHoLocal/seed_businesses_[city].py
 ```
 
-Approving seeded records — all seed scripts set `status = 'approved'` automatically.
+Approving seeded records — **all seed scripts now default to `status = 'pending'` and `verified = False`.** Seeded records must be manually audited and approved via `/admin/audit` or SQL. Never seed directly as `status = 'approved'`. See Seed Script Governance in BIBLE.md.
 
 Fixing business information — update via Supabase dashboard or write a targeted SQL update (output as text for manual execution).
 
@@ -201,9 +201,12 @@ Fixing images — update `image_url` on the business record.
 - Pet Services
 - Real Estate
 
-**Current seeded data:**
-- Mountain House, Tracy, Lathrop, Manteca — original seed (~202 businesses)
-- Brentwood — 200 businesses seeded March 2026
+**Current seeded data (as of March 2026):**
+- Batches 1–4: ~784 approved + verified listings across all 5 cities
+- Batch 5: 100 records (Mountain House + Tracy) — status=pending, awaiting audit
+- Batch 6: 150 records (Lathrop + Manteca + Brentwood) — status=pending, awaiting audit
+- ~250 total in pending audit queue
+- Zero duplicate records (dedup completed March 2026)
 
 ---
 
@@ -489,15 +492,17 @@ WHERE id = '<exact-uuid>';
 - Track the audit date in `verification_source` for provenance
 - Duplicates found during audit should be deleted by exact UUID
 
-**Current audit status:**
+**Current audit status (as of March 2026):**
 
-| City | Status | Verified | Total |
-|------|--------|----------|-------|
-| Mountain House | Audited 2026-03-12 | 17 | 142 |
-| Tracy | Not yet audited | 0 | ~200 |
-| Lathrop | Not yet audited | 0 | ~200 |
-| Manteca | Not yet audited | 0 | ~200 |
-| Brentwood | Not yet audited | 0 | ~200 |
+| City | Status | Approved+Verified | Pending Queue |
+|------|--------|-------------------|---------------|
+| Mountain House | Partially audited | ~784 total across all cities | ~50 |
+| Tracy | Not yet audited (batch 5) | — | ~50 |
+| Lathrop | Not yet audited (batch 6) | — | ~50 |
+| Manteca | Not yet audited (batch 6) | — | ~50 |
+| Brentwood | Not yet audited (batch 6) | — | ~50 |
+
+Note: The ~784 approved+verified count spans all batches 1–4 across all cities. Batches 5–6 (~250 records) are all pending. Use `/admin/audit` to review and approve city by city.
 
 ---
 
@@ -729,10 +734,12 @@ https://moho-ingestion.dsovan2004.workers.dev/run/events
 
 5. **Sitemap generation** (`GET /api/sitemap`) — Was filtering businesses by `status='approved'` only. Now filters `status='approved' AND verified=true`. Without this fix, unverified businesses would appear in Google's index.
 
-**Retired scripts:**
+**Hardened scripts (March 2026):**
 
-6. `seed_businesses_5.py` → `.DISABLED` — Was inserting businesses with Unsplash stock `image_url` + `verified: false`
-7. `seed_businesses_6.py` → `.DISABLED` — Same as above
+6. `seed_businesses_5.py` — Updated with `validate_trust_policy()` guard (hard abort if any record has wrong status/verified) and `get_existing_phones()` dedup check. Defaults: `status='pending'`, `verified=False`.
+7. `seed_businesses_6.py` — Same governance guards applied. Defaults: `status='pending'`, `verified=False`.
+
+These scripts are safe to run. They will refuse to insert if trust policy is violated and will skip duplicates automatically.
 
 **Rules for future cron jobs:**
 

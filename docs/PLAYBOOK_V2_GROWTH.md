@@ -49,7 +49,7 @@ Residents submit community posts, business listings, reports, and suggestions �
 
 ## First 1,000 Users Strategy
 
-1. Seed 200+ high-quality business listings across all 4 cities
+1. Seed 200+ high-quality business listings across all 5 cities
 2. Seed events and local community posts to populate the feed
 3. Monitor local Facebook groups for recommendation requests
 4. Reply helpfully with relevant MoHoLocal links
@@ -143,9 +143,10 @@ Everything in the product must be designed so the same stack can launch another 
 | City | County | Priority |
 |------|--------|----------|
 | Mountain House | San Joaquin | ✅ Live |
-| Tracy | San Joaquin | Phase 6 |
-| Lathrop | San Joaquin | Phase 6 |
-| Manteca | San Joaquin | Phase 6 |
+| Tracy | San Joaquin | ✅ Live (seeded, pending audit) |
+| Lathrop | San Joaquin | ✅ Live (seeded, pending audit) |
+| Manteca | San Joaquin | ✅ Live (seeded, pending audit) |
+| Brentwood | Contra Costa | ✅ Live (seeded, pending audit) |
 | Stockton | San Joaquin | Phase 6 |
 
 ---
@@ -193,7 +194,7 @@ The Growth phase is complete when:
 - Events calendar has at least 10 upcoming events at any given time
 - At least 5 business owners have claimed their listings
 - Featured listing revenue covers hosting costs
-- Tracy, Lathrop, and Manteca are live with 40+ listings each
+- Tracy, Lathrop, Manteca, and Brentwood each have 40+ approved+verified listings
 - Weekly digest or activity feed has been launched
 
 ---
