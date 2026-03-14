@@ -75,6 +75,42 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
+// ── City / category slug maps (for internal links) ───────────────────────────
+
+const CITY_TO_SLUG: Record<string, string> = {
+  'Mountain House': 'mountain-house',
+  'Tracy':          'tracy',
+  'Lathrop':        'lathrop',
+  'Manteca':        'manteca',
+  'Brentwood':      'brentwood',
+}
+
+// Maps DB category name → city/category page slug  (/[city]/[category])
+const CAT_TO_SLUG: Record<string, string> = {
+  'Restaurants':      'restaurants',
+  'Health & Wellness':'health-wellness',
+  'Beauty & Spa':     'beauty-spa',
+  'Retail':           'retail',
+  'Education':        'education',
+  'Automotive':       'automotive',
+  'Real Estate':      'real-estate',
+  'Home Services':    'home-services',
+  'Pet Services':     'pet-services',
+}
+
+// Maps DB category name → best-of page slug  (/best/[category]/[city])
+const CAT_TO_BEST_SLUG: Record<string, string> = {
+  'Restaurants':      'restaurants',
+  'Health & Wellness':'health-and-wellness',
+  'Beauty & Spa':     'beauty-and-spa',
+  'Retail':           'retail',
+  'Education':        'education',
+  'Automotive':       'automotive',
+  'Real Estate':      'real-estate',
+  'Home Services':    'home-services',
+  'Pet Services':     'pet-services',
+}
+
 // ── City config ───────────────────────────────────────────────────────────────
 const CITY_CFG: Record<string, { gradient: string; chip: string; emoji: string; accent: string }> = {
   'Mountain House': {
@@ -198,9 +234,9 @@ function StarRating({ rating, reviewCount }: { rating?: number; reviewCount?: nu
 
 // ── Info row ──────────────────────────────────────────────────────────────────
 function InfoRow({
-  icon, label, value, href,
+  icon, label, value, href, internalHref,
 }: {
-  icon: string; label: string; value: string; href?: string
+  icon: string; label: string; value: string; href?: string; internalHref?: string
 }) {
   return (
     <div className="flex items-start gap-3 py-3 border-b border-gray-100 last:border-0">
@@ -216,6 +252,10 @@ function InfoRow({
           >
             {value}
           </a>
+        ) : internalHref ? (
+          <Link href={internalHref} className="text-sm text-blue-600 hover:underline break-all">
+            {value}
+          </Link>
         ) : (
           <p className="text-sm text-gray-800 break-words">{value}</p>
         )}
@@ -255,10 +295,17 @@ export default async function BusinessDetailPage({ params }: PageProps) {
 
       {/* Breadcrumb */}
       <nav className="text-sm text-gray-400 mb-5 flex items-center gap-2 flex-wrap">
-        <Link href="/directory" className="hover:text-blue-600 transition">Directory</Link>
+        <Link href="/" className="hover:text-blue-600 transition">Home</Link>
         <span>›</span>
         <Link
-          href={`/directory?category=${encodeURIComponent(biz.category)}`}
+          href={`/${CITY_TO_SLUG[biz.city] ?? biz.city.toLowerCase().replace(/\s+/g, '-')}`}
+          className="hover:text-blue-600 transition"
+        >
+          {city.emoji} {biz.city}
+        </Link>
+        <span>›</span>
+        <Link
+          href={`/${CITY_TO_SLUG[biz.city] ?? biz.city.toLowerCase().replace(/\s+/g, '-')}/${CAT_TO_SLUG[biz.category] ?? biz.category.toLowerCase().replace(/\s+/g, '-')}`}
           className="hover:text-blue-600 transition"
         >
           {biz.category}
@@ -384,12 +431,18 @@ export default async function BusinessDetailPage({ params }: PageProps) {
               </p>
             )}
             <div className="flex flex-wrap gap-2 mt-4">
-              <span className={`text-xs font-semibold px-3 py-1 rounded-full ${city.chip}`}>
+              <Link
+                href={`/${CITY_TO_SLUG[biz.city] ?? biz.city.toLowerCase().replace(/\s+/g, '-')}/${CAT_TO_SLUG[biz.category] ?? biz.category.toLowerCase().replace(/\s+/g, '-')}`}
+                className={`text-xs font-semibold px-3 py-1 rounded-full hover:opacity-80 transition ${city.chip}`}
+              >
                 {catEmoji} {biz.category}
-              </span>
-              <span className={`text-xs font-semibold px-3 py-1 rounded-full ${city.chip}`}>
+              </Link>
+              <Link
+                href={`/${CITY_TO_SLUG[biz.city] ?? biz.city.toLowerCase().replace(/\s+/g, '-')}`}
+                className={`text-xs font-semibold px-3 py-1 rounded-full hover:opacity-80 transition ${city.chip}`}
+              >
                 {city.emoji} {biz.city}
-              </span>
+              </Link>
             </div>
           </div>
 
@@ -454,8 +507,18 @@ export default async function BusinessDetailPage({ params }: PageProps) {
             {hoursList.length === 0 && biz.hours && (
               <InfoRow icon="🕐" label="Hours" value={biz.hours} />
             )}
-            <InfoRow icon="🏙️" label="City" value={`${city.emoji} ${biz.city}, CA`} />
-            <InfoRow icon="📂" label="Category" value={`${catEmoji} ${biz.category}`} />
+            <InfoRow
+              icon="🏙️"
+              label="City"
+              value={`${city.emoji} ${biz.city}, CA`}
+              internalHref={`/${CITY_TO_SLUG[biz.city] ?? biz.city.toLowerCase().replace(/\s+/g, '-')}`}
+            />
+            <InfoRow
+              icon="📂"
+              label="Category"
+              value={`${catEmoji} ${biz.category}`}
+              internalHref={`/${CITY_TO_SLUG[biz.city] ?? biz.city.toLowerCase().replace(/\s+/g, '-')}/${CAT_TO_SLUG[biz.category] ?? biz.category.toLowerCase().replace(/\s+/g, '-')}`}
+            />
 
             {/* No contact info fallback */}
             {!hasContact && (
@@ -560,6 +623,16 @@ export default async function BusinessDetailPage({ params }: PageProps) {
             </div>
           )}
 
+          {/* Best Of link */}
+          {CAT_TO_BEST_SLUG[biz.category] && (
+            <Link
+              href={`/best/${CAT_TO_BEST_SLUG[biz.category]}/${CITY_TO_SLUG[biz.city] ?? biz.city.toLowerCase().replace(/\s+/g, '-')}`}
+              className="block w-full text-center text-xs font-semibold py-2.5 rounded-xl border border-gray-200 text-gray-600 hover:border-blue-400 hover:text-blue-700 transition"
+            >
+              ⭐ Best {biz.category} in {biz.city}
+            </Link>
+          )}
+
           {/* Report listing */}
           <Link
             href={`/report-listing/${biz.id}`}
@@ -568,12 +641,12 @@ export default async function BusinessDetailPage({ params }: PageProps) {
             🚩 Report this listing
           </Link>
 
-          {/* Back link */}
+          {/* Back to city link */}
           <Link
-            href="/directory"
+            href={`/${CITY_TO_SLUG[biz.city] ?? biz.city.toLowerCase().replace(/\s+/g, '-')}`}
             className="block text-center text-sm text-gray-400 hover:text-blue-600 transition py-2"
           >
-            ← Back to Directory
+            ← Back to {biz.city}
           </Link>
         </aside>
       </div>

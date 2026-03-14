@@ -365,7 +365,7 @@ export default async function NewResidentCityPage({ params }: PageProps) {
           <p className="text-sm opacity-90 max-w-xl leading-relaxed">{content.sub}</p>
         </div>
         <Link
-          href={`/directory?city=${encodeURIComponent(cityName)}`}
+          href={`/${slug}`}
           className="bg-white font-bold text-sm px-5 py-2.5 rounded-xl shrink-0 hover:opacity-90 transition-all"
           style={{ color: theme.accent }}
         >
@@ -399,7 +399,7 @@ export default async function NewResidentCityPage({ params }: PageProps) {
         id="healthcare"
         emoji="🏥"
         title={`Healthcare in ${cityName}`}
-        viewAllHref={`/directory?city=${encodeURIComponent(cityName)}&category=Health+%26+Wellness`}
+        viewAllHref={`/${slug}/health-wellness`}
       >
         {healthBizzes.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -415,7 +415,7 @@ export default async function NewResidentCityPage({ params }: PageProps) {
         id="food"
         emoji="🍽️"
         title={`Food & Dining in ${cityName}`}
-        viewAllHref={`/directory?city=${encodeURIComponent(cityName)}&category=Restaurants`}
+        viewAllHref={`/${slug}/restaurants`}
       >
         {foodBizzes.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -470,7 +470,7 @@ export default async function NewResidentCityPage({ params }: PageProps) {
             ))}
           </div>
           <Link
-            href={`/directory?city=${encodeURIComponent(cityName)}&category=Education`}
+            href={`/${slug}/education`}
             className="block text-xs font-medium hover:underline mt-3"
             style={{ color: theme.accent }}
           >
@@ -484,7 +484,7 @@ export default async function NewResidentCityPage({ params }: PageProps) {
         id="services"
         emoji="🔧"
         title={`Essential Services in ${cityName}`}
-        viewAllHref={`/directory?city=${encodeURIComponent(cityName)}`}
+        viewAllHref={`/${slug}`}
       >
         {essentialBizzes.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -535,7 +535,7 @@ export default async function NewResidentCityPage({ params }: PageProps) {
         </p>
         <div className="flex gap-3 justify-center flex-wrap">
           <Link
-            href={`/directory?city=${encodeURIComponent(cityName)}`}
+            href={`/${slug}`}
             className="bg-white font-bold text-sm px-5 py-2.5 rounded-xl hover:opacity-90 transition-all"
             style={{ color: theme.accent }}
           >

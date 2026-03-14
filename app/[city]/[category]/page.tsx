@@ -261,7 +261,7 @@ export default async function CityLandingPage({ params }: PageProps) {
       {
         '@type': 'ListItem', position: 2,
         name: city,
-        item: `https://www.moholocal.com/directory?city=${encodeURIComponent(city)}`,
+        item: `https://www.moholocal.com/${citySlug}`,
       },
       { '@type': 'ListItem', position: 3, name: category },
     ],
@@ -277,8 +277,7 @@ export default async function CityLandingPage({ params }: PageProps) {
         <nav className="text-sm text-gray-400 mb-6 flex items-center gap-2 flex-wrap">
           <Link href="/" className="hover:text-blue-600 transition">Home</Link>
           <span>›</span>
-          <Link href={`/directory?city=${encodeURIComponent(city)}`}
-            className="hover:text-blue-600 transition capitalize">
+          <Link href={`/${citySlug}`} className="hover:text-blue-600 transition">
             {cfg.emoji} {city}
           </Link>
           <span>›</span>

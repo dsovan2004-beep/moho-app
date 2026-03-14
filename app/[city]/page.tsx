@@ -86,6 +86,16 @@ const CATEGORIES = [
   { name: 'Retail',            emoji: '🛍️', slug: 'retail' },
 ]
 
+// Best Of slugs (uses 'health-and-wellness' / 'beauty-and-spa' format)
+const BEST_OF_LINKS = [
+  { label: 'Restaurants',       slug: 'restaurants',        emoji: '🍽️' },
+  { label: 'Health & Wellness', slug: 'health-and-wellness', emoji: '🏥' },
+  { label: 'Home Services',     slug: 'home-services',       emoji: '🔧' },
+  { label: 'Automotive',        slug: 'automotive',          emoji: '🚗' },
+  { label: 'Beauty & Spa',      slug: 'beauty-and-spa',      emoji: '💇' },
+  { label: 'Pet Services',      slug: 'pet-services',        emoji: '🐾' },
+]
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function getCategoryEmoji(category: string): string {
@@ -297,6 +307,24 @@ export default async function CityPage({ params }: PageProps) {
               </Link>
             )
           })}
+        </div>
+      </div>
+
+      {/* ── Best Of [City] ── */}
+      <div className="mb-8">
+        <h2 className="text-lg font-bold text-gray-900 mb-4">⭐ Best Of {cityName}</h2>
+        <div className="flex flex-wrap gap-2">
+          {BEST_OF_LINKS.map(({ label, slug, emoji }) => (
+            <Link
+              key={slug}
+              href={`/best/${slug}/${citySlug}`}
+              className="flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-full border border-amber-200 bg-amber-50 text-amber-800 hover:border-amber-400 hover:bg-amber-100 hover:shadow-sm transition"
+            >
+              <span>{emoji}</span>
+              <span>Best {label}</span>
+              <span className="text-[11px] text-amber-500 font-normal">→</span>
+            </Link>
+          ))}
         </div>
       </div>
 

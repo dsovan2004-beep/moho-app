@@ -58,6 +58,21 @@ const CITY_THEME: Record<string, { gradient: string; accent: string; chip: strin
   'Brentwood':      { gradient: 'linear-gradient(135deg,#134e4a 0%,#0d9488 100%)', accent: '#0d9488', chip: 'bg-teal-50 text-teal-700',    county: 'Contra Costa County' },
 }
 
+// ─── DB category → city/category page slug  (/[city]/[category]) ─────────────
+// NOTE: city/category uses 'health-wellness' / 'beauty-spa' (no "and"),
+//       while Best Of uses 'health-and-wellness' / 'beauty-and-spa'.
+const DB_TO_CITY_CAT_SLUG: Record<string, string> = {
+  'Restaurants':      'restaurants',
+  'Health & Wellness':'health-wellness',
+  'Beauty & Spa':     'beauty-spa',
+  'Retail':           'retail',
+  'Education':        'education',
+  'Automotive':       'automotive',
+  'Real Estate':      'real-estate',
+  'Home Services':    'home-services',
+  'Pet Services':     'pet-services',
+}
+
 // ─── Related category links ───────────────────────────────────────────────────
 const RELATED: Record<string, string[]> = {
   'Restaurants':      ['coffee', 'pizza', 'mexican-food'],
@@ -246,12 +261,12 @@ export default async function BestOfPage({ params }: PageProps) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home',      item: 'https://www.moholocal.com' },
-      { '@type': 'ListItem', position: 2, name: 'Directory', item: 'https://www.moholocal.com/directory' },
+      { '@type': 'ListItem', position: 1, name: 'Home',    item: 'https://www.moholocal.com' },
+      { '@type': 'ListItem', position: 2, name: cityName,  item: `https://www.moholocal.com/${citySlug}` },
       {
         '@type': 'ListItem', position: 3,
-        name: `${catInfo.label} in ${cityName}`,
-        item: `https://www.moholocal.com/directory?city=${encodeURIComponent(cityName)}&category=${encodeURIComponent(catInfo.dbCategory)}`,
+        name: catInfo.label,
+        item: `https://www.moholocal.com/${citySlug}/${DB_TO_CITY_CAT_SLUG[catInfo.dbCategory] ?? catSlug}`,
       },
       { '@type': 'ListItem', position: 4, name: `Best ${catInfo.label} in ${cityName}` },
     ],
@@ -269,13 +284,13 @@ export default async function BestOfPage({ params }: PageProps) {
         <nav className="flex items-center gap-1.5 text-xs text-gray-400 mb-5 flex-wrap">
           <Link href="/" className="hover:text-gray-600">Home</Link>
           <span>/</span>
-          <Link href="/directory" className="hover:text-gray-600">Directory</Link>
+          <Link href={`/${citySlug}`} className="hover:text-gray-600">{cityName}</Link>
           <span>/</span>
           <Link
-            href={`/directory?city=${encodeURIComponent(cityName)}&category=${encodeURIComponent(catInfo.dbCategory)}`}
+            href={`/${citySlug}/${DB_TO_CITY_CAT_SLUG[catInfo.dbCategory] ?? catSlug}`}
             className="hover:text-gray-600"
           >
-            {catInfo.label} in {cityName}
+            {catInfo.label}
           </Link>
           <span>/</span>
           <span className="text-gray-600 font-medium">Best Of</span>
@@ -375,7 +390,7 @@ export default async function BestOfPage({ params }: PageProps) {
             <div className="text-xs text-gray-500 mt-0.5">Browse the full directory with filters</div>
           </div>
           <Link
-            href={`/directory?city=${encodeURIComponent(cityName)}&category=${encodeURIComponent(catInfo.dbCategory)}`}
+            href={`/${citySlug}/${DB_TO_CITY_CAT_SLUG[catInfo.dbCategory] ?? catSlug}`}
             className="text-sm font-bold px-4 py-2 rounded-lg text-white hover:opacity-90 transition shrink-0"
             style={{ backgroundColor: theme.accent }}
           >
