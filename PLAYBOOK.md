@@ -25,8 +25,10 @@ Core platform sections:
 - Business Directory (`/directory`)
 - Events (`/events`)
 - Lost & Found (`/lost-and-found`)
-- Community Activity (`/activity`, `/community`)
-- New Resident Guides (`/new-resident`)
+- Community Board (`/community`, `/community/[id]`)
+- Ask MoHo AI (`/ask`)
+- New Resident Guides (`/new-resident`, `/new-resident/[city]`)
+- City Hub Pages (`/[city]`, `/[city]/[category]`)
 - Admin Moderation (`/admin`)
 
 Signals enter the platform via screenshot ingestion, manual submissions, and curated sources. **Nothing goes live without human moderation approval.**
@@ -403,10 +405,22 @@ Every signal — regardless of source — must pass through the `community_submi
 | `signals-inbox/raw/` | Drop screenshots here for processing |
 | `app/admin/page.tsx` | Moderation dashboard |
 | `app/events/page.tsx` | Events listing page |
+| `app/community/page.tsx` | Community Board listing |
+| `app/community/[id]/page.tsx` | Community post detail + reactions |
+| `app/ask/page.tsx` | Ask MoHo AI query interface |
+| `app/api/reactions/route.ts` | Reactions edge API (GET/POST) |
+| `app/components/PostReactions.tsx` | Emoji reactions client component |
+| `app/components/CommunityReplySection.tsx` | Reply thread client component |
 | `app/new-resident/[city]/page.tsx` | City guide pages |
 | `lib/supabase.ts` | Supabase client + type definitions |
+| `lib/ask.ts` | Ask MoHo query parser + retrieval engine |
+| `workers/jobs/events.ts` | Events ingestion job (8 adapters) |
+| `workers/jobs/lostfound.ts` | Lost & Found ingestion job |
+| `workers/wrangler.toml` | Worker cron schedule config |
+| `sql/add_post_reactions.sql` | Reactions table + RPC migration |
 | `seed_businesses_*.py` | Business directory seed scripts |
 | `CLAUDE.md` | System architecture + engineering rules |
+| `BIBLE.md` | Product rules and philosophy |
 | `PLAYBOOK.md` | This file — daily operations guide |
 
 ---
@@ -682,11 +696,30 @@ Each file push triggers a separate Cloudflare build. Only the last build matters
 
 All automated jobs in the `moho-ingestion` Cloudflare Worker have been audited against the verified-business / verified-photo trust model (March 2026).
 
+**Active cron schedule (4 jobs):**
+
+| Job | Schedule | Status |
+|-----|----------|--------|
+| Directory ingestion | Mon 03:00 UTC | Safe — lands as `status='pending'` |
+| Events ingestion (full) | Mon 04:00 UTC | Safe — most land as `ingestion_status='pending'` |
+| Lost & Found ingestion | Mon 05:00 UTC | Safe — lands with `needs_review=true` |
+| Events ingestion (mid-week) | Thu 04:00 UTC | Safe — same pipeline as Monday events run |
+
+**Active event source adapters (8 total):**
+EventbriteAdapter, PatchAdapter, TracyPressAdapter, CityCalendarAdapter, CountyCalendarAdapter, MHCSDAdapter, SJCountyLibraryAdapter, FarmersMarketsAdapter
+
+**209Times permanently removed** — violent/low-quality content. Must not be re-added.
+
+**Manual trigger for events pipeline:**
+```
+https://moho-ingestion.dsovan2004.workers.dev/run/events
+```
+
 **Safe jobs (no changes needed):**
 
 1. **Directory ingestion** (Mon 03:00 UTC) — All records land as `status='pending'`. Never touches `business_images`. Never sets `verified=true`. The `image_url` field stores an external URL reference only (not a gallery photo).
 
-2. **Events ingestion** (Mon 04:00 UTC) — Most records land as `ingestion_status='pending'`. Eventbrite auto-approve for high-confidence events is acceptable. Does not touch businesses or business_images.
+2. **Events ingestion** (Mon/Thu 04:00 UTC) — Most records land as `ingestion_status='pending'`. Eventbrite and farmers markets auto-approve for high-confidence events is acceptable. Does not touch businesses or business_images.
 
 3. **Lost & Found ingestion** (Mon 05:00 UTC) — All records land with `needs_review=true`. No auto-approval. Does not touch businesses or business_images.
 
@@ -727,5 +760,105 @@ Troubleshooting must always follow **verify → diagnose → fix**, never assume
 
 ---
 
-MoHoLocal Operations Playbook v5
+## Step 15 — Community Board Operations
+
+The Community Board is MoHoLocal's social signal layer. Daily operations include:
+
+**Moderation:**
+
+Posts submitted by residents land with `status='active'` by default. Moderators can update status via Supabase dashboard:
+
+```sql
+-- Flag a post for review
+UPDATE community_posts SET status = 'flagged' WHERE id = '<uuid>';
+
+-- Remove a post permanently from public view
+UPDATE community_posts SET status = 'removed' WHERE id = '<uuid>';
+```
+
+Flagged and removed posts are never shown to users or the AI assistant. They are retained in the database for audit purposes.
+
+**Reaction monitoring:**
+
+Reaction counts are visible in the `post_reactions` table. To see which posts are getting the most engagement:
+
+```sql
+SELECT post_id, reaction_type, COUNT(*) as count
+FROM post_reactions
+GROUP BY post_id, reaction_type
+ORDER BY count DESC
+LIMIT 20;
+```
+
+This data is part of the social signal layer and informs future AI query ranking.
+
+**City coverage check:**
+
+Verify community posts exist for all 5 cities:
+```sql
+SELECT city, COUNT(*) FROM community_posts
+WHERE status = 'active'
+GROUP BY city ORDER BY count DESC;
+```
+
+---
+
+## Step 16 — Ask MoHo Operations
+
+Ask MoHo is live at `https://www.moholocal.com/ask`.
+
+**Current state (v1):** Keyword-based query parsing, no LLM. Results pulled from all three knowledge graph layers (businesses, events, community posts).
+
+**To upgrade to AI answer layer (v2):**
+
+1. Get Anthropic API key from [console.anthropic.com](https://console.anthropic.com)
+2. Add to Cloudflare Pages → Settings → Variables and Secrets:
+   - Name: `ANTHROPIC_API_KEY`
+   - Type: Secret
+3. Build and deploy the AI answer route (`app/api/ask/route.ts`)
+4. The keyword parser in `lib/ask.ts` handles retrieval — the AI layer only generates the natural language answer on top
+
+**Query health check — useful test queries:**
+
+```
+"What's happening in Tracy this weekend?"
+"Best restaurants in Mountain House"
+"Find a plumber in Lathrop"
+"Any events for kids in Manteca?"
+```
+
+Verify results return relevant businesses, events, and community posts.
+
+---
+
+## Step 17 — Content Source Governance
+
+MoHoLocal's event ingestion pipeline is governed by an approved source list. Any source addition or removal is a governance decision.
+
+**Current approved sources:**
+
+| Source | Adapter | Type |
+|--------|---------|------|
+| Eventbrite | EventbriteAdapter | API |
+| Patch.com | PatchAdapter | RSS |
+| Tracy Press | TracyPressAdapter | RSS |
+| City calendars (Tracy, Lathrop, Manteca, Mountain House) | CityCalendarAdapter | RSS/scrape |
+| SJ County calendar | CountyCalendarAdapter | RSS/scrape |
+| MHCSD calendar | MHCSDAdapter | RSS |
+| SJ County Library branches | SJCountyLibraryAdapter | RSS |
+| Tracy / Manteca Farmers Markets | FarmersMarketsAdapter | Static recurring |
+
+**Permanently removed sources:**
+
+| Source | Reason | Removal date |
+|--------|--------|-------------|
+| 209Times | Content consistently violent and inappropriate for platform mission | March 2026 |
+
+**Rule:** No source that regularly produces crime, violence, or negative content may be added to the ingestion pipeline, regardless of whether the same source also produces positive content. The cost of filtering is too high and the risk of breakthrough is unacceptable.
+
+**To propose a new source:** The source must pass the Positive Signal Test. At least 90% of its content must be community-positive before it qualifies for an adapter.
+
+---
+
+MoHoLocal Operations Playbook v6
 March 2026

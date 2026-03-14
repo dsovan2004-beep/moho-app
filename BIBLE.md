@@ -128,6 +128,7 @@ The platform currently supports these signal types:
 | `business_update` | New business opening, special offer, local business news |
 | `community_tip` | Neighborhood update, recommendation, or community notice |
 | `garage_sale` | Garage sale, estate sale, or free items announcement |
+| `community_reaction` | Emoji reaction on a community post (engagement signal for AI layer) |
 
 Signals must be categorized correctly during ingestion or moderation. Misclassified signals should be corrected before promotion, not after.
 
@@ -440,6 +441,27 @@ Every engineering decision should be evaluated against this question:
 > Does this help more residents discover local businesses, events, or community signals?
 
 If the answer is no, it is not a growth priority.
+
+---
+
+## AI Knowledge Graph — Three Signal Layers
+
+MoHoLocal's data architecture operates on three signal layers that together form a queryable local knowledge graph:
+
+| Layer | Table(s) | Signal Type | Value |
+|-------|----------|-------------|-------|
+| **Static graph** | `businesses` | Business listings, categories, ratings | What exists in the community |
+| **Temporal graph** | `events` | Upcoming events, categories, recurring patterns | What is happening and when |
+| **Social / intent graph** | `community_posts`, `post_reactions` | Neighbor intent, recommendations, local demand | What residents want and care about |
+
+These three layers are designed to work together. The AI assistant (Ask MoHo) queries all three simultaneously to answer natural language local questions.
+
+**Rules for the knowledge graph:**
+
+- Every record in the static graph must have `status='approved'` and `verified=true` before it is queryable
+- Every record in the temporal graph must have `ingestion_status='approved'` before it surfaces in AI queries or the sitemap
+- Community posts with `status='flagged'` or `status='removed'` are excluded from all AI queries
+- Emoji reactions (`post_reactions`) are stored as individual rows to preserve signal fidelity for future AI analysis — aggregations must never replace the raw signal
 
 ---
 
@@ -794,17 +816,56 @@ Repeat for Lathrop, Manteca, Brentwood. Each city must complete its business ver
 
 ---
 
+## Events Ingestion Worker — Architecture (March 2026)
+
+The events pipeline runs as a Cloudflare Worker (`moho-ingestion`) with the following cron schedule:
+
+| Cron | Schedule | Purpose |
+|------|----------|---------|
+| `0 3 * * 1` | Monday 03:00 UTC | Directory ingestion (businesses) |
+| `0 4 * * 1` | Monday 04:00 UTC | Events ingestion — full weekly refresh |
+| `0 5 * * 1` | Monday 05:00 UTC | Lost & Found ingestion |
+| `0 4 * * 4` | Thursday 04:00 UTC | Events ingestion — mid-week refresh |
+
+**Active event source adapters (7 total):**
+
+| # | Adapter | Source |
+|---|---------|--------|
+| 1 | EventbriteAdapter | Eventbrite API (San Joaquin County) |
+| 2 | PatchAdapter | Patch.com RSS feeds |
+| 3 | TracyPressAdapter | Tracy Press RSS |
+| 4 | CityCalendarAdapter | Tracy, Lathrop, Manteca, Mountain House city calendars |
+| 5 | CountyCalendarAdapter | San Joaquin County calendar |
+| 6 | MHCSDAdapter | Mountain House Community Services District |
+| 7 | SJCountyLibraryAdapter | SJ County Library branches (RSS) |
+| 8 | FarmersMarketsAdapter | Static recurring farmers markets (Tracy, Manteca) |
+
+**209Times is permanently removed** as an event source. Reason: content quality was consistently violent and inappropriate for the platform's community-positive mission. This removal is governance-level and must not be reversed.
+
+**Event category inference:** Every event is classified at ingestion time into one of 10 structured categories:
+`Food & Dining`, `Arts & Culture`, `Kids & Family`, `Health & Fitness`, `Education`, `Community`, `Sports & Recreation`, `Faith & Spirituality`, `Business & Networking`, `Other`
+
+Category data is required for AI-layer queryability. Any new source adapter must produce categorizable event titles.
+
+**Manual trigger (for testing or catch-up):**
+```
+https://moho-ingestion.dsovan2004.workers.dev/run/events
+```
+
+---
+
 ## Cron & Worker Trust Model Audit (March 2026)
 
 All automated jobs have been reviewed against the verified-business / verified-photo architecture.
 
-**Cloudflare Worker `moho-ingestion` — 3 cron jobs:**
+**Cloudflare Worker `moho-ingestion` — 4 cron jobs:**
 
 | Job | Schedule | Verdict | Notes |
 |-----|----------|---------|-------|
 | Directory ingestion | Mon 03:00 UTC | Safe | All records land as `status='pending'`, never touches `business_images` |
 | Events ingestion | Mon 04:00 UTC | Safe | Most records pending; Eventbrite auto-approve is acceptable (structured trusted source) |
 | Lost & Found ingestion | Mon 05:00 UTC | Safe | All records land with `needs_review=true` |
+| Events mid-week refresh | Thu 04:00 UTC | Safe | Same pipeline as Monday events run |
 | Community Signal Inbox | HTTP POST | Safe | All submissions require admin approval |
 
 **Sitemap generation (`/api/sitemap`):**
@@ -847,5 +908,79 @@ If a workflow has previously succeeded, treat that as evidence the credentials m
 
 ---
 
-MoHoLocal Product Bible v6
+## Community Board — Architecture (March 2026)
+
+The Community Board (`/community`) is MoHoLocal's social signal layer. It captures resident intent, recommendations, and local demand — data that the static directory and temporal events graph cannot provide.
+
+**Current capabilities:**
+
+- City filtering (Mountain House, Tracy, Lathrop, Manteca, Brentwood)
+- Category filtering (General, Recommendations, For Sale, Free Items, Jobs, Services, Safety, Neighbors, Question)
+- Post moderation via `status` column (`active` / `flagged` / `removed`) — flagged and removed posts are excluded from all public queries and AI layer
+- SEO metadata (`generateMetadata()`) per city/category combination
+- Breadcrumb navigation: Community Board › {city} › {post title}
+- Post counts displayed in page header
+- Reply section with friendly empty state: "Be the first to reply"
+- Community Board sections embedded in all city hub pages (`/[city]`) with category quick-links
+
+**Post moderation rules:**
+- Only posts with `status='active'` (default) appear publicly
+- `status='flagged'` — hidden from public, retained for review
+- `status='removed'` — hidden from public, retained for audit trail
+- The AI assistant (Ask MoHo) must never surface flagged or removed posts
+
+---
+
+## Emoji Reactions — Architecture (March 2026)
+
+Emoji reactions are a lightweight engagement layer on community posts. They serve two purposes: reducing the "dead post" feeling for low-engagement content, and generating social signal data for the AI knowledge graph.
+
+**Supported reaction types:**
+
+| Type | Emoji | Label |
+|------|-------|-------|
+| `helpful` | 👍 | Helpful |
+| `love` | ❤️ | Love |
+| `funny` | 😂 | Funny |
+| `thanks` | 🙏 | Thanks |
+| `following` | 👀 | Following |
+
+**Data model:**
+
+- Table: `post_reactions`
+- Deduplication: `UNIQUE(post_id, reaction_type, ip_hash)` — one reaction per type per IP per post
+- Privacy: IP addresses are hashed (SHA-256, one-way) before storage — raw IPs are never stored
+- `user_id` stored when available (logged-in users) for richer AI signals
+- `created_at` stored for time-series analysis
+
+**Toggle RPC:** `toggle_reaction(p_post_id, p_reaction_type, p_ip_hash, p_user_id)` — atomic insert/delete, returns updated counts as JSONB.
+
+**AI signal value:** Reaction type and count per post indicate community sentiment and engagement intent. `following` (👀) signals ongoing local interest. `helpful` (👍) signals useful recommendations. These signals strengthen the social graph layer for future AI query ranking.
+
+**Rules:**
+- Reactions are stored as individual rows — never aggregate-only
+- The raw signal table must be preserved for AI analysis
+- Reaction counts shown on community list cards and post detail pages
+- Reaction type must be one of the 5 approved types — no extensions without governance review
+
+---
+
+## Ask MoHo AI Assistant — Planned Feature
+
+Ask MoHo is the natural language query interface for MoHoLocal's knowledge graph. It allows residents to ask local questions in plain English and receive answers grounded in the three data layers.
+
+**Current state:** Ask MoHo v1 is live at `/ask` with keyword-based query parsing and structured result retrieval. No LLM is required for v1.
+
+**Planned upgrade (v2):** Add a Claude claude-haiku-4-5 answer layer that reads retrieved context and generates a 2–4 sentence natural language response. Requires `ANTHROPIC_API_KEY` in Cloudflare Pages environment variables.
+
+**Governance rules for Ask MoHo:**
+- Answers must be grounded in retrieved data only — no hallucination
+- Must never surface unverified businesses, unapproved events, or flagged community posts
+- Must apply the Positive Signal Test to every answer — no crime, violence, or political content
+- LLM prompts must explicitly instruct the model not to invent local details
+- Query logging (if added) must not store personally identifiable information
+
+---
+
+MoHoLocal Product Bible v7
 Confidential — March 2026
