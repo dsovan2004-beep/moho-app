@@ -88,19 +88,26 @@ export default function CityAuditPage() {
   }, [authorized, loadBusinesses])
 
   // ── Toggle single verified ────────────────────────────────────────────────
+  // Approving a business requires BOTH status='approved' AND verified=true.
+  // The public directory filters on both fields — setting only one is a no-op.
   async function toggleVerified(id: string, currentlyVerified: boolean) {
     const supabase = getSupabaseClient()
     setTogglingId(id)
-    const newVal = !currentlyVerified
+    const newVerified = !currentlyVerified
+    // When approving: status='approved' + verified=true
+    // When revoking:  status='pending'  + verified=false
+    const update = newVerified
+      ? { verified: true,  status: 'approved' }
+      : { verified: false, status: 'pending'  }
     const { error } = await supabase
       .from('businesses')
-      .update({ verified: newVal })
+      .update(update)
       .eq('id', id)
     if (!error) {
       setBusinesses((prev) =>
-        prev.map((b) => (b.id === id ? { ...b, verified: newVal } : b))
+        prev.map((b) => (b.id === id ? { ...b, ...update } : b))
       )
-      showToast(newVal ? '✅ Marked verified' : '⚠️ Marked unverified', true)
+      showToast(newVerified ? '✅ Approved & verified' : '⚠️ Reverted to pending', true)
     } else {
       showToast('Error — try again', false)
     }
@@ -108,6 +115,8 @@ export default function CityAuditPage() {
   }
 
   // ── Bulk verify selected ──────────────────────────────────────────────────
+  // Must set status='approved' alongside verified=true — both required for
+  // a business to appear in the public directory.
   async function bulkVerify() {
     if (selected.size === 0) return
     const supabase = getSupabaseClient()
@@ -121,16 +130,16 @@ export default function CityAuditPage() {
       const batch = ids.slice(i, i + 50)
       const { error } = await supabase
         .from('businesses')
-        .update({ verified: true })
+        .update({ verified: true, status: 'approved' })
         .in('id', batch)
       if (error) { hasError = true; break }
     }
 
     if (!hasError) {
       setBusinesses((prev) =>
-        prev.map((b) => (ids.includes(b.id) ? { ...b, verified: true } : b))
+        prev.map((b) => (ids.includes(b.id) ? { ...b, verified: true, status: 'approved' } : b))
       )
-      showToast(`✅ ${ids.length} businesses verified!`, true)
+      showToast(`✅ ${ids.length} businesses approved & verified!`, true)
       setSelected(new Set())
     } else {
       showToast('Error — some updates may have failed', false)
@@ -410,8 +419,8 @@ export default function CityAuditPage() {
                       {togglingId === biz.id
                         ? '…'
                         : biz.verified
-                          ? '✓ Verified'
-                          : 'Mark Verified'
+                          ? '✓ Approved'
+                          : 'Approve'
                       }
                     </button>
                   </div>
@@ -448,7 +457,7 @@ export default function CityAuditPage() {
                 disabled={togglingId === 'bulk'}
                 className="px-6 py-2 rounded-lg text-sm font-bold bg-green-600 text-white hover:bg-green-700 transition disabled:opacity-50"
               >
-                {togglingId === 'bulk' ? 'Verifying…' : `✓ Verify ${selected.size} Business${selected.size > 1 ? 'es' : ''}`}
+                {togglingId === 'bulk' ? 'Approving…' : `✓ Approve ${selected.size} Business${selected.size > 1 ? 'es' : ''}`}
               </button>
             </div>
           </div>

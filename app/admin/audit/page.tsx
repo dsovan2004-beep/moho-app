@@ -21,6 +21,7 @@ interface CityStats {
   total: number
   verified: number
   unverified: number
+  pendingQueue: number
   pct: number
   status: 'verified' | 'auditing' | 'pending'
 }
@@ -66,7 +67,7 @@ export default function AuditDashboard() {
         .eq('city', city.name)
         .eq('status', 'approved')
 
-      // Verified businesses
+      // Verified businesses (approved + verified=true)
       const { count: verified } = await supabase
         .from('businesses')
         .select('id', { count: 'exact', head: true })
@@ -74,8 +75,16 @@ export default function AuditDashboard() {
         .eq('status', 'approved')
         .eq('verified', true)
 
+      // Pending queue (awaiting audit)
+      const { count: pendingQueue } = await supabase
+        .from('businesses')
+        .select('id', { count: 'exact', head: true })
+        .eq('city', city.name)
+        .eq('status', 'pending')
+
       const t = total ?? 0
       const v = verified ?? 0
+      const p = pendingQueue ?? 0
       const pct = t > 0 ? Math.round((v / t) * 100) : 0
 
       let status: CityStats['status'] = 'pending'
@@ -87,6 +96,7 @@ export default function AuditDashboard() {
         total: t,
         verified: v,
         unverified: t - v,
+        pendingQueue: p,
         pct,
         status,
       })
@@ -211,15 +221,15 @@ export default function AuditDashboard() {
                         <div className="flex items-center gap-6 text-sm">
                           <div className="text-center">
                             <div className="font-bold text-gray-900">{s.total}</div>
-                            <div className="text-xs text-gray-500">Total</div>
+                            <div className="text-xs text-gray-500">Live</div>
                           </div>
                           <div className="text-center">
                             <div className="font-bold text-green-600">{s.verified}</div>
                             <div className="text-xs text-gray-500">Verified</div>
                           </div>
                           <div className="text-center">
-                            <div className="font-bold text-amber-600">{s.unverified}</div>
-                            <div className="text-xs text-gray-500">Unverified</div>
+                            <div className="font-bold text-orange-500">{s.pendingQueue}</div>
+                            <div className="text-xs text-gray-500">Pending</div>
                           </div>
                           <div className="text-center min-w-[48px]">
                             <div className="font-bold text-gray-900">{s.pct}%</div>
