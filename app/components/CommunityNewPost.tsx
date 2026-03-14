@@ -9,7 +9,7 @@ const CATEGORIES = [
   'Jobs', 'Services', 'Safety', 'Neighbors', 'Question',
 ]
 
-const CITIES = ['Mountain House', 'Tracy', 'Lathrop', 'Manteca']
+const CITIES = ['Mountain House', 'Tracy', 'Lathrop', 'Manteca', 'Brentwood']
 
 // Categories that benefit most from photos
 const PHOTO_CATEGORIES = ['For Sale', 'Free Items', 'Services', 'Recommendations']

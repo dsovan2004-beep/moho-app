@@ -328,6 +328,35 @@ export default async function CityPage({ params }: PageProps) {
         </div>
       </div>
 
+      {/* ── Community Board ── */}
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-bold text-gray-900">💬 {cityName} Community</h2>
+          <Link
+            href={`/community?city=${encodeURIComponent(cityName)}`}
+            className="text-sm text-blue-600 hover:underline font-medium"
+          >
+            View all posts →
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {[
+            { label: 'Recommendations', emoji: '⭐', q: 'Recommendations' },
+            { label: 'For Sale',         emoji: '🏷️', q: 'For Sale' },
+            { label: 'Questions',        emoji: '❓', q: 'Question' },
+          ].map(({ label, emoji, q }) => (
+            <Link
+              key={q}
+              href={`/community?city=${encodeURIComponent(cityName)}&category=${encodeURIComponent(q)}`}
+              className="flex items-center gap-2 text-sm font-semibold px-4 py-3 rounded-xl border border-gray-200 bg-white hover:border-blue-300 hover:text-blue-700 hover:shadow-sm transition"
+            >
+              <span className="text-lg">{emoji}</span>
+              <span>{label} in {cityName}</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+
       {/* ── Popular in [City] ── */}
       {popular.length > 0 && (
         <div className="mb-8">

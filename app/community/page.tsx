@@ -4,6 +4,38 @@ import { getSupabaseClient, type CommunityPost } from '@/lib/supabase'
 import Link from 'next/link'
 import CommunityNewPost from '@/app/components/CommunityNewPost'
 
+// ── SEO Metadata ──────────────────────────────────────────────────────────────
+
+interface MetaProps {
+  searchParams: Promise<{ city?: string; category?: string }>
+}
+
+export async function generateMetadata({ searchParams }: MetaProps) {
+  const params = await searchParams
+  const city = params.city && params.city !== 'All Cities' ? params.city : null
+
+  const title = city
+    ? `${city} Community Board — Neighbors & Local Posts | MoHoLocal`
+    : 'Community Board — Local Conversations in the 209 | MoHoLocal'
+
+  const description = city
+    ? `Join the ${city} community on MoHoLocal. Ask questions, share recommendations, post for sale items, and connect with your neighbors.`
+    : 'Local conversations from Mountain House, Tracy, Lathrop, Manteca, and Brentwood. Recommendations, questions, jobs, for sale, and more from your neighbors.'
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `https://www.moholocal.com/community${city ? `?city=${encodeURIComponent(city)}` : ''}`,
+      siteName: 'MoHoLocal',
+    },
+  }
+}
+
+// ── Constants ─────────────────────────────────────────────────────────────────
+
 const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca', 'Brentwood']
 
 const CATEGORIES = [
@@ -35,12 +67,16 @@ interface PageProps {
   searchParams: Promise<{ city?: string; category?: string }>
 }
 
-async function getPosts(city?: string, category?: string) {
+async function getPosts(city?: string, category?: string): Promise<CommunityPost[]> {
   const supabase = getSupabaseClient()
   let req = supabase
     .from('community_posts')
     .select('*')
+    // Exclude flagged/removed posts so only community-safe content is public
+    .neq('status', 'flagged')
+    .neq('status', 'removed')
     .order('created_at', { ascending: false })
+    .limit(50)  // performance guard — paginate if board grows beyond 50 visible posts
 
   if (city && city !== 'All Cities') {
     req = req.eq('city', city)
@@ -145,7 +181,9 @@ export default async function CommunityPage({ searchParams }: PageProps) {
         <div>
           <h1 className="text-3xl font-extrabold text-gray-900">Community Board</h1>
           <p className="text-gray-500 mt-1">
-            Conversations, recommendations & local news
+            {city !== 'All Cities'
+              ? `${posts.length} post${posts.length !== 1 ? 's' : ''} in ${city}`
+              : `${posts.length} post${posts.length !== 1 ? 's' : ''} across the 209`}
           </p>
         </div>
         <CommunityNewPost currentCity={city} />
