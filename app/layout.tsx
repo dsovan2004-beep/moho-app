@@ -54,12 +54,12 @@ const CITY_DOT: Record<string, string> = {
 }
 
 const NAV_LINKS = [
-  { href: '/ask',          label: '✨ Ask MoHo' },
-  { href: '/directory',    label: 'Directory' },
-  { href: '/community',    label: 'Community' },
-  { href: '/events',       label: 'Events' },
-  { href: '/new-resident', label: '🏡 New Residents' },
-  { href: '/lost-and-found', label: 'Lost & Found' },
+  { href: '/ask',           label: '✨ Ask MoHo',    mobileLabel: 'Ask MoHo'    },
+  { href: '/directory',     label: 'Directory',       mobileLabel: 'Directory'   },
+  { href: '/community',     label: 'Community',       mobileLabel: 'Community'   },
+  { href: '/events',        label: 'Events',          mobileLabel: 'Events'      },
+  { href: '/new-resident',  label: '🏡 New Residents', mobileLabel: 'New Here?'  },
+  { href: '/lost-and-found', label: 'Lost & Found',  mobileLabel: 'Lost & Found' },
 ]
 
 const EXPLORE_LINKS = [
@@ -410,21 +410,31 @@ function NavContent() {
         <div className="md:hidden border-t border-white/10 flex items-stretch">
 
           {/* Scrollable section — nav links only, no dropdowns inside overflow container */}
-          <div className="flex gap-3 px-4 py-2 overflow-x-auto items-center flex-1 min-w-0">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-xs whitespace-nowrap font-medium shrink-0"
-                style={
-                  pathname === link.href
-                    ? { color: '#f59e0b' }
-                    : { color: 'rgba(255,255,255,0.75)' }
-                }
-              >
-                {link.label}
-              </Link>
-            ))}
+          {/* Wrapper adds right-fade gradient to hint that more items are scrollable */}
+          <div className="relative flex-1 min-w-0">
+            <div className="flex gap-2 pl-3 pr-8 py-2 overflow-x-auto items-center scrollbar-hide"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-xs whitespace-nowrap font-medium shrink-0"
+                  style={
+                    pathname === link.href
+                      ? { color: '#f59e0b' }
+                      : { color: 'rgba(255,255,255,0.75)' }
+                  }
+                >
+                  {link.mobileLabel ?? link.label}
+                </Link>
+              ))}
+            </div>
+            {/* Right-edge fade — signals more items are scrollable */}
+            <div
+              className="absolute right-0 top-0 bottom-0 w-6 pointer-events-none"
+              style={{ background: 'linear-gradient(to right, transparent, rgba(0,0,0,0.3))' }}
+            />
           </div>
 
           {/* Best Of — outside overflow container so dropdown renders freely */}
