@@ -35,6 +35,38 @@
 
 ---
 
+## DATA EXPANSION — City Coverage
+
+**Purpose:** Increase verified business coverage across the regional corridor.
+
+**Target:** 500–1,000 verified businesses per city.
+
+| City | County | Coverage Goal |
+|------|--------|---------------|
+| Mountain House | San Joaquin | 500–1,000 verified |
+| Tracy | San Joaquin | 500–1,000 verified |
+| Lathrop | San Joaquin | 500–1,000 verified |
+| Manteca | San Joaquin | 500–1,000 verified |
+| Brentwood | Contra Costa | 500–1,000 verified |
+
+**Focus categories (in priority order):**
+
+1. Restaurants
+2. Health Services
+3. Beauty Services
+4. Home Services
+5. Fitness
+6. Automotive
+
+**Operating rules:**
+
+- All new businesses must pass Google Maps verification before being set to `approved + verified`
+- Seed scripts must default to `status='pending'` and `verified=false`
+- Bulk seeding must use the trust policy guard (`validate_trust_policy()`) before any network calls
+- This is an ongoing effort — not gated on sprint completion
+
+---
+
 ## Overview
 
 The MoHoLocal roadmap is organized into 6 sequential phases, progressing from platform stability through full regional expansion. Each phase builds on the previous one. Features are not added unless they pass the [Design Standard](#design-standard).
