@@ -19,8 +19,19 @@ async function getEvent(id: string): Promise<Event | null> {
   return data as Event
 }
 
+// Parse event dates safely — date-only strings (YYYY-MM-DD) must be treated
+// as local midnight, NOT UTC midnight. new Date('2026-03-15') parses as UTC
+// which shifts the day back one in PST (UTC-8), showing March 14 instead of 15.
+function parseEventDate(dateStr: string): Date {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+    const [y, m, d] = dateStr.split('-').map(Number)
+    return new Date(y, m - 1, d) // local midnight — no UTC offset shift
+  }
+  return new Date(dateStr) // datetime strings with T already carry offset info
+}
+
 function formatFullDate(dateStr: string) {
-  const d = new Date(dateStr)
+  const d = parseEventDate(dateStr)
   return {
     weekday: d.toLocaleDateString('en-US', { weekday: 'long' }),
     date:    d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
@@ -115,7 +126,7 @@ export default async function EventDetailPage({ params }: PageProps) {
               {time && <p className="text-sm text-gray-500 mt-0.5">🕐 {time}</p>}
               {event.end_date && (
                 <p className="text-sm text-gray-500 mt-0.5">
-                  Until {new Date(event.end_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
+                  Until {parseEventDate(event.end_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
                 </p>
               )}
             </div>

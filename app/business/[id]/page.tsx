@@ -446,21 +446,6 @@ export default async function BusinessDetailPage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* Hours (if available) */}
-          {hoursList.length > 0 && (
-            <div className="bg-white rounded-2xl border border-gray-200 p-6">
-              <h2 className="text-base font-bold text-gray-900 mb-3">🕐 Hours</h2>
-              <ul className="space-y-1.5">
-                {hoursList.map((line, i) => (
-                  <li key={i} className="text-sm text-gray-700 flex items-start gap-2">
-                    <span className="text-gray-300 mt-0.5">–</span>
-                    <span>{line}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
           {/* Reviews */}
           <ReviewSection
             businessId={biz.id}
@@ -586,7 +571,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
             </div>
           )}
 
-          {/* Hours in sidebar (if not shown in main) */}
+          {/* Hours */}
           {hoursList.length > 0 && (
             <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
               <h2 className="text-sm font-bold text-gray-900 mb-3">🕐 Hours</h2>

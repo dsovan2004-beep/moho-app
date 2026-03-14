@@ -22,8 +22,19 @@ async function getEvents(city?: string) {
   return (data ?? []) as Event[]
 }
 
+// Parse event dates safely — date-only strings (YYYY-MM-DD) must be treated
+// as local midnight, NOT UTC midnight. new Date('2026-03-15') parses as UTC
+// which shifts the day back one in PST (UTC-8), showing March 14 instead of 15.
+function parseEventDate(dateStr: string): Date {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+    const [y, m, d] = dateStr.split('-').map(Number)
+    return new Date(y, m - 1, d) // local midnight — no UTC offset shift
+  }
+  return new Date(dateStr) // datetime strings with T already carry offset info
+}
+
 function formatDate(dateStr: string) {
-  const d = new Date(dateStr)
+  const d = parseEventDate(dateStr)
   return {
     month: d.toLocaleString('en-US', { month: 'short' }).toUpperCase(),
     day: d.getDate(),
@@ -104,10 +115,10 @@ export default async function EventsPage({ searchParams }: PageProps) {
   const city = params.city ?? 'All Cities'
   const events = await getEvents(city)
 
-  // Group by upcoming vs past
+  // Group by upcoming vs past — use parseEventDate to avoid UTC offset bug
   const now = new Date()
-  const upcoming = events.filter((e) => new Date(e.start_date) >= now)
-  const past = events.filter((e) => new Date(e.start_date) < now)
+  const upcoming = events.filter((e) => parseEventDate(e.start_date) >= now)
+  const past     = events.filter((e) => parseEventDate(e.start_date) < now)
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

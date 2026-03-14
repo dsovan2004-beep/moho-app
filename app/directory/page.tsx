@@ -106,7 +106,7 @@ function BusinessCard({ biz, activeCategory }: { biz: Business; activeCategory: 
     >
       <div className="shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-blue-50 flex items-center justify-center">
         {biz.image_url ? (
-          <img src={biz.image_url} alt={biz.name} className="w-full h-full object-cover" />
+          <img src={biz.image_url} alt={biz.name} className="w-full h-full object-cover" loading="lazy" />
         ) : (
           <span className="text-3xl">{getCategoryEmoji(biz.category)}</span>
         )}
@@ -279,42 +279,50 @@ export default function DirectoryPage() {
           </button>
         </form>
 
-        {/* City chips */}
-        <div className="overflow-x-auto">
-          <div className="flex gap-2 pb-1 min-w-max">
-            {CITIES.map((c) => (
-              <Link
-                key={c}
-                href={filterUrl(c, category)}
-                className={`text-xs font-semibold px-3 py-1.5 rounded-full border whitespace-nowrap transition ${
-                  city === c
-                    ? 'bg-blue-700 text-white border-blue-700'
-                    : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300'
-                }`}
-              >
-                {c}
-              </Link>
-            ))}
+        {/* City chips — relative wrapper + right fade signals horizontal scroll */}
+        <div className="relative">
+          <div className="overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            <div className="flex gap-2 pb-1 min-w-max pr-6">
+              {CITIES.map((c) => (
+                <Link
+                  key={c}
+                  href={filterUrl(c, category)}
+                  className={`text-xs font-semibold px-3 py-1.5 rounded-full border whitespace-nowrap transition ${
+                    city === c
+                      ? 'bg-blue-700 text-white border-blue-700'
+                      : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300'
+                  }`}
+                >
+                  {c}
+                </Link>
+              ))}
+            </div>
           </div>
+          <div className="absolute right-0 top-0 bottom-0 w-8 pointer-events-none"
+            style={{ background: 'linear-gradient(to right, transparent, white)' }} />
         </div>
 
-        {/* Category chips */}
-        <div className="overflow-x-auto">
-          <div className="flex gap-2 pb-1 min-w-max">
-            {CATEGORIES.map(({ key, emoji }) => (
-              <Link
-                key={key}
-                href={filterUrl(city, key)}
-                className={`text-xs font-semibold px-3 py-1.5 rounded-full border whitespace-nowrap transition ${
-                  category === key
-                    ? 'bg-blue-700 text-white border-blue-700'
-                    : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300'
-                }`}
-              >
-                {emoji} {key}
-              </Link>
-            ))}
+        {/* Category chips — relative wrapper + right fade signals horizontal scroll */}
+        <div className="relative">
+          <div className="overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            <div className="flex gap-2 pb-1 min-w-max pr-6">
+              {CATEGORIES.map(({ key, emoji }) => (
+                <Link
+                  key={key}
+                  href={filterUrl(city, key)}
+                  className={`text-xs font-semibold px-3 py-1.5 rounded-full border whitespace-nowrap transition ${
+                    category === key
+                      ? 'bg-blue-700 text-white border-blue-700'
+                      : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300'
+                  }`}
+                >
+                  {emoji} {key}
+                </Link>
+              ))}
+            </div>
           </div>
+          <div className="absolute right-0 top-0 bottom-0 w-8 pointer-events-none"
+            style={{ background: 'linear-gradient(to right, transparent, white)' }} />
         </div>
       </div>
 
