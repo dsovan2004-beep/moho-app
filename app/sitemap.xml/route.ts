@@ -67,6 +67,7 @@ export async function GET() {
 
   // ── Core static pages ────────────────────────────────────────────────
   add(`${BASE}/`,                '1.0', 'daily')
+  add(`${BASE}/ask`,             '0.9', 'weekly')
   add(`${BASE}/directory`,       '0.9', 'daily')
   add(`${BASE}/events`,          '0.8', 'weekly')
   add(`${BASE}/community`,       '0.8', 'weekly')

@@ -54,12 +54,12 @@ const CITY_DOT: Record<string, string> = {
 }
 
 const NAV_LINKS = [
+  { href: '/ask',          label: '✨ Ask MoHo' },
   { href: '/directory',    label: 'Directory' },
   { href: '/community',    label: 'Community' },
   { href: '/events',       label: 'Events' },
   { href: '/new-resident', label: '🏡 New Residents' },
   { href: '/lost-and-found', label: 'Lost & Found' },
-  { href: '/activity',     label: 'Activity' },
 ]
 
 const EXPLORE_LINKS = [
@@ -560,11 +560,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Community</h3>
                 <ul className="space-y-2.5">
                   {[
+                    { label: '✨ Ask MoHo',        href: '/ask' },
                     { label: 'Community Board',   href: '/community' },
                     { label: 'Events Calendar',   href: '/events' },
                     { label: 'Lost & Found',      href: '/lost-and-found' },
                     { label: 'New Resident Guide', href: '/new-resident' },
-                    { label: 'Activity Feed',     href: '/activity' },
                   ].map(({ label, href }) => (
                     <li key={label}>
                       <Link href={href} className="text-gray-400 hover:text-white transition-colors">
