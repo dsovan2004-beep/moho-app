@@ -55,18 +55,29 @@ async function fetchActivityFeed(city?: string): Promise<ActivityItem[]> {
     .order('created_at', { ascending: false })
     .limit(20)
 
+  // Recently verified businesses — trust filter required on all public queries
+  const bizQuery = supabase
+    .from('businesses')
+    .select('id, name, description, city, category, created_at, image_url')
+    .eq('status', 'approved')
+    .eq('verified', true)
+    .order('created_at', { ascending: false })
+    .limit(10)
+
   // Apply city filter when a valid city is selected
   const isFiltered = city && CITIES.includes(city)
 
-  const [postsResult, eventsResult, lostResult] = await Promise.all([
+  const [postsResult, eventsResult, lostResult, bizResult] = await Promise.all([
     isFiltered ? postsQuery.eq('city', city) : postsQuery,
     isFiltered ? eventsQuery.eq('city', city) : eventsQuery,
     isFiltered ? lostQuery.eq('city', city) : lostQuery,
+    isFiltered ? bizQuery.eq('city', city) : bizQuery,
   ])
 
   if (postsResult.error) console.error('activity/posts error:', postsResult.error)
   if (eventsResult.error) console.error('activity/events error:', eventsResult.error)
   if (lostResult.error) console.error('activity/lost_and_found error:', lostResult.error)
+  if (bizResult.error) console.error('activity/businesses error:', bizResult.error)
 
   const posts: ActivityItem[] = (postsResult.data ?? []).map((p: any) => ({
     id: p.id,
@@ -96,11 +107,22 @@ async function fetchActivityFeed(city?: string): Promise<ActivityItem[]> {
     created_at: l.created_at,
   }))
 
-  // Merge and sort chronologically descending
-  const merged = [...posts, ...events, ...lostPets]
+  const businesses: ActivityItem[] = (bizResult.data ?? []).map((b: any) => ({
+    id: b.id,
+    type: 'business',
+    title: b.name ?? '',
+    description: b.description ?? '',
+    city: b.city ?? '',
+    category: b.category ?? '',
+    created_at: b.created_at,
+    image_url: b.image_url ?? undefined,
+  }))
+
+  // Merge all streams, sort chronologically descending, cap at 20 items
+  const merged = [...posts, ...events, ...lostPets, ...businesses]
   merged.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
 
-  return merged
+  return merged.slice(0, 20)
 }
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
@@ -171,6 +193,9 @@ export default async function ActivityPage({ searchParams }: PageProps) {
 
       {/* Legend */}
       <div className="flex flex-wrap gap-3 mb-6">
+        <span className="flex items-center gap-1.5 text-xs font-semibold text-green-700 bg-green-50 px-3 py-1.5 rounded-full">
+          🏢 New Businesses
+        </span>
         <span className="flex items-center gap-1.5 text-xs font-semibold text-blue-700 bg-blue-50 px-3 py-1.5 rounded-full">
           💬 Community Posts
         </span>

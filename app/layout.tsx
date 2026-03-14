@@ -54,11 +54,12 @@ const CITY_DOT: Record<string, string> = {
 }
 
 const NAV_LINKS = [
-  { href: '/ask',            label: '✨ Ask MoHo',     mobileLabel: 'Ask MoHo',    showOnMobile: true  },
-  { href: '/directory',      label: 'Directory',        mobileLabel: 'Directory',   showOnMobile: true  },
-  { href: '/community',      label: 'Community',        mobileLabel: 'Community',   showOnMobile: true  },
-  { href: '/events',         label: 'Events',           mobileLabel: 'Events',      showOnMobile: true  },
-  { href: '/new-resident',   label: '🏡 New Residents', mobileLabel: 'New Here?',   showOnMobile: false },
+  { href: '/ask',            label: '✨ Ask MoHo',     mobileLabel: 'Ask MoHo',     showOnMobile: true  },
+  { href: '/directory',      label: 'Directory',        mobileLabel: 'Directory',    showOnMobile: true  },
+  { href: '/community',      label: 'Community',        mobileLabel: 'Community',    showOnMobile: true  },
+  { href: '/events',         label: 'Events',           mobileLabel: 'Events',       showOnMobile: true  },
+  { href: '/activity',       label: 'Activity',         mobileLabel: 'Activity',     showOnMobile: false },
+  { href: '/new-resident',   label: '🏡 New Residents', mobileLabel: 'New Here?',    showOnMobile: false },
   { href: '/lost-and-found', label: 'Lost & Found',     mobileLabel: 'Lost & Found', showOnMobile: false },
 ]
 

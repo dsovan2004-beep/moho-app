@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-export type ActivityItemType = 'community' | 'event' | 'lost_pet'
+export type ActivityItemType = 'community' | 'event' | 'lost_pet' | 'business'
 
 export interface ActivityItem {
   id: string
@@ -10,12 +10,14 @@ export interface ActivityItem {
   city: string
   created_at: string
   image_url?: string
+  category?: string
 }
 
 const TYPE_BADGE: Record<ActivityItemType, { label: string; classes: string }> = {
-  community: { label: 'COMMUNITY', classes: 'bg-blue-100 text-blue-700' },
-  event: { label: 'EVENT', classes: 'bg-amber-100 text-amber-700' },
-  lost_pet: { label: 'LOST PET', classes: 'bg-red-100 text-red-700' },
+  community: { label: 'COMMUNITY',    classes: 'bg-blue-100 text-blue-700'   },
+  event:     { label: 'EVENT',        classes: 'bg-amber-100 text-amber-700' },
+  lost_pet:  { label: 'LOST PET',     classes: 'bg-red-100 text-red-700'     },
+  business:  { label: 'NEW BUSINESS', classes: 'bg-green-100 text-green-700' },
 }
 
 const CITY_BADGE: Record<string, string> = {
@@ -28,23 +30,22 @@ const CITY_BADGE: Record<string, string> = {
 
 const TYPE_ICON: Record<ActivityItemType, string> = {
   community: '💬',
-  event: '📅',
-  lost_pet: '🐾',
+  event:     '📅',
+  lost_pet:  '🐾',
+  business:  '🏢',
 }
 
 function getHref(item: ActivityItem, currentCity?: string): string {
-  // Community posts have real detail pages — deep link directly
   if (item.type === 'community') return `/community/${item.id}`
+  if (item.type === 'event')     return `/events/${item.id}`
+  if (item.type === 'business')  return `/business/${item.id}`
 
-  // Events and lost pets land on their list pages.
-  // Pass city context so the destination page can pre-filter.
+  // Lost pets land on the list page with city context
   const cityParam = currentCity
     ? `?city=${encodeURIComponent(currentCity)}`
     : item.city
     ? `?city=${encodeURIComponent(item.city)}`
     : ''
-
-  if (item.type === 'event') return `/events/${item.id}`
   return `/lost-and-found${cityParam}`
 }
 
@@ -101,6 +102,11 @@ export function ActivityCard({ item, currentCity }: ActivityCardProps) {
           <h3 className="font-bold text-gray-900 text-base mb-1 group-hover:text-blue-700 transition-colors line-clamp-2">
             {item.title}
           </h3>
+
+          {/* Category label for businesses */}
+          {item.type === 'business' && item.category && (
+            <p className="text-xs font-semibold text-green-700 mb-1">{item.category}</p>
+          )}
 
           {/* Description snippet */}
           {item.description && (
