@@ -4,6 +4,7 @@ import { getSupabaseClient, type CommunityPost } from '@/lib/supabase'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import CommunityReplySection from '@/app/components/CommunityReplySection'
+import PostReactions from '@/app/components/PostReactions'
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -121,12 +122,12 @@ export default async function CommunityPostPage({ params }: PageProps) {
         {/* Footer stats */}
         <div className="flex items-center gap-4 pt-3 border-t border-gray-100 text-sm text-gray-400">
           <span className="flex items-center gap-1">
-            💬 <span>{post.reply_count ?? 0} replies</span>
-          </span>
-          <span className="flex items-center gap-1">
-            👍 <span>{post.likes ?? 0}</span>
+            💬 <span>{post.reply_count ?? 0} {(post.reply_count ?? 0) === 1 ? 'reply' : 'replies'}</span>
           </span>
         </div>
+
+        {/* Emoji Reactions */}
+        <PostReactions postId={post.id} />
       </article>
 
       {/* Replies */}

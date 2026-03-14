@@ -151,7 +151,11 @@ export default function CommunityReplySection({ postId, initialReplyCount }: Pro
       {loading ? (
         <p className="text-sm text-gray-400 italic">Loading replies…</p>
       ) : replies.length === 0 ? (
-        <p className="text-sm text-gray-400 italic">No replies yet — be the first to comment!</p>
+        <div className="rounded-2xl border border-dashed border-gray-200 bg-gray-50 px-5 py-6 text-center">
+          <p className="text-2xl mb-2">💬</p>
+          <p className="text-sm font-semibold text-gray-600">Be the first to reply</p>
+          <p className="text-xs text-gray-400 mt-1">Your neighbors are waiting to hear from you.</p>
+        </div>
       ) : (
         <div className="space-y-3">
           {replies.map((reply) => (

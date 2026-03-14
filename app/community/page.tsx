@@ -90,6 +90,23 @@ async function getPosts(city?: string, category?: string): Promise<CommunityPost
   return (data ?? []) as CommunityPost[]
 }
 
+/** Batch-fetch total reaction counts for a list of post IDs.
+ *  Returns a map of postId → total reaction count. */
+async function getReactionCounts(postIds: string[]): Promise<Record<string, number>> {
+  if (postIds.length === 0) return {}
+  const supabase = getSupabaseClient()
+  const { data } = await supabase
+    .from('post_reactions')
+    .select('post_id')
+    .in('post_id', postIds)
+
+  const counts: Record<string, number> = {}
+  for (const row of data ?? []) {
+    counts[row.post_id] = (counts[row.post_id] ?? 0) + 1
+  }
+  return counts
+}
+
 function timeAgo(dateStr: string) {
   const diff = Date.now() - new Date(dateStr).getTime()
   const minutes = Math.floor(diff / 60000)
@@ -100,7 +117,7 @@ function timeAgo(dateStr: string) {
   return `${days}d ago`
 }
 
-function PostCard({ post }: { post: CommunityPost }) {
+function PostCard({ post, reactionCount = 0 }: { post: CommunityPost; reactionCount?: number }) {
   const catColor = CATEGORY_COLORS[post.category] ?? 'bg-gray-100 text-gray-700'
   const cityColor = CITY_COLORS[post.city] ?? 'bg-gray-50 text-gray-600'
 
@@ -145,14 +162,16 @@ function PostCard({ post }: { post: CommunityPost }) {
 
           {/* Footer */}
           <div className="flex items-center gap-4 mt-3 text-xs text-gray-400">
-            {post.reply_count !== undefined && (
-              <span className="flex items-center gap-1">
-                💬 <span>{post.reply_count} replies</span>
+            <span className="flex items-center gap-1">
+              💬 <span>
+                {(post.reply_count ?? 0) === 0
+                  ? 'Be the first to reply'
+                  : `${post.reply_count} ${post.reply_count === 1 ? 'reply' : 'replies'}`}
               </span>
-            )}
-            {post.likes !== undefined && (
+            </span>
+            {reactionCount > 0 && (
               <span className="flex items-center gap-1">
-                👍 <span>{post.likes}</span>
+                ✨ <span>{reactionCount} {reactionCount === 1 ? 'reaction' : 'reactions'}</span>
               </span>
             )}
           </div>
@@ -169,8 +188,10 @@ export default async function CommunityPage({ searchParams }: PageProps) {
   const category = params.category ?? 'All'
 
   let posts: CommunityPost[] = []
+  let reactionCounts: Record<string, number> = {}
   try {
     posts = await getPosts(city, category)
+    reactionCounts = await getReactionCounts(posts.map((p) => p.id))
   } catch (err) {
     console.error('CommunityPage fetch failed:', err)
   }
@@ -233,7 +254,7 @@ export default async function CommunityPage({ searchParams }: PageProps) {
       ) : (
         <div className="space-y-3">
           {posts.map((post) => (
-            <PostCard key={post.id} post={post} />
+            <PostCard key={post.id} post={post} reactionCount={reactionCounts[post.id] ?? 0} />
           ))}
         </div>
       )}
