@@ -206,29 +206,6 @@ const TracyPressAdapter: SourceAdapter<RawEvent> = {
   },
 }
 
-// ── Adapter 4: 209 Times RSS (DEFAULT) ───────────────────────────────────────
-
-const TIMES209_URLS = [
-  'https://209times.com/feed/',
-  'https://www.209times.com/feed/',
-  'https://209times.com/rss.xml',
-]
-
-const Times209Adapter: SourceAdapter<RawEvent> = {
-  name:     '209times-rss',
-  type:     'rss',
-  required: false,
-  isAvailable: () => true,
-
-  async fetch() {
-    const found = await fetchFirstWorkingRss(TIMES209_URLS)
-    if (!found) return []
-    // 209times covers the entire 209 area — use Tracy as fallback for articles
-    // that don't explicitly name a supported city in the headline.
-    return newsRssToEvents(parseRssItems(found.xml), 'Tracy', '209times-rss')
-  },
-}
-
 // ── Adapter 5: Patch.com RSS (DEFAULT) ───────────────────────────────────────
 
 // Patch.com dropped /rss.xml — try multiple URL formats per city.
@@ -564,7 +541,6 @@ export async function runEventsIngestion(env: Env): Promise<RunLog[]> {
       CityCalendarAdapter,
       SJCountyAdapter,
       TracyPressAdapter,
-      Times209Adapter,
       PatchAdapter,
       SJCountyLibraryAdapter,
       FarmersMarketsAdapter,
