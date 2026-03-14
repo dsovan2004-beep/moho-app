@@ -9,15 +9,29 @@
 
 **Focus:** Directory UX and regional discovery improvements
 
-1. **Pending Queue Audit** — Cities: Tracy, Lathrop, Manteca, Brentwood
+1. **Activity Feed Page** — Build `/activity` page showing:
+   - Recent businesses
+   - New events
+   - Community updates
+   - Layout: mobile-friendly, card-based design
+
 2. **Business Detail Page UX Improvements**
-   - Improve mobile layout
-   - Add map embed
-   - Add share button
-3. **Activity Feed Page**
-   - Show recent businesses
-   - Show new events
-   - Show community updates
+   - Add Share button
+   - Add Google Map embed
+   - Keep Get Directions button (already implemented)
+   - Maintain existing gallery functionality
+
+3. **Pending Queue Audit** — Cities: Tracy, Lathrop, Manteca, Brentwood
+   - Goal: move real businesses from `pending` → `approved + verified`
+
+4. **Directory Pagination Safety**
+   - Ensure directory queries use pagination or limits (e.g. `LIMIT 50`)
+   - Pages must not attempt to load all listings at once
+
+5. **Regional Discovery Entry**
+   - Add "Explore Near You" or "Discover the Region" entry point
+   - Surface popular businesses, trending places, and upcoming events across:
+     Mountain House, Tracy, Lathrop, Manteca, and Brentwood
 
 ---
 
