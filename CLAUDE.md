@@ -20,6 +20,23 @@ If updates are required, propose the change first.
 
 ---
 
+# EXECUTION RULE
+
+Document authority hierarchy:
+
+- **BIBLE.md** → system architecture and core rules
+- **PLAYBOOK.md** → operational procedures and workflows
+- **CLAUDE.md** → AI coworker instructions and guardrails
+- **docs/ROADMAP.md** → product roadmap and feature priorities
+
+Feature prioritization must follow `docs/ROADMAP.md`.
+
+If instructions conflict between documents, `docs/ROADMAP.md` is the source of truth for what gets built next.
+
+Do not invent new tasks unless `docs/ROADMAP.md` is updated first.
+
+---
+
 # 1. WHAT IS MOHOLOCAL
 
 MoHoLocal is an **AI-powered hyperlocal signal platform** that organizes real community information across multiple neighboring cities in San Joaquin County and East Bay, CA.
@@ -1079,6 +1096,36 @@ Before requesting any key:
 Keys should only be requested if verification proves they are missing.
 
 Authentication architecture must never be changed based on assumptions.
+
+---
+
+# 28. AI PRODUCT DIRECTION
+
+MoHoLocal should evolve beyond a simple directory into an **AI-powered local discovery and community intelligence platform** for the regional corridor:
+
+- Mountain House
+- Tracy
+- Lathrop
+- Manteca
+- Brentwood
+
+AI capabilities should help residents:
+
+- Discover the best local businesses
+- Summarize what is happening in the region
+- Answer local questions
+- Recommend restaurants, services, and activities
+
+Future AI features to layer on top of the trusted local data already being built:
+
+| Feature | Description |
+|---------|-------------|
+| AI local Q&A | Answer questions like "best mechanic in Tracy?" using verified directory data |
+| AI weekend planner | Suggest activities, restaurants, and events based on city and preferences |
+| AI business recommendations | Personalized local recommendations based on context |
+| AI event + community summaries | Weekly digest — what's happening, what's new, what neighbors are talking about |
+
+**Implementation rule:** AI features must always be backed by verified, human-moderated local data. No AI feature may surface unverified businesses, fake events, or unmoderated content.
 
 ---
 

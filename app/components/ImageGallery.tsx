@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 interface GalleryImage {
   id: string
@@ -21,6 +21,26 @@ interface ImageGalleryProps {
 export default function ImageGallery({ images, businessName, accentColor }: ImageGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0)
 
+  const prev = useCallback(() =>
+    setActiveIndex((i) => (i === 0 ? images.length - 1 : i - 1)),
+    [images.length]
+  )
+  const next = useCallback(() =>
+    setActiveIndex((i) => (i === images.length - 1 ? 0 : i + 1)),
+    [images.length]
+  )
+
+  // Keyboard left/right navigation
+  useEffect(() => {
+    if (images.length <= 1) return
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') prev()
+      if (e.key === 'ArrowRight') next()
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [images.length, prev, next])
+
   if (images.length === 0) return null
 
   const activeImage = images[activeIndex]
@@ -28,7 +48,7 @@ export default function ImageGallery({ images, businessName, accentColor }: Imag
   return (
     <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
       {/* Main image */}
-      <div className="relative w-full aspect-[16/9] bg-gray-100 overflow-hidden">
+      <div className="relative w-full aspect-[16/9] bg-gray-100 overflow-hidden group">
         <img
           src={activeImage.image_url}
           alt={activeImage.alt_text || `${businessName} — photo ${activeIndex + 1}`}
@@ -41,19 +61,19 @@ export default function ImageGallery({ images, businessName, accentColor }: Imag
             {activeIndex + 1} / {images.length}
           </span>
         )}
-        {/* Navigation arrows for mobile */}
+        {/* Navigation arrows — always visible on mobile, fade in on hover for desktop */}
         {images.length > 1 && (
           <>
             <button
-              onClick={() => setActiveIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))}
-              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center transition sm:hidden"
+              onClick={prev}
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/40 hover:bg-black/65 text-white text-lg flex items-center justify-center transition opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
               aria-label="Previous image"
             >
               ‹
             </button>
             <button
-              onClick={() => setActiveIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))}
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center transition sm:hidden"
+              onClick={next}
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/40 hover:bg-black/65 text-white text-lg flex items-center justify-center transition opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
               aria-label="Next image"
             >
               ›

@@ -226,7 +226,7 @@ function StarRating({ rating, reviewCount }: { rating?: number; reviewCount?: nu
       </span>
       <span className="font-bold text-white">{rating.toFixed(1)}</span>
       {reviewCount !== undefined && reviewCount > 0 && (
-        <span className="text-white/70 text-sm">({reviewCount} reviews)</span>
+        <span className="text-white/70 text-sm">({reviewCount} {reviewCount === 1 ? 'review' : 'reviews'})</span>
       )}
     </div>
   )
@@ -361,7 +361,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
               {biz.rating && (
                 <span className="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full">
                   ⭐ {biz.rating.toFixed(1)}
-                  {biz.review_count ? ` · ${biz.review_count} reviews` : ''}
+                  {biz.review_count ? ` · ${biz.review_count} ${biz.review_count === 1 ? 'review' : 'reviews'}` : ''}
                 </span>
               )}
             </div>
@@ -387,6 +387,16 @@ export default async function BusinessDetailPage({ params }: PageProps) {
                 className="bg-white/15 border border-white/30 text-white font-semibold text-sm px-5 py-2.5 rounded-xl text-center hover:bg-white/25 transition"
               >
                 🌐 Visit Website
+              </a>
+            )}
+            {biz.address && (
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(biz.address + ', ' + biz.city + ', CA')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white/15 border border-white/30 text-white font-semibold text-sm px-5 py-2.5 rounded-xl text-center hover:bg-white/25 transition"
+              >
+                📍 Get Directions
               </a>
             )}
             {!hasContact && (

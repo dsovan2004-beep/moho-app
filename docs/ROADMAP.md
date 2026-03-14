@@ -5,6 +5,22 @@
 
 ---
 
+## CURRENT SPRINT — March 2026
+
+**Focus:** Directory UX and regional discovery improvements
+
+1. **Pending Queue Audit** — Cities: Tracy, Lathrop, Manteca, Brentwood
+2. **Business Detail Page UX Improvements**
+   - Improve mobile layout
+   - Add map embed
+   - Add share button
+3. **Activity Feed Page**
+   - Show recent businesses
+   - Show new events
+   - Show community updates
+
+---
+
 ## Overview
 
 The MoHoLocal roadmap is organized into 6 sequential phases, progressing from platform stability through full regional expansion. Each phase builds on the previous one. Features are not added unless they pass the [Design Standard](#design-standard).
