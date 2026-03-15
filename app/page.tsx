@@ -485,14 +485,25 @@ export default async function HomePage({ searchParams }: PageProps) {
       </div>
 
       {/* ── Browse by Category ── */}
-      <h2 className="text-lg font-bold text-gray-900 mb-4">Browse by Category</h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-bold text-gray-900">Browse by Category</h2>
+        <Link href="/discover" className="text-sm text-blue-600 hover:underline font-medium">
+          Explore all cities →
+        </Link>
+      </div>
       <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-3 mb-12">
         {CATEGORIES.map(({ icon, name, cat }) => {
           const count = catCountMap[cat] ?? 0
+          // Use active city slug for direct city+category routing
+          const catSlug = cat
+            .toLowerCase()
+            .replace(' & ', '-')
+            .replace(/ /g, '-')
+            .replace(/[^a-z0-9-]/g, '')
           return (
             <Link
               key={name}
-              href={`/directory?category=${encodeURIComponent(cat)}`}
+              href={`/${cfg.slug}/${catSlug}`}
               className="bg-white rounded-xl border border-gray-200 p-4 text-center hover:-translate-y-0.5 hover:shadow-lg hover:border-blue-400 transition-all block"
             >
               <div className="text-2xl mb-2">{icon}</div>

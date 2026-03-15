@@ -55,6 +55,7 @@ const CITY_DOT: Record<string, string> = {
 
 const NAV_LINKS = [
   { href: '/ask',            label: '✨ Ask MoHo',     mobileLabel: 'Ask MoHo',     showOnMobile: true  },
+  { href: '/discover',       label: '🗺️ Discover',     mobileLabel: 'Discover',     showOnMobile: true  },
   { href: '/directory',      label: 'Directory',        mobileLabel: 'Directory',    showOnMobile: true  },
   { href: '/community',      label: 'Community',        mobileLabel: 'Community',    showOnMobile: true  },
   { href: '/events',         label: 'Events',           mobileLabel: 'Events',       showOnMobile: true  },
@@ -572,6 +573,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <ul className="space-y-2.5">
                   {[
                     { label: '✨ Ask MoHo',        href: '/ask' },
+                    { label: '🗺️ Discover',        href: '/discover' },
                     { label: 'Community Board',   href: '/community' },
                     { label: 'Events Calendar',   href: '/events' },
                     { label: 'Lost & Found',      href: '/lost-and-found' },

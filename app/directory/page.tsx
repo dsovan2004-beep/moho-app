@@ -1,7 +1,7 @@
 'use client'
 export const runtime = 'edge'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { getSupabaseClient, type Business } from '@/lib/supabase'
 import Link from 'next/link'
@@ -100,40 +100,84 @@ function BusinessCard({ biz, activeCategory }: { biz: Business; activeCategory: 
     : 'bg-gray-100 text-gray-700'
 
   return (
-    <Link
-      href={`/business/${biz.id}`}
-      className="group flex gap-4 bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md hover:-translate-y-0.5 transition-all"
-    >
-      <div className="shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-blue-50 flex items-center justify-center">
+    <div className="group flex gap-4 bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md hover:-translate-y-0.5 transition-all">
+      {/* Thumbnail — links to detail page */}
+      <Link href={`/business/${biz.id}`} className="shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-blue-50 flex items-center justify-center">
         {biz.image_url ? (
           <img src={biz.image_url} alt={biz.name} className="w-full h-full object-cover" loading="lazy" />
         ) : (
           <span className="text-3xl">{getCategoryEmoji(biz.category)}</span>
         )}
-      </div>
+      </Link>
+
       <div className="flex-1 min-w-0">
+        {/* Name + category chip */}
         <div className="flex items-start justify-between gap-2">
-          <h3 className="font-bold text-gray-900 group-hover:text-blue-700 transition truncate">
-            {biz.name}
-          </h3>
-          {/* Category chip — highlighted when matching active filter */}
-          <span className={`text-xs font-medium px-2 py-0.5 rounded-full shrink-0 ${catChip}`}>
-            {biz.category}
-          </span>
+          <Link href={`/business/${biz.id}`}>
+            <h3 className="font-bold text-gray-900 group-hover:text-blue-700 transition leading-snug">
+              {biz.name}
+            </h3>
+          </Link>
+          <div className="flex items-center gap-1.5 shrink-0">
+            {/* Unclaimed badge — drives owner acquisition */}
+            {!biz.claimed && (
+              <Link
+                href={`/claim-listing/${biz.id}`}
+                onClick={(e) => e.stopPropagation()}
+                className="text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-300 bg-amber-50 text-amber-700 hover:bg-amber-100 transition whitespace-nowrap"
+              >
+                📌 Claim
+              </Link>
+            )}
+            <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${catChip}`}>
+              {biz.category}
+            </span>
+          </div>
         </div>
+
         <StarRating rating={biz.rating} />
-        <p className="text-sm text-gray-500 mt-1 line-clamp-2">{biz.description}</p>
-        <div className="flex items-center gap-2 mt-2 flex-wrap">
-          {/* City badge — city-branded colour */}
+
+        {biz.description && (
+          <p className="text-sm text-gray-500 mt-1 line-clamp-2">{biz.description}</p>
+        )}
+
+        {/* Contact row — phone + website clickable directly from list */}
+        <div className="flex items-center gap-3 mt-2 flex-wrap">
           <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${CITY_CHIP[biz.city] ?? 'bg-gray-100 text-gray-600'}`}>
             📍 {biz.city}
           </span>
           {biz.address && (
-            <span className="text-xs text-gray-400 truncate max-w-[180px]">{biz.address}</span>
+            <span className="text-xs text-gray-400 truncate max-w-[160px]">{biz.address}</span>
           )}
         </div>
+
+        {/* Phone + website on separate row — visible without clicking through */}
+        {(biz.phone || biz.website) && (
+          <div className="flex items-center gap-3 mt-1.5 flex-wrap">
+            {biz.phone && (
+              <a
+                href={`tel:${biz.phone}`}
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-800 hover:underline transition"
+              >
+                📞 {biz.phone}
+              </a>
+            )}
+            {biz.website && (
+              <a
+                href={biz.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-800 hover:underline transition truncate max-w-[180px]"
+              >
+                🌐 {biz.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+              </a>
+            )}
+          </div>
+        )}
       </div>
-    </Link>
+    </div>
   )
 }
 
@@ -153,8 +197,9 @@ export default function DirectoryPage() {
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
   const [searchInput, setSearchInput] = useState(query)
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Refetch whenever any filter/sort/query changes
+  // Refetch whenever any filter/sort/query changes (URL-driven)
   useEffect(() => {
     setOffset(0)
     setBusinesses([])
@@ -162,6 +207,23 @@ export default function DirectoryPage() {
     setSearchInput(query)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [city, category, query, sortBy])
+
+  // Instant debounced search — push to URL 300ms after user stops typing
+  function handleSearchInput(value: string) {
+    setSearchInput(value)
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => {
+      const params = new URLSearchParams()
+      params.set('city', city)
+      params.set('category', category)
+      if (value.trim()) {
+        params.set('q', value.trim())
+      } else {
+        params.set('sort', sortBy)
+      }
+      router.push(`/directory?${params.toString()}`)
+    }, 300)
+  }
 
   async function fetchPage(from: number, reset = false) {
     const supabase = getSupabaseClient()
@@ -264,7 +326,7 @@ export default function DirectoryPage() {
           <input
             type="text"
             value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
+            onChange={(e) => handleSearchInput(e.target.value)}
             placeholder="Search by name, category, or city…"
             className="w-full border border-gray-200 rounded-xl pl-4 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
@@ -340,7 +402,7 @@ export default function DirectoryPage() {
               <input
                 type="text"
                 value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
+                onChange={(e) => handleSearchInput(e.target.value)}
                 placeholder="Search by name, category, or city…"
                 className="w-full border border-gray-200 rounded-lg pl-3 pr-9 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
