@@ -111,9 +111,9 @@ function BusinessCard({ biz, activeCategory }: { biz: Business; activeCategory: 
       </Link>
 
       <div className="flex-1 min-w-0">
-        {/* Name + category chip */}
+        {/* Name + badges — claim badge stays visible; category chip hidden on mobile (redundant when filtered) */}
         <div className="flex items-start justify-between gap-2">
-          <Link href={`/business/${biz.id}`}>
+          <Link href={`/business/${biz.id}`} className="min-w-0 flex-1">
             <h3 className="font-bold text-gray-900 group-hover:text-blue-700 transition leading-snug">
               {biz.name}
             </h3>
@@ -129,7 +129,8 @@ function BusinessCard({ biz, activeCategory }: { biz: Business; activeCategory: 
                 📌 Claim
               </Link>
             )}
-            <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${catChip}`}>
+            {/* Category chip — hidden on xs to prevent squeezing the name; visible sm+ */}
+            <span className={`hidden sm:inline text-xs font-medium px-2 py-0.5 rounded-full ${catChip}`}>
               {biz.category}
             </span>
           </div>
@@ -169,7 +170,7 @@ function BusinessCard({ biz, activeCategory }: { biz: Business; activeCategory: 
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-800 hover:underline transition truncate max-w-[180px]"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-800 hover:underline transition truncate max-w-[120px] sm:max-w-[180px]"
               >
                 🌐 {biz.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}
               </a>
@@ -520,8 +521,8 @@ export default function DirectoryPage() {
             </div>
           )}
 
-          {/* Header row */}
-          <div className="flex items-center justify-between mb-4">
+          {/* Header row — stacks on mobile, side-by-side on sm+ */}
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mb-4">
             <p className="text-sm text-gray-500">
               {loading ? (
                 <span className="text-gray-400">Loading…</span>
@@ -541,7 +542,7 @@ export default function DirectoryPage() {
                 </>
               )}
             </p>
-            <div className="flex gap-2">
+            <div className="flex gap-2 shrink-0">
               <Link
                 href="/suggest-business"
                 className="flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-xl border border-gray-200 text-gray-600 hover:border-gray-300 hover:text-gray-800 transition-all"
@@ -550,10 +551,10 @@ export default function DirectoryPage() {
               </Link>
               <Link
                 href="/submit-business"
-                className="flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-xl transition-all"
+                className="flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-xl transition-all whitespace-nowrap"
                 style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}
               >
-                + Submit a Business
+                + <span className="hidden sm:inline">Submit a Business</span><span className="sm:hidden">Add Listing</span>
               </Link>
             </div>
           </div>

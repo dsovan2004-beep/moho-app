@@ -412,9 +412,9 @@ export default async function HomePage({ searchParams }: PageProps) {
       </div>
 
       {/* ── Browse by City ── */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4 gap-2">
         <h2 className="text-lg font-bold text-gray-900">Browse by City</h2>
-        <Link href="/directory" className="text-sm text-blue-600 hover:underline font-medium">
+        <Link href="/directory" className="text-sm text-blue-600 hover:underline font-medium whitespace-nowrap shrink-0">
           All Cities →
         </Link>
       </div>
@@ -485,13 +485,13 @@ export default async function HomePage({ searchParams }: PageProps) {
       </div>
 
       {/* ── Browse by Category ── */}
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-bold text-gray-900">Browse by Category</h2>
-        <Link href="/discover" className="text-sm text-blue-600 hover:underline font-medium">
-          Explore all cities →
+      <div className="flex items-center justify-between mb-4 gap-2">
+        <h2 className="text-lg font-bold text-gray-900 leading-tight">Browse by Category</h2>
+        <Link href="/discover" className="text-sm text-blue-600 hover:underline font-medium whitespace-nowrap shrink-0">
+          Explore all →
         </Link>
       </div>
-      <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-3 mb-12">
+      <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-2 sm:gap-3 mb-12">
         {CATEGORIES.map(({ icon, name, cat }) => {
           const count = catCountMap[cat] ?? 0
           // Use active city slug for direct city+category routing
@@ -504,12 +504,12 @@ export default async function HomePage({ searchParams }: PageProps) {
             <Link
               key={name}
               href={`/${cfg.slug}/${catSlug}`}
-              className="bg-white rounded-xl border border-gray-200 p-4 text-center hover:-translate-y-0.5 hover:shadow-lg hover:border-blue-400 transition-all block"
+              className="bg-white rounded-xl border border-gray-200 p-3 sm:p-4 text-center hover:-translate-y-0.5 hover:shadow-lg hover:border-blue-400 transition-all block"
             >
-              <div className="text-2xl mb-2">{icon}</div>
-              <div className="text-xs font-semibold text-gray-800 leading-tight">{name}</div>
+              <div className="text-2xl mb-1.5">{icon}</div>
+              <div className="text-[10px] sm:text-xs font-semibold text-gray-800 leading-tight line-clamp-2">{name}</div>
               {count > 0 && (
-                <div className="text-[10px] font-semibold text-gray-400 mt-1 bg-gray-50 rounded-full px-1.5 py-0.5 inline-block">
+                <div className="text-[9px] sm:text-[10px] font-semibold text-gray-400 mt-1 bg-gray-50 rounded-full px-1.5 py-0.5 inline-block">
                   {count}
                 </div>
               )}
@@ -521,16 +521,16 @@ export default async function HomePage({ searchParams }: PageProps) {
       {/* ── Featured Businesses ── */}
       {featuredBiz.length > 0 && (
         <div className="mb-12">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <span className="text-lg">⭐</span>
-              <h2 className="text-lg font-bold text-gray-900">Featured Businesses</h2>
+          <div className="flex items-center justify-between mb-4 gap-2">
+            <div className="flex items-center gap-2 min-w-0 flex-wrap">
+              <span className="text-lg shrink-0">⭐</span>
+              <h2 className="text-lg font-bold text-gray-900 leading-tight">Featured Businesses</h2>
               {/* Sponsored label — intentional paid placement indicator */}
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-300 bg-amber-50 text-amber-700 tracking-wide uppercase">
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-300 bg-amber-50 text-amber-700 tracking-wide uppercase shrink-0">
                 Sponsored
               </span>
             </div>
-            <Link href="/directory" className="text-sm text-blue-600 hover:underline font-medium">
+            <Link href="/directory" className="text-sm text-blue-600 hover:underline font-medium whitespace-nowrap shrink-0">
               View all →
             </Link>
           </div>
@@ -571,15 +571,13 @@ export default async function HomePage({ searchParams }: PageProps) {
       {/* ── Trending in {City} ── */}
       {trendingFinal.length > 0 && (
         <div className="mb-12">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <h2 className="text-lg font-bold text-gray-900">
-                🔥 Trending in {activeCity}
-              </h2>
-            </div>
+          <div className="flex items-center justify-between mb-4 gap-2">
+            <h2 className="text-lg font-bold text-gray-900 leading-tight">
+              🔥 Trending in {activeCity}
+            </h2>
             <Link
               href={`/directory?city=${encodeURIComponent(activeCity)}`}
-              className="text-sm text-blue-600 hover:underline font-medium"
+              className="text-sm text-blue-600 hover:underline font-medium whitespace-nowrap shrink-0"
             >
               View all →
             </Link>
@@ -601,13 +599,13 @@ export default async function HomePage({ searchParams }: PageProps) {
       {/* ── Popular in {City} ── */}
       {popularBiz.length > 0 && (
         <div className="mb-12">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold text-gray-900">
+          <div className="flex items-center justify-between mb-4 gap-2">
+            <h2 className="text-lg font-bold text-gray-900 leading-tight">
               Popular in {activeCity}
             </h2>
             <Link
               href={`/directory?city=${encodeURIComponent(activeCity)}`}
-              className="text-sm text-blue-600 hover:underline font-medium"
+              className="text-sm text-blue-600 hover:underline font-medium whitespace-nowrap shrink-0"
             >
               View all →
             </Link>
@@ -628,9 +626,9 @@ export default async function HomePage({ searchParams }: PageProps) {
       {/* ── Upcoming Events ── */}
       {upcomingEvents.length > 0 && (
         <div className="mb-12">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-4 gap-2">
             <h2 className="text-lg font-bold text-gray-900">Upcoming Events</h2>
-            <Link href="/events" className="text-sm text-blue-600 hover:underline font-medium">
+            <Link href="/events" className="text-sm text-blue-600 hover:underline font-medium whitespace-nowrap shrink-0">
               Full calendar →
             </Link>
           </div>

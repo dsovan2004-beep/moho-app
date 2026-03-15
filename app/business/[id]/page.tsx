@@ -320,57 +320,65 @@ export default async function BusinessDetailPage({ params }: PageProps) {
         className="rounded-2xl p-6 sm:p-8 mb-8"
         style={{ background: city.gradient }}
       >
-        <div className="flex items-start gap-5 flex-wrap">
-          {/* Logo / icon */}
-          <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center text-4xl shrink-0 shadow-lg">
-            {catEmoji}
-          </div>
+        {/* Hero layout:
+            mobile  → icon+info in a row, then action buttons full-width below
+            sm+     → icon | info (flex-1) | action buttons (shrink-0) in a row   */}
+        <div className="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-5">
 
-          {/* Core info */}
-          <div className="flex-1 min-w-0">
-            {/* Badges */}
-            <div className="flex flex-wrap gap-2 mb-2">
-              {biz.verified && (
-                <span className="inline-flex items-center gap-1 bg-green-400/20 border border-green-300/40 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                  ✓ Verified
-                </span>
-              )}
-              {biz.claimed && (
-                <span className="inline-flex items-center gap-1 bg-white/20 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                  🏷️ Claimed
-                </span>
-              )}
+          {/* Icon + core info — always paired together */}
+          <div className="flex items-start gap-4 flex-1 min-w-0">
+
+            {/* Logo / icon */}
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl flex items-center justify-center text-3xl sm:text-4xl shrink-0 shadow-lg">
+              {catEmoji}
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-1 leading-tight">
-              {biz.name}
-            </h1>
+            {/* Core info */}
+            <div className="flex-1 min-w-0">
+              {/* Badges */}
+              <div className="flex flex-wrap gap-2 mb-2">
+                {biz.verified && (
+                  <span className="inline-flex items-center gap-1 bg-green-400/20 border border-green-300/40 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                    ✓ Verified
+                  </span>
+                )}
+                {biz.claimed && (
+                  <span className="inline-flex items-center gap-1 bg-white/20 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                    🏷️ Claimed
+                  </span>
+                )}
+              </div>
 
-            {biz.description && (
-              <p className="text-white/80 text-sm line-clamp-2 mb-3 leading-relaxed">
-                {biz.description}
-              </p>
-            )}
+              <h1 className="text-xl sm:text-3xl font-extrabold text-white mb-1 leading-tight break-words">
+                {biz.name}
+              </h1>
 
-            <div className="flex flex-wrap gap-2 mb-3">
-              <span className="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                {catEmoji} {biz.category}
-              </span>
-              <span className="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                📍 {biz.city}, CA
-              </span>
-              {biz.rating && (
+              {biz.description && (
+                <p className="text-white/80 text-sm line-clamp-2 mb-3 leading-relaxed">
+                  {biz.description}
+                </p>
+              )}
+
+              <div className="flex flex-wrap gap-2 mb-3">
                 <span className="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                  ⭐ {biz.rating.toFixed(1)}
-                  {biz.review_count ? ` · ${biz.review_count} ${biz.review_count === 1 ? 'review' : 'reviews'}` : ''}
+                  {catEmoji} {biz.category}
                 </span>
-              )}
+                <span className="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                  📍 {biz.city}, CA
+                </span>
+                {biz.rating && (
+                  <span className="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                    ⭐ {biz.rating.toFixed(1)}
+                    {biz.review_count ? ` · ${biz.review_count} ${biz.review_count === 1 ? 'review' : 'reviews'}` : ''}
+                  </span>
+                )}
+              </div>
+
+              <StarRating rating={biz.rating} reviewCount={biz.review_count} />
             </div>
+          </div>{/* end icon+info */}
 
-            <StarRating rating={biz.rating} reviewCount={biz.review_count} />
-          </div>
-
-          {/* Action buttons */}
+          {/* Action buttons — full width on mobile, auto-width on sm+ */}
           <div className="flex flex-col gap-2 shrink-0 w-full sm:w-auto">
             {biz.phone && (
               <a
