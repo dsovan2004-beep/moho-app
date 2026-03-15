@@ -159,9 +159,33 @@ export default async function DiscoverPage() {
           <h1 className="text-3xl sm:text-4xl font-extrabold mb-2">
             Explore Local Businesses
           </h1>
-          <p className="text-white/75 text-sm max-w-xl leading-relaxed">
-            Pick a city below, then choose a category — or go straight to any combination.
-            Everything here is verified and hyperlocal to your community.
+          <p className="text-white/75 text-sm max-w-xl leading-relaxed mb-5">
+            Find restaurants, services, and shops across Mountain House, Tracy, Lathrop, Manteca &amp; Brentwood.
+          </p>
+
+          {/* Search bar — routes to /directory?q= which already handles the param */}
+          <form
+            action="/directory"
+            method="GET"
+            className="flex gap-2 max-w-xl mb-4"
+          >
+            <input
+              type="text"
+              name="q"
+              placeholder="Search restaurants, tacos, dentist, plumber…"
+              autoComplete="off"
+              className="flex-1 min-w-0 px-4 py-3 rounded-xl text-gray-900 text-sm outline-none border-0 focus:ring-2 focus:ring-amber-300 placeholder:text-gray-400"
+            />
+            <button
+              type="submit"
+              className="shrink-0 bg-amber-400 hover:bg-amber-300 active:bg-amber-500 text-[#1e3a5f] font-bold px-5 py-3 rounded-xl text-sm whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-amber-300 focus:ring-offset-2"
+            >
+              Search
+            </button>
+          </form>
+
+          <p className="text-white/55 text-sm leading-relaxed">
+            Start by searching, or choose a city and category below to browse local businesses.
           </p>
         </div>
 
