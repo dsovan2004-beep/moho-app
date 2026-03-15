@@ -21,6 +21,108 @@
 
 6. ~~**Directory Search Improvements**~~ ✅ — Click-to-call, website on cards, claim badge, instant debounced search (commit c1fd5c0)
 
+7. ~~**Mobile Responsiveness**~~ ✅ — Directory, homepage, and business detail pages fixed (commit afcb3dc)
+
+8. ~~**Discovery Page UX**~~ ✅ — Search bar + guidance text added to `/discover` hero (commit 2d56db2)
+
+---
+
+## NEXT SPRINT — Listing Density + FIFA Discovery
+
+**Focus:** Fill the directory, capture event-anchored traffic, and convert business owners.
+
+**Window:** March–May 2026 (FIFA pages must be live before June 2026)
+
+---
+
+### Task 1 — Email Notifications
+
+Scope: transactional emails only. No newsletter infrastructure.
+
+| Trigger | Recipient | Purpose |
+|---------|-----------|---------|
+| Claim listing submitted | Founder | Alert for manual review and follow-up |
+| New business submitted | Submitter | Confirmation + expectation setting |
+| Review posted | Business owner (if claimed + email on file) | Trust signal, drives owner engagement |
+
+Implementation notes:
+- Use Supabase Edge Functions or a lightweight email provider (Resend recommended — works in Edge Runtime)
+- No new database tables required — use existing `businesses.contact_email` and `claimed` fields
+- All email content must follow MoHo Local brand voice (warm, hyperlocal, not corporate)
+
+---
+
+### Task 2 — Listing Density Push
+
+**Target:** 2,000+ approved + verified listings across all five cities.
+
+**Current estimate:** ~202 records seeded. Gap: ~1,800 listings.
+
+| City | Priority Categories |
+|------|-------------------|
+| Mountain House | Restaurants, Home Services, Health & Wellness |
+| Tracy | Restaurants, Automotive, Beauty & Spa |
+| Lathrop | Home Services, Restaurants, Pet Services |
+| Manteca | Restaurants, Health & Wellness, Automotive |
+| Brentwood | Restaurants, Beauty & Spa, Pet Services |
+
+**Priority categories (in order):**
+
+1. Restaurants
+2. Home Services
+3. Health & Wellness
+4. Beauty & Spa
+5. Automotive
+6. Pet Services
+
+**Operating rules:**
+- All new records must default to `status='pending'`, `verified=false`
+- Only promote to `approved + verified` after Google Maps cross-check
+- Use existing seed scripts as templates — no new architecture
+- Seed data must be real businesses, real addresses, real phone numbers
+- Track progress per city in `docs/DEFERRED_MANUAL_TASKS.md`
+
+---
+
+### Task 3 — FIFA Discovery Pages
+
+**Deadline:** Live before June 2026 (FIFA World Cup at Levi's Stadium, Santa Clara)
+
+**Context:** The 209 corridor is 45–60 min from Levi's Stadium. National directories have not yet targeted these queries. Window to rank is now.
+
+**Pages to build:**
+
+| Route | Target Query | Source Listings |
+|-------|-------------|----------------|
+| `/restaurants-near-levis-stadium` | "restaurants near Levi's Stadium" | Tracy + Mountain House restaurants |
+| `/best-bars-watch-world-cup-san-jose` | "bars to watch World Cup near San Jose" | Tracy + Manteca bars/restaurants |
+| `/coffee-near-levis-stadium` | "coffee near Levi's Stadium" | Tracy + Mountain House coffee/café listings |
+| `/late-night-food-santa-clara` | "late night food near Santa Clara" | All cities — late-night or extended-hours listings |
+
+**Hard rules for FIFA pages:**
+- Must pull from existing `approved + verified` listings — no static content, no fabricated businesses
+- Each page requires minimum 3 real listings to publish
+- Page must include an intro paragraph with real local guide text (not generic filler)
+- Include `ItemList` schema linking to each business
+- Include `LocalBusiness` schema on each listed business
+- Do not create the page if the listing count is below threshold — defer until density push fills the gap
+
+**Technical approach:**
+- New static routes under `app/` (e.g. `app/restaurants-near-levis-stadium/page.tsx`)
+- Server component, edge runtime
+- Fetches from Supabase using city filter + category filter on existing `businesses` table
+- No new tables, no new API routes, no new infrastructure
+
+---
+
+### Sprint Success Criteria
+
+- [ ] Email notifications live for 2 of 3 triggers (claim + submission)
+- [ ] Total approved + verified listings ≥ 2,000
+- [ ] At least 2 FIFA discovery pages live with ≥ 3 listings each
+- [ ] All new pages indexed in Google Search Console within 30 days
+- [ ] Claim listing click rate holds or increases after density push
+
 ---
 
 ## DATA EXPANSION — City Coverage
@@ -140,13 +242,15 @@ From CLAUDE.md §10 — active engineering focus:
 1. ~~Data quality improvements~~ ✅
 2. ~~Business detail page UX~~ ✅
 3. ~~SEO category pages (`/[city]/[category]`)~~ ✅
-4. **Mobile responsiveness** ← next
+4. ~~Mobile responsiveness~~ ✅ (commit afcb3dc)
 5. ~~Directory search improvements~~ ✅
-6. Email notifications
+6. **Email notifications** ← active (see Listing Density + FIFA Discovery sprint)
 7. Community board improvements
 8. Worker cron agents for event ingestion
 9. Featured listings monetization
 10. ~~Pending queue audit~~ ✅
+
+**Active sprint:** Listing Density + FIFA Discovery (see section above)
 
 ---
 
