@@ -79,6 +79,19 @@ export default function SubmitBusinessPage() {
       setSubmitting(false)
     } else {
       setSubmitted(true)
+
+      // Fire-and-forget confirmation to submitter — only if they provided an email
+      if (form.contact_email.trim()) {
+        fetch('/api/notify/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            businessName:   form.name.trim(),
+            businessCity:   form.city,
+            submitterEmail: form.contact_email.trim(),
+          }),
+        }).catch(() => {/* intentionally silent */})
+      }
     }
   }
 

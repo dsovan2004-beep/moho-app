@@ -93,6 +93,21 @@ export default function ClaimListingPage() {
       setSubmitting(false)
     } else {
       setClaimed(true)
+
+      // Fire-and-forget founder alert — never blocks the success screen
+      fetch('/api/notify/claim', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          businessId:   business.id,
+          businessName: business.name,
+          businessCity: business.city,
+          ownerName,
+          ownerPhone,
+          ownerEmail,
+          role,
+        }),
+      }).catch(() => {/* intentionally silent */})
     }
   }
 

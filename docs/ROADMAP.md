@@ -37,17 +37,23 @@
 
 ### Task 1 — Email Notifications
 
-Scope: transactional emails only. No newsletter infrastructure.
+Scope: two transactional flows only. Nothing else.
 
 | Trigger | Recipient | Purpose |
 |---------|-----------|---------|
-| Claim listing submitted | Founder | Alert for manual review and follow-up |
+| Claim listing submitted | Founder / admin | Alert for manual review and follow-up |
 | New business submitted | Submitter | Confirmation + expectation setting |
-| Review posted | Business owner (if claimed + email on file) | Trust signal, drives owner engagement |
+
+Out of scope (do not implement):
+- Review posted notifications
+- Reply notifications
+- Community post notifications
+- Marketing or digest emails
 
 Implementation notes:
-- Use Supabase Edge Functions or a lightweight email provider (Resend recommended — works in Edge Runtime)
-- No new database tables required — use existing `businesses.contact_email` and `claimed` fields
+- Use Resend (works in Edge Runtime, simple API, free tier sufficient)
+- No new database tables required
+- No new architecture — thin API route or server action only
 - All email content must follow MoHo Local brand voice (warm, hyperlocal, not corporate)
 
 ---
