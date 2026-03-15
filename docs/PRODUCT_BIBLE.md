@@ -222,7 +222,49 @@ As the product grows, the value comes from the compounding combination of local 
 
 ---
 
-## 11. Final Statement
+## 11. SEO Strategy — Directory Discovery Model
+
+*Added March 2026*
+
+### Core Principle
+
+Every page must target a real search query. MoHoLocal does not grow through paid acquisition — it grows through organic search and word of mouth. Every URL in the app is an SEO asset.
+
+### Traffic Flow
+
+```
+Google Search → Discovery Page → City/Category Listings → Business Detail → Claim Listing
+```
+
+### Existing SEO Assets (implemented)
+
+- **City pages** — `/tracy`, `/lathrop`, `/mountain-house`, `/manteca`, `/brentwood`
+- **City + Category pages** — `/tracy/restaurants`, `/mountain-house/automotive` etc. (45 pages)
+- **Business detail pages** — `/business/[id]`
+- **Regional hub** — `/discover` (5-city × 9-category matrix with live counts)
+
+### Discovery Pages (event + landmark anchors)
+
+High-priority expansion targeting searches tied to real regional draws. No new backend required — filters existing verified listings.
+
+**FIFA World Cup 2026 sprint:** The 209 corridor is 45–60 minutes from Levi's Stadium in Santa Clara. Tens of thousands of attendees will search for food, bars, and services near the venue. MoHoLocal can rank for these queries before any national directory invests in them. Target: `/near-levis-stadium`, `/tracy/game-day`, `/manteca/restaurants` with FIFA metadata.
+
+### Structured Data Requirements
+
+- City + category pages: `BreadcrumbList` schema
+- Business detail pages: `LocalBusiness` schema (name, address, telephone, url)
+- Discovery pages: `ItemList` schema
+
+### Rules
+
+- Every indexed page must contain real verified listings — no empty shells
+- Do not create city-swapped duplicate template pages (Google doorway page penalty)
+- Content must reference real streets, landmarks, and local context
+- SEO is built from real data only — no fabricated or scraped content
+
+---
+
+## 12. Final Statement
 
 MoHoLocal should be built as a durable local platform with acquisition-grade architecture.
 

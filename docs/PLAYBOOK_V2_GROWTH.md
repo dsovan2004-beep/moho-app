@@ -186,6 +186,71 @@ MoHoLocal should be designed as an acquirable system from day one. The asset val
 
 ---
 
+## SEO Strategy — Directory Discovery Model
+
+*Added March 2026*
+
+### Core Principle
+
+Every page must target a real search query. Growth comes from organic search — not paid ads.
+
+### Three-Layer Traffic Model
+
+```
+Google Search → Discovery Page → City/Category Page → Business Detail → Claim Listing
+```
+
+### Layer 1 — Discovery Pages (broad intent)
+
+`/discover`, `/[city]` pages. Target: residents exploring what's nearby.
+
+### Layer 2 — City + Category Pages (focused intent)
+
+`/[city]/[category]` — 45 pages across 5 cities × 9 categories. These are the primary organic growth engine. Each targets a real query like "restaurants in Tracy CA" or "automotive lathrop ca".
+
+Requirements per page:
+- `<title>`: `[Category] in [City], CA | MoHoLocal`
+- SEO intro paragraph with natural local language
+- `BreadcrumbList` schema
+- At least 3 real verified listings
+
+### Layer 3 — Business Detail Pages (transactional intent)
+
+`/business/[id]` pages rank for brand-name searches ("Joe's Pizza Tracy CA"). Each must include `LocalBusiness` schema with name, address, telephone, and URL.
+
+### Discovery Pages — FIFA Growth Sprint
+
+The 209 corridor sits 45–60 minutes from Levi's Stadium (FIFA World Cup 2026, June 2026). Thousands of visitors will search for food, bars, and services near the venue before and after matches. Build event-anchored pages now before national directories move in.
+
+Target pages:
+- `/near-levis-stadium` — "restaurants near Levi's Stadium"
+- `/tracy/game-day` — "where to eat before FIFA game San Jose"
+- `/restaurants-near-levi-stadium` — direct query match
+
+Each page: real guide text + live listings filtered from approved database + `ItemList` schema.
+
+### Structured Data Checklist
+
+- [ ] `BreadcrumbList` on all `/[city]/[category]` pages ← already in code
+- [ ] `LocalBusiness` schema on all `/business/[id]` pages
+- [ ] `ItemList` schema on `/discover` and discovery pages ← already in code
+- [ ] `Restaurant` sub-type schema on restaurant listings
+
+### What Not to Do
+
+- No empty pages — minimum 3 real listings before a page earns an index
+- No city-swap duplicates — Google flags identical-content pages with swapped city names as doorway pages
+- No scraped or fabricated listings — only real verified data
+
+### Success Metrics
+
+- City + category pages indexed (track in Google Search Console)
+- Organic impressions growing month over month
+- Business detail pages ranking for brand queries
+- "Claim Listing" click rate increasing (proxy for organic business-owner discovery)
+
+---
+
 ## V2 Phase Definition of Done
 
 The Growth phase is complete when:

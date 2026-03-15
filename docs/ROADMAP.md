@@ -9,29 +9,17 @@
 
 **Focus:** Directory UX and regional discovery improvements
 
-1. **Activity Feed Page** — Build `/activity` page showing:
-   - Recent businesses
-   - New events
-   - Community updates
-   - Layout: mobile-friendly, card-based design
+1. ~~**Activity Feed Page**~~ ✅ — `/activity` page live (commit 56a8b95)
 
-2. **Business Detail Page UX Improvements**
-   - Add Share button
-   - Add Google Map embed
-   - Keep Get Directions button (already implemented)
-   - Maintain existing gallery functionality
+2. ~~**Business Detail Page UX Improvements**~~ ✅ — Share button, image gallery, map embed (commit 0fe9922)
 
-3. **Pending Queue Audit** — Cities: Tracy, Lathrop, Manteca, Brentwood
-   - Goal: move real businesses from `pending` → `approved + verified`
+3. ~~**Pending Queue Audit**~~ ✅ — Tracy, Lathrop, Manteca, Brentwood audited; ~10 businesses approved, fakes/chains removed (commit a3ef577)
 
-4. **Directory Pagination Safety**
-   - Ensure directory queries use pagination or limits (e.g. `LIMIT 50`)
-   - Pages must not attempt to load all listings at once
+4. ~~**Directory Pagination Safety**~~ ✅ — Verified already implemented (PAGE_SIZE=20, load-more pattern)
 
-5. **Regional Discovery Entry**
-   - Add "Explore Near You" or "Discover the Region" entry point
-   - Surface popular businesses, trending places, and upcoming events across:
-     Mountain House, Tracy, Lathrop, Manteca, and Brentwood
+5. ~~**Regional Discovery Entry**~~ ✅ — `/discover` page live: 5-city × 9-category matrix with live counts, city-aware category nav on homepage (commit c1fd5c0)
+
+6. ~~**Directory Search Improvements**~~ ✅ — Click-to-call, website on cards, claim badge, instant debounced search (commit c1fd5c0)
 
 ---
 
@@ -149,16 +137,111 @@ The MoHoLocal roadmap is organized into 6 sequential phases, progressing from pl
 
 From CLAUDE.md §10 — active engineering focus:
 
-1. ~~Data quality improvements~~ — ✅ Largely complete (trust policy enforced, ~784 approved+verified, audit workflow live)
-2. Business detail page UX
-3. SEO category pages (`/[city]/[category]`)
-4. Mobile responsiveness
-5. Directory search improvements
+1. ~~Data quality improvements~~ ✅
+2. ~~Business detail page UX~~ ✅
+3. ~~SEO category pages (`/[city]/[category]`)~~ ✅
+4. **Mobile responsiveness** ← next
+5. ~~Directory search improvements~~ ✅
 6. Email notifications
 7. Community board improvements
 8. Worker cron agents for event ingestion
 9. Featured listings monetization
-10. Pending queue audit — Tracy, Lathrop, Manteca, Brentwood (~200 records each awaiting review)
+10. ~~Pending queue audit~~ ✅
+
+---
+
+## SEO Strategy — Directory Discovery Model
+
+*Added March 2026*
+
+### Core Principle
+
+Every page must target a real search query. MoHoLocal grows through organic search by matching the way real residents and visitors actually phrase their needs.
+
+### Three-Layer Traffic Model
+
+```
+Google Search
+  → Discovery Page (broad intent)
+    → City + Category Page (focused intent)
+      → Business Detail Page (transactional intent)
+        → Claim Listing (acquisition)
+```
+
+### Layer 1 — Discovery Pages (broad)
+
+Existing assets:
+- `/discover` — regional hub with live city × category matrix
+- `/[city]` — city landing pages (Mountain House, Tracy, Lathrop, Manteca, Brentwood)
+
+Targets: `"local businesses mountain house ca"`, `"things to do in tracy ca"`, `"lathrop directory"`
+
+### Layer 2 — City + Category Pages (focused)
+
+Existing assets:
+- `/[city]/[category]` — e.g. `/tracy/restaurants`, `/mountain-house/automotive`
+
+These are the primary SEO workhorses. 5 cities × 9 categories = 45 indexed pages, each targeting a real local query. Must include:
+- `<title>` with city + category + "CA | MoHoLocal"
+- SEO intro paragraph with natural keyword use
+- LocalBusiness schema on individual listings
+- BreadcrumbList schema on the page
+
+### Layer 3 — Business Detail Pages (transactional)
+
+Existing assets:
+- `/business/[id]` — individual business pages
+
+Each page must include LocalBusiness schema with:
+```json
+{
+  "@type": "LocalBusiness",
+  "name": "...",
+  "address": { "@type": "PostalAddress", ... },
+  "telephone": "...",
+  "url": "..."
+}
+```
+
+### Discovery Pages — High Priority (FIFA Growth Sprint)
+
+Add event- and landmark-anchored discovery pages targeting high-intent searches tied to major regional draws. These pages require no new backend — they pull from existing approved listings filtered by city.
+
+Priority targets (FIFA World Cup 2026 at Levi's Stadium, June 2026):
+
+| Page | Target Query |
+|---|---|
+| `/near-levis-stadium` | "restaurants near Levi's Stadium" |
+| `/restaurants-near-levis-stadium` | "food near Levi's Stadium FIFA" |
+| `/tracy/game-day` | "where to eat before San Jose FC match" |
+| `/manteca/game-day` | "restaurants near Santa Clara stadium" |
+
+Each discovery page must:
+- Target one specific search query in title + H1
+- Include 2–3 sentences of real local guide text (not generic)
+- Pull verified listings from the database (no static content)
+- Link to business detail pages
+- Include LocalBusiness schema on each listed business
+
+### Structured Data Rules
+
+All city+category pages: `BreadcrumbList` schema
+All business detail pages: `LocalBusiness` (or `Restaurant`, `AutoRepair`, etc.) schema
+Discovery pages: `ItemList` schema linking to businesses
+
+### What NOT to Do
+
+- Do not create empty category pages with no listings
+- Do not swap city names into identical template pages (Google doorway page penalty)
+- Do not scrape or fabricate listings
+- Each page must have at least 3 real verified listings to be worth indexing
+
+### Success Metrics
+
+- `/[city]/[category]` pages indexed in Google Search Console
+- Organic impressions growing month over month
+- Business detail pages appearing for brand-name queries
+- "Claim Listing" actions increasing (indicates organic discovery by business owners)
 
 ---
 
