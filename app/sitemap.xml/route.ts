@@ -41,6 +41,21 @@ const BEST_OF_SLUGS = [
   'pet-services',
 ]
 
+// ── Standalone discovery pages (FIFA + city guides) ──────────────────────────
+const DISCOVERY_PAGES: Array<{ slug: string; priority: string }> = [
+  // FIFA / Levi's Stadium pages
+  { slug: 'restaurants-near-levis-stadium',          priority: '0.9' },
+  { slug: 'coffee-near-levis-stadium',               priority: '0.8' },
+  { slug: 'best-bars-watch-world-cup-san-jose',      priority: '0.9' },
+  { slug: 'best-places-watch-world-cup-san-jose',    priority: '0.9' },
+  // City guide pages — Sprint 3
+  { slug: 'best-restaurants-tracy',                  priority: '0.85' },
+  { slug: 'best-coffee-tracy',                       priority: '0.8' },
+  { slug: 'best-brunch-manteca',                     priority: '0.8' },
+  { slug: 'best-dentists-mountain-house',            priority: '0.8' },
+  { slug: 'best-family-restaurants-tracy',           priority: '0.8' },
+]
+
 interface SitemapEntry {
   loc: string
   priority: string
@@ -97,6 +112,11 @@ export async function GET() {
   // ── New-resident city pages ──────────────────────────────────────────
   for (const city of CITIES) {
     add(`${BASE}/new-resident/${city}`, '0.6', 'monthly')
+  }
+
+  // ── Standalone discovery pages (FIFA + city guides) ──────────────────
+  for (const page of DISCOVERY_PAGES) {
+    add(`${BASE}/${page.slug}`, page.priority, 'weekly')
   }
 
   // ── Dynamic pages (fetched from Supabase via anon key, same as all pages) ──
