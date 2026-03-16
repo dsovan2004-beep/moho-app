@@ -1,4 +1,18 @@
 #!/usr/bin/env python3
+# ⚠️  DISABLED — DO NOT RUN
+# This script inserts fabricated data (sequential fake phones, non-existent addresses).
+# Sprint 1 audit (March 2026) confirmed this script produced 41 fake Mountain House records.
+# Running this script again will corrupt the database.
+#
+# If you need to seed new businesses, use seed_overpass.py which enforces
+# the 3-rule ingestion safeguard (real address, real phone, non-generic name).
+# See: docs/BULK_IMPORT_DATA_SOURCES.md
+import sys
+print("ERROR: seed_businesses_5.py is permanently disabled.")
+print("This script produced fabricated data — see Sprint 1 integrity audit (March 2026).")
+print("Use seed_overpass.py for all new ingestion.")
+sys.exit(1)
+
 """
 MoHoLocal — Seed 100 additional businesses: Mountain House + Tracy
 Focus: Home Services, Restaurants, Health & Wellness, Education, Family Services
