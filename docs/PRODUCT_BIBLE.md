@@ -157,6 +157,26 @@ MoHoLocal is a local platform, not an enterprise SaaS product. Avoid microservic
 
 Approved listings, clear reporting, and clean UX matter more than feature count.
 
+### 7.4a Data Trust Model
+
+The directory is only as trustworthy as its weakest listing. These rules govern how listing data is sourced, staged, and promoted.
+
+**Source roles:**
+
+| Source | Role | Inserts as |
+|--------|------|-----------|
+| OSM / Overpass | Candidate seeding — discovers businesses that may exist | `pending`, `verified = false` |
+| City business license data | Authoritative seeding — businesses with real registrations | `pending`, `verified = false` |
+| Google Maps / Places | Verification and enrichment only — confirms a business is real, fills phone/website/hours | Never creates new rows |
+| Owner claim | Highest-trust signal — confirms ownership and real business | Triggers `verified = true` review |
+
+**Completeness is not verification.**
+A record that passes the ingestion safeguard (valid address, phone, non-generic name) is complete enough to queue. It is not verified. `verified = true` requires a real-world confirmation: a Google Places match, a manual review against a live map, or a submitted owner claim.
+
+**`approved + verified = false` is a transitional state**, acceptable only for business-license-sourced records pending enrichment. It is not acceptable for OSM-sourced records.
+
+**`approved + verified = true` is the only state that appears publicly** on the directory, category pages, and discovery pages.
+
 ### 7.5 Participation Drives Value
 
 User contribution loops should increase over time.

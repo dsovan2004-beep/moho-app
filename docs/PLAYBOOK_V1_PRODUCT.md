@@ -141,6 +141,34 @@ Aliases from old data or external imports must be normalized:
 
 A listing is considered "complete" when it has at minimum: name, category, city, address, and at least one of phone, website, or contact_email.
 
+### Seed Ingestion Safeguard
+
+All seed and ingestion scripts must implement the following 3-rule validation before inserting any record. Records that fail any rule are rejected — they do not enter the database.
+
+**Rule 1 — Address must contain a street number**
+Reject addresses that do not start with a digit. Prevents city-only placeholders like `"Mountain House, CA 95391"`.
+
+**Rule 2 — Phone must not be synthetic**
+Reject empty phones, phones with fewer than 7 digits, and `555-0xxx` fake numbers. Note: sequential phone detection (e.g. `(209) 456-9015`, `456-9016`...) is a batch-level concern handled by `audit_completeness.py` after seeding, not at insert time.
+
+**Rule 3 — Business name must not be generic**
+Reject names like `"Restaurant"`, `"Cafe"`, `"Food"`, `"Store"`, or any single-word placeholder that does not identify a specific business.
+
+**Insertion defaults — non-negotiable:**
+- `status = 'pending'`
+- `verified = false`
+
+Seed scripts must never set `verified = true` automatically. Verification is always a separate manual or enrichment step.
+
+**Data source roles:**
+- OSM / Overpass → candidate seeding only. Not verification-grade.
+- Google Maps / Places → verification and enrichment of existing records only. Never bulk seeding.
+- City business license data → authoritative seed source. Still inserted as `pending`, `verified = false`.
+
+**Completeness is not verification.** A record passing the 3-rule safeguard is safe to queue for review. It is not a confirmed real business until verified via Google Places match, manual review, or owner claim.
+
+See `docs/BULK_IMPORT_DATA_SOURCES.md` for the full data source policy.
+
 ---
 
 ## QA Checklist (Before Every Handoff)

@@ -27,11 +27,47 @@
 
 ---
 
-## NEXT SPRINT — Listing Density + FIFA Discovery
+## CLOSED SPRINT — Listing Density + FIFA Discovery ✅
 
 **Focus:** Fill the directory, capture event-anchored traffic, and convert business owners.
 
-**Window:** March–May 2026 (FIFA pages must be live before June 2026)
+**Window:** March 2026
+
+### Sprint Outcome
+
+| Task | Status |
+|------|--------|
+| Email notifications (claim + submission flows) | ✅ Complete |
+| Overpass seeding via `seed_overpass.py` (+285 new candidates) | ✅ Complete |
+| 527 listings promoted → 1,324 approved + verified total | ✅ Complete |
+| `/restaurants-near-levis-stadium` | ✅ Live |
+| `/coffee-near-levis-stadium` | ✅ Live |
+| `/best-bars-watch-world-cup-san-jose` | ✅ Live |
+| TypeScript undefined rating fix (commit `3140d36`) | ✅ Complete |
+| Google Search Console submission (all 3 FIFA pages) | ✅ Complete |
+| Mountain House restaurant integrity audit | ✅ Complete — 41 of 48 records flagged as `pending_review` (fabricated seed data from earlier scripts) |
+| `seed_overpass.py` 3-rule ingestion safeguard (commit `27ba557`) | ✅ Complete |
+| Data source roles policy added to `BULK_IMPORT_DATA_SOURCES.md` (commit `ae12e0a`) | ✅ Complete |
+
+**Held:**
+- `/late-night-food-santa-clara` — blocked on `hours` column data. Restore when Yelp Fusion or Google Places hours are available.
+
+### Integrity Audit Note — Mountain House
+
+During this sprint, a review of Mountain House restaurant listings revealed 41 of 48 records contained fabricated data (sequential phone numbers, sequential fake addresses) inserted by earlier seed scripts (`seed_businesses_5.py`, `seed_businesses_6.py`). These records were marked `pending_review` via SQL and removed from the public directory.
+
+Root cause: earlier seed scripts did not enforce address, phone, or name validation before insertion.
+
+Fix: `seed_overpass.py` now implements the 3-rule ingestion safeguard at insert time. All future seed scripts must follow the same pattern (see `PLAYBOOK_V1_PRODUCT.md → Seed Ingestion Safeguard`).
+
+Open items from this sprint carrying into the next:
+1. Verify and restore confirmed real chains (Starbucks, Chipotle, Arco, Safeway) in Mountain House with correct addresses and phones
+2. Verify 5 Tier 5 records (Taqueria La Mexicana, Tandoori Pizza, THub Cafe, Sourdough & Co., Arya Grill) against Google Maps
+3. Run the same integrity audit pattern on other cities for the same date-range seed batches
+
+---
+
+## NEXT SPRINT — Listing Quality + Mountain House Recovery
 
 ---
 
@@ -250,13 +286,13 @@ From CLAUDE.md §10 — active engineering focus:
 3. ~~SEO category pages (`/[city]/[category]`)~~ ✅
 4. ~~Mobile responsiveness~~ ✅ (commit afcb3dc)
 5. ~~Directory search improvements~~ ✅
-6. **Email notifications** ← active (see Listing Density + FIFA Discovery sprint)
+6. ~~**Email notifications**~~ ✅ (see closed Listing Density + FIFA Discovery sprint)
 7. Community board improvements
 8. Worker cron agents for event ingestion
 9. Featured listings monetization
 10. ~~Pending queue audit~~ ✅
 
-**Active sprint:** Listing Density + FIFA Discovery (see section above)
+**Last closed sprint:** Listing Density + FIFA Discovery ✅ (see closed sprint section above)
 
 ---
 
