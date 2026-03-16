@@ -175,6 +175,49 @@ OSM / Overpass → candidate seed → status='pending'
 
 ---
 
+## SPRINT 3 — SEO Discovery Expansion ✅ COMPLETE — March 2026
+
+**Focus:** Expand organic search surface area via city/category discovery pages + sitemap + internal linking.
+
+**Commit:** `642b7eb`
+
+### Sprint 3 Outcome
+
+| Task | Status |
+|------|--------|
+| 5 new city/category discovery pages | ✅ Complete |
+| Internal linking — Related Local Guides sections | ✅ Complete |
+| Sitemap updated — 9 discovery pages added | ✅ Complete |
+
+### Pages Built
+
+| Route | City | Category | Filter |
+|-------|------|----------|--------|
+| `/best-restaurants-tracy` | Tracy | Restaurants | All (top by review_count) |
+| `/best-coffee-tracy` | Tracy | Restaurants | Coffee/cafe keywords |
+| `/best-brunch-manteca` | Manteca | Restaurants | Brunch/breakfast keywords |
+| `/best-dentists-mountain-house` | Mountain House | Health & Wellness | Dental keywords |
+| `/best-family-restaurants-tracy` | Tracy | Restaurants | Family/cuisine keywords |
+
+### Internal Links Added
+
+- `/best-restaurants-tracy` → coffee, family restaurants, bars (World Cup)
+- `/best-coffee-tracy` → restaurants, brunch, Levi's Stadium
+- `/best-brunch-manteca` → restaurants, family restaurants, watch parties
+- `/best-dentists-mountain-house` → health/wellness, Tracy restaurants, family
+- `/best-family-restaurants-tracy` → restaurants, coffee, brunch
+- `/restaurants-near-levis-stadium` → updated with both FIFA + Local Guides sections (6 links)
+- `/best-places-watch-world-cup-san-jose` → updated with Local Guides section (3 new links)
+
+### Sitemap Changes
+
+Added `DISCOVERY_PAGES` array to `/sitemap.xml/route.ts`:
+- 4 existing FIFA pages now explicitly listed
+- 5 new Sprint 3 pages added
+- All at `changefreq: weekly`
+
+---
+
 ## DATA EXPANSION — City Coverage
 
 **Purpose:** Increase verified business coverage across the regional corridor.
