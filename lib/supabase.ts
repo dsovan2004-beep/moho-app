@@ -77,6 +77,31 @@ export async function getUser() {
   return user
 }
 
+// ─── Trust Gate Helper ───────────────────────────────────────────────────────
+// ALWAYS use this for any public-facing businesses query.
+// Enforces the dual trust rule: status = 'approved' AND verified = true.
+// Prevents future developers from accidentally exposing unverified listings.
+//
+// Usage:
+//   const { data } = await trustedListings(supabase)
+//     .eq('city', 'Tracy')
+//     .order('rating', { ascending: false })
+//     .limit(6)
+//
+// For specific columns:
+//   const { data } = await trustedListings(supabase, 'id, name, city, rating')
+//     .eq('category', 'Restaurants')
+//
+// ⚠️ Admin and audit routes intentionally bypass this helper —
+//    they must remain auth-gated and scope their queries explicitly.
+export function trustedListings(supabase: SupabaseClient, columns = '*') {
+  return supabase
+    .from('businesses')
+    .select(columns)
+    .eq('status', 'approved')
+    .eq('verified', true)
+}
+
 // ─── Table Types ─────────────────────────────────────────────────────────────
 
 export interface Business {
