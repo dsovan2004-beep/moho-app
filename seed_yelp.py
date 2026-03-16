@@ -277,7 +277,7 @@ def insert_businesses(records: list) -> tuple:
 
 def main():
     if not SUPABASE_KEY:
-        print("❌  Set SUPABASE_KEY env var first")
+        print("❌  Set SUPABASE_SERVICE_ROLE_KEY env var first:  export SUPABASE_SERVICE_ROLE_KEY=<key>")
         raise SystemExit(1)
 
     if not YELP_API_KEY:
@@ -285,7 +285,7 @@ def main():
         print("    1. Go to https://developer.yelp.com")
         print("    2. Create a free app")
         print("    3. Copy your API key")
-        print("    4. Re-run: YELP_API_KEY=<key> SUPABASE_KEY=<key> python3 seed_yelp.py")
+        print("    4. Re-run: YELP_API_KEY=<key> SUPABASE_SERVICE_ROLE_KEY=<key> python3 seed_yelp.py")
         raise SystemExit(1)
 
     if DRY_RUN:

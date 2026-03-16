@@ -173,7 +173,7 @@ def quality_score(biz: dict) -> tuple:
 
 def main():
     if not SUPABASE_KEY:
-        print("❌  Set SUPABASE_KEY env var first")
+        print("❌  Set SUPABASE_SERVICE_ROLE_KEY env var first:  export SUPABASE_SERVICE_ROLE_KEY=<key>")
         raise SystemExit(1)
 
     print("📊  Fetching pending records from Supabase...")
