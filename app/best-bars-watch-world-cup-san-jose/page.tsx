@@ -238,9 +238,9 @@ export default async function BarsWorldCupPage() {
               className="flex-1 bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-amber-300 hover:text-amber-800 transition">
               ☕ Coffee Near Levi&apos;s Stadium
             </Link>
-            <Link href="/late-night-food-santa-clara"
+            <Link href="/best-places-watch-world-cup-san-jose"
               className="flex-1 bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-amber-300 hover:text-amber-800 transition">
-              🌙 Late Night Food Near Santa Clara
+              ⚽ Best Watch Party Spots Near San Jose
             </Link>
           </div>
         </div>

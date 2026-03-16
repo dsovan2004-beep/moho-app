@@ -169,7 +169,7 @@ OSM / Overpass → candidate seed → status='pending'
 - [x] Mountain House has ≥ 10 real, verified restaurant listings (up from 2) ✅ **10 confirmed**
 - [x] All fabricated `pending_review` records resolved — contradictory states corrected ✅
 - [x] Tier 5 records verified against Google Maps — 4 promoted, 1 (Arya Grill) correctly skipped ✅
-- [ ] `verify_business_places.py` enrichment pipeline updated and documented
+- [x] `verify_business_places.py` enrichment pipeline updated and documented ✅ (commit `7b9db3c`)
 - [ ] `/best-places-watch-world-cup-san-jose` live with ≥ 3 real listings
 - [ ] New FIFA page submitted to Google Search Console
 
