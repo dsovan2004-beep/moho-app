@@ -6,7 +6,7 @@ import Link from 'next/link'
 export const metadata = {
   title: 'Best Restaurants in Tracy CA — Local Picks | MoHo Local',
   description:
-    'Discover the best restaurants in Tracy, CA. From taquerias to sit-down spots, here are the top local picks in San Joaquin County's fastest-growing city.',
+    "Discover the best restaurants in Tracy, CA. From taquerias to sit-down spots, here are the top local picks in San Joaquin County's fastest-growing city.",
   openGraph: {
     title: 'Best Restaurants in Tracy CA',
     description:
