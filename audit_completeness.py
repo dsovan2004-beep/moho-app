@@ -11,9 +11,9 @@ Outputs:
   - SQL block to bulk-promote quality records
 
 Usage:
-    SUPABASE_KEY=<service_role_key> python3 audit_completeness.py
-    SUPABASE_KEY=<service_role_key> python3 audit_completeness.py --city Tracy
-    SUPABASE_KEY=<service_role_key> python3 audit_completeness.py --output-sql  # print SQL only
+    SUPABASE_SERVICE_ROLE_KEY=<key> python3 audit_completeness.py
+    SUPABASE_SERVICE_ROLE_KEY=<key> python3 audit_completeness.py --city Tracy
+    SUPABASE_SERVICE_ROLE_KEY=<key> python3 audit_completeness.py --output-sql  # print SQL only
 """
 
 import json
@@ -26,9 +26,11 @@ from collections import defaultdict
 # ── Config ─────────────────────────────────────────────────────────────────────
 
 SUPABASE_URL = "https://ozjlfgipfzykzrjakwzb.supabase.co"
-SUPABASE_KEY = os.environ.get(
-    "SUPABASE_KEY",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im96amxmZ2lwZnp5a3pyamFrd3piIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQzMzI3NiwiZXhwIjoyMDg4MDA5Mjc2fQ.g9f2Il1nWEfgyuvTXHUiHn4EgWsrHVV1QBbdxehT0gM"
+# Reads SUPABASE_SERVICE_ROLE_KEY (canonical project name) with SUPABASE_KEY as legacy fallback
+SUPABASE_KEY = (
+    os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+    or os.environ.get("SUPABASE_KEY")
+    or "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im96amxmZ2lwZnp5a3pyamFrd3piIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQzMzI3NiwiZXhwIjoyMDg4MDA5Mjc2fQ.g9f2Il1nWEfgyuvTXHUiHn4EgWsrHVV1QBbdxehT0gM"
 )
 
 OUTPUT_SQL_ONLY = "--output-sql" in sys.argv

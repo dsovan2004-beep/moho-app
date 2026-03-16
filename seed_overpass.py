@@ -8,7 +8,7 @@ Data license: ODbL (openstreetmap.org/copyright) — suitable for directory use.
 All records inserted as status='pending', verified=false.
 
 Usage:
-    SUPABASE_KEY=<service_role_key> python3 seed_overpass.py
+    SUPABASE_SERVICE_ROLE_KEY=<key> python3 seed_overpass.py
 
 Optional flags:
     --dry-run     Print records but do not insert
@@ -28,9 +28,11 @@ from typing import Optional
 # ── Config ─────────────────────────────────────────────────────────────────────
 
 SUPABASE_URL = "https://ozjlfgipfzykzrjakwzb.supabase.co"
-SUPABASE_KEY = os.environ.get(
-    "SUPABASE_KEY",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im96amxmZ2lwZnp5a3pyamFrd3piIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQzMzI3NiwiZXhwIjoyMDg4MDA5Mjc2fQ.g9f2Il1nWEfgyuvTXHUiHn4EgWsrHVV1QBbdxehT0gM"
+# Reads SUPABASE_SERVICE_ROLE_KEY (canonical project name) with SUPABASE_KEY as legacy fallback
+SUPABASE_KEY = (
+    os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+    or os.environ.get("SUPABASE_KEY")
+    or "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im96amxmZ2lwZnp5a3pyamFrd3piIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQzMzI3NiwiZXhwIjoyMDg4MDA5Mjc2fQ.g9f2Il1nWEfgyuvTXHUiHn4EgWsrHVV1QBbdxehT0gM"
 )
 
 OVERPASS_URL = "https://overpass-api.de/api/interpreter"
@@ -316,7 +318,7 @@ def insert_businesses(records: list) -> tuple:
 
 def main():
     if not SUPABASE_KEY:
-        print("❌  Set SUPABASE_KEY env var first:  export SUPABASE_KEY=<your_service_role_key>")
+        print("❌  Set SUPABASE_SERVICE_ROLE_KEY env var first:  export SUPABASE_SERVICE_ROLE_KEY=<key>")
         raise SystemExit(1)
 
     if DRY_RUN:

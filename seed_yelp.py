@@ -9,15 +9,15 @@ Yelp Fusion free tier: 500 API calls/day (sufficient for full coverage).
 Prerequisites:
     1. Create a free Yelp app at: https://developer.yelp.com
     2. Copy your API key
-    3. Run: YELP_API_KEY=<your_key> SUPABASE_KEY=<service_role_key> python3 seed_yelp.py
+    3. Run: YELP_API_KEY=<your_key> SUPABASE_SERVICE_ROLE_KEY=<key> python3 seed_yelp.py
 
 All records inserted as status='pending', verified=false.
 
 Usage:
-    YELP_API_KEY=<key> SUPABASE_KEY=<key> python3 seed_yelp.py
-    YELP_API_KEY=<key> SUPABASE_KEY=<key> python3 seed_yelp.py --dry-run
-    YELP_API_KEY=<key> SUPABASE_KEY=<key> python3 seed_yelp.py --city Tracy
-    YELP_API_KEY=<key> SUPABASE_KEY=<key> python3 seed_yelp.py --city Tracy --cat Restaurants
+    YELP_API_KEY=<key> SUPABASE_SERVICE_ROLE_KEY=<key> python3 seed_yelp.py
+    YELP_API_KEY=<key> SUPABASE_SERVICE_ROLE_KEY=<key> python3 seed_yelp.py --dry-run
+    YELP_API_KEY=<key> SUPABASE_SERVICE_ROLE_KEY=<key> python3 seed_yelp.py --city Tracy
+    YELP_API_KEY=<key> SUPABASE_SERVICE_ROLE_KEY=<key> python3 seed_yelp.py --city Tracy --cat Restaurants
 """
 
 import json
@@ -32,9 +32,11 @@ from typing import Optional
 # ── Config ─────────────────────────────────────────────────────────────────────
 
 SUPABASE_URL = "https://ozjlfgipfzykzrjakwzb.supabase.co"
-SUPABASE_KEY = os.environ.get(
-    "SUPABASE_KEY",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im96amxmZ2lwZnp5a3pyamFrd3piIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQzMzI3NiwiZXhwIjoyMDg4MDA5Mjc2fQ.g9f2Il1nWEfgyuvTXHUiHn4EgWsrHVV1QBbdxehT0gM"
+# Reads SUPABASE_SERVICE_ROLE_KEY (canonical project name) with SUPABASE_KEY as legacy fallback
+SUPABASE_KEY = (
+    os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+    or os.environ.get("SUPABASE_KEY")
+    or "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im96amxmZ2lwZnp5a3pyamFrd3piIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQzMzI3NiwiZXhwIjoyMDg4MDA5Mjc2fQ.g9f2Il1nWEfgyuvTXHUiHn4EgWsrHVV1QBbdxehT0gM"
 )
 
 YELP_API_KEY = os.environ.get("YELP_API_KEY", "")
