@@ -114,7 +114,7 @@ Focus entirely on utility and data quality. Trust is the asset being built. Do n
 Featured listings are the first monetization lever. Implementation notes:
 
 - Businesses with `featured = true` appear in the Featured Businesses section on the homepage
-- The homepage query: `.eq('featured', true).eq('status', 'approved')`
+- The homepage query: `.eq('featured', true).eq('status', 'approved').eq('verified', true)`
 - Featured badge is displayed as a star (⭐) on business cards
 - Featured section includes "Sponsored" label for transparency
 - Featured businesses also receive priority placement in directory results (Phase 5)

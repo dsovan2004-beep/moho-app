@@ -50,7 +50,7 @@ The primary directory table. Only `status = 'approved'` records appear in public
 | `rating` | numeric | Average rating (auto-updated by trigger) |
 | `review_count` | integer | Review count (auto-updated by trigger) |
 | `image_url` | text | Cover image URL (nullable) |
-| `status` | text | `approved` / `pending` / `rejected` |
+| `status` | text | `approved` / `pending` / `pending_review` / `rejected` |
 | `contact_email` | text | Private contact email (not shown publicly) |
 | `hours` | text | Free-text hours string (nullable) |
 | `claimed` | boolean | Whether listing has been claimed by owner |
@@ -58,7 +58,7 @@ The primary directory table. Only `status = 'approved'` records appear in public
 | `featured` | boolean | Whether listing appears in Featured section |
 | `created_at` | timestamptz | Creation timestamp |
 
-**~784 approved+verified records as of March 2026. ~250 additional records in pending audit queue (batches 5–6).**
+**~1,324 approved+verified records as of March 2026 (post Sprint 1 density push). ~41 Mountain House records in `pending_review` from integrity audit.**
 
 **Query rule:** All public directory queries must filter `.eq('status', 'approved').eq('verified', true)`. Both conditions are required. Setting only one is a no-op — the business will not appear publicly.
 
@@ -80,7 +80,7 @@ Pet Services
 
 #### Canonical Cities
 
-These are the only valid values for `businesses.city`:
+These are the only valid values for `businesses.city`. There are **5** canonical cities:
 
 ```
 Mountain House
@@ -252,7 +252,7 @@ Reports of inaccurate, spam, or problematic listings.
 
 ## Data Architecture Principles
 
-1. **Approved listings only in public views** — All directory queries must filter `status = 'approved'`
+1. **Approved listings only in public views** — All directory queries must filter both `status = 'approved'` AND `verified = true`
 2. **Canonical category system** — Only the 9 listed categories are valid; aliases must be normalized on ingest
 3. **City normalization** — Only the 4 canonical city names are valid; no abbreviations or variations
 4. **Duplicate control** — Deduplicate by `(name, city)` before inserting new businesses
@@ -303,14 +303,17 @@ seed_businesses.py
 seed_businesses_2.py
 seed_businesses_3.py
 seed_businesses_4.py
-seed_businesses_5.py   ← trust-policy hardened, defaults to pending/unverified
-seed_businesses_6.py   ← trust-policy hardened, defaults to pending/unverified
+seed_businesses_5.py   ← ⚠️ produced fabricated data (sequential phones/addresses) — do not re-run
+seed_businesses_6.py   ← ⚠️ produced fabricated data (sequential phones/addresses) — do not re-run
+seed_overpass.py       ← current canonical seed script — 3-rule ingestion safeguard active
 seed_events.py
 seed_lost_and_found.py
 seed_lost_and_found_2.py
 ```
 
-**Trust policy (enforced in code):** All seed scripts must default to `status='pending'` and `verified=False`. Scripts contain a `validate_trust_policy()` guard that hard-aborts before any network call if a record violates this rule. Scripts also contain `get_existing_phones()` dedup check to prevent duplicate inserts.
+**Trust policy:** All seed scripts must default to `status='pending'` and `verified=false`. Seed records must never be inserted as `verified=true`. The 3-rule ingestion safeguard (address street number, real phone, non-generic name) must be implemented in every seed script before any insert — see `seed_overpass.py` for the reference implementation and `docs/PLAYBOOK_V1_PRODUCT.md → Seed Ingestion Safeguard` for the full policy.
+
+⚠️ **Note on seed_businesses_5.py and seed_businesses_6.py:** These scripts were found during the Sprint 1 integrity audit to have inserted fabricated records with sequential phone numbers and synthetic addresses into Mountain House. 41 records were flagged `pending_review` as a result. Do not re-run these scripts. They are retained for reference only.
 
 ---
 
