@@ -120,8 +120,8 @@ function BizCard({ biz }: { biz: Business }) {
           <span className="text-[10px] font-bold px-2.5 py-1 rounded-full text-white" style={{ background: cfg?.gradient }}>
             {cfg?.emoji} {biz.city}
           </span>
-          {biz.rating > 0 && (
-            <span className="text-xs text-amber-600 font-semibold">★ {biz.rating.toFixed(1)}</span>
+          {(biz.rating ?? 0) > 0 && (
+            <span className="text-xs text-amber-600 font-semibold">★ {biz.rating!.toFixed(1)}</span>
           )}
         </div>
       </div>
