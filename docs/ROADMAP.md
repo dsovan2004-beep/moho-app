@@ -136,7 +136,7 @@ OSM / Overpass → candidate seed → status='pending'
 
 ---
 
-### Task 3 — FIFA Discovery Page: Watch Parties
+### ~~Task 3 — FIFA Discovery Page: Watch Parties~~ ✅ COMPLETE — March 2026
 
 **Goal:** Add one additional FIFA discovery page capturing watch party search intent.
 
@@ -170,8 +170,8 @@ OSM / Overpass → candidate seed → status='pending'
 - [x] All fabricated `pending_review` records resolved — contradictory states corrected ✅
 - [x] Tier 5 records verified against Google Maps — 4 promoted, 1 (Arya Grill) correctly skipped ✅
 - [x] `verify_business_places.py` enrichment pipeline updated and documented ✅ (commit `7b9db3c`)
-- [ ] `/best-places-watch-world-cup-san-jose` live with ≥ 3 real listings
-- [ ] New FIFA page submitted to Google Search Console
+- [x] `/best-places-watch-world-cup-san-jose` live with ≥ 3 real listings ✅ (commit `9a8cb3c`)
+- [ ] New FIFA page submitted to Google Search Console ⬅️ **founder action required**
 
 ---
 
