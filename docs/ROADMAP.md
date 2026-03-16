@@ -67,103 +67,119 @@ Open items from this sprint carrying into the next:
 
 ---
 
-## NEXT SPRINT — Listing Quality + Mountain House Recovery
+## ACTIVE SPRINT — Sprint 2: Data Trust + FIFA Traffic Capture 🏃
+
+**Theme:** Data Trust + FIFA Traffic Capture
+**Timebox:** 1 week — March 2026
+**Scope constraints:** No new cities. No additional seeding scripts. No schema changes.
 
 ---
 
-### Task 1 — Email Notifications
+### Task 1 — Mountain House Data Cleanup
 
-Scope: two transactional flows only. Nothing else.
+**Goal:** Restore Mountain House restaurants to a trustworthy state after the fabricated-data audit.
 
-| Trigger | Recipient | Purpose |
-|---------|-----------|---------|
-| Claim listing submitted | Founder / admin | Alert for manual review and follow-up |
-| New business submitted | Submitter | Confirmation + expectation setting |
+**Context:** 41 of 48 Mountain House restaurant records were flagged `pending_review` during Sprint 1 due to sequential fake phones and addresses. 2 confirmed real listings remain approved. 5 need Google Maps verification (Tier 5).
 
-Out of scope (do not implement):
-- Review posted notifications
-- Reply notifications
-- Community post notifications
-- Marketing or digest emails
+**Steps:**
 
-Implementation notes:
-- Use Resend (works in Edge Runtime, simple API, free tier sufficient)
-- No new database tables required
-- No new architecture — thin API route or server action only
-- All email content must follow MoHo Local brand voice (warm, hyperlocal, not corporate)
+1. Keep the 2 confirmed real listings as approved + verified:
+   - Mountain Mike's (`27292f22`)
+   - Aappakadai (`14ca3203`)
 
----
+2. Verify and correct the 5 Tier 5 records against Google Maps:
+   - Taqueria La Mexicana (19697 Mountain House Pkwy)
+   - Arya Grill (19663 Mountain House Pkwy)
+   - Tandoori Pizza (1140 Traditions St)
+   - THub Cafe (1158 Tradition St)
+   - Sourdough & Co. (19673 Mountain House Pkwy)
 
-### Task 2 — Listing Density Push
+3. Replace fabricated records for confirmed real chains with correct verified data:
+   - Starbucks Mountain House
+   - Chipotle Mountain House
+   - Safeway Mountain House
+   - Arco Mountain House
+   - Any other confirmed chains present in Mountain House
 
-**Target:** 2,000+ approved + verified listings across all five cities.
+4. All corrected records must have:
+   - Real address (starts with street number, matches Google Maps)
+   - Real phone (matches Google Maps / official website)
+   - Correct category
+   - `status = 'approved'`, `verified = true` only after manual confirmation
 
-**Current estimate:** ~202 records seeded. Gap: ~1,800 listings.
+5. Delete or leave as `pending_review` any fabricated records for chains that do not have a real Mountain House location.
 
-| City | Priority Categories |
-|------|-------------------|
-| Mountain House | Restaurants, Home Services, Health & Wellness |
-| Tracy | Restaurants, Automotive, Beauty & Spa |
-| Lathrop | Home Services, Restaurants, Pet Services |
-| Manteca | Restaurants, Health & Wellness, Automotive |
-| Brentwood | Restaurants, Beauty & Spa, Pet Services |
-
-**Priority categories (in order):**
-
-1. Restaurants
-2. Home Services
-3. Health & Wellness
-4. Beauty & Spa
-5. Automotive
-6. Pet Services
-
-**Operating rules:**
-- All new records must default to `status='pending'`, `verified=false`
-- Only promote to `approved + verified` after Google Maps cross-check
-- Use existing seed scripts as templates — no new architecture
-- Seed data must be real businesses, real addresses, real phone numbers
-- Track progress per city in `docs/DEFERRED_MANUAL_TASKS.md`
+**Rules:**
+- No auto-promotion. Each record corrected manually or via SQL with founder review.
+- Source of truth: Google Maps, Yelp, official business website.
+- Do not patch old sequential-phone records — delete them and insert fresh.
 
 ---
 
-### Task 3 — FIFA Discovery Pages
+### Task 2 — Google Places Verification Pipeline
 
-**Deadline:** Live before June 2026 (FIFA World Cup at Levi's Stadium, Santa Clara)
+**Goal:** Implement a lightweight enrichment workflow using Google Places API to verify seeded listings.
 
-**Context:** The 209 corridor is 45–60 min from Levi's Stadium. National directories have not yet targeted these queries. Window to rank is now.
+**Workflow:**
 
-**Pages to build:**
+```
+OSM / Overpass → candidate seed → status='pending'
+  → Google Places lookup → name match + address match + phone
+  → if match: enrich phone/website/place_id, flag for approval
+  → founder reviews → approved + verified = true
+```
+
+**Implementation rules:**
+- Enrich only — never create new rows from Places data
+- Match criteria: name similarity ≥ threshold AND address city match
+- Enrich fields: `phone`, `website`, `hours`, `place_id`
+- Do not auto-set `verified = true` — enrichment flags a record as ready for human review
+- Extend `verify_business_places.py` (already exists) — do not create a new script
+- No schema changes required
+
+**Out of scope:**
+- Bulk Places seeding
+- Automated approval
+- New database tables
+
+---
+
+### Task 3 — FIFA Discovery Page: Watch Parties
+
+**Goal:** Add one additional FIFA discovery page capturing watch party search intent.
+
+**Page to build:**
 
 | Route | Target Query | Source Listings |
 |-------|-------------|----------------|
-| `/restaurants-near-levis-stadium` | "restaurants near Levi's Stadium" | Tracy + Mountain House restaurants |
-| `/best-bars-watch-world-cup-san-jose` | "bars to watch World Cup near San Jose" | Tracy + Manteca bars/restaurants |
-| `/coffee-near-levis-stadium` | "coffee near Levi's Stadium" | Tracy + Mountain House coffee/café listings |
-| `/late-night-food-santa-clara` | "late night food near Santa Clara" | All cities — late-night or extended-hours listings |
+| `/best-places-watch-world-cup-san-jose` | "best places to watch World Cup near San Jose" | Tracy + Manteca + Lathrop restaurants/bars |
 
-**Hard rules for FIFA pages:**
-- Must pull from existing `approved + verified` listings — no static content, no fabricated businesses
-- Each page requires minimum 3 real listings to publish
-- Page must include an intro paragraph with real local guide text (not generic filler)
-- Include `ItemList` schema linking to each business
-- Include `LocalBusiness` schema on each listed business
-- Do not create the page if the listing count is below threshold — defer until density push fills the gap
-
-**Technical approach:**
-- New static routes under `app/` (e.g. `app/restaurants-near-levis-stadium/page.tsx`)
-- Server component, edge runtime
-- Fetches from Supabase using city filter + category filter on existing `businesses` table
+**Rules (same as existing FIFA pages):**
+- Must pull from `approved + verified` listings only — no static or fabricated content
+- Minimum 3 real listings required to publish
+- Intro paragraph must be real local guide text — not generic filler
+- Include `ItemList` schema + `BreadcrumbList` schema
+- Edge runtime (`export const runtime = 'edge'`)
 - No new tables, no new API routes, no new infrastructure
+
+**Existing FIFA pages (reference — do not modify):**
+- `/restaurants-near-levis-stadium` ✅ live
+- `/coffee-near-levis-stadium` ✅ live
+- `/best-bars-watch-world-cup-san-jose` ✅ live
+
+**Held:**
+- `/late-night-food-santa-clara` — still blocked on `hours` data. Do not build this sprint.
 
 ---
 
-### Sprint Success Criteria
+### Sprint 2 Success Criteria
 
-- [ ] Email notifications live for 2 of 3 triggers (claim + submission)
-- [ ] Total approved + verified listings ≥ 2,000
-- [ ] At least 2 FIFA discovery pages live with ≥ 3 listings each
-- [ ] All new pages indexed in Google Search Console within 30 days
-- [ ] Claim listing click rate holds or increases after density push
+- [ ] Mountain House has ≥ 10 real, verified restaurant listings (up from 2)
+- [ ] All 41 fabricated `pending_review` records resolved (corrected or deleted)
+- [ ] Tier 5 records verified against Google Maps — approved or removed
+- [ ] `verify_business_places.py` enrichment pipeline updated and documented
+- [ ] `/best-places-watch-world-cup-san-jose` live with ≥ 3 real listings
+- [ ] New FIFA page submitted to Google Search Console
 
 ---
 
@@ -292,7 +308,8 @@ From CLAUDE.md §10 — active engineering focus:
 9. Featured listings monetization
 10. ~~Pending queue audit~~ ✅
 
-**Last closed sprint:** Listing Density + FIFA Discovery ✅ (see closed sprint section above)
+**Active sprint:** Sprint 2 — Data Trust + FIFA Traffic Capture (see active sprint section above)
+**Last closed sprint:** Sprint 1 — Listing Density + FIFA Discovery ✅
 
 ---
 

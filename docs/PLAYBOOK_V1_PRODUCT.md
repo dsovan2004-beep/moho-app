@@ -258,4 +258,4 @@ The Foundation phase is complete when:
 
 ---
 
-*Last updated: March 2026*
+*Last updated: March 2026 — Active sprint: Sprint 2 — Data Trust + FIFA Traffic Capture*
