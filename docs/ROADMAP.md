@@ -171,7 +171,7 @@ OSM / Overpass → candidate seed → status='pending'
 - [x] Tier 5 records verified against Google Maps — 4 promoted, 1 (Arya Grill) correctly skipped ✅
 - [x] `verify_business_places.py` enrichment pipeline updated and documented ✅ (commit `7b9db3c`)
 - [x] `/best-places-watch-world-cup-san-jose` live with ≥ 3 real listings ✅ (commit `9a8cb3c`)
-- [ ] New FIFA page submitted to Google Search Console ⬅️ **founder action required**
+- [x] New FIFA page submitted to Google Search Console ✅ (March 2026 — indexing requested)
 
 ---
 
