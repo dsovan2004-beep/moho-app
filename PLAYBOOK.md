@@ -10,6 +10,58 @@ This document is for AI agents and developers who operate the platform.
 
 ---
 
+## Environment Configuration Requirements
+
+*(Standardized March 2026 — required before running any script)*
+
+### Canonical .env.local Path
+
+There are **two** `.env.local` files in the project. They serve different purposes and must not be confused:
+
+| File | Purpose | Contains |
+|------|---------|---------|
+| `~/Desktop/MoHoLocal/.env.local` | **Canonical env file** — all API keys and secrets | `SUPABASE_SERVICE_ROLE_KEY`, `GOOGLE_PLACES_API_KEY`, `NEXT_PUBLIC_SUPABASE_URL`, etc. |
+| `~/Desktop/MoHoLocal/moho-app-scaffold/.env.local` | Scaffold-only vars | `RESEND_API_KEY`, `NOTIFY_EMAIL` |
+
+**`verify_business_places.py` auto-loads the canonical file** via `load_env_local()` when run from `~/Desktop/MoHoLocal/`. No manual export needed.
+
+**Seed scripts (`seed_southbay.py`, `seed_businesses_*.py`)** are run from inside the scaffold and require manual env loading:
+```bash
+export $(grep -v '^#' ~/Desktop/MoHoLocal/.env.local | xargs)
+```
+
+### Required Environment Variables
+
+| Variable | Used By | Source |
+|----------|---------|--------|
+| `SUPABASE_SERVICE_ROLE_KEY` | All seed scripts, verify_business_places.py | `~/Desktop/MoHoLocal/.env.local` |
+| `GOOGLE_PLACES_API_KEY` | verify_business_places.py, bulk_places_discovery.py | `~/Desktop/MoHoLocal/.env.local` |
+| `NEXT_PUBLIC_SUPABASE_URL` | verify_business_places.py | `~/Desktop/MoHoLocal/.env.local` |
+| `RESEND_API_KEY` | Email notification scripts | `~/Desktop/MoHoLocal/moho-app-scaffold/.env.local` |
+
+### Pre-flight Validation (REQUIRED before enrichment runs)
+
+Before running `verify_business_places.py`, validate the key is loaded:
+```bash
+echo $GOOGLE_PLACES_API_KEY
+```
+If output is empty → stop. Do not proceed. Debug env loading first.
+
+### Variable Name Standard
+
+All scripts use `GOOGLE_PLACES_API_KEY` as the canonical variable name. No alternatives (`GOOGLE_API_KEY`, `PLACES_API_KEY`, `MAPS_API_KEY`) are used or permitted.
+
+### Diagnosing "Key Missing" Errors
+
+Before flagging any API key as missing, verify in this order:
+1. **Correct file** — are you reading `~/Desktop/MoHoLocal/.env.local` (not the scaffold subfolder)?
+2. **Correct variable name** — `GOOGLE_PLACES_API_KEY` exactly
+3. **Environment loaded** — run `echo $GOOGLE_PLACES_API_KEY` to confirm the shell has it
+
+The key was present and operational for Mountain House, Tracy, Lathrop, Manteca, and Brentwood enrichment. If it appears missing, the issue is env loading — not the key itself.
+
+---
+
 ## Platform Overview
 
 MoHoLocal is an AI-assisted hyperlocal signal platform that collects and organizes community information across multiple cities in San Joaquin County, East Bay, and South Bay, CA.

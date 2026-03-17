@@ -998,6 +998,55 @@ If a workflow has previously succeeded, treat that as evidence the credentials m
 
 ---
 
+## Environment Standardization Rule
+
+*(Adopted March 2026 — resolves South Bay rollout env gap)*
+
+**All external API integrations must use standardized environment variable names. No script may introduce alternate naming.**
+
+### Canonical Variable Names (enforced across all scripts)
+
+| Variable | Purpose | Canonical Name |
+|----------|---------|---------------|
+| Supabase service role key | DB read/write (bypasses RLS) | `SUPABASE_SERVICE_ROLE_KEY` |
+| Supabase public URL | DB endpoint | `NEXT_PUBLIC_SUPABASE_URL` |
+| Google Places API key | Photo pipeline + verification | `GOOGLE_PLACES_API_KEY` |
+
+No script may use `GOOGLE_API_KEY`, `PLACES_API_KEY`, `MAPS_API_KEY`, `SUPABASE_KEY` (except as a fallback alias), or any other variant. Variable names are frozen.
+
+### Two-File Env Architecture (canonical)
+
+| File | Role |
+|------|------|
+| `~/Desktop/MoHoLocal/.env.local` | Primary secrets — Google API, Supabase key, Supabase URL |
+| `~/Desktop/MoHoLocal/moho-app-scaffold/.env.local` | Scaffold app vars only — Resend, notify email |
+
+Reading the scaffold `.env.local` and finding no Google key is expected and correct. The key lives in the parent file. This is not a missing key — it is a two-file architecture.
+
+### Image Enrichment Env Dependency
+
+`GOOGLE_PLACES_API_KEY` is required to run `verify_business_places.py`. Without it:
+- Image enrichment cannot run
+- South Bay (and any new city) rollout is blocked at Step 3
+- Listings remain incomplete by the Production-Ready Listing Standard
+
+**Before any image enrichment run, validate:**
+```bash
+echo $GOOGLE_PLACES_API_KEY   # must be non-empty
+```
+
+### Agent Rule — Diagnosing Missing Keys
+
+Before flagging any API key as missing, an agent must verify in this order:
+1. Which `.env.local` file was checked — scaffold or parent?
+2. Is the variable name exactly `GOOGLE_PLACES_API_KEY`?
+3. Is the environment loaded in the current shell (`echo $VAR`)?
+4. Has this key been used successfully in prior runs for this project?
+
+If all four checks pass and the key is still missing, only then escalate to the founder.
+
+---
+
 ## Community Board — Architecture (March 2026)
 
 The Community Board (`/community`) is MoHoLocal's social signal layer. It captures resident intent, recommendations, and local demand — data that the static directory and temporal events graph cannot provide.

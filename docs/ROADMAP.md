@@ -259,6 +259,7 @@ Added `DISCOVERY_PAGES` array to `/sitemap.xml/route.ts`:
 | PLAYBOOK.md — Expansion Play + image enrichment as mandatory step documented | ✅ Complete |
 | Run `seed_southbay.py --force-approve` on founder machine | ⏳ Pending founder action |
 | Spot-check top 20 listings per city (real addresses, no dupes) | ⏳ Pending founder action |
+| Confirm `GOOGLE_PLACES_API_KEY` is loaded: `echo $GOOGLE_PLACES_API_KEY` (must be non-empty) | ⏳ Pending founder action |
 | **⚠️ BLOCKING — Image enrichment: `verify_business_places.py` for all 3 South Bay cities** | 🔴 Blocking — must complete before rollout is done |
 | Supplement with `seed_yelp.py` if volume < 60 records/city | ⏳ Pending founder action |
 | Submit `/san-jose`, `/santa-clara`, `/sunnyvale` to Google Search Console | ⏳ Pending after image enrichment |
