@@ -218,6 +218,114 @@ Added `DISCOVERY_PAGES` array to `/sitemap.xml/route.ts`:
 
 ---
 
+## SPRINT 4 — SEO Surface Expansion ✅ COMPLETE — March 2026
+
+**Focus:** Scale the discovery page layer — new city/category pages, cross-linking mesh, sitemap coverage.
+
+**Commit:** `f48c987`
+
+**Scope constraints:** No schema changes. No DB migrations. No cron changes. No ingestion changes. No UI redesign. SEO + linking only.
+
+### Sprint 4 Outcome
+
+| Task | Status |
+|------|--------|
+| Task 1 — Discovery links injected into all city/category pages | ✅ Complete |
+| Task 2 — Existing discovery pages cross-linked (Related sections expanded) | ✅ Complete |
+| Task 3 — 20 new discovery pages created (7 Tracy, 6 Mountain House, 7 Manteca) | ✅ Complete |
+| Task 4 — Sitemap updated (DISCOVERY_PAGES 9 → 29 entries) | ✅ Complete |
+| Task 5 — Trust model verified on all new pages | ✅ Complete |
+
+### New Pages Built
+
+**Tracy (7 pages)**
+
+| Route | Category | Filter |
+|-------|----------|--------|
+| `/best-pizza-tracy` | Restaurants | PIZZA_KEYWORDS |
+| `/best-breakfast-tracy` | Restaurants | BREAKFAST_KEYWORDS |
+| `/best-lunch-tracy` | Restaurants | LUNCH_KEYWORDS |
+| `/best-dinner-tracy` | Restaurants | DINNER_KEYWORDS |
+| `/best-hair-salon-tracy` | Beauty & Spa | HAIR_KEYWORDS |
+| `/best-nail-salon-tracy` | Beauty & Spa | NAIL_KEYWORDS |
+| `/best-dentists-tracy` | Health & Wellness | DENTAL_KEYWORDS |
+
+**Mountain House (6 pages)**
+
+| Route | Category | Filter |
+|-------|----------|--------|
+| `/best-pizza-mountain-house` | Restaurants | PIZZA_KEYWORDS |
+| `/best-breakfast-mountain-house` | Restaurants | BREAKFAST_KEYWORDS |
+| `/best-lunch-mountain-house` | Restaurants | LUNCH_KEYWORDS |
+| `/best-dinner-mountain-house` | Restaurants | DINNER_KEYWORDS |
+| `/best-hair-salon-mountain-house` | Beauty & Spa | HAIR_KEYWORDS |
+| `/best-nail-salon-mountain-house` | Beauty & Spa | NAIL_KEYWORDS |
+
+**Manteca (7 pages)**
+
+| Route | Category | Filter |
+|-------|----------|--------|
+| `/best-pizza-manteca` | Restaurants | PIZZA_KEYWORDS |
+| `/best-breakfast-manteca` | Restaurants | BREAKFAST_KEYWORDS |
+| `/best-lunch-manteca` | Restaurants | LUNCH_KEYWORDS |
+| `/best-dinner-manteca` | Restaurants | DINNER_KEYWORDS |
+| `/best-hair-salon-manteca` | Beauty & Spa | HAIR_KEYWORDS |
+| `/best-nail-salon-manteca` | Beauty & Spa | NAIL_KEYWORDS |
+| `/best-dentists-manteca` | Health & Wellness | DENTAL_KEYWORDS |
+
+### Internal Linking Added
+
+**Task 1 — `app/[city]/[category]/page.tsx`**
+
+Added `DISCOVERY_LINKS` static map covering 9 city/category combinations. Injects a "Local Guides" pill row at the bottom of each matching category page — zero extra DB queries.
+
+City/category combos with injected links: `tracy/restaurants` (5 links), `tracy/beauty-spa` (2), `tracy/health-wellness` (1), `mountain-house/restaurants` (3), `mountain-house/health-wellness` (1), `mountain-house/beauty-spa` (2), `manteca/restaurants` (4), `manteca/health-wellness` (1), `manteca/beauty-spa` (2), `lathrop/restaurants` (3). **Total: ~24 new outbound links across 10 category pages.**
+
+**Task 2 — Existing discovery pages updated (9 files)**
+
+Related sections expanded from 3-link flex-row to 5-link flex-wrap layout on:
+- `/best-restaurants-tracy`, `/best-coffee-tracy`, `/best-family-restaurants-tracy`
+- `/best-brunch-manteca`, `/best-dentists-mountain-house`
+- `/restaurants-near-levis-stadium`, `/coffee-near-levis-stadium`
+- `/best-bars-watch-world-cup-san-jose`, `/best-places-watch-world-cup-san-jose`
+
+**Total new internal links added (Tasks 1 + 2):** ~69
+
+### Sitemap Update
+
+`DISCOVERY_PAGES` in `app/sitemap.xml/route.ts` expanded from 9 → 29 entries (+20 Sprint 4 pages). All new entries at `changefreq: weekly`. Static URL count increases from ~117 → ~137.
+
+### Trust Model
+
+All 20 new discovery pages enforce dual trust gate:
+```ts
+.eq('status', 'approved')
+.eq('verified', true)
+```
+No page deviates. Keyword fallback (`featured.length < 3 → show all`) still enforces the same gate — broader pool, same trust requirements.
+
+### GSC Indexing (Founder Action Required)
+
+Submit all 20 new pages in Google Search Console → URL Inspection → "Request Indexing":
+
+```
+/best-pizza-tracy               /best-pizza-mountain-house         /best-pizza-manteca
+/best-breakfast-tracy           /best-breakfast-mountain-house      /best-breakfast-manteca
+/best-lunch-tracy               /best-lunch-mountain-house          /best-lunch-manteca
+/best-dinner-tracy              /best-dinner-mountain-house         /best-dinner-manteca
+/best-hair-salon-tracy          /best-hair-salon-mountain-house     /best-hair-salon-manteca
+/best-nail-salon-tracy          /best-nail-salon-mountain-house     /best-nail-salon-manteca
+/best-dentists-tracy                                                /best-dentists-manteca
+```
+
+### Blockers / Held
+
+- Lathrop discovery pages: held pending verified listing density. Current Lathrop approved + verified counts are too low to pass the 3-listing minimum guard. Revisit after next data ingestion sprint.
+- Brentwood: same — out of scope for Sprint 4.
+- `/best-lunch-mountain-house` and `/best-dinner-mountain-house`: Mountain House restaurant inventory is lean (10 verified records); lunch/dinner keyword filters may trigger fallback to full category list at runtime. This is expected and handled gracefully by the fallback guard.
+
+---
+
 ## DATA EXPANSION — City Coverage
 
 **Purpose:** Increase verified business coverage across the regional corridor.
