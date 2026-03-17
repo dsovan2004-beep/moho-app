@@ -4,19 +4,18 @@ import { getSupabaseClient, type Business } from '@/lib/supabase'
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Best Dentists in Mountain House CA — Verified Local Dental Offices | MoHo Local',
+  title: 'Best Dentists in Tracy CA — Verified Dental Offices | MoHo Local',
   description:
-    'Looking for a dentist in Mountain House, CA? Here are the top verified dental offices and health providers serving the Mountain House community.',
+    "Looking for a dentist in Tracy, CA? Here are the top verified dental offices and orthodontists serving Tracy and San Joaquin County.",
   openGraph: {
-    title: 'Best Dentists in Mountain House CA',
-    description:
-      'Top verified dentists and dental offices in Mountain House, CA — trusted picks from your neighbors in the 209.',
-    url: 'https://www.moholocal.com/best-dentists-mountain-house',
+    title: 'Best Dentists in Tracy CA',
+    description: 'Top verified dentists in Tracy, CA — trusted picks from your neighbors in the 209.',
+    url: 'https://www.moholocal.com/best-dentists-tracy',
   },
 }
 
-const CITY = 'Mountain House'
-const CITY_GRADIENT = 'linear-gradient(135deg,#1e3a5f 0%,#1e40af 100%)'
+const CITY = 'Tracy'
+const CITY_GRADIENT = 'linear-gradient(135deg,#14532d 0%,#15803d 100%)'
 
 const DENTAL_KEYWORDS = [
   'dental', 'dentist', 'orthodont', 'teeth', 'oral', 'smile', 'braces',
@@ -49,9 +48,9 @@ function buildSchema(businesses: Business[]) {
     {
       '@context': 'https://schema.org',
       '@type': 'ItemList',
-      name: 'Best Dentists in Mountain House CA',
-      description: 'Top verified dentists and dental offices in Mountain House, CA.',
-      url: 'https://www.moholocal.com/best-dentists-mountain-house',
+      name: 'Best Dentists in Tracy CA',
+      description: 'Top verified dentists and dental offices in Tracy, CA.',
+      url: 'https://www.moholocal.com/best-dentists-tracy',
       numberOfItems: businesses.length,
       itemListElement: businesses.slice(0, 20).map((biz, i) => ({
         '@type': 'ListItem',
@@ -70,8 +69,8 @@ function buildSchema(businesses: Business[]) {
       '@type': 'BreadcrumbList',
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.moholocal.com' },
-        { '@type': 'ListItem', position: 2, name: 'Mountain House', item: 'https://www.moholocal.com/mountain-house' },
-        { '@type': 'ListItem', position: 3, name: 'Best Dentists in Mountain House' },
+        { '@type': 'ListItem', position: 2, name: 'Tracy', item: 'https://www.moholocal.com/tracy' },
+        { '@type': 'ListItem', position: 3, name: 'Best Dentists in Tracy' },
       ],
     },
   ]
@@ -127,7 +126,7 @@ function BizCard({ biz }: { biz: Business }) {
   )
 }
 
-export default async function BestDentistsMountainHousePage() {
+export default async function BestDentistsTracyPage() {
   const { featured, all } = await getListings()
   const listings = featured.length >= 3 ? featured : all
   const isFallback = featured.length < 3
@@ -136,7 +135,7 @@ export default async function BestDentistsMountainHousePage() {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8 text-center text-gray-500">
         <p>Listings loading — check back soon.</p>
-        <Link href="/mountain-house/health-wellness" className="text-blue-600 hover:underline mt-4 inline-block">Browse Mountain House Health & Wellness →</Link>
+        <Link href="/tracy/health-wellness" className="text-blue-600 hover:underline mt-4 inline-block">Browse Tracy Health & Wellness →</Link>
       </div>
     )
   }
@@ -154,7 +153,7 @@ export default async function BestDentistsMountainHousePage() {
         <nav className="text-sm text-gray-400 mb-6 flex items-center gap-2 flex-wrap">
           <Link href="/" className="hover:text-blue-600 transition">Home</Link>
           <span>›</span>
-          <Link href="/mountain-house" className="hover:text-blue-600 transition">Mountain House</Link>
+          <Link href="/tracy" className="hover:text-blue-600 transition">Tracy</Link>
           <span>›</span>
           <span className="text-gray-700 font-medium">Best Dentists</span>
         </nav>
@@ -164,10 +163,10 @@ export default async function BestDentistsMountainHousePage() {
             <div className="text-5xl">🦷</div>
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest opacity-70 mb-1">
-                Mountain House, CA · San Joaquin County
+                Tracy, CA · San Joaquin County
               </p>
               <h1 className="text-2xl sm:text-3xl font-extrabold mb-2 leading-tight">
-                Best Dentists in Mountain House, CA
+                Best Dentists in Tracy, CA
               </h1>
               <p className="text-white/80 text-sm leading-relaxed">
                 {listings.length} verified local dental and health providers.
@@ -178,12 +177,12 @@ export default async function BestDentistsMountainHousePage() {
 
         {isFallback && (
           <div className="bg-blue-50 border border-blue-200 rounded-xl px-5 py-3 mb-6 text-sm text-blue-800">
-            🦷 Showing all Mountain House health & wellness listings — dental offices highlighted as more are added.
+            🦷 Showing all Tracy health & wellness listings — dental offices highlighted as more are added.
           </div>
         )}
 
         <p className="text-gray-600 text-sm leading-relaxed mb-8">
-          Mountain House is a master-planned community in western San Joaquin County with one of the fastest-growing populations in California. As the community has matured, so has its local health infrastructure — dental offices, orthodontists, and family health providers have followed the families that moved here. These listings are verified by the MoHo Local community, so you know you're looking at real offices with real patient reviews.
+          Tracy is a large, growing city with a real need for quality dental care — and the local dental scene has expanded to meet it. From family general dentistry offices to orthodontists offering Invisalign, there are verified options across the city. These listings are confirmed by the MoHo Local community, so you know you are looking at practices that are actually open and serving Tracy residents.
         </p>
 
         <div className="space-y-4 mb-10">
@@ -194,35 +193,31 @@ export default async function BestDentistsMountainHousePage() {
         <div className="rounded-2xl bg-gray-50 border border-gray-200 p-6 mb-8">
           <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Related Local Guides</p>
           <div className="flex flex-wrap gap-3">
-            <Link href="/mountain-house/health-wellness"
-              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-blue-300 hover:text-blue-800 transition">
-              🏥 All Health & Wellness in Mountain House
+            <Link href="/tracy/health-wellness"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
+              🏥 All Health & Wellness in Tracy
             </Link>
-            <Link href="/mountain-house"
-              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-blue-300 hover:text-blue-800 transition">
-              🏘️ Mountain House City Guide
+            <Link href="/tracy"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
+              🌿 Tracy City Guide
             </Link>
-            <Link href="/best-dentists-tracy"
-              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-blue-300 hover:text-blue-800 transition">
-              🦷 Best Dentists in Tracy
+            <Link href="/best-dentists-mountain-house"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
+              🦷 Best Dentists in Mountain House
             </Link>
             <Link href="/best-restaurants-tracy"
-              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-blue-300 hover:text-blue-800 transition">
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
               🍽️ Best Restaurants in Tracy
-            </Link>
-            <Link href="/best-pizza-mountain-house"
-              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-blue-300 hover:text-blue-800 transition">
-              🍕 Best Pizza in Mountain House
             </Link>
           </div>
         </div>
 
         <div className="rounded-2xl p-6 text-center text-white" style={{ background: CITY_GRADIENT }}>
-          <p className="font-bold text-lg mb-1">Run a dental or health practice in Mountain House?</p>
-          <p className="text-white/80 text-sm mb-4">Get discovered by families looking for local providers — free listing on MoHoLocal.</p>
+          <p className="font-bold text-lg mb-1">Run a dental practice in Tracy?</p>
+          <p className="text-white/80 text-sm mb-4">Get discovered by families looking for a local dentist — free listing on MoHoLocal.</p>
           <Link href="/submit-business"
-            className="inline-block px-6 py-2.5 rounded-xl text-sm font-bold bg-white hover:bg-blue-50 transition"
-            style={{ color: '#1e3a5f' }}>
+            className="inline-block px-6 py-2.5 rounded-xl text-sm font-bold bg-white hover:bg-green-50 transition"
+            style={{ color: '#14532d' }}>
             + Add Your Practice
           </Link>
         </div>

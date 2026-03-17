@@ -184,18 +184,26 @@ export default async function BestCoffeeTracyPage() {
         {/* Related Local Guides */}
         <div className="rounded-2xl bg-gray-50 border border-gray-200 p-6 mb-8">
           <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Related Local Guides</p>
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-wrap gap-3">
+            <Link href="/tracy/restaurants"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
+              🍽️ All Tracy Restaurants
+            </Link>
+            <Link href="/tracy"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
+              🌿 Tracy City Guide
+            </Link>
             <Link href="/best-restaurants-tracy"
-              className="flex-1 bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
               🍽️ Best Restaurants in Tracy
             </Link>
-            <Link href="/best-brunch-manteca"
-              className="flex-1 bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
-              🥞 Best Brunch in Manteca
+            <Link href="/best-breakfast-tracy"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
+              🍳 Best Breakfast in Tracy
             </Link>
-            <Link href="/restaurants-near-levis-stadium"
-              className="flex-1 bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
-              🏟️ Restaurants Near Levi&apos;s Stadium
+            <Link href="/best-brunch-manteca"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
+              🥞 Best Brunch in Manteca
             </Link>
           </div>
         </div>

@@ -185,18 +185,26 @@ export default async function BestBrunchMantecaPage() {
         {/* Related Local Guides */}
         <div className="rounded-2xl bg-gray-50 border border-gray-200 p-6 mb-8">
           <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Related Local Guides</p>
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-wrap gap-3">
+            <Link href="/manteca/restaurants"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-orange-300 hover:text-orange-800 transition">
+              🍊 All Manteca Restaurants
+            </Link>
+            <Link href="/manteca"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-orange-300 hover:text-orange-800 transition">
+              🍊 Manteca City Guide
+            </Link>
+            <Link href="/best-pizza-manteca"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-orange-300 hover:text-orange-800 transition">
+              🍕 Best Pizza in Manteca
+            </Link>
             <Link href="/best-restaurants-tracy"
-              className="flex-1 bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-orange-300 hover:text-orange-800 transition">
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-orange-300 hover:text-orange-800 transition">
               🍽️ Best Restaurants in Tracy
             </Link>
             <Link href="/best-family-restaurants-tracy"
-              className="flex-1 bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-orange-300 hover:text-orange-800 transition">
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-orange-300 hover:text-orange-800 transition">
               👨‍👩‍👧 Family Restaurants in Tracy
-            </Link>
-            <Link href="/best-places-watch-world-cup-san-jose"
-              className="flex-1 bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-orange-300 hover:text-orange-800 transition">
-              ⚽ World Cup Watch Parties Near San Jose
             </Link>
           </div>
         </div>

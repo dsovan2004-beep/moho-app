@@ -170,18 +170,26 @@ export default async function BestRestaurantsTracyPage() {
         {/* Related Local Guides */}
         <div className="rounded-2xl bg-gray-50 border border-gray-200 p-6 mb-8">
           <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Related Local Guides</p>
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-wrap gap-3">
+            <Link href="/tracy/restaurants"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
+              🍽️ All Tracy Restaurants
+            </Link>
+            <Link href="/tracy"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
+              🌿 Tracy City Guide
+            </Link>
+            <Link href="/best-pizza-tracy"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
+              🍕 Best Pizza in Tracy
+            </Link>
             <Link href="/best-coffee-tracy"
-              className="flex-1 bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
               ☕ Best Coffee in Tracy
             </Link>
             <Link href="/best-family-restaurants-tracy"
-              className="flex-1 bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
               👨‍👩‍👧 Family Restaurants in Tracy
-            </Link>
-            <Link href="/best-bars-watch-world-cup-san-jose"
-              className="flex-1 bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
-              🍺 Best Bars for the World Cup
             </Link>
           </div>
         </div>

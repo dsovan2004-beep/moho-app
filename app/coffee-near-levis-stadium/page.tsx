@@ -186,18 +186,26 @@ export default async function CoffeeNearLevisPage() {
         {/* Related */}
         <div className="rounded-2xl bg-gray-50 border border-gray-200 p-6 mb-8">
           <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">More FIFA World Cup 2026 Guides</p>
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-wrap gap-3">
+            <Link href="/directory"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-amber-300 hover:text-amber-800 transition">
+              🗂️ Full Business Directory
+            </Link>
             <Link href="/restaurants-near-levis-stadium"
-              className="flex-1 bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-amber-300 hover:text-amber-800 transition">
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-amber-300 hover:text-amber-800 transition">
               🍽️ Restaurants Near Levi&apos;s Stadium
             </Link>
             <Link href="/best-bars-watch-world-cup-san-jose"
-              className="flex-1 bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-amber-300 hover:text-amber-800 transition">
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-amber-300 hover:text-amber-800 transition">
               🍺 Best Bars to Watch the World Cup
             </Link>
-            <Link href="/late-night-food-santa-clara"
-              className="flex-1 bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-amber-300 hover:text-amber-800 transition">
-              🌙 Late Night Food Near Santa Clara
+            <Link href="/best-coffee-tracy"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
+              ☕ Best Coffee in Tracy
+            </Link>
+            <Link href="/best-breakfast-tracy"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
+              🍳 Best Breakfast in Tracy
             </Link>
           </div>
         </div>

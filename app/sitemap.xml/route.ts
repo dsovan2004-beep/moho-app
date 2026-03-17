@@ -54,6 +54,29 @@ const DISCOVERY_PAGES: Array<{ slug: string; priority: string }> = [
   { slug: 'best-brunch-manteca',                     priority: '0.8' },
   { slug: 'best-dentists-mountain-house',            priority: '0.8' },
   { slug: 'best-family-restaurants-tracy',           priority: '0.8' },
+  // City guide pages — Sprint 4 (Tracy)
+  { slug: 'best-pizza-tracy',                        priority: '0.85' },
+  { slug: 'best-breakfast-tracy',                    priority: '0.8' },
+  { slug: 'best-lunch-tracy',                        priority: '0.8' },
+  { slug: 'best-dinner-tracy',                       priority: '0.8' },
+  { slug: 'best-hair-salon-tracy',                   priority: '0.8' },
+  { slug: 'best-nail-salon-tracy',                   priority: '0.8' },
+  { slug: 'best-dentists-tracy',                     priority: '0.85' },
+  // City guide pages — Sprint 4 (Mountain House)
+  { slug: 'best-pizza-mountain-house',               priority: '0.85' },
+  { slug: 'best-breakfast-mountain-house',           priority: '0.8' },
+  { slug: 'best-lunch-mountain-house',               priority: '0.8' },
+  { slug: 'best-dinner-mountain-house',              priority: '0.8' },
+  { slug: 'best-hair-salon-mountain-house',          priority: '0.8' },
+  { slug: 'best-nail-salon-mountain-house',          priority: '0.8' },
+  // City guide pages — Sprint 4 (Manteca)
+  { slug: 'best-pizza-manteca',                      priority: '0.85' },
+  { slug: 'best-breakfast-manteca',                  priority: '0.8' },
+  { slug: 'best-lunch-manteca',                      priority: '0.8' },
+  { slug: 'best-dinner-manteca',                     priority: '0.8' },
+  { slug: 'best-hair-salon-manteca',                 priority: '0.8' },
+  { slug: 'best-nail-salon-manteca',                 priority: '0.8' },
+  { slug: 'best-dentists-manteca',                   priority: '0.85' },
 ]
 
 interface SitemapEntry {

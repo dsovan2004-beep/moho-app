@@ -264,17 +264,25 @@ export default async function RestaurantsNearLevisPage() {
             </Link>
           </div>
           <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Local Guides</p>
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-wrap gap-3">
+            <Link href="/directory"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-amber-300 hover:text-amber-800 transition">
+              🗂️ Full Business Directory
+            </Link>
             <Link href="/best-restaurants-tracy"
-              className="flex-1 bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
               🍽️ Best Restaurants in Tracy
             </Link>
+            <Link href="/best-pizza-tracy"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
+              🍕 Best Pizza in Tracy
+            </Link>
             <Link href="/best-family-restaurants-tracy"
-              className="flex-1 bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
               👨‍👩‍👧 Family Restaurants in Tracy
             </Link>
             <Link href="/best-coffee-tracy"
-              className="flex-1 bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-green-300 hover:text-green-800 transition">
               ☕ Best Coffee in Tracy
             </Link>
           </div>

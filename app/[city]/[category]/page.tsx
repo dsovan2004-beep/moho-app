@@ -60,6 +60,56 @@ const BEST_OF_SLUG: Record<string, string> = {
   'Pet Services':     'pet-services',
 }
 
+// ── Discovery page links per city/category ────────────────────────────────────
+// Kept as a static map so the dynamic template can inject relevant local guides
+// without any extra DB queries.
+const DISCOVERY_LINKS: Record<string, Array<{ href: string; label: string; emoji: string }>> = {
+  'tracy/restaurants': [
+    { href: '/best-restaurants-tracy',        label: 'Best Restaurants in Tracy',   emoji: '🍽️' },
+    { href: '/best-pizza-tracy',              label: 'Best Pizza in Tracy',         emoji: '🍕' },
+    { href: '/best-breakfast-tracy',          label: 'Best Breakfast in Tracy',     emoji: '🍳' },
+    { href: '/best-family-restaurants-tracy', label: 'Family Restaurants in Tracy', emoji: '👨‍👩‍👧' },
+    { href: '/best-coffee-tracy',             label: 'Best Coffee in Tracy',        emoji: '☕' },
+  ],
+  'tracy/beauty-spa': [
+    { href: '/best-hair-salon-tracy', label: 'Best Hair Salons in Tracy', emoji: '💇' },
+    { href: '/best-nail-salon-tracy', label: 'Best Nail Salons in Tracy', emoji: '💅' },
+  ],
+  'tracy/health-wellness': [
+    { href: '/best-dentists-tracy', label: 'Best Dentists in Tracy', emoji: '🦷' },
+  ],
+  'mountain-house/restaurants': [
+    { href: '/best-pizza-mountain-house',     label: 'Best Pizza in Mountain House',     emoji: '🍕' },
+    { href: '/best-breakfast-mountain-house', label: 'Best Breakfast in Mountain House', emoji: '🍳' },
+    { href: '/best-lunch-mountain-house',     label: 'Best Lunch in Mountain House',     emoji: '🥗' },
+  ],
+  'mountain-house/health-wellness': [
+    { href: '/best-dentists-mountain-house', label: 'Best Dentists in Mountain House', emoji: '🦷' },
+  ],
+  'mountain-house/beauty-spa': [
+    { href: '/best-hair-salon-mountain-house', label: 'Best Hair Salons in Mountain House', emoji: '💇' },
+    { href: '/best-nail-salon-mountain-house', label: 'Best Nail Salons in Mountain House', emoji: '💅' },
+  ],
+  'manteca/restaurants': [
+    { href: '/best-brunch-manteca',    label: 'Best Brunch in Manteca',    emoji: '🥞' },
+    { href: '/best-pizza-manteca',     label: 'Best Pizza in Manteca',     emoji: '🍕' },
+    { href: '/best-breakfast-manteca', label: 'Best Breakfast in Manteca', emoji: '🍳' },
+    { href: '/best-dinner-manteca',    label: 'Best Dinner in Manteca',    emoji: '🌙' },
+  ],
+  'manteca/health-wellness': [
+    { href: '/best-dentists-manteca', label: 'Best Dentists in Manteca', emoji: '🦷' },
+  ],
+  'manteca/beauty-spa': [
+    { href: '/best-hair-salon-manteca', label: 'Best Hair Salons in Manteca', emoji: '💇' },
+    { href: '/best-nail-salon-manteca', label: 'Best Nail Salons in Manteca', emoji: '💅' },
+  ],
+  'lathrop/restaurants': [
+    { href: '/best-restaurants-tracy',        label: 'Best Restaurants Nearby (Tracy)',  emoji: '🍽️' },
+    { href: '/best-family-restaurants-tracy', label: 'Family Restaurants in Tracy',      emoji: '👨‍👩‍👧' },
+    { href: '/best-pizza-tracy',              label: 'Best Pizza in Tracy',              emoji: '🍕' },
+  ],
+}
+
 // ── City config ───────────────────────────────────────────────────────────────
 
 const CITY_CFG: Record<string, { gradient: string; chip: string; emoji: string; tagline: string }> = {
@@ -246,11 +296,12 @@ export default async function CityLandingPage({ params }: PageProps) {
 
   if (!city || !category) notFound()
 
-  const businesses = await getBusinesses(city, category)
-  const cfg        = CITY_CFG[city] ?? CITY_CFG['Mountain House']
-  const catEmoji   = getCategoryEmoji(category)
-  const county     = COUNTY_MAP[city] ?? 'San Joaquin County'
-  const bestOfSlug = BEST_OF_SLUG[category]
+  const businesses    = await getBusinesses(city, category)
+  const cfg           = CITY_CFG[city] ?? CITY_CFG['Mountain House']
+  const catEmoji      = getCategoryEmoji(category)
+  const county        = COUNTY_MAP[city] ?? 'San Joaquin County'
+  const bestOfSlug    = BEST_OF_SLUG[category]
+  const discoveryLinks = DISCOVERY_LINKS[`${citySlug}/${categorySlug}`] ?? []
 
   // Schema.org BreadcrumbList
   const breadcrumbSchema = {
@@ -351,6 +402,23 @@ export default async function CityLandingPage({ params }: PageProps) {
                 <BusinessCard key={biz.id} biz={biz} cityCfg={cfg} catEmoji={catEmoji} />
               ))}
             </div>
+
+            {/* ── Local Guides ── */}
+            {discoveryLinks.length > 0 && (
+              <div className="rounded-2xl bg-gray-50 border border-gray-200 p-6 mb-6">
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+                  Local Guides — {category} in {city}
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  {discoveryLinks.map((link) => (
+                    <Link key={link.href} href={link.href}
+                      className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-blue-300 hover:text-blue-700 transition">
+                      {link.emoji} {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Submit CTA at bottom */}
             <div

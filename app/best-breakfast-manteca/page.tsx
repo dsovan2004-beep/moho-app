@@ -4,28 +4,28 @@ import { getSupabaseClient, type Business } from '@/lib/supabase'
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Best Dentists in Mountain House CA — Verified Local Dental Offices | MoHo Local',
+  title: 'Best Breakfast in Manteca CA — Morning Spots & Diners | MoHo Local',
   description:
-    'Looking for a dentist in Mountain House, CA? Here are the top verified dental offices and health providers serving the Mountain House community.',
+    "Looking for breakfast in Manteca, CA? Here are the top local morning spots, diners, and cafes in Manteca, San Joaquin County.",
   openGraph: {
-    title: 'Best Dentists in Mountain House CA',
-    description:
-      'Top verified dentists and dental offices in Mountain House, CA — trusted picks from your neighbors in the 209.',
-    url: 'https://www.moholocal.com/best-dentists-mountain-house',
+    title: 'Best Breakfast in Manteca CA',
+    description: 'Top breakfast spots in Manteca, CA — verified picks from your neighbors in the 209.',
+    url: 'https://www.moholocal.com/best-breakfast-manteca',
   },
 }
 
-const CITY = 'Mountain House'
-const CITY_GRADIENT = 'linear-gradient(135deg,#1e3a5f 0%,#1e40af 100%)'
+const CITY = 'Manteca'
+const CITY_GRADIENT = 'linear-gradient(135deg,#7c2d12 0%,#c2410c 100%)'
 
-const DENTAL_KEYWORDS = [
-  'dental', 'dentist', 'orthodont', 'teeth', 'oral', 'smile', 'braces',
-  'invisalign', 'tooth', 'cavity', 'implant', 'crown', 'hygien',
+const BREAKFAST_KEYWORDS = [
+  'breakfast', 'pancake', 'waffle', 'eggs', 'diner', 'morning',
+  'omelette', 'omelet', 'hash', 'brunch', 'bagel', 'french toast',
+  'benedict', 'biscuit', 'crepe', 'bakery', 'cafe', 'café',
 ]
 
-function isDentalSpot(biz: Business): boolean {
+function isBreakfastSpot(biz: Business): boolean {
   const text = `${biz.name} ${biz.description ?? ''}`.toLowerCase()
-  return DENTAL_KEYWORDS.some((kw) => text.includes(kw))
+  return BREAKFAST_KEYWORDS.some((kw) => text.includes(kw))
 }
 
 async function getListings(): Promise<{ featured: Business[]; all: Business[] }> {
@@ -34,13 +34,13 @@ async function getListings(): Promise<{ featured: Business[]; all: Business[] }>
     .from('businesses')
     .select('id,name,description,category,city,address,phone,website,rating,review_count')
     .eq('city', CITY)
-    .eq('category', 'Health & Wellness')
+    .eq('category', 'Restaurants')
     .eq('status', 'approved')
     .eq('verified', true)
     .order('review_count', { ascending: false })
-    .limit(40)
+    .limit(60)
   const all = (data as Business[]) ?? []
-  const featured = all.filter(isDentalSpot)
+  const featured = all.filter(isBreakfastSpot)
   return { featured, all }
 }
 
@@ -49,15 +49,15 @@ function buildSchema(businesses: Business[]) {
     {
       '@context': 'https://schema.org',
       '@type': 'ItemList',
-      name: 'Best Dentists in Mountain House CA',
-      description: 'Top verified dentists and dental offices in Mountain House, CA.',
-      url: 'https://www.moholocal.com/best-dentists-mountain-house',
+      name: 'Best Breakfast in Manteca CA',
+      description: 'Top breakfast spots in Manteca, CA verified by the MoHo Local community.',
+      url: 'https://www.moholocal.com/best-breakfast-manteca',
       numberOfItems: businesses.length,
       itemListElement: businesses.slice(0, 20).map((biz, i) => ({
         '@type': 'ListItem',
         position: i + 1,
         item: {
-          '@type': 'Dentist',
+          '@type': 'Restaurant',
           name: biz.name,
           address: biz.address,
           telephone: biz.phone,
@@ -70,8 +70,8 @@ function buildSchema(businesses: Business[]) {
       '@type': 'BreadcrumbList',
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.moholocal.com' },
-        { '@type': 'ListItem', position: 2, name: 'Mountain House', item: 'https://www.moholocal.com/mountain-house' },
-        { '@type': 'ListItem', position: 3, name: 'Best Dentists in Mountain House' },
+        { '@type': 'ListItem', position: 2, name: 'Manteca', item: 'https://www.moholocal.com/manteca' },
+        { '@type': 'ListItem', position: 3, name: 'Best Breakfast in Manteca' },
       ],
     },
   ]
@@ -101,19 +101,16 @@ function BizCard({ biz }: { biz: Business }) {
               </a>
             )}
           </div>
-          {biz.website && (
-            <a href={biz.website} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline mt-2">
-              <span>🌐</span><span>Visit Website ↗</span>
-            </a>
-          )}
         </div>
         <div className="flex flex-col items-end gap-2 shrink-0">
+          {biz.website && (
+            <a href={biz.website} target="_blank" rel="noopener noreferrer"
+              className="text-[10px] font-semibold text-blue-600 hover:underline">
+              Website ↗
+            </a>
+          )}
           {(biz.rating ?? 0) > 0 && (
             <span className="text-xs text-amber-600 font-semibold">★ {biz.rating!.toFixed(1)}</span>
-          )}
-          {(biz.review_count ?? 0) > 0 && (
-            <span className="text-xs text-gray-400">{biz.review_count} reviews</span>
           )}
         </div>
       </div>
@@ -127,7 +124,7 @@ function BizCard({ biz }: { biz: Business }) {
   )
 }
 
-export default async function BestDentistsMountainHousePage() {
+export default async function BestBreakfastMantecaPage() {
   const { featured, all } = await getListings()
   const listings = featured.length >= 3 ? featured : all
   const isFallback = featured.length < 3
@@ -136,7 +133,7 @@ export default async function BestDentistsMountainHousePage() {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8 text-center text-gray-500">
         <p>Listings loading — check back soon.</p>
-        <Link href="/mountain-house/health-wellness" className="text-blue-600 hover:underline mt-4 inline-block">Browse Mountain House Health & Wellness →</Link>
+        <Link href="/manteca/restaurants" className="text-blue-600 hover:underline mt-4 inline-block">Browse Manteca Restaurants →</Link>
       </div>
     )
   }
@@ -154,36 +151,36 @@ export default async function BestDentistsMountainHousePage() {
         <nav className="text-sm text-gray-400 mb-6 flex items-center gap-2 flex-wrap">
           <Link href="/" className="hover:text-blue-600 transition">Home</Link>
           <span>›</span>
-          <Link href="/mountain-house" className="hover:text-blue-600 transition">Mountain House</Link>
+          <Link href="/manteca" className="hover:text-blue-600 transition">Manteca</Link>
           <span>›</span>
-          <span className="text-gray-700 font-medium">Best Dentists</span>
+          <span className="text-gray-700 font-medium">Best Breakfast</span>
         </nav>
 
         <div className="rounded-2xl p-8 mb-6 text-white" style={{ background: CITY_GRADIENT }}>
           <div className="flex items-start gap-4">
-            <div className="text-5xl">🦷</div>
+            <div className="text-5xl">🍳</div>
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest opacity-70 mb-1">
-                Mountain House, CA · San Joaquin County
+                Manteca, CA · San Joaquin County
               </p>
               <h1 className="text-2xl sm:text-3xl font-extrabold mb-2 leading-tight">
-                Best Dentists in Mountain House, CA
+                Best Breakfast in Manteca, CA
               </h1>
               <p className="text-white/80 text-sm leading-relaxed">
-                {listings.length} verified local dental and health providers.
+                {listings.length} verified local morning spots — diners, cafes, and breakfast joints.
               </p>
             </div>
           </div>
         </div>
 
         {isFallback && (
-          <div className="bg-blue-50 border border-blue-200 rounded-xl px-5 py-3 mb-6 text-sm text-blue-800">
-            🦷 Showing all Mountain House health & wellness listings — dental offices highlighted as more are added.
+          <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-3 mb-6 text-sm text-amber-800">
+            🍳 Showing top Manteca restaurants while we grow dedicated breakfast listings.
           </div>
         )}
 
         <p className="text-gray-600 text-sm leading-relaxed mb-8">
-          Mountain House is a master-planned community in western San Joaquin County with one of the fastest-growing populations in California. As the community has matured, so has its local health infrastructure — dental offices, orthodontists, and family health providers have followed the families that moved here. These listings are verified by the MoHo Local community, so you know you're looking at real offices with real patient reviews.
+          Manteca has long been a working city with an early-rising culture. Whether it is a classic diner with bottomless coffee or a neighborhood spot where they already know your order, Manteca has real options for a solid morning meal. These are all verified local spots — real businesses that Manteca residents have actually visited and reviewed.
         </p>
 
         <div className="space-y-4 mb-10">
@@ -194,36 +191,32 @@ export default async function BestDentistsMountainHousePage() {
         <div className="rounded-2xl bg-gray-50 border border-gray-200 p-6 mb-8">
           <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Related Local Guides</p>
           <div className="flex flex-wrap gap-3">
-            <Link href="/mountain-house/health-wellness"
-              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-blue-300 hover:text-blue-800 transition">
-              🏥 All Health & Wellness in Mountain House
+            <Link href="/manteca/restaurants"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-orange-300 hover:text-orange-800 transition">
+              🍊 All Manteca Restaurants
             </Link>
-            <Link href="/mountain-house"
-              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-blue-300 hover:text-blue-800 transition">
-              🏘️ Mountain House City Guide
+            <Link href="/manteca"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-orange-300 hover:text-orange-800 transition">
+              🍊 Manteca City Guide
             </Link>
-            <Link href="/best-dentists-tracy"
-              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-blue-300 hover:text-blue-800 transition">
-              🦷 Best Dentists in Tracy
+            <Link href="/best-brunch-manteca"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-orange-300 hover:text-orange-800 transition">
+              🥞 Best Brunch in Manteca
             </Link>
-            <Link href="/best-restaurants-tracy"
-              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-blue-300 hover:text-blue-800 transition">
-              🍽️ Best Restaurants in Tracy
-            </Link>
-            <Link href="/best-pizza-mountain-house"
-              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-blue-300 hover:text-blue-800 transition">
-              🍕 Best Pizza in Mountain House
+            <Link href="/best-pizza-manteca"
+              className="bg-white rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:border-orange-300 hover:text-orange-800 transition">
+              🍕 Best Pizza in Manteca
             </Link>
           </div>
         </div>
 
         <div className="rounded-2xl p-6 text-center text-white" style={{ background: CITY_GRADIENT }}>
-          <p className="font-bold text-lg mb-1">Run a dental or health practice in Mountain House?</p>
-          <p className="text-white/80 text-sm mb-4">Get discovered by families looking for local providers — free listing on MoHoLocal.</p>
+          <p className="font-bold text-lg mb-1">Own a breakfast spot or cafe in Manteca?</p>
+          <p className="text-white/80 text-sm mb-4">Reach the morning crowd — free listing on MoHoLocal.</p>
           <Link href="/submit-business"
-            className="inline-block px-6 py-2.5 rounded-xl text-sm font-bold bg-white hover:bg-blue-50 transition"
-            style={{ color: '#1e3a5f' }}>
-            + Add Your Practice
+            className="inline-block px-6 py-2.5 rounded-xl text-sm font-bold bg-white hover:bg-orange-50 transition"
+            style={{ color: '#7c2d12' }}>
+            + Add Your Restaurant
           </Link>
         </div>
 
