@@ -14,51 +14,63 @@ This document is for AI agents and developers who operate the platform.
 
 *(Standardized March 2026 — required before running any script)*
 
-### Canonical .env.local Path
-
-There are **two** `.env.local` files in the project. They serve different purposes and must not be confused:
-
-| File | Purpose | Contains |
-|------|---------|---------|
-| `~/Desktop/MoHoLocal/.env.local` | **Canonical env file** — all API keys and secrets | `SUPABASE_SERVICE_ROLE_KEY`, `GOOGLE_PLACES_API_KEY`, `NEXT_PUBLIC_SUPABASE_URL`, etc. |
-| `~/Desktop/MoHoLocal/moho-app-scaffold/.env.local` | Scaffold-only vars | `RESEND_API_KEY`, `NOTIFY_EMAIL` |
-
-**`verify_business_places.py` auto-loads the canonical file** via `load_env_local()` when run from `~/Desktop/MoHoLocal/`. No manual export needed.
-
-**Seed scripts (`seed_southbay.py`, `seed_businesses_*.py`)** are run from inside the scaffold and require manual env loading:
-```bash
-export $(grep -v '^#' ~/Desktop/MoHoLocal/.env.local | xargs)
-```
-
 ### Required Environment Variables
 
-| Variable | Used By | Source |
-|----------|---------|--------|
-| `SUPABASE_SERVICE_ROLE_KEY` | All seed scripts, verify_business_places.py | `~/Desktop/MoHoLocal/.env.local` |
-| `GOOGLE_PLACES_API_KEY` | verify_business_places.py, bulk_places_discovery.py | `~/Desktop/MoHoLocal/.env.local` |
-| `NEXT_PUBLIC_SUPABASE_URL` | verify_business_places.py | `~/Desktop/MoHoLocal/.env.local` |
-| `RESEND_API_KEY` | Email notification scripts | `~/Desktop/MoHoLocal/moho-app-scaffold/.env.local` |
+| Variable | Used By | Canonical Name |
+|----------|---------|---------------|
+| `SUPABASE_SERVICE_ROLE_KEY` | All seed scripts, verify_business_places.py | ✅ Frozen |
+| `GOOGLE_PLACES_API_KEY` | verify_business_places.py, bulk_places_discovery.py | ✅ Frozen |
+| `NEXT_PUBLIC_SUPABASE_URL` | verify_business_places.py | ✅ Frozen |
+| `RESEND_API_KEY` | Email notification scripts | ✅ Frozen |
+
+No script may introduce alternate names (`GOOGLE_API_KEY`, `PLACES_API_KEY`, etc.). Variable names are frozen.
+
+### How verify_business_places.py Loads Env Vars
+
+The script searches for env vars in this priority order:
+
+```
+1. --env-file <path>          Pass an explicit env file path
+2. $MOHO_ENV_FILE             Shell variable pointing to a file
+3. ~/Desktop/MoHoLocal/.env.local
+4. <script_dir>/.env.local
+5. <script_dir>/moho-app-scaffold/.env.local
+6. Shell session exports       export GOOGLE_PLACES_API_KEY=...
+```
+
+If no env file is found, vars must be exported directly in the shell session before running the script.
+
+### Supplying Env Vars (choose one method)
+
+**Method A — Export in shell session (quickest):**
+```bash
+export GOOGLE_PLACES_API_KEY=<your_key>
+export SUPABASE_SERVICE_ROLE_KEY=<your_key>
+export NEXT_PUBLIC_SUPABASE_URL=https://ozjlfgipfzykzrjakwzb.supabase.co
+python3.11 verify_business_places.py --city "San Jose"
+```
+
+**Method B — Point to your env file explicitly:**
+```bash
+python3.11 verify_business_places.py --env-file ~/path/to/.env.local --city "San Jose"
+```
+
+**Method C — Set MOHO_ENV_FILE once for the session:**
+```bash
+export MOHO_ENV_FILE=~/path/to/.env.local
+python3.11 verify_business_places.py --city "San Jose"
+```
 
 ### Pre-flight Validation (REQUIRED before enrichment runs)
 
-Before running `verify_business_places.py`, validate the key is loaded:
 ```bash
-echo $GOOGLE_PLACES_API_KEY
+echo $GOOGLE_PLACES_API_KEY   # must be non-empty
 ```
-If output is empty → stop. Do not proceed. Debug env loading first.
-
-### Variable Name Standard
-
-All scripts use `GOOGLE_PLACES_API_KEY` as the canonical variable name. No alternatives (`GOOGLE_API_KEY`, `PLACES_API_KEY`, `MAPS_API_KEY`) are used or permitted.
+If empty → do not proceed. Use one of the methods above to supply the key.
 
 ### Diagnosing "Key Missing" Errors
 
-Before flagging any API key as missing, verify in this order:
-1. **Correct file** — are you reading `~/Desktop/MoHoLocal/.env.local` (not the scaffold subfolder)?
-2. **Correct variable name** — `GOOGLE_PLACES_API_KEY` exactly
-3. **Environment loaded** — run `echo $GOOGLE_PLACES_API_KEY` to confirm the shell has it
-
-The key was present and operational for Mountain House, Tracy, Lathrop, Manteca, and Brentwood enrichment. If it appears missing, the issue is env loading — not the key itself.
+Run the script — it prints an exact diagnostic showing every file path searched and whether it was found. Use that output to determine where the key needs to be placed. Do not guess.
 
 ---
 

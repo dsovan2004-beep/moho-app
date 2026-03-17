@@ -1014,14 +1014,27 @@ If a workflow has previously succeeded, treat that as evidence the credentials m
 
 No script may use `GOOGLE_API_KEY`, `PLACES_API_KEY`, `MAPS_API_KEY`, `SUPABASE_KEY` (except as a fallback alias), or any other variant. Variable names are frozen.
 
-### Two-File Env Architecture (canonical)
+### Env File Architecture
 
 | File | Role |
 |------|------|
-| `~/Desktop/MoHoLocal/.env.local` | Primary secrets — Google API, Supabase key, Supabase URL |
-| `~/Desktop/MoHoLocal/moho-app-scaffold/.env.local` | Scaffold app vars only — Resend, notify email |
+| `~/Desktop/MoHoLocal/moho-app-scaffold/.env.local` | Scaffold app vars — Resend, notify email |
+| Any path via `--env-file` or `$MOHO_ENV_FILE` | Backend secrets — use to supply Google API + Supabase keys |
 
-Reading the scaffold `.env.local` and finding no Google key is expected and correct. The key lives in the parent file. This is not a missing key — it is a two-file architecture.
+**There is no guaranteed parent-level `.env.local`.** The founder may store backend secrets wherever is convenient. `verify_business_places.py` searches multiple locations automatically. If no file is found, vars must be exported in the shell session before running.
+
+### Env Resolution Order (verify_business_places.py)
+
+```
+1. --env-file <path>          CLI flag — highest priority
+2. $MOHO_ENV_FILE             Shell env var pointing to a file
+3. ~/Desktop/MoHoLocal/.env.local
+4. <script_dir>/.env.local
+5. <script_dir>/moho-app-scaffold/.env.local
+6. Shell session exports       export GOOGLE_PLACES_API_KEY=...
+```
+
+The script will print an exact diagnostic showing which paths were checked and which was loaded if any required variable is missing.
 
 ### Image Enrichment Env Dependency
 
@@ -1035,15 +1048,20 @@ Reading the scaffold `.env.local` and finding no Google key is expected and corr
 echo $GOOGLE_PLACES_API_KEY   # must be non-empty
 ```
 
+If empty, either export the var or use `--env-file`:
+```bash
+python3.11 verify_business_places.py --env-file ~/path/to/.env.local --city "San Jose"
+```
+
 ### Agent Rule — Diagnosing Missing Keys
 
 Before flagging any API key as missing, an agent must verify in this order:
-1. Which `.env.local` file was checked — scaffold or parent?
+1. Run `verify_business_places.py` — it prints its own diagnostic showing every path searched
 2. Is the variable name exactly `GOOGLE_PLACES_API_KEY`?
 3. Is the environment loaded in the current shell (`echo $VAR`)?
 4. Has this key been used successfully in prior runs for this project?
 
-If all four checks pass and the key is still missing, only then escalate to the founder.
+If the script's own diagnostic shows all paths missing and `echo $GOOGLE_PLACES_API_KEY` is empty, then the key genuinely needs to be provided. Escalate to the founder with the diagnostic output.
 
 ---
 

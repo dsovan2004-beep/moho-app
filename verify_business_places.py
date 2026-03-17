@@ -51,10 +51,20 @@ Report output:
 ──────────────────────────────────────────────────────────────────
 PREREQUISITES:
   pip install supabase requests
-  .env.local must contain:
+
+  Required environment variables:
     NEXT_PUBLIC_SUPABASE_URL
     SUPABASE_SERVICE_ROLE_KEY
     GOOGLE_PLACES_API_KEY
+
+  These can be provided via (in priority order):
+    1. --env-file /path/to/.env.local
+    2. MOHO_ENV_FILE env var pointing to a .env file
+    3. ~/Desktop/MoHoLocal/.env.local
+    4. <script_dir>/.env.local
+    5. export VAR=value in your shell session before running
+
+  Run with no args to see a full diagnostic if keys are missing.
 ──────────────────────────────────────────────────────────────────
 """
 
@@ -74,19 +84,68 @@ from supabase import create_client
 
 # ── Environment ──────────────────────────────────────────────────────────────
 
-def load_env_local():
-    """Load vars from moho-app-scaffold/.env.local if present."""
-    env_path = Path(__file__).parent / "moho-app-scaffold" / ".env.local"
-    if not env_path.exists():
-        env_path = Path(__file__).parent / ".env.local"
-    if env_path.exists():
-        for line in env_path.read_text().splitlines():
-            line = line.strip()
-            if line and not line.startswith("#") and "=" in line:
-                key, _, value = line.partition("=")
-                os.environ.setdefault(key.strip(), value.strip())
+def load_env_local() -> tuple:
+    """
+    Search for a backend .env file in multiple standard locations and load it.
 
-load_env_local()
+    Search order:
+      1. --env-file <path>  CLI flag (parsed directly from sys.argv before argparse)
+      2. $MOHO_ENV_FILE     environment variable (if set)
+      3. ~/Desktop/MoHoLocal/.env.local
+      4. <script_dir>/.env.local
+      5. <script_dir>/moho-app-scaffold/.env.local
+
+    If no file contains the required vars, they must be exported in the current
+    shell session:
+        export GOOGLE_PLACES_API_KEY=...
+        export SUPABASE_SERVICE_ROLE_KEY=...
+        export NEXT_PUBLIC_SUPABASE_URL=...
+
+    Returns:
+        (loaded_from: Path | None, candidates: list[Path])
+    """
+    # 1. Check for --env-file in raw sys.argv (before argparse initialises)
+    env_file_override = None
+    for i, arg in enumerate(sys.argv[1:], 1):
+        if arg == "--env-file" and i < len(sys.argv):
+            env_file_override = Path(sys.argv[i]).expanduser().resolve()
+            break
+        if arg.startswith("--env-file="):
+            env_file_override = Path(arg.split("=", 1)[1]).expanduser().resolve()
+            break
+
+    script_dir = Path(__file__).parent.resolve()
+
+    if env_file_override:
+        candidates = [env_file_override]
+    else:
+        candidates = []
+        # 2. MOHO_ENV_FILE shell variable
+        moho_env = os.environ.get("MOHO_ENV_FILE", "")
+        if moho_env:
+            candidates.append(Path(moho_env).expanduser().resolve())
+        # 3–5. Standard locations
+        candidates += [
+            Path.home() / "Desktop" / "MoHoLocal" / ".env.local",
+            script_dir / ".env.local",
+            script_dir / "moho-app-scaffold" / ".env.local",
+        ]
+
+    loaded_from = None
+    for path in candidates:
+        if path.exists():
+            for line in path.read_text().splitlines():
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    key, _, value = line.partition("=")
+                    os.environ.setdefault(key.strip(), value.strip())
+            loaded_from = path
+            break
+
+    return loaded_from, candidates
+
+
+_env_loaded_from, _env_search_paths = load_env_local()
 
 SUPABASE_URL   = os.environ.get("NEXT_PUBLIC_SUPABASE_URL", "")
 SUPABASE_KEY   = os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")
@@ -761,17 +820,42 @@ def main():
                         help="[verify mode] Max number of pending records to process (0 = all)")
     parser.add_argument("--dry-run",     action="store_true",
                         help="Show what would happen without writing any changes")
+    parser.add_argument("--env-file",    type=str, metavar="PATH",
+                        help="Path to a .env file to load (overrides default search locations)")
     args = parser.parse_args()
 
     # ── Validate environment ──────────────────────────────────────────────────
-    if not SUPABASE_URL or not SUPABASE_KEY:
-        print(f"{RED}ERROR: SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY not found.{NC}")
-        print("Add them to moho-app-scaffold/.env.local")
-        sys.exit(1)
+    _missing = []
+    if not SUPABASE_URL:  _missing.append("NEXT_PUBLIC_SUPABASE_URL")
+    if not SUPABASE_KEY:  _missing.append("SUPABASE_SERVICE_ROLE_KEY")
+    if not GOOGLE_API_KEY: _missing.append("GOOGLE_PLACES_API_KEY")
 
-    if not GOOGLE_API_KEY:
-        print(f"{RED}ERROR: GOOGLE_PLACES_API_KEY not found.{NC}")
-        print("Add GOOGLE_PLACES_API_KEY=... to moho-app-scaffold/.env.local")
+    if _missing:
+        print(f"{RED}ERROR: Missing required environment variable(s):{NC}")
+        for v in _missing:
+            print(f"  • {v}")
+        print(f"\n{YELLOW}── Diagnostic ───────────────────────────────────────────{NC}")
+        print(f"  Working directory : {os.getcwd()}")
+        print(f"  Env files searched (in order):")
+        for p in _env_search_paths:
+            if p == _env_loaded_from:
+                status = f"{GREEN}✓ loaded (key not present in file){NC}"
+            elif p.exists():
+                status = f"{YELLOW}found (not loaded — earlier file took precedence){NC}"
+            else:
+                status = f"{RED}✗ does not exist{NC}"
+            print(f"    {p}  [{status}]")
+        if _env_loaded_from is None:
+            print(f"  {RED}No env file was found in any search location.{NC}")
+        print(f"\n{YELLOW}── How to fix ───────────────────────────────────────────{NC}")
+        print(f"  Option 1 — Export vars directly in your shell session:")
+        print(f"    export GOOGLE_PLACES_API_KEY=<your_key>")
+        print(f"    export SUPABASE_SERVICE_ROLE_KEY=<your_key>")
+        print(f"    export NEXT_PUBLIC_SUPABASE_URL=https://ozjlfgipfzykzrjakwzb.supabase.co")
+        print(f"  Option 2 — Add vars to an env file and point to it:")
+        print(f"    python3.11 verify_business_places.py --env-file ~/path/to/.env.local")
+        print(f"  Option 3 — Set MOHO_ENV_FILE to your canonical env path:")
+        print(f"    export MOHO_ENV_FILE=~/path/to/.env.local")
         sys.exit(1)
 
     # ── Mode: verify — extra safety check ────────────────────────────────────
