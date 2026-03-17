@@ -136,7 +136,7 @@ Signals must be categorized correctly during ingestion or moderation. Misclassif
 
 ## City Coverage
 
-Active cities:
+**Primary territory — 209 / San Joaquin County:**
 
 - Mountain House
 - Tracy
@@ -144,9 +144,17 @@ Active cities:
 - Manteca
 - Brentwood
 
+**Expansion territory — South Bay / Santa Clara County** *(founder-approved, March 2026)*
+
+- San Jose
+- Santa Clara
+- Sunnyvale
+
+South Bay expansion is a strategic growth wedge tied to event-driven demand (FIFA World Cup 2026, Levi's Stadium traffic, metro spillover). These cities are seeded for bars, restaurants, and cafes only — not full-category coverage. See Market Expansion Policy below.
+
 The architecture supports expansion into additional nearby cities without structural changes.
 
-Future expansion candidates:
+Future 209 expansion candidates:
 
 - Stockton
 - Modesto
@@ -773,6 +781,44 @@ Visit business detail pages on moholocal.com. Verified businesses with photos sh
 
 ---
 
+## 🌍 Market Expansion Policy
+
+*(Added March 2026 — Founder-approved directive)*
+
+MoHoLocal is no longer restricted to the 209 / San Joaquin County territory. Expansion is **city-by-city and demand-driven** — not speculative.
+
+**Expansion trigger conditions (all must be met):**
+
+1. Demonstrated real search demand or event-driven traffic (e.g., FIFA, concerts, regional draws)
+2. Adjacent or complementary geography to existing coverage
+3. Founder explicitly approves the expansion in writing before data seeding begins
+
+**Initial expansion region — South Bay / Santa Clara County:**
+
+| City | County | Rationale |
+|------|--------|-----------|
+| San Jose | Santa Clara County | FIFA World Cup 2026 venue corridor, high search volume |
+| Santa Clara | Santa Clara County | Levi's Stadium host city, hotel/dining search intent |
+| Sunnyvale | Santa Clara County | Adjacent metro, Murphy Ave dining corridor |
+
+**South Bay scope constraints:**
+
+- Initial seeding covers: Bars, Restaurants, Cafes only
+- Full-category expansion (health, auto, home services) is deferred until search demand justifies it
+- South Bay cities do NOT appear in the nav city picker — they are accessible via discovery pages and direct URL only
+- No New Resident Guide required at this stage — these are transient-visitor pages, not neighborhood community pages
+
+**Seed script authorization policy:**
+
+- Default behavior: `status='pending'`, `verified=false`
+- Exception: Founder may authorize `--force-approve` flag for a specific seed run to insert as `status='approved'`, `verified=true`
+- `--force-approve` requires explicit founder instruction — it must never be used as a default or convenience shortcut
+- The 3-rule ingestion safeguard (address, phone, name) runs regardless of `--force-approve`
+
+**Do NOT expand beyond these 3 South Bay cities without a new founder directive.**
+
+---
+
 ## City Expansion Strategy — Density Before Expansion
 
 MoHoLocal prioritizes **depth over breadth**. A city should have dense, verified directory coverage before the platform expands to additional cities.
@@ -992,7 +1038,18 @@ Every seed script must include a `validate_trust_policy()` function that runs be
 - `status` != `'pending'`
 - `verified` != `False`
 
-No business, event, or listing may be inserted as `status='approved'` or `verified=True` through a seed script. Approval is a human action only.
+No business, event, or listing may be inserted as `status='approved'` or `verified=True` through a seed script without explicit founder authorization.
+
+**Exception — `--force-approve` flag:**
+
+Seed scripts may support a `--force-approve` CLI flag that overrides the default trust policy and inserts records as `status='approved'`, `verified=true`. This flag:
+- Must be explicitly passed by the founder — never set as a default
+- Must print a visible warning before inserting any records
+- Does NOT bypass the 3-rule ingestion safeguard (address, phone, name validation still runs)
+- May only be used when the founder has verified that the data source is reliable
+- Must be documented in the seed script's docstring with a clear warning
+
+The `seed_southbay.py` script implements this pattern as the reference implementation.
 
 **Duplicate Detection (required in every seed script)**
 

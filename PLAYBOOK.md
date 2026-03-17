@@ -12,14 +12,19 @@ This document is for AI agents and developers who operate the platform.
 
 ## Platform Overview
 
-MoHoLocal is an AI-assisted hyperlocal signal platform that collects and organizes community information across multiple cities in San Joaquin County and East Bay, CA.
+MoHoLocal is an AI-assisted hyperlocal signal platform that collects and organizes community information across multiple cities in San Joaquin County, East Bay, and South Bay, CA.
 
-Active cities:
+**Primary territory — 209 / San Joaquin County:**
 - Mountain House
 - Tracy
 - Lathrop
 - Manteca
 - Brentwood
+
+**South Bay expansion** *(founder-approved, March 2026 — bars/restaurants/cafes only):*
+- San Jose
+- Santa Clara
+- Sunnyvale
 
 Core platform sections:
 - Business Directory (`/directory`)
@@ -867,5 +872,56 @@ MoHoLocal's event ingestion pipeline is governed by an approved source list. Any
 
 ---
 
-MoHoLocal Operations Playbook v6
+---
+
+## ⚡ Expansion Play: Demand → Supply Injection
+
+*(Added March 2026 — documents the South Bay expansion pattern for future city launches)*
+
+This play is executed when real user demand exists but supply (listings) is missing. It is the fastest path from "empty search results" to "useful page" without building new infrastructure.
+
+### Trigger Conditions
+
+All three must be present:
+
+1. **High search demand** — users are actively searching for a category in a city (Google Search Console impressions, FIFA/event traffic, referral patterns)
+2. **Event or geographic anchor** — a specific regional draw (stadium, airport, tourist corridor) creates concentrated intent
+3. **Adjacent coverage** — the target city is geographically near existing MoHoLocal cities, allowing cross-city linking and shared SEO authority
+
+### Execution Steps
+
+```
+1. Founder approves scope expansion (written directive)
+2. Add city routes — update CITY_MAP in [city]/page.tsx and [city]/[category]/page.tsx
+3. Write or extend seed script (Overpass/OSM primary, Yelp secondary)
+4. Dry run seed script — review output for quality
+5. Seed with --force-approve if founder authorizes immediate listing visibility
+6. Verify: city pages render, category pages show results, no empty states
+7. Submit new pages to Google Search Console
+8. Update BIBLE.md, ROADMAP.md, PLAYBOOK.md to reflect new scope
+```
+
+### Scope Rules
+
+- **Start narrow:** seed only the highest-intent categories (bars, restaurants, cafes for event-driven expansion)
+- **Do not expand globally:** one play, one region, one category set
+- **Trust model still applies:** 3-rule ingestion safeguard runs regardless of `--force-approve`
+- **Nav city picker:** expansion cities are NOT added to the nav picker until they have full-category coverage
+- **Expansion is allowed ONLY when tied to real user demand or a defined revenue opportunity**
+
+### Reference Implementation
+
+South Bay expansion (March 2026) is the reference implementation of this play:
+
+| Step | Implementation |
+|------|---------------|
+| Demand trigger | FIFA World Cup 2026 at Levi's Stadium + Google search intent |
+| Cities added | San Jose, Santa Clara, Sunnyvale |
+| Seed script | `seed_southbay.py` with `--force-approve` |
+| City routes | `[city]/page.tsx`, `[city]/[category]/page.tsx` |
+| Discovery pages | `/restaurants-near-levis-stadium`, `/best-bars-watch-world-cup-san-jose` |
+
+---
+
+MoHoLocal Operations Playbook v7
 March 2026

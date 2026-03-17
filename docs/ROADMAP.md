@@ -218,6 +218,78 @@ Added `DISCOVERY_PAGES` array to `/sitemap.xml/route.ts`:
 
 ---
 
+## SPRINT 3.5 — South Bay Expansion 🚧 IN PROGRESS — March 2026
+
+**Theme:** Demand → Supply Injection
+**Trigger:** FIFA World Cup 2026 at Levi's Stadium (June 2026) + high South Bay search intent
+**Founder directive:** Scope officially expanded beyond 209 to Santa Clara County
+
+### Goals
+
+- Seed high-intent business data for South Bay cities
+- Support cross-region discovery (209 corridor → Levi's Stadium)
+- Capture FIFA-driven and metro search traffic before June 2026
+- Validate that no pages return empty states for food/drink queries
+
+### Target Cities
+
+| City | County | Focus |
+|------|--------|-------|
+| San Jose | Santa Clara County | Bars, Restaurants, Cafes |
+| Santa Clara | Santa Clara County | Bars, Restaurants, Cafes |
+| Sunnyvale | Santa Clara County | Bars, Restaurants, Cafes |
+
+### Scope Constraints
+
+- Bars, Restaurants, Cafes ONLY — no full-category expansion yet
+- No schema changes
+- No new UI features
+- South Bay cities accessible via direct URL; NOT added to nav city picker
+
+### Sprint 3.5 Tasks
+
+| Task | Status |
+|------|--------|
+| `seed_southbay.py` written with Overpass + 3-rule safeguard | ✅ Complete |
+| `[city]/page.tsx` — San Jose, Santa Clara, Sunnyvale added to CITY_MAP | ✅ Complete |
+| `[city]/[category]/page.tsx` — South Bay cities added to CITY_MAP | ✅ Complete |
+| BIBLE.md — Market Expansion Policy added | ✅ Complete |
+| PLAYBOOK.md — Expansion Play documented | ✅ Complete |
+| Run `seed_southbay.py --force-approve` on founder machine | ⏳ Pending founder action |
+| Spot-check top 20 listings per city (real addresses, no dupes) | ⏳ Pending founder action |
+| Supplement with `seed_yelp.py` if volume < 60 records/city | ⏳ Pending founder action |
+| Submit `/san-jose`, `/santa-clara`, `/sunnyvale` to Google Search Console | ⏳ Pending founder action |
+
+### Success Criteria
+
+- [ ] San Jose, Santa Clara, Sunnyvale city pages show restaurant/bar listings
+- [ ] `/san-jose/restaurants`, `/santa-clara/restaurants` return real results
+- [ ] Search for "bars" or "restaurants" returns South Bay results (cross-city)
+- [ ] No empty states on any South Bay page
+- [ ] Zero duplicate or broken records
+
+### Execution Instructions (Founder)
+
+```bash
+# Dry run first — preview what will be inserted
+SUPABASE_SERVICE_ROLE_KEY=<key> python3 seed_southbay.py --dry-run --force-approve
+
+# Seed for real when dry run output looks clean
+SUPABASE_SERVICE_ROLE_KEY=<key> python3 seed_southbay.py --force-approve
+
+# Optional: seed one city at a time
+SUPABASE_SERVICE_ROLE_KEY=<key> python3 seed_southbay.py --city "San Jose" --force-approve
+```
+
+### Commits
+
+| Commit | Description |
+|--------|-------------|
+| `8484e9a` | seed_southbay.py + city page South Bay support |
+| `8484e9a` | BIBLE.md, ROADMAP.md, PLAYBOOK.md doc alignment |
+
+---
+
 ## SPRINT 4 — SEO Surface Expansion ✅ COMPLETE — March 2026
 
 **Focus:** Scale the discovery page layer — new city/category pages, cross-linking mesh, sitemap coverage.
