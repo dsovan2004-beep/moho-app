@@ -33,12 +33,12 @@ export async function generateMetadata({ searchParams }: PageProps) {
 // ── Example queries ───────────────────────────────────────────────────────────
 
 const EXAMPLES = [
-  "What's happening in Tracy this weekend?",
+  'Best bars to watch FIFA near me',
+  'Dentist open today in Tracy',
+  'Weekend events near me',
   'Best halal restaurants in Mountain House',
   'Things to do in Manteca with kids',
-  'What are Brentwood residents asking about?',
   'Farmers market near Tracy',
-  'Find a dentist in Lathrop',
 ]
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -308,7 +308,7 @@ export default async function AskPage({ searchParams }: PageProps) {
             name="q"
             type="text"
             defaultValue={query}
-            placeholder="What's happening in Tracy this weekend?"
+            placeholder="Search businesses OR ask anything..."
             autoFocus={!query}
             autoComplete="off"
             className="flex-1 text-sm border border-gray-300 rounded-xl px-4 py-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"

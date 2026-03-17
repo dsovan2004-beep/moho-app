@@ -44,7 +44,6 @@ const CITY_THEMES: Record<string, { bg: string; accent: string; light: string; c
   },
 }
 
-// Small color dot shown in the city picker dropdown
 const CITY_DOT: Record<string, string> = {
   'Mountain House': '#2563eb',
   Tracy:            '#16a34a',
@@ -53,23 +52,29 @@ const CITY_DOT: Record<string, string> = {
   Brentwood:        '#0d9488',
 }
 
-const NAV_LINKS = [
-  { href: '/ask',            label: '✨ Ask MoHo',     mobileLabel: 'Ask MoHo',     showOnMobile: true  },
-  { href: '/discover',       label: '🗺️ Discover',     mobileLabel: 'Discover',     showOnMobile: true  },
-  { href: '/directory',      label: 'Directory',        mobileLabel: 'Directory',    showOnMobile: true  },
-  { href: '/community',      label: 'Community',        mobileLabel: 'Community',    showOnMobile: true  },
-  { href: '/events',         label: 'Events',           mobileLabel: 'Events',       showOnMobile: true  },
-  { href: '/activity',       label: 'Activity',         mobileLabel: 'Activity',     showOnMobile: false },
-  { href: '/new-resident',   label: '🏡 New Residents', mobileLabel: 'New Here?',    showOnMobile: false },
-  { href: '/lost-and-found', label: 'Lost & Found',     mobileLabel: 'Lost & Found', showOnMobile: false },
-]
+const CITY_SLUGS: Record<string, string> = {
+  'Mountain House': 'mountain-house',
+  Tracy:            'tracy',
+  Lathrop:          'lathrop',
+  Manteca:          'manteca',
+  Brentwood:        'brentwood',
+}
 
+// Explore dropdown items (Best Of + Discover)
 const EXPLORE_LINKS = [
   { slug: 'restaurants', label: 'Restaurants', emoji: '🍽️' },
   { slug: 'coffee',      label: 'Coffee',      emoji: '☕' },
   { slug: 'dentists',    label: 'Dentists',    emoji: '🦷' },
   { slug: 'gyms',        label: 'Gyms',        emoji: '🏋️' },
   { slug: 'hair-salons', label: 'Hair Salons', emoji: '💈' },
+]
+
+// Community dropdown items
+const COMMUNITY_LINKS = [
+  { href: '/community',      label: 'Community Board', emoji: '💬' },
+  { href: '/activity',       label: 'Activity Feed',   emoji: '📋' },
+  { href: '/lost-and-found', label: 'Lost & Found',    emoji: '🐾' },
+  { href: '/new-resident',   label: 'New Residents',   emoji: '🏡' },
 ]
 
 function getUserDisplayName(user: User): string {
@@ -90,19 +95,30 @@ function getUserAvatar(user: User): string | null {
   return user.user_metadata?.avatar_url || null
 }
 
+// Shared chevron svg
+function Chevron({ open }: { open: boolean }) {
+  return (
+    <svg
+      className="w-3 h-3 opacity-70 transition-transform"
+      style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}
+      fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+    </svg>
+  )
+}
+
 function NavContent() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const router = useRouter()
 
-  // Initialise city from URL param if valid, otherwise default to Mountain House
   const [city, setCity] = useState<string>(() => {
     const urlCity = searchParams.get('city')
     return urlCity && CITIES.includes(urlCity) ? urlCity : 'Mountain House'
   })
   const theme = CITY_THEMES[city] ?? CITY_THEMES['Mountain House']
 
-  // Sync city state if the URL ?city= param changes (e.g. user clicks a nav link)
   useEffect(() => {
     const urlCity = searchParams.get('city')
     if (urlCity && CITIES.includes(urlCity) && urlCity !== city) {
@@ -112,20 +128,26 @@ function NavContent() {
 
   // Auth state
   const [user, setUser] = useState<User | null>(null)
-  const [dropdownOpen, setDropdownOpen] = useState(false)
-  const dropdownRef = useRef<HTMLDivElement>(null)
 
-  // City picker state
+  // Dropdown open states
+  const [profileOpen,    setProfileOpen]    = useState(false)
   const [cityPickerOpen, setCityPickerOpen] = useState(false)
-  const cityPickerRef = useRef<HTMLDivElement>(null)
+  const [directoryOpen,  setDirectoryOpen]  = useState(false)
+  const [exploreOpen,    setExploreOpen]    = useState(false)
+  const [communityOpen,  setCommunityOpen]  = useState(false)
 
-  // Explore dropdown state
-  const [exploreOpen, setExploreOpen] = useState(false)
-  const exploreRef = useRef<HTMLDivElement>(null)
+  // Mobile dropdown states
+  const [exploreMobileOpen,   setExploreMobileOpen]   = useState(false)
+  const [communityMobileOpen, setCommunityMobileOpen] = useState(false)
 
-  // Mobile Best Of dropdown state
-  const [bestOfMobileOpen, setBestOfMobileOpen] = useState(false)
-  const bestOfMobileRef = useRef<HTMLDivElement>(null)
+  // Refs for click-outside
+  const profileRef       = useRef<HTMLDivElement>(null)
+  const cityPickerRef    = useRef<HTMLDivElement>(null)
+  const directoryRef     = useRef<HTMLDivElement>(null)
+  const exploreRef       = useRef<HTMLDivElement>(null)
+  const communityRef     = useRef<HTMLDivElement>(null)
+  const exploreMobileRef   = useRef<HTMLDivElement>(null)
+  const communityMobileRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const supabase = getSupabaseClient()
@@ -136,22 +158,16 @@ function NavContent() {
     return () => subscription.unsubscribe()
   }, [])
 
-  // Close dropdowns when clicking/tapping outside (mousedown + touchstart for Android)
   useEffect(() => {
     function handleClickOutside(e: MouseEvent | TouchEvent) {
-      const target = e.target as Node
-      if (dropdownRef.current && !dropdownRef.current.contains(target)) {
-        setDropdownOpen(false)
-      }
-      if (cityPickerRef.current && !cityPickerRef.current.contains(target)) {
-        setCityPickerOpen(false)
-      }
-      if (exploreRef.current && !exploreRef.current.contains(target)) {
-        setExploreOpen(false)
-      }
-      if (bestOfMobileRef.current && !bestOfMobileRef.current.contains(target)) {
-        setBestOfMobileOpen(false)
-      }
+      const t = e.target as Node
+      if (profileRef.current       && !profileRef.current.contains(t))       setProfileOpen(false)
+      if (cityPickerRef.current    && !cityPickerRef.current.contains(t))    setCityPickerOpen(false)
+      if (directoryRef.current     && !directoryRef.current.contains(t))     setDirectoryOpen(false)
+      if (exploreRef.current       && !exploreRef.current.contains(t))       setExploreOpen(false)
+      if (communityRef.current     && !communityRef.current.contains(t))     setCommunityOpen(false)
+      if (exploreMobileRef.current   && !exploreMobileRef.current.contains(t))   setExploreMobileOpen(false)
+      if (communityMobileRef.current && !communityMobileRef.current.contains(t)) setCommunityMobileOpen(false)
     }
     document.addEventListener('mousedown', handleClickOutside)
     document.addEventListener('touchstart', handleClickOutside)
@@ -164,37 +180,35 @@ function NavContent() {
   function handleCitySelect(c: string) {
     setCity(c)
     setCityPickerOpen(false)
-    // Merge new city into current URL params so filters on the current page update
     const params = new URLSearchParams(searchParams.toString())
     params.set('city', c)
     router.push(`${pathname}?${params.toString()}`)
   }
 
   async function handleSignOut() {
-    setDropdownOpen(false)
+    setProfileOpen(false)
     await signOut()
     setUser(null)
-    // No router.push here — the profile page's onAuthStateChange handles
-    // the redirect (→ /) on SIGNED_OUT. A competing push here caused a race
-    // condition that landed users on /login instead of the homepage.
+  }
+
+  // Shared active/inactive nav button styles
+  const navActive   = { backgroundColor: 'rgba(255,255,255,0.2)', color: 'white' }
+  const navInactive = { color: 'rgba(255,255,255,0.8)' }
+
+  function navStyle(active: boolean) {
+    return active ? navActive : navInactive
   }
 
   return (
     <>
-      {/* Sticky Nav */}
-      <nav
-        className="sticky top-0 z-50 shadow-md"
-        style={{ backgroundColor: theme.bg }}
-      >
+      {/* ── Sticky Nav ── */}
+      <nav className="sticky top-0 z-50 shadow-md" style={{ backgroundColor: theme.bg }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 gap-3">
 
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 shrink-0">
-              <span
-                className="text-xs font-bold px-2 py-1 rounded"
-                style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}
-              >
+              <span className="text-xs font-bold px-2 py-1 rounded" style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}>
                 MH
               </span>
               <span className="text-white font-extrabold text-lg tracking-tight hidden sm:block">
@@ -202,7 +216,7 @@ function NavContent() {
               </span>
             </Link>
 
-            {/* ── City Selector Dropdown ── */}
+            {/* ── City Selector ── */}
             <div className="relative shrink-0" ref={cityPickerRef}>
               <button
                 onClick={() => setCityPickerOpen((o) => !o)}
@@ -211,19 +225,11 @@ function NavContent() {
                 aria-label="Select city"
               >
                 <span>📍</span>
-                {/* Full name on sm+, first word only on xs */}
                 <span className="hidden sm:inline">{city}</span>
                 <span className="sm:hidden">{city.replace('Mountain House', 'MH')}</span>
-                <svg
-                  className="w-3 h-3 opacity-70 transition-transform"
-                  style={{ transform: cityPickerOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
-                  fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
+                <Chevron open={cityPickerOpen} />
               </button>
 
-              {/* City picker panel */}
               {cityPickerOpen && (
                 <div className="absolute left-0 mt-2 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
                   <div className="px-4 py-2.5 border-b border-gray-100">
@@ -236,10 +242,7 @@ function NavContent() {
                       className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left transition-colors hover:bg-gray-50"
                       style={{ color: city === c ? CITY_DOT[c] : '#374151', fontWeight: city === c ? 700 : 400 }}
                     >
-                      <span
-                        className="w-2.5 h-2.5 rounded-full shrink-0"
-                        style={{ backgroundColor: CITY_DOT[c] }}
-                      />
+                      <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: CITY_DOT[c] }} />
                       {c}
                       {city === c && (
                         <svg className="ml-auto w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -252,50 +255,95 @@ function NavContent() {
               )}
             </div>
 
-            {/* Nav Links — desktop */}
+            {/* ── Desktop Nav Links ── */}
             <div className="hidden md:flex items-center gap-1 flex-1 justify-center">
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-sm px-3 py-1.5 rounded-md transition-all font-medium whitespace-nowrap"
-                  style={
-                    pathname === link.href
-                      ? { backgroundColor: 'rgba(255,255,255,0.2)', color: 'white' }
-                      : { color: 'rgba(255,255,255,0.8)' }
-                  }
+
+              {/* Directory 🔥 dropdown */}
+              <div className="relative" ref={directoryRef}>
+                <button
+                  onClick={() => setDirectoryOpen((o) => !o)}
+                  className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md transition-all font-medium whitespace-nowrap"
+                  style={navStyle(pathname === '/directory' || directoryOpen)}
                 >
-                  {link.label}
-                </Link>
-              ))}
+                  Directory 🔥
+                  <Chevron open={directoryOpen} />
+                </button>
+
+                {directoryOpen && (
+                  <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
+                    {/* All Listings */}
+                    <Link
+                      href="/directory"
+                      onClick={() => setDirectoryOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 text-sm text-gray-800 font-semibold hover:bg-gray-50 transition border-b border-gray-100"
+                    >
+                      <span>📋</span> All Listings
+                    </Link>
+
+                    {/* Browse by City */}
+                    <div className="px-4 py-2 border-b border-gray-100">
+                      <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Browse by City</p>
+                      <div className="space-y-0.5">
+                        {CITIES.map((c) => (
+                          <Link
+                            key={c}
+                            href={`/${CITY_SLUGS[c]}`}
+                            onClick={() => setDirectoryOpen(false)}
+                            className="flex items-center gap-2.5 py-1.5 text-sm text-gray-700 hover:text-gray-900 transition"
+                          >
+                            <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: CITY_DOT[c] }} />
+                            {c}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Browse by Category */}
+                    <Link
+                      href="/directory"
+                      onClick={() => setDirectoryOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition"
+                    >
+                      <span>🗂️</span> Browse by Category
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              {/* Ask MoHo ✨ */}
+              <Link
+                href="/ask"
+                className="text-sm px-3 py-1.5 rounded-md transition-all font-medium whitespace-nowrap"
+                style={navStyle(pathname === '/ask')}
+              >
+                Ask MoHo ✨
+              </Link>
 
               {/* Explore dropdown */}
               <div className="relative" ref={exploreRef}>
                 <button
                   onClick={() => setExploreOpen((o) => !o)}
                   className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md transition-all font-medium whitespace-nowrap"
-                  style={
-                    exploreOpen
-                      ? { backgroundColor: 'rgba(255,255,255,0.2)', color: 'white' }
-                      : { color: 'rgba(255,255,255,0.8)' }
-                  }
+                  style={navStyle(exploreOpen || pathname === '/discover')}
                 >
-                  ⭐ Best Of
-                  <svg
-                    className="w-3 h-3 opacity-70 transition-transform"
-                    style={{ transform: exploreOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
-                    fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                  </svg>
+                  Explore
+                  <Chevron open={exploreOpen} />
                 </button>
 
                 {exploreOpen && (
                   <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
+                    {/* Discover */}
+                    <Link
+                      href="/discover"
+                      onClick={() => setExploreOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 text-sm text-gray-800 font-semibold hover:bg-gray-50 transition border-b border-gray-100"
+                    >
+                      <span>🗺️</span> Discover
+                    </Link>
+
+                    {/* Best Of */}
                     <div className="px-4 py-2.5 border-b border-gray-100">
-                      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
-                        Best in {city}
-                      </p>
+                      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Best in {city}</p>
                     </div>
                     {EXPLORE_LINKS.map(({ slug, label, emoji }) => (
                       <Link
@@ -320,14 +368,62 @@ function NavContent() {
                   </div>
                 )}
               </div>
+
+              {/* Events */}
+              <Link
+                href="/events"
+                className="text-sm px-3 py-1.5 rounded-md transition-all font-medium whitespace-nowrap"
+                style={navStyle(pathname === '/events')}
+              >
+                Events
+              </Link>
+
+              {/* Community dropdown */}
+              <div className="relative" ref={communityRef}>
+                <button
+                  onClick={() => setCommunityOpen((o) => !o)}
+                  className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md transition-all font-medium whitespace-nowrap"
+                  style={navStyle(communityOpen || COMMUNITY_LINKS.some(l => pathname === l.href))}
+                >
+                  Community
+                  <Chevron open={communityOpen} />
+                </button>
+
+                {communityOpen && (
+                  <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
+                    {COMMUNITY_LINKS.map(({ href, label, emoji }) => (
+                      <Link
+                        key={href}
+                        href={href}
+                        onClick={() => setCommunityOpen(false)}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
+                        style={{ fontWeight: pathname === href ? 700 : 400, color: pathname === href ? '#1d4ed8' : undefined }}
+                      >
+                        <span>{emoji}</span>
+                        {label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* For Business */}
+              <Link
+                href="/submit-business"
+                className="text-sm px-3 py-1.5 rounded-md transition-all font-medium whitespace-nowrap"
+                style={navStyle(pathname === '/submit-business')}
+              >
+                For Business
+              </Link>
+
             </div>
 
-            {/* Auth Area */}
+            {/* ── Auth / Profile Area ── */}
             <div className="flex items-center gap-2 shrink-0">
               {user ? (
-                <div className="relative" ref={dropdownRef}>
+                <div className="relative" ref={profileRef}>
                   <button
-                    onClick={() => setDropdownOpen((o) => !o)}
+                    onClick={() => setProfileOpen((o) => !o)}
                     className="flex items-center gap-2 px-2 py-1 rounded-full transition-all"
                     style={{ backgroundColor: 'rgba(255,255,255,0.12)' }}
                   >
@@ -350,14 +446,14 @@ function NavContent() {
                     </span>
                     <svg
                       className="w-3.5 h-3.5 text-white/70 transition-transform"
-                      style={{ transform: dropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                      style={{ transform: profileOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
                       fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                     </svg>
                   </button>
 
-                  {dropdownOpen && (
+                  {profileOpen && (
                     <div
                       className="absolute right-0 mt-2 w-44 rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50"
                       style={{ backgroundColor: 'white', top: '100%' }}
@@ -367,7 +463,7 @@ function NavContent() {
                       </div>
                       <Link
                         href="/profile"
-                        onClick={() => setDropdownOpen(false)}
+                        onClick={() => setProfileOpen(false)}
                         className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
                       >
                         <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -408,66 +504,105 @@ function NavContent() {
           </div>
         </div>
 
-        {/* Mobile nav links */}
+        {/* ── Mobile Nav Row ── */}
         <div className="md:hidden border-t border-white/10 flex items-stretch">
 
-          {/* Scrollable section — nav links only, no dropdowns inside overflow container */}
-          {/* Wrapper adds right-fade gradient to hint that more items are scrollable */}
+          {/* Scrollable primary links */}
           <div className="relative flex-1 min-w-0">
-            <div className="flex gap-2 pl-3 pr-4 py-2 overflow-x-auto items-center"
+            <div
+              className="flex gap-2 pl-3 pr-4 py-2 overflow-x-auto items-center"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-              {NAV_LINKS.filter((l) => l.showOnMobile).map((link) => (
+              {[
+                { href: '/directory',      label: 'Directory 🔥' },
+                { href: '/ask',            label: 'Ask MoHo ✨' },
+                { href: '/events',         label: 'Events' },
+                { href: '/submit-business',label: 'For Business' },
+              ].map(({ href, label }) => (
                 <Link
-                  key={link.href}
-                  href={link.href}
+                  key={href}
+                  href={href}
                   className="text-xs whitespace-nowrap font-medium shrink-0"
-                  style={
-                    pathname === link.href
-                      ? { color: '#f59e0b' }
-                      : { color: 'rgba(255,255,255,0.75)' }
-                  }
+                  style={pathname === href ? { color: '#f59e0b' } : { color: 'rgba(255,255,255,0.75)' }}
                 >
-                  {link.mobileLabel ?? link.label}
+                  {label}
                 </Link>
               ))}
             </div>
-            {/* Right-edge fade — signals more items are scrollable */}
             <div
               className="absolute right-0 top-0 bottom-0 w-6 pointer-events-none"
               style={{ background: 'linear-gradient(to right, transparent, rgba(0,0,0,0.3))' }}
             />
           </div>
 
-          {/* Best Of — outside overflow container so dropdown renders freely */}
-          <div className="relative shrink-0 border-l border-white/10" ref={bestOfMobileRef}>
+          {/* Community pinned dropdown */}
+          <div className="relative shrink-0 border-l border-white/10" ref={communityMobileRef}>
             <button
-              onClick={() => setBestOfMobileOpen((o) => !o)}
+              onClick={() => setCommunityMobileOpen((o) => !o)}
               className="flex items-center gap-1 text-xs font-medium whitespace-nowrap h-full px-3"
-              style={{ color: bestOfMobileOpen ? '#f59e0b' : 'rgba(255,255,255,0.75)' }}
+              style={{ color: communityMobileOpen ? '#f59e0b' : 'rgba(255,255,255,0.75)' }}
             >
-              ⭐ Best Of
+              Community
               <svg
                 className="w-2.5 h-2.5 opacity-70 transition-transform"
-                style={{ transform: bestOfMobileOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                style={{ transform: communityMobileOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
                 fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
 
-            {bestOfMobileOpen && (
+            {communityMobileOpen && (
               <div className="absolute right-0 top-full mt-1 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
-                <div className="px-4 py-2.5 border-b border-gray-100">
-                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
-                    Best in {city}
-                  </p>
+                {COMMUNITY_LINKS.map(({ href, label, emoji }) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={() => setCommunityMobileOpen(false)}
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
+                  >
+                    <span>{emoji}</span>
+                    {label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Explore pinned dropdown */}
+          <div className="relative shrink-0 border-l border-white/10" ref={exploreMobileRef}>
+            <button
+              onClick={() => setExploreMobileOpen((o) => !o)}
+              className="flex items-center gap-1 text-xs font-medium whitespace-nowrap h-full px-3"
+              style={{ color: exploreMobileOpen ? '#f59e0b' : 'rgba(255,255,255,0.75)' }}
+            >
+              Explore
+              <svg
+                className="w-2.5 h-2.5 opacity-70 transition-transform"
+                style={{ transform: exploreMobileOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {exploreMobileOpen && (
+              <div className="absolute right-0 top-full mt-1 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
+                <Link
+                  href="/discover"
+                  onClick={() => setExploreMobileOpen(false)}
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-800 font-semibold hover:bg-gray-50 transition border-b border-gray-100"
+                >
+                  <span>🗺️</span> Discover
+                </Link>
+                <div className="px-4 py-2 border-b border-gray-100">
+                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Best in {city}</p>
                 </div>
                 {EXPLORE_LINKS.map(({ slug, label, emoji }) => (
                   <Link
                     key={slug}
                     href={`/best/${slug}/${city.toLowerCase().replace(/\s+/g, '-')}`}
-                    onClick={() => setBestOfMobileOpen(false)}
+                    onClick={() => setExploreMobileOpen(false)}
                     className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
                   >
                     <span>{emoji}</span>
@@ -477,7 +612,7 @@ function NavContent() {
                 <div className="border-t border-gray-100 px-4 py-2.5">
                   <Link
                     href="/directory"
-                    onClick={() => setBestOfMobileOpen(false)}
+                    onClick={() => setExploreMobileOpen(false)}
                     className="text-xs font-semibold text-blue-600 hover:underline"
                   >
                     Browse all categories →
@@ -606,7 +741,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   ))}
                 </ul>
 
-                {/* CTA pill */}
                 <div className="mt-6">
                   <Link
                     href="/submit-business"
