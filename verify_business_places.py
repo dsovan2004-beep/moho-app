@@ -57,14 +57,10 @@ PREREQUISITES:
     SUPABASE_SERVICE_ROLE_KEY
     GOOGLE_PLACES_API_KEY
 
-  These can be provided via (in priority order):
-    1. --env-file /path/to/.env.local
-    2. MOHO_ENV_FILE env var pointing to a .env file
-    3. ~/Desktop/MoHoLocal/.env.local
-    4. <script_dir>/.env.local
-    5. export VAR=value in your shell session before running
+  Add all three to moho-app-scaffold/.env.local — the canonical backend
+  env file loaded automatically by this script.
 
-  Run with no args to see a full diagnostic if keys are missing.
+  Override with: --env-file /path/to/other/.env.local
 ──────────────────────────────────────────────────────────────────
 """
 
@@ -86,20 +82,21 @@ from supabase import create_client
 
 def load_env_local() -> tuple:
     """
-    Search for a backend .env file in multiple standard locations and load it.
+    Load backend environment variables from moho-app-scaffold/.env.local.
+
+    Canonical env file: moho-app-scaffold/.env.local
+    This file is the single source of truth for all backend keys:
+        GOOGLE_PLACES_API_KEY
+        SUPABASE_SERVICE_ROLE_KEY
+        NEXT_PUBLIC_SUPABASE_URL
+
+    This matches the behavior of the parent-level verify_business_places.py
+    which resolves the same file when run via `cd ~/Desktop/MoHoLocal`.
 
     Search order:
-      1. --env-file <path>  CLI flag (parsed directly from sys.argv before argparse)
-      2. $MOHO_ENV_FILE     environment variable (if set)
-      3. ~/Desktop/MoHoLocal/.env.local
-      4. <script_dir>/.env.local
-      5. <script_dir>/moho-app-scaffold/.env.local
-
-    If no file contains the required vars, they must be exported in the current
-    shell session:
-        export GOOGLE_PLACES_API_KEY=...
-        export SUPABASE_SERVICE_ROLE_KEY=...
-        export NEXT_PUBLIC_SUPABASE_URL=...
+      1. --env-file <path>   CLI flag (override for custom locations)
+      2. <script_dir>/moho-app-scaffold/.env.local   (if run from parent dir)
+      3. <script_dir>/.env.local                     (if run from inside scaffold)
 
     Returns:
         (loaded_from: Path | None, candidates: list[Path])
@@ -119,16 +116,11 @@ def load_env_local() -> tuple:
     if env_file_override:
         candidates = [env_file_override]
     else:
-        candidates = []
-        # 2. MOHO_ENV_FILE shell variable
-        moho_env = os.environ.get("MOHO_ENV_FILE", "")
-        if moho_env:
-            candidates.append(Path(moho_env).expanduser().resolve())
-        # 3–5. Standard locations
-        candidates += [
-            Path.home() / "Desktop" / "MoHoLocal" / ".env.local",
-            script_dir / ".env.local",
-            script_dir / "moho-app-scaffold" / ".env.local",
+        # Canonical: moho-app-scaffold/.env.local
+        # Works whether the script lives in the parent dir or inside the scaffold.
+        candidates = [
+            script_dir / "moho-app-scaffold" / ".env.local",  # run from parent dir
+            script_dir / ".env.local",                         # run from inside scaffold
         ]
 
     loaded_from = None
@@ -848,14 +840,15 @@ def main():
         if _env_loaded_from is None:
             print(f"  {RED}No env file was found in any search location.{NC}")
         print(f"\n{YELLOW}── How to fix ───────────────────────────────────────────{NC}")
-        print(f"  Option 1 — Export vars directly in your shell session:")
-        print(f"    export GOOGLE_PLACES_API_KEY=<your_key>")
-        print(f"    export SUPABASE_SERVICE_ROLE_KEY=<your_key>")
-        print(f"    export NEXT_PUBLIC_SUPABASE_URL=https://ozjlfgipfzykzrjakwzb.supabase.co")
-        print(f"  Option 2 — Add vars to an env file and point to it:")
+        print(f"  Add the missing variable(s) to moho-app-scaffold/.env.local:")
+        print(f"    GOOGLE_PLACES_API_KEY=<your_key>")
+        print(f"    SUPABASE_SERVICE_ROLE_KEY=<your_key>")
+        print(f"    NEXT_PUBLIC_SUPABASE_URL=https://ozjlfgipfzykzrjakwzb.supabase.co")
+        print(f"")
+        print(f"  That file is loaded automatically — no export needed after adding.")
+        print(f"")
+        print(f"  Alternatively, point to any other .env file:")
         print(f"    python3.11 verify_business_places.py --env-file ~/path/to/.env.local")
-        print(f"  Option 3 — Set MOHO_ENV_FILE to your canonical env path:")
-        print(f"    export MOHO_ENV_FILE=~/path/to/.env.local")
         sys.exit(1)
 
     # ── Mode: verify — extra safety check ────────────────────────────────────

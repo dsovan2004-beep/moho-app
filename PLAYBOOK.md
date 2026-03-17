@@ -25,52 +25,46 @@ This document is for AI agents and developers who operate the platform.
 
 No script may introduce alternate names (`GOOGLE_API_KEY`, `PLACES_API_KEY`, etc.). Variable names are frozen.
 
-### How verify_business_places.py Loads Env Vars
+### Canonical Env File
 
-The script searches for env vars in this priority order:
+**`moho-app-scaffold/.env.local` is the single env file for all backend scripts.**
+
+All three required backend keys belong in this one file:
 
 ```
-1. --env-file <path>          Pass an explicit env file path
-2. $MOHO_ENV_FILE             Shell variable pointing to a file
-3. ~/Desktop/MoHoLocal/.env.local
-4. <script_dir>/.env.local
-5. <script_dir>/moho-app-scaffold/.env.local
-6. Shell session exports       export GOOGLE_PLACES_API_KEY=...
+# moho-app-scaffold/.env.local
+RESEND_API_KEY=...
+NOTIFY_EMAIL=dsovan2004@gmail.com
+GOOGLE_PLACES_API_KEY=...
+SUPABASE_SERVICE_ROLE_KEY=...
+NEXT_PUBLIC_SUPABASE_URL=https://ozjlfgipfzykzrjakwzb.supabase.co
 ```
 
-If no env file is found, vars must be exported directly in the shell session before running the script.
+Scripts load this file automatically — no `export` commands required.
 
-### Supplying Env Vars (choose one method)
+**How it resolves:**
+- `verify_business_places.py` run from `~/Desktop/MoHoLocal/` → reads `./moho-app-scaffold/.env.local` ✅
+- Seed scripts run from `~/Desktop/MoHoLocal/moho-app-scaffold/` → read `./.env.local` ✅
+- Both paths resolve to the same file
 
-**Method A — Export in shell session (quickest):**
-```bash
-export GOOGLE_PLACES_API_KEY=<your_key>
-export SUPABASE_SERVICE_ROLE_KEY=<your_key>
-export NEXT_PUBLIC_SUPABASE_URL=https://ozjlfgipfzykzrjakwzb.supabase.co
-python3.11 verify_business_places.py --city "San Jose"
-```
-
-**Method B — Point to your env file explicitly:**
-```bash
-python3.11 verify_business_places.py --env-file ~/path/to/.env.local --city "San Jose"
-```
-
-**Method C — Set MOHO_ENV_FILE once for the session:**
-```bash
-export MOHO_ENV_FILE=~/path/to/.env.local
-python3.11 verify_business_places.py --city "San Jose"
-```
-
-### Pre-flight Validation (REQUIRED before enrichment runs)
+### Pre-flight Check
 
 ```bash
-echo $GOOGLE_PLACES_API_KEY   # must be non-empty
+grep "GOOGLE_PLACES_API_KEY" ~/Desktop/MoHoLocal/moho-app-scaffold/.env.local
 ```
-If empty → do not proceed. Use one of the methods above to supply the key.
+
+If the key is present → scripts run automatically. If missing → add it to that file.
+
+### Escape Hatch (non-standard locations)
+
+If your key lives somewhere else:
+```bash
+python3.11 verify_business_places.py --env-file ~/path/to/other/.env --city "San Jose"
+```
 
 ### Diagnosing "Key Missing" Errors
 
-Run the script — it prints an exact diagnostic showing every file path searched and whether it was found. Use that output to determine where the key needs to be placed. Do not guess.
+Run the script — it prints an exact diagnostic showing every file path it checked and which one was loaded. Use that output to confirm the key is in the right file.
 
 ---
 
