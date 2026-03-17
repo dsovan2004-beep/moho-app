@@ -12,6 +12,10 @@ const CITY_MAP: Record<string, string> = {
   'lathrop':        'Lathrop',
   'manteca':        'Manteca',
   'brentwood':      'Brentwood',
+  // South Bay — FIFA / discovery traffic expansion
+  'san-jose':       'San Jose',
+  'santa-clara':    'Santa Clara',
+  'sunnyvale':      'Sunnyvale',
 }
 
 const COUNTY_MAP: Record<string, string> = {
@@ -20,6 +24,9 @@ const COUNTY_MAP: Record<string, string> = {
   'Lathrop':        'San Joaquin County',
   'Manteca':        'San Joaquin County',
   'Brentwood':      'Contra Costa County',
+  'San Jose':       'Santa Clara County',
+  'Santa Clara':    'Santa Clara County',
+  'Sunnyvale':      'Santa Clara County',
 }
 
 const CATEGORY_MAP: Record<string, string> = {

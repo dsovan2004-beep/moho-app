@@ -12,6 +12,10 @@ const CITY_MAP: Record<string, string> = {
   'lathrop':        'Lathrop',
   'manteca':        'Manteca',
   'brentwood':      'Brentwood',
+  // South Bay — FIFA / discovery traffic expansion
+  'san-jose':       'San Jose',
+  'santa-clara':    'Santa Clara',
+  'sunnyvale':      'Sunnyvale',
 }
 
 const COUNTY_MAP: Record<string, string> = {
@@ -20,6 +24,9 @@ const COUNTY_MAP: Record<string, string> = {
   'Lathrop':        'San Joaquin County',
   'Manteca':        'San Joaquin County',
   'Brentwood':      'Contra Costa County',
+  'San Jose':       'Santa Clara County',
+  'Santa Clara':    'Santa Clara County',
+  'Sunnyvale':      'Santa Clara County',
 }
 
 const CITY_CFG: Record<string, {
@@ -69,6 +76,31 @@ const CITY_CFG: Record<string, {
     description: 'A fast-growing East Bay gem in Contra Costa County — known for its U-pick farms, top-rated schools, and a welcoming small-town spirit just 50 miles from San Francisco.',
     population: '~65k',
     tagline: 'Find local businesses in Brentwood, CA',
+  },
+  // South Bay — FIFA / discovery traffic expansion
+  'San Jose': {
+    gradient: 'linear-gradient(135deg,#1e3a5f 0%,#0369a1 100%)',
+    chip: 'bg-sky-50 text-sky-700',
+    emoji: '🏙️',
+    description: "Silicon Valley's largest city — a culinary hub with world-class restaurants, bars, and cafes from downtown SoFa to Santana Row. 45 minutes from Levi's Stadium.",
+    population: '~1M',
+    tagline: 'Bars, restaurants & cafes in San Jose, CA',
+  },
+  'Santa Clara': {
+    gradient: 'linear-gradient(135deg,#7e1d1d 0%,#b91c1c 100%)',
+    chip: 'bg-red-50 text-red-700',
+    emoji: '🏟️',
+    description: "Home to Levi's Stadium and Silicon Valley's tech corridor. Santa Clara's restaurant and bar scene is thriving — especially on game days.",
+    population: '~130k',
+    tagline: "Restaurants & bars near Levi's Stadium in Santa Clara, CA",
+  },
+  Sunnyvale: {
+    gradient: 'linear-gradient(135deg,#78350f 0%,#d97706 100%)',
+    chip: 'bg-amber-50 text-amber-700',
+    emoji: '☀️',
+    description: "One of the Bay Area's most livable cities — Sunnyvale's Murphy Avenue corridor is packed with local restaurants, breweries, and cafes worth exploring.",
+    population: '~155k',
+    tagline: 'Find local restaurants & bars in Sunnyvale, CA',
   },
 }
 
