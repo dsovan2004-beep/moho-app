@@ -173,7 +173,7 @@ def fetch_overpass(query: str) -> list:
 
 # ── OSM element → MoHoLocal business ─────────────────────────────────────────
 
-def osm_to_business(element: dict, city: str) -> Optional[dict]:
+def osm_to_business(element: dict, city: str, seen_globally: set) -> Optional[dict]:
     tags = element.get("tags", {})
 
     name = tags.get("name", "").strip()
@@ -182,6 +182,15 @@ def osm_to_business(element: dict, city: str) -> Optional[dict]:
 
     if name.lower() in SKIP_NAMES:
         return None
+
+    # OSM city validation — if addr:city is present and doesn't match target city, skip.
+    # This prevents El Camino Real businesses from being tagged to the wrong city
+    # when bounding boxes overlap.
+    osm_city = tags.get("addr:city", "").strip()
+    SOUTH_BAY_CITIES = {"san jose", "santa clara", "sunnyvale"}
+    if osm_city and osm_city.lower() in SOUTH_BAY_CITIES:
+        if osm_city.lower() != city.lower():
+            return None  # Belongs to a different South Bay city
 
     # Address
     housenumber = tags.get("addr:housenumber", "")
@@ -239,6 +248,14 @@ def osm_to_business(element: dict, city: str) -> Optional[dict]:
             description = f"{cuisine.replace(';', ', ').title()} restaurant in {city}."
         else:
             description = f"Local restaurant in {city}."
+
+    # Global cross-city address dedup — prevents the same physical location
+    # from being inserted under multiple city labels due to overlapping bboxes.
+    # Key: normalized (name + street_number + street) — city-agnostic.
+    global_key = f"{name.lower()}|{housenumber.lower()}|{street.lower()}"
+    if global_key in seen_globally:
+        return None
+    seen_globally.add(global_key)
 
     return {
         "name":         name,
@@ -331,6 +348,9 @@ def main():
     total_rejected   = 0
     rejection_reasons: dict = {}
 
+    # Global address set — shared across all city iterations to prevent cross-city dupes
+    seen_globally: set = set()
+
     cities = [FILTER_CITY] if FILTER_CITY else list(CITY_BOUNDS.keys())
 
     for city in cities:
@@ -358,7 +378,7 @@ def main():
 
         candidates = []
         for el in elements:
-            biz = osm_to_business(el, city)
+            biz = osm_to_business(el, city, seen_globally)
             if biz is None:
                 continue
             if biz["name"].lower() in existing_names:
