@@ -251,14 +251,17 @@ Added `DISCOVERY_PAGES` array to `/sitemap.xml/route.ts`:
 | Task | Status |
 |------|--------|
 | `seed_southbay.py` written with Overpass + 3-rule safeguard | ✅ Complete |
+| Cross-city dedup fix — OSM city validation + global address dedup | ✅ Complete |
 | `[city]/page.tsx` — San Jose, Santa Clara, Sunnyvale added to CITY_MAP | ✅ Complete |
 | `[city]/[category]/page.tsx` — South Bay cities added to CITY_MAP | ✅ Complete |
-| BIBLE.md — Market Expansion Policy added | ✅ Complete |
-| PLAYBOOK.md — Expansion Play documented | ✅ Complete |
+| `verify_business_places.py` — South Bay cities added to city guard list | ✅ Complete |
+| BIBLE.md — Market Expansion Policy + Production-Ready Listing Standard added | ✅ Complete |
+| PLAYBOOK.md — Expansion Play + image enrichment as mandatory step documented | ✅ Complete |
 | Run `seed_southbay.py --force-approve` on founder machine | ⏳ Pending founder action |
 | Spot-check top 20 listings per city (real addresses, no dupes) | ⏳ Pending founder action |
+| **⚠️ BLOCKING — Image enrichment: `verify_business_places.py` for all 3 South Bay cities** | 🔴 Blocking — must complete before rollout is done |
 | Supplement with `seed_yelp.py` if volume < 60 records/city | ⏳ Pending founder action |
-| Submit `/san-jose`, `/santa-clara`, `/sunnyvale` to Google Search Console | ⏳ Pending founder action |
+| Submit `/san-jose`, `/santa-clara`, `/sunnyvale` to Google Search Console | ⏳ Pending after image enrichment |
 
 ### Success Criteria
 
@@ -267,26 +270,42 @@ Added `DISCOVERY_PAGES` array to `/sitemap.xml/route.ts`:
 - [ ] Search for "bars" or "restaurants" returns South Bay results (cross-city)
 - [ ] No empty states on any South Bay page
 - [ ] Zero duplicate or broken records
+- [ ] **Every published listing has at least 1 verified image (Google Places)** ← new requirement
+- [ ] Business detail pages show hero image + gallery (matches 209 city standard)
 
 ### Execution Instructions (Founder)
 
 ```bash
-# Dry run first — preview what will be inserted
-SUPABASE_SERVICE_ROLE_KEY=<key> python3 seed_southbay.py --dry-run --force-approve
-
-# Seed for real when dry run output looks clean
+# Step 1 — Seed listings (all 3 cities in single command for cross-city dedup)
 SUPABASE_SERVICE_ROLE_KEY=<key> python3 seed_southbay.py --force-approve
 
-# Optional: seed one city at a time
-SUPABASE_SERVICE_ROLE_KEY=<key> python3 seed_southbay.py --city "San Jose" --force-approve
+# Step 2 — Image enrichment (REQUIRED — run after seeding)
+# Requires GOOGLE_PLACES_API_KEY in .env.local
+python3.11 verify_business_places.py --city "San Jose" --dry-run
+python3.11 verify_business_places.py --city "San Jose"
+
+python3.11 verify_business_places.py --city "Santa Clara" --dry-run
+python3.11 verify_business_places.py --city "Santa Clara"
+
+python3.11 verify_business_places.py --city "Sunnyvale" --dry-run
+python3.11 verify_business_places.py --city "Sunnyvale"
+
+# Step 3 — UI validation
+# Visit /san-jose, /santa-clara, /sunnyvale and spot-check business detail pages
+# Confirm hero image and gallery render (no empty placeholders)
 ```
+
+> ⚠️ South Bay rollout is NOT complete until image enrichment finishes.
+> Do not submit pages to Google Search Console until galleries are live.
 
 ### Commits
 
 | Commit | Description |
 |--------|-------------|
 | `8484e9a` | seed_southbay.py + city page South Bay support |
-| `8484e9a` | BIBLE.md, ROADMAP.md, PLAYBOOK.md doc alignment |
+| `33170fb` | BIBLE.md, ROADMAP.md, PLAYBOOK.md doc alignment |
+| `f0a9592` | Cross-city dedup fix (OSM city validation + global address dedup) |
+| *(next)* | Production-ready listing standard + image enrichment pipeline docs |
 
 ---
 

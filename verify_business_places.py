@@ -148,6 +148,9 @@ def is_city_or_region_name(name: str) -> bool:
         "mountain house ca", "mountain house", "tracy ca", "tracy",
         "lathrop ca", "lathrop", "manteca ca", "manteca",
         "brentwood ca", "brentwood",
+        # South Bay expansion (Sprint 3.5)
+        "san jose ca", "san jose", "santa clara ca", "santa clara",
+        "sunnyvale ca", "sunnyvale",
     ]
     return normalized in city_patterns
 

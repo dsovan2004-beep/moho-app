@@ -336,7 +336,25 @@ python3 ~/Desktop/MoHoLocal/seed_businesses_[newcity].py
 ```
 Target: 150–200 businesses across all 9 categories.
 
-**Step 2 — Add city to New Resident Guide**
+**Step 2 — Image enrichment (REQUIRED — do not skip)**
+
+Run the Google Places photo pipeline for the new city. A city rollout is not complete without verified images.
+
+```bash
+# Dry run first — verify match quality
+python3.11 ~/Desktop/MoHoLocal/verify_business_places.py --city "New City" --dry-run
+
+# Real run — fetch photos and store in business_images
+python3.11 ~/Desktop/MoHoLocal/verify_business_places.py --city "New City"
+```
+
+- Minimum: 1 verified image per listing
+- Target: 3–5 images per listing
+- Requires `GOOGLE_PLACES_API_KEY` in `.env.local`
+- Run from founder's Mac (Cowork VM blocks Supabase + Google APIs)
+- See BIBLE.md → Production-Ready Listing Standard
+
+**Step 3 — Add city to New Resident Guide**
 
 In `app/new-resident/page.tsx` — add city card to `CITIES` array.
 
@@ -896,10 +914,14 @@ All three must be present:
 3. Write or extend seed script (Overpass/OSM primary, Yelp secondary)
 4. Dry run seed script — review output for quality
 5. Seed with --force-approve if founder authorizes immediate listing visibility
-6. Verify: city pages render, category pages show results, no empty states
-7. Submit new pages to Google Search Console
-8. Update BIBLE.md, ROADMAP.md, PLAYBOOK.md to reflect new scope
+6. Image enrichment — run verify_business_places.py for each new city (REQUIRED)
+7. Verify: city pages render, category pages show results, galleries have images
+8. Submit new pages to Google Search Console
+9. Update BIBLE.md, ROADMAP.md, PLAYBOOK.md to reflect new scope
 ```
+
+> ⚠️ Step 6 is not optional. Listings without images are incomplete by platform standard.
+> See BIBLE.md → Production-Ready Listing Standard.
 
 ### Scope Rules
 
@@ -920,6 +942,7 @@ South Bay expansion (March 2026) is the reference implementation of this play:
 | Seed script | `seed_southbay.py` with `--force-approve` |
 | City routes | `[city]/page.tsx`, `[city]/[category]/page.tsx` |
 | Discovery pages | `/restaurants-near-levis-stadium`, `/best-bars-watch-world-cup-san-jose` |
+| Image enrichment | `verify_business_places.py --city "San Jose"` (+ Santa Clara, Sunnyvale) — **PENDING** |
 
 ---
 

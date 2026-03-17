@@ -226,6 +226,50 @@ The directory must never become a spam listing directory. Generic national chain
 
 ---
 
+## Production-Ready Listing Standard
+
+*(Adopted March 2026 — enforced across all cities and rollouts)*
+
+A listing is **NOT production-ready** unless it satisfies all of the following:
+
+| Field | Requirement |
+|-------|-------------|
+| `name` | Present, non-generic |
+| `address` | Present, starts with street number |
+| `category` | Present, valid schema category |
+| `image` | At least 1 verified image in `business_images` |
+
+**A listing without at least one verified image is considered INCOMPLETE.**
+
+Incomplete listings must not be treated as production-quality regardless of their `status` or `verified` flag. They may exist in the database but represent unfinished work.
+
+### Required Ingestion Pipeline (All Cities, No Exceptions)
+
+Every city rollout must complete all four steps before it is considered done:
+
+```
+Step 1 — Data ingestion       seed script (OSM / Yelp / manual)
+Step 2 — Dedup + validation   3-rule safeguard + trust model
+Step 3 — Image enrichment     verify_business_places.py (Google Places photos)
+Step 4 — Publish              city pages return real results with gallery images
+```
+
+No rollout is complete without Step 3. Skipping image enrichment produces a substandard user experience and violates the production-ready listing standard.
+
+### Image Enrichment Command (Standard)
+
+```bash
+# Dry run — preview matches, no writes
+python3.11 verify_business_places.py --city "CITY_NAME" --dry-run
+
+# Real run — fetch + store photos
+python3.11 verify_business_places.py --city "CITY_NAME"
+```
+
+Run from `~/Desktop/MoHoLocal/` on the founder's Mac (Supabase + Google APIs are blocked in the Cowork VM).
+
+---
+
 ## Screenshot Signal Principle
 
 Screenshots from community sources are a primary — and irreplaceable — signal source for MoHoLocal.
