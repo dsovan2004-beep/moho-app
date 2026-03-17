@@ -191,7 +191,17 @@ function NavContent() {
     setUser(null)
   }
 
-  // Shared active/inactive nav button styles
+  // Active-state helpers — one tab active at a time
+  const isDirectory = pathname === '/directory'
+    || /^\/[a-z-]+$/.test(pathname) && !['ask','discover','events','community','activity','lost-and-found','new-resident','submit-business','login','register','profile','admin','best','directory'].includes(pathname.slice(1))
+    || /^\/[a-z-]+\/[a-z-]+/.test(pathname) && !pathname.startsWith('/best') && !pathname.startsWith('/community')
+  const isExplore   = pathname === '/discover' || pathname.startsWith('/best')
+  const isEvents    = pathname === '/events'
+  const isCommunity = pathname === '/community' || pathname === '/activity'
+    || pathname === '/lost-and-found' || pathname === '/new-resident'
+  const isForBiz    = pathname === '/submit-business'
+  const isAsk       = pathname === '/ask'
+
   const navActive   = { backgroundColor: 'rgba(255,255,255,0.2)', color: 'white' }
   const navInactive = { color: 'rgba(255,255,255,0.8)' }
 
@@ -263,25 +273,34 @@ function NavContent() {
                 <button
                   onClick={() => setDirectoryOpen((o) => !o)}
                   className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md transition-all font-medium whitespace-nowrap"
-                  style={navStyle(pathname === '/directory' || directoryOpen)}
+                  style={navStyle(isDirectory || directoryOpen)}
                 >
                   Directory 🔥
                   <Chevron open={directoryOpen} />
                 </button>
 
                 {directoryOpen && (
-                  <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
+                  <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50 animate-dropdown">
                     {/* All Listings */}
                     <Link
                       href="/directory"
                       onClick={() => setDirectoryOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 text-sm text-gray-800 font-semibold hover:bg-gray-50 transition border-b border-gray-100"
+                      className="flex items-center gap-3 px-4 py-3 text-sm text-gray-800 font-semibold hover:bg-gray-50 transition-colors"
                     >
                       <span>📋</span> All Listings
                     </Link>
 
+                    {/* Browse by Category — primary action, directly under All Listings */}
+                    <Link
+                      href="/directory"
+                      onClick={() => setDirectoryOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors border-b border-gray-100"
+                    >
+                      <span>🗂️</span> Browse by Category
+                    </Link>
+
                     {/* Browse by City */}
-                    <div className="px-4 py-2 border-b border-gray-100">
+                    <div className="px-4 py-2">
                       <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Browse by City</p>
                       <div className="space-y-0.5">
                         {CITIES.map((c) => (
@@ -289,7 +308,7 @@ function NavContent() {
                             key={c}
                             href={`/${CITY_SLUGS[c]}`}
                             onClick={() => setDirectoryOpen(false)}
-                            className="flex items-center gap-2.5 py-1.5 text-sm text-gray-700 hover:text-gray-900 transition"
+                            className="flex items-center gap-2.5 py-1.5 text-sm text-gray-700 hover:text-gray-900 transition-colors"
                           >
                             <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: CITY_DOT[c] }} />
                             {c}
@@ -297,15 +316,6 @@ function NavContent() {
                         ))}
                       </div>
                     </div>
-
-                    {/* Browse by Category */}
-                    <Link
-                      href="/directory"
-                      onClick={() => setDirectoryOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition"
-                    >
-                      <span>🗂️</span> Browse by Category
-                    </Link>
                   </div>
                 )}
               </div>
@@ -314,7 +324,7 @@ function NavContent() {
               <Link
                 href="/ask"
                 className="text-sm px-3 py-1.5 rounded-md transition-all font-medium whitespace-nowrap"
-                style={navStyle(pathname === '/ask')}
+                style={navStyle(isAsk)}
               >
                 Ask MoHo ✨
               </Link>
@@ -324,14 +334,14 @@ function NavContent() {
                 <button
                   onClick={() => setExploreOpen((o) => !o)}
                   className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md transition-all font-medium whitespace-nowrap"
-                  style={navStyle(exploreOpen || pathname === '/discover')}
+                  style={navStyle(isExplore || exploreOpen)}
                 >
                   Explore
                   <Chevron open={exploreOpen} />
                 </button>
 
                 {exploreOpen && (
-                  <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
+                  <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50 animate-dropdown">
                     {/* Discover */}
                     <Link
                       href="/discover"
@@ -373,7 +383,7 @@ function NavContent() {
               <Link
                 href="/events"
                 className="text-sm px-3 py-1.5 rounded-md transition-all font-medium whitespace-nowrap"
-                style={navStyle(pathname === '/events')}
+                style={navStyle(isEvents)}
               >
                 Events
               </Link>
@@ -383,14 +393,14 @@ function NavContent() {
                 <button
                   onClick={() => setCommunityOpen((o) => !o)}
                   className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md transition-all font-medium whitespace-nowrap"
-                  style={navStyle(communityOpen || COMMUNITY_LINKS.some(l => pathname === l.href))}
+                  style={navStyle(isCommunity || communityOpen)}
                 >
                   Community
                   <Chevron open={communityOpen} />
                 </button>
 
                 {communityOpen && (
-                  <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
+                  <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50 animate-dropdown">
                     {COMMUNITY_LINKS.map(({ href, label, emoji }) => (
                       <Link
                         key={href}
@@ -411,7 +421,7 @@ function NavContent() {
               <Link
                 href="/submit-business"
                 className="text-sm px-3 py-1.5 rounded-md transition-all font-medium whitespace-nowrap"
-                style={navStyle(pathname === '/submit-business')}
+                style={navStyle(isForBiz)}
               >
                 For Business
               </Link>
@@ -553,7 +563,7 @@ function NavContent() {
             </button>
 
             {communityMobileOpen && (
-              <div className="absolute right-0 top-full mt-1 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
+              <div className="absolute right-0 top-full mt-1 w-52 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50 animate-dropdown">
                 {COMMUNITY_LINKS.map(({ href, label, emoji }) => (
                   <Link
                     key={href}
@@ -587,7 +597,7 @@ function NavContent() {
             </button>
 
             {exploreMobileOpen && (
-              <div className="absolute right-0 top-full mt-1 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
+              <div className="absolute right-0 top-full mt-1 w-52 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50 animate-dropdown">
                 <Link
                   href="/discover"
                   onClick={() => setExploreMobileOpen(false)}
