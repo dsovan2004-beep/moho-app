@@ -293,8 +293,8 @@ function BusinessCard({ biz, cityCfg, catEmoji }: {
         {/* Name + rating row */}
         <div className="flex items-start justify-between gap-2 flex-wrap mb-2">
           <h3 className="text-base font-bold text-gray-900 leading-snug flex-1 min-w-0">{biz.name}</h3>
-          {/* Rating — only if > 0 (Fix #2) */}
-          {biz.rating && biz.rating > 0 && (
+          {/* Rating — only if present AND > 0 (null/0 both hidden) */}
+          {biz.rating != null && biz.rating > 0 && (
             <span className="text-xs font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full shrink-0 whitespace-nowrap">
               ★ {biz.rating.toFixed(1)}
             </span>

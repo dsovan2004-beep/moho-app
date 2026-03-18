@@ -310,11 +310,11 @@ function BusinessCard({
           {biz.name}
         </h3>
 
-        {/* Rating — only if rating exists AND > 0 (Fix #2) */}
-        {biz.rating && biz.rating > 0 && (
+        {/* Rating — only if rating is present AND > 0 (null/0 both hidden) */}
+        {biz.rating != null && biz.rating > 0 && (
           <div className="text-xs text-amber-500 font-semibold mb-1.5">
             ★ {biz.rating.toFixed(1)}
-            {biz.review_count && biz.review_count > 0 ? (
+            {biz.review_count != null && biz.review_count > 0 ? (
               <span className="text-gray-400 font-normal ml-1">({biz.review_count})</span>
             ) : null}
           </div>
