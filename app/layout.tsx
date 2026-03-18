@@ -94,6 +94,24 @@ const CITY_SLUGS: Record<string, string> = {
   Sunnyvale:        'sunnyvale',
 }
 
+// Reverse map: slug → display city name (for getCityFromPath)
+const SLUG_TO_CITY: Record<string, string> = {
+  'mountain-house': 'Mountain House',
+  'tracy':          'Tracy',
+  'lathrop':        'Lathrop',
+  'manteca':        'Manteca',
+  'brentwood':      'Brentwood',
+  'san-jose':       'San Jose',
+  'santa-clara':    'Santa Clara',
+  'sunnyvale':      'Sunnyvale',
+}
+
+function getCityFromPath(path: string): string | null {
+  // Extract first segment: '/san-jose/restaurants' → 'san-jose'
+  const segment = path.split('/')[1] ?? ''
+  return SLUG_TO_CITY[segment] ?? null
+}
+
 // Explore dropdown items (Best Of + Discover)
 const EXPLORE_LINKS = [
   { slug: 'restaurants', label: 'Restaurants', emoji: '🍽️' },
@@ -148,17 +166,31 @@ function NavContent() {
   const router = useRouter()
 
   const [city, setCity] = useState<string>(() => {
+    // 1. Derive from pathname first (highest priority)
+    const pathCity = getCityFromPath(pathname)
+    if (pathCity) return pathCity
+    // 2. Fall back to ?city= query param
     const urlCity = searchParams.get('city')
-    return urlCity && CITIES.includes(urlCity) ? urlCity : 'Mountain House'
+    if (urlCity && CITIES.includes(urlCity)) return urlCity
+    // 3. Default
+    return 'Mountain House'
   })
   const theme = CITY_THEMES[city] ?? CITY_THEMES['Mountain House']
 
+  // Sync city state whenever the route changes
   useEffect(() => {
+    const pathCity = getCityFromPath(pathname)
+    if (pathCity) {
+      // Path wins — /san-jose always → San Jose
+      if (pathCity !== city) setCity(pathCity)
+      return
+    }
+    // Non-city path — fall back to ?city= param
     const urlCity = searchParams.get('city')
     if (urlCity && CITIES.includes(urlCity) && urlCity !== city) {
       setCity(urlCity)
     }
-  }, [searchParams])
+  }, [pathname, searchParams])
 
   // Auth state
   const [user, setUser] = useState<User | null>(null)
@@ -214,9 +246,19 @@ function NavContent() {
   function handleCitySelect(c: string) {
     setCity(c)
     setCityPickerOpen(false)
-    const params = new URLSearchParams(searchParams.toString())
-    params.set('city', c)
-    router.push(`${pathname}?${params.toString()}`)
+    // Navigate to the city's root page so pathname-based sync stays consistent.
+    // If user is on a city/category page (e.g. /mountain-house/restaurants)
+    // and switches to Tracy, take them to /tracy — not /mountain-house/restaurants?city=Tracy.
+    const currentCityFromPath = getCityFromPath(pathname)
+    if (currentCityFromPath) {
+      // On a city page — jump to new city root
+      router.push(`/${CITY_SLUGS[c]}`)
+    } else {
+      // On a global page (directory, events, etc.) — keep path, update ?city=
+      const params = new URLSearchParams(searchParams.toString())
+      params.set('city', c)
+      router.push(`${pathname}?${params.toString()}`)
+    }
   }
 
   async function handleSignOut() {
