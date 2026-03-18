@@ -607,8 +607,8 @@ async function processEvent(env: Env, raw: RawEvent, log: RunLog): Promise<void>
     await updateRow(env, 'events', String(existing.id), patch)
     log.updated++; bump('updated')
   } else {
-    // Auto-approve Eventbrite events (structured, high-confidence) and static market entries
-    const autoApprove = (raw.source === 'eventbrite-api' || raw.source === 'farmers-markets-static') && !review
+    // All ingestion lands as 'pending' — founder reviews before publish.
+    // No source is trusted enough to auto-approve (CLAUDE.md §3 ingestion rule).
     const result = await upsertRow(env, 'events', {
       title,
       description:      raw.description ? stripHtml(raw.description).slice(0, 800) : null,
@@ -620,7 +620,7 @@ async function processEvent(env: Env, raw: RawEvent, log: RunLog): Promise<void>
       image_url:        imageUrl   ?? null,
       image_source:     imageSource !== 'none' ? imageSource : null,
       source_url:       normalizeUrl(raw.sourceUrl) ?? null,
-      ingestion_status: autoApprove ? 'approved' : 'pending',
+      ingestion_status: 'pending',
       source:           raw.source,
       last_ingested_at: now,
       confidence_score: confidence,

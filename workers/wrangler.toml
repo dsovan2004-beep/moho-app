@@ -8,11 +8,13 @@ compatibility_flags = ["nodejs_compat"]
 # All times UTC.  Sequence is intentional — each job runs 1 hour apart so
 # Supabase write load is spread out and logs are easy to distinguish in Dash.
 [triggers]
+# Cloudflare Workers uses non-standard day-of-week numbering: 1=Sunday, 2=Monday, ... 5=Thursday, 7=Saturday
+# Standard cron uses 1=Monday. Always use Cloudflare's scheme here to avoid schedule drift.
 crons = [
-  "0 3 * * 1",   # Monday 03:00 UTC — Directory ingestion
-  "0 4 * * 1",   # Monday 04:00 UTC — Events ingestion (weekly refresh)
-  "0 5 * * 1",   # Monday 05:00 UTC — Lost & Found ingestion
-  "0 4 * * 4",   # Thursday 04:00 UTC — Events ingestion (mid-week refresh)
+  "0 3 * * 2",   # Monday 03:00 UTC — Directory ingestion      (CF: 2=Monday)
+  "0 4 * * 2",   # Monday 04:00 UTC — Events ingestion (weekly) (CF: 2=Monday)
+  "0 5 * * 2",   # Monday 05:00 UTC — Lost & Found ingestion   (CF: 2=Monday)
+  "0 4 * * 5",   # Thursday 04:00 UTC — Events mid-week refresh (CF: 5=Thursday)
 ]
 
 # ── Non-secret vars (safe to commit) ─────────────────────────────────────────

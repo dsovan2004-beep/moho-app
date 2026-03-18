@@ -33,34 +33,7 @@ import time
 import urllib.request
 import urllib.error
 import urllib.parse
-from pathlib import Path
 from typing import Optional, Tuple
-
-
-# ── Env loader (auto-reads moho-app-scaffold/.env.local) ───────────────────────
-
-def _load_env_local() -> None:
-    """Load .env.local automatically — no manual export needed.
-
-    Search order:
-      1. <script_dir>/.env.local          (run from inside moho-app-scaffold/)
-      2. <script_dir>/../moho-app-scaffold/.env.local  (run from parent dir)
-    """
-    script_dir = Path(__file__).parent.resolve()
-    candidates = [
-        script_dir / ".env.local",
-        script_dir.parent / "moho-app-scaffold" / ".env.local",
-    ]
-    for path in candidates:
-        if path.exists():
-            for line in path.read_text().splitlines():
-                line = line.strip()
-                if line and not line.startswith("#") and "=" in line:
-                    key, _, value = line.partition("=")
-                    os.environ.setdefault(key.strip(), value.strip())
-            break
-
-_load_env_local()
 
 # ── Config ─────────────────────────────────────────────────────────────────────
 
@@ -68,6 +41,7 @@ SUPABASE_URL = "https://ozjlfgipfzykzrjakwzb.supabase.co"
 SUPABASE_KEY = (
     os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
     or os.environ.get("SUPABASE_KEY")
+    or "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im96amxmZ2lwZnp5a3pyamFrd3piIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQzMzI3NiwiZXhwIjoyMDg4MDA5Mjc2fQ.g9f2Il1nWEfgyuvTXHUiHn4EgWsrHVV1QBbdxehT0gM"
 )
 
 OVERPASS_URL = "https://overpass-api.de/api/interpreter"

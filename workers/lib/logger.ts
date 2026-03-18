@@ -68,6 +68,29 @@ export function printLog(log: RunLog, startMs: number): void {
   ].filter(Boolean)
 
   console.log(lines.join('\n'))
+
+  // ── Structured JSON — machine-readable for Workers Logs / wrangler tail ──
+  // When Workers Logs is enabled in Cloudflare dashboard, this line is
+  // captured and searchable. Prefix allows easy filtering: grep MOHO_RUN
+  console.log('MOHO_RUN ' + JSON.stringify({
+    event:           'moho_ingestion_run',
+    domain:          log.domain,
+    source:          log.source,
+    city:            log.city ?? null,
+    run_at:          log.run_at,
+    duration_ms:     log.duration_ms,
+    discovered:      log.discovered,
+    inserted:        log.inserted,
+    updated:         log.updated,
+    skipped:         log.skipped,
+    flagged:         log.flagged,
+    images_captured: log.images_captured,
+    images_missing:  log.images_missing,
+    error_count:     log.errors.length,
+    warning_count:   log.warnings?.length ?? 0,
+    status:          log.errors.length > 0 ? 'error' : 'ok',
+    per_source:      log.per_source,
+  }))
 }
 
 // Aggregate multiple logs into one summary (for the worker router)
@@ -92,6 +115,7 @@ export function aggregateLogs(logs: RunLog[]): void {
     total.images_missing  += l.images_missing
     total.errors          += l.errors.length
   }
+  const runAt = logs[0]?.run_at ?? new Date().toISOString()
   console.log(`
 ╔══════════════════════════════════════════════════════════
 ║ MoHoLocal WEEKLY INGESTION SUMMARY
@@ -106,4 +130,13 @@ export function aggregateLogs(logs: RunLog[]): void {
 ║ Total errors          : ${total.errors}
 ╚══════════════════════════════════════════════════════════
   `.trim())
+
+  // ── Structured JSON summary — searchable in Workers Logs ─────────────────
+  console.log('MOHO_WEEKLY ' + JSON.stringify({
+    event:           'moho_weekly_summary',
+    run_at:          runAt,
+    jobs:            logs.map((l) => l.domain),
+    ...total,
+    status:          total.errors > 0 ? 'error' : 'ok',
+  }))
 }

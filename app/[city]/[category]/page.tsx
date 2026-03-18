@@ -150,25 +150,6 @@ const CITY_CFG: Record<string, { gradient: string; chip: string; emoji: string; 
     emoji: '🌊',
     tagline: "One of the East Bay's most dynamic communities",
   },
-  // South Bay — FIFA / discovery traffic expansion (Fix #10)
-  'San Jose': {
-    gradient: 'linear-gradient(135deg,#1e3a5f 0%,#0369a1 100%)',
-    chip: 'bg-sky-50 text-sky-700',
-    emoji: '🏙️',
-    tagline: "Silicon Valley's largest city",
-  },
-  'Santa Clara': {
-    gradient: 'linear-gradient(135deg,#7e1d1d 0%,#b91c1c 100%)',
-    chip: 'bg-red-50 text-red-700',
-    emoji: '🏟️',
-    tagline: "Home to Levi's Stadium",
-  },
-  Sunnyvale: {
-    gradient: 'linear-gradient(135deg,#78350f 0%,#d97706 100%)',
-    chip: 'bg-amber-50 text-amber-700',
-    emoji: '☀️',
-    tagline: "One of the Bay Area's most livable cities",
-  },
 }
 
 // ── Category emoji ────────────────────────────────────────────────────────────
@@ -226,7 +207,7 @@ async function getBusinesses(city: string, category: string): Promise<Business[]
   const supabase = getSupabaseClient()
   const { data, error } = await supabase
     .from('businesses')
-    .select('*, business_images(image_url, position, verified, source)')
+    .select('*')
     .eq('city', city)
     .eq('category', category)
     .eq('status', 'approved')
@@ -236,116 +217,75 @@ async function getBusinesses(city: string, category: string): Promise<Business[]
   return (data ?? []) as Business[]
 }
 
-/** Returns the first verified Google Places image for a business card */
-function getCardImage(biz: Business): string | null {
-  if (biz.business_images && biz.business_images.length > 0) {
-    const verified = biz.business_images
-      .filter(img =>
-        img.verified &&
-        ['google_places', 'owner_upload', 'admin_verified'].includes(img.source ?? '')
-      )
-      .sort((a, b) => a.position - b.position)
-    if (verified.length > 0) return verified[0].image_url
-    const sorted = [...biz.business_images].sort((a, b) => a.position - b.position)
-    if (sorted[0]?.image_url) return sorted[0].image_url
-  }
-  return biz.image_url ?? null
-}
-
 // ── Business card ─────────────────────────────────────────────────────────────
-// Redesigned: image on top, bold name, category chip, rating (hidden if 0),
-// contact details, View Details CTA. Lazy image loading. Mobile-safe layout.
 
 function BusinessCard({ biz, cityCfg, catEmoji }: {
   biz: Business
   cityCfg: { gradient: string; chip: string; emoji: string; tagline: string }
   catEmoji: string
 }) {
-  const image = getCardImage(biz)
-
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 hover:shadow-md hover:-translate-y-0.5 transition-all overflow-hidden">
+    <div className="bg-white rounded-2xl border border-gray-200 p-5 hover:shadow-md hover:-translate-y-0.5 transition-all">
+      <div className="flex items-start gap-4">
+        {/* Icon */}
+        <div
+          className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
+          style={{ background: cityCfg.gradient }}
+        >
+          {catEmoji}
+        </div>
 
-      {/* ── Image or gradient placeholder (Fix #1) ── */}
-      <div className="relative w-full overflow-hidden" style={{ aspectRatio: '16/9' }}>
-        {image ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={image}
-            alt={biz.name}
-            loading="lazy"
-            width={600}
-            height={338}
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          // Neutral gray placeholder — never use city gradient (avoids colored blocks)
-          <div className="w-full h-full flex items-center justify-center bg-gray-100">
-            <span className="text-4xl opacity-25" role="img" aria-label={biz.category}>{catEmoji}</span>
+        {/* Info */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-2 flex-wrap">
+            <h3 className="text-base font-bold text-gray-900 leading-snug">{biz.name}</h3>
+            {biz.rating && (
+              <span className="text-xs font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full shrink-0">
+                ★ {biz.rating.toFixed(1)}
+              </span>
+            )}
           </div>
-        )}
-      </div>
 
-      {/* ── Card body ── */}
-      <div className="p-5">
-        {/* Name + rating row */}
-        <div className="flex items-start justify-between gap-2 flex-wrap mb-2">
-          <h3 className="text-base font-bold text-gray-900 leading-snug flex-1 min-w-0">{biz.name}</h3>
-          {/* Rating — only if present AND > 0 (null/0 both hidden) */}
-          {biz.rating != null && biz.rating > 0 && (
-            <span className="text-xs font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full shrink-0 whitespace-nowrap">
-              ★ {biz.rating.toFixed(1)}
-            </span>
+          {biz.description && (
+            <p className="text-sm text-gray-500 mt-1 line-clamp-2 leading-relaxed">
+              {biz.description}
+            </p>
           )}
-        </div>
 
-        {biz.description && (
-          <p className="text-sm text-gray-500 mb-3 line-clamp-2 leading-relaxed">
-            {biz.description}
-          </p>
-        )}
-
-        {/* Contact details */}
-        <div className="flex flex-wrap gap-x-4 gap-y-1.5 mb-4">
-          {biz.address && (
-            <span className="flex items-center gap-1.5 text-xs text-gray-500 min-w-0">
-              <span className="shrink-0">📍</span>
-              <span className="truncate">{biz.address}</span>
-            </span>
-          )}
-          {biz.phone && (
-            <a
-              href={`tel:${biz.phone}`}
-              className="flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:underline"
-            >
-              <span>📞</span>
-              <span>{biz.phone}</span>
-            </a>
-          )}
-          {biz.website && (
-            <a
-              href={biz.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:underline min-w-0"
-            >
-              <span className="shrink-0">🌐</span>
-              <span className="truncate">{biz.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
-            </a>
-          )}
+          {/* Contact details */}
+          <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5">
+            {biz.address && (
+              <span className="flex items-center gap-1.5 text-xs text-gray-500">
+                <span>📍</span>
+                <span>{biz.address}</span>
+              </span>
+            )}
+            {biz.phone && (
+              <a href={`tel:${biz.phone}`}
+                className="flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:underline">
+                <span>📞</span>
+                <span>{biz.phone}</span>
+              </a>
+            )}
+            {biz.website && (
+              <a href={biz.website} target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:underline">
+                <span>🌐</span>
+                <span>{biz.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
+              </a>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* ── Footer: city chip + CTA ── */}
-      <div className="px-5 pb-5 pt-0 border-t border-gray-100 flex items-center justify-between">
+      {/* View details link */}
+      <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
         <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${cityCfg.chip}`}>
           {cityCfg.emoji} {biz.city}
         </span>
-        <Link
-          href={`/business/${biz.id}`}
+        <Link href={`/business/${biz.id}`}
           className="text-xs font-bold px-3 py-1.5 rounded-lg transition hover:opacity-90"
-          style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}
-        >
+          style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}>
           View Details →
         </Link>
       </div>
@@ -464,8 +404,7 @@ export default async function CityLandingPage({ params }: PageProps) {
           </div>
         ) : (
           <>
-            {/* Responsive grid: 1 col mobile → 2 sm → 3 lg (Fix #8, #10) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+            <div className="space-y-4 mb-10">
               {businesses.map((biz) => (
                 <BusinessCard key={biz.id} biz={biz} cityCfg={cfg} catEmoji={catEmoji} />
               ))}

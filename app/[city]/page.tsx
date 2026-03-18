@@ -118,6 +118,7 @@ const CATEGORIES = [
   { name: 'Retail',            emoji: '🛍️', slug: 'retail' },
 ]
 
+// Best Of slugs (uses 'health-and-wellness' / 'beauty-and-spa' format)
 const BEST_OF_LINKS = [
   { label: 'Restaurants',       slug: 'restaurants',        emoji: '🍽️' },
   { label: 'Health & Wellness', slug: 'health-and-wellness', emoji: '🏥' },
@@ -144,50 +145,30 @@ function getCategoryEmoji(category: string): string {
   return '🏢'
 }
 
-/** Returns the first verified Google Places image for a business, or legacy image_url, or null */
-function getCardImage(biz: Business): string | null {
-  if (biz.business_images && biz.business_images.length > 0) {
-    const verified = biz.business_images
-      .filter(img =>
-        img.verified &&
-        ['google_places', 'owner_upload', 'admin_verified'].includes(img.source ?? '')
-      )
-      .sort((a, b) => a.position - b.position)
-    if (verified.length > 0) return verified[0].image_url
-    // Fallback: any image in the array (covers edge cases)
-    const sorted = [...biz.business_images].sort((a, b) => a.position - b.position)
-    if (sorted[0]?.image_url) return sorted[0].image_url
-  }
-  return biz.image_url ?? null
-}
-
 // ── Data fetching ─────────────────────────────────────────────────────────────
 
 async function getCityData(cityName: string) {
   const supabase = getSupabaseClient()
-  const [popularResult, recentResult, catCountsResult, communityResult] = await Promise.allSettled([
-    // Top-rated businesses — join business_images for card thumbnails
-    // Sort: rated first (nulls last), then alphabetical — matches directory sort logic
+  const [popularResult, recentResult, catCountsResult] = await Promise.allSettled([
+    // Top-rated businesses in this city
     supabase
       .from('businesses')
-      .select('*, business_images(image_url, position, verified, source)')
+      .select('*')
       .eq('city', cityName)
       .eq('status', 'approved')
       .eq('verified', true)
-      .order('rating', { ascending: false, nullsFirst: false })
-      .order('name',   { ascending: true })
+      .not('rating', 'is', null)
+      .order('rating', { ascending: false })
       .limit(6),
-
-    // Most recently added — fetch 10 so dedup still yields 4 unique
+    // Most recently added
     supabase
       .from('businesses')
-      .select('*, business_images(image_url, position, verified, source)')
+      .select('*')
       .eq('city', cityName)
       .eq('status', 'approved')
       .eq('verified', true)
       .order('created_at', { ascending: false })
-      .limit(10),
-
+      .limit(4),
     // Category counts for this city
     supabase
       .from('businesses')
@@ -195,25 +176,15 @@ async function getCityData(cityName: string) {
       .eq('city', cityName)
       .eq('status', 'approved')
       .eq('verified', true),
-
-    // Community post counts (for real data vs Coming Soon state)
-    supabase
-      .from('community_posts')
-      .select('category')
-      .eq('city', cityName)
-      .eq('status', 'active'),
   ])
 
   const popular = popularResult.status === 'fulfilled'
     ? (popularResult.value.data ?? []) as Business[]
     : []
 
-  // Deduplicate: recent must not repeat businesses already in popular
-  const popularIds = new Set(popular.map(b => b.id))
-  const allRecent = recentResult.status === 'fulfilled'
+  const recent = recentResult.status === 'fulfilled'
     ? (recentResult.value.data ?? []) as Business[]
     : []
-  const recent = allRecent.filter(b => !popularIds.has(b.id)).slice(0, 4)
 
   const catCounts: Record<string, number> = {}
   if (catCountsResult.status === 'fulfilled' && catCountsResult.value.data) {
@@ -221,18 +192,10 @@ async function getCityData(cityName: string) {
       catCounts[row.category] = (catCounts[row.category] ?? 0) + 1
     }
   }
+
   const total = Object.values(catCounts).reduce((sum, n) => sum + n, 0)
 
-  // Community post counts per category
-  const communityCounts: Record<string, number> = {}
-  if (communityResult.status === 'fulfilled' && communityResult.value.data) {
-    for (const row of communityResult.value.data) {
-      communityCounts[row.category] = (communityCounts[row.category] ?? 0) + 1
-    }
-  }
-  const totalCommunity = Object.values(communityCounts).reduce((sum, n) => sum + n, 0)
-
-  return { popular, recent, catCounts, total, communityCounts, totalCommunity }
+  return { popular, recent, catCounts, total }
 }
 
 // ── SEO Metadata ──────────────────────────────────────────────────────────────
@@ -259,8 +222,6 @@ export async function generateMetadata({ params }: PageProps) {
 }
 
 // ── Business card ─────────────────────────────────────────────────────────────
-// Full redesign: image on top → name (bold) → category chip → city → View Details CTA
-// Review count hidden if 0 (Fix #2). Lazy-loaded image (Fix #7). Mobile grid (Fix #8).
 
 function BusinessCard({
   biz,
@@ -270,68 +231,39 @@ function BusinessCard({
   cfg: (typeof CITY_CFG)[string]
 }) {
   const emoji = getCategoryEmoji(biz.category)
-  const image = getCardImage(biz)
-
   return (
     <Link
       href={`/business/${biz.id}`}
-      className="group bg-white rounded-2xl border border-gray-200 hover:shadow-lg hover:-translate-y-0.5 transition-all block overflow-hidden"
+      className="group bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md hover:-translate-y-0.5 transition-all block"
     >
-      {/* ── Image or gradient placeholder ── */}
-      <div className="relative w-full overflow-hidden" style={{ aspectRatio: '16/9' }}>
-        {image ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={image}
-            alt={biz.name}
-            loading="lazy"
-            width={400}
-            height={225}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-        ) : (
-          // Neutral gray placeholder — never use city gradient (avoids red/dark blocks)
-          <div className="w-full h-full flex items-center justify-center bg-gray-100">
-            <span className="text-4xl opacity-25" role="img" aria-label={biz.category}>{emoji}</span>
-          </div>
-        )}
-      </div>
-
-      {/* ── Card body ── */}
-      <div className="p-4">
-        {/* Category chip */}
-        <span className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-2 ${cfg.chip}`}>
-          {biz.category}
-        </span>
-
-        {/* Business name */}
-        <h3 className="font-bold text-sm text-gray-900 group-hover:text-blue-700 transition leading-snug mb-2 line-clamp-2">
-          {biz.name}
-        </h3>
-
-        {/* Rating — only if rating is present AND > 0 (null/0 both hidden) */}
-        {biz.rating != null && biz.rating > 0 && (
-          <div className="text-xs text-amber-500 font-semibold mb-1.5">
-            ★ {biz.rating.toFixed(1)}
-            {biz.review_count != null && biz.review_count > 0 ? (
-              <span className="text-gray-400 font-normal ml-1">({biz.review_count})</span>
-            ) : null}
-          </div>
-        )}
-
-        {/* City */}
-        <div className="text-xs text-gray-400 mb-3 flex items-center gap-1">
-          <span>📍</span>
-          <span>{biz.city}, CA</span>
-        </div>
-
-        {/* CTA button */}
-        <span
-          className="inline-block text-xs font-bold px-3 py-1.5 rounded-lg transition group-hover:opacity-90"
-          style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}
+      <div className="flex items-start gap-3">
+        {/* Icon */}
+        <div
+          className="w-11 h-11 rounded-xl flex items-center justify-center text-xl shrink-0 shadow-sm"
+          style={{ background: cfg.gradient }}
         >
-          View Details →
-        </span>
+          <span>{emoji}</span>
+        </div>
+        {/* Info */}
+        <div className="flex-1 min-w-0">
+          <h3 className="font-bold text-sm text-gray-900 group-hover:text-blue-700 transition leading-snug line-clamp-2">
+            {biz.name}
+          </h3>
+          <span className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full mt-1 ${cfg.chip}`}>
+            {biz.category}
+          </span>
+          {biz.rating && (
+            <div className="text-xs text-amber-500 font-semibold mt-1">
+              ★ {biz.rating.toFixed(1)}
+              {biz.review_count ? (
+                <span className="text-gray-400 font-normal ml-1">({biz.review_count})</span>
+              ) : null}
+            </div>
+          )}
+          {biz.phone && (
+            <div className="text-xs text-gray-400 mt-1 truncate">📞 {biz.phone}</div>
+          )}
+        </div>
       </div>
     </Link>
   )
@@ -345,7 +277,7 @@ export default async function CityPage({ params }: PageProps) {
   if (!cityName) notFound()
 
   const cfg = CITY_CFG[cityName]
-  const { popular, recent, catCounts, total, communityCounts, totalCommunity } = await getCityData(cityName)
+  const { popular, recent, catCounts, total } = await getCityData(cityName)
 
   return (
     <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -428,88 +360,36 @@ export default async function CityPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* ── Community Board — real data or Coming Soon (Fix #5) ── */}
+      {/* ── Community Board ── */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold text-gray-900">💬 {cityName} Community</h2>
-          {totalCommunity > 0 && (
-            <Link
-              href={`/community?city=${encodeURIComponent(cityName)}`}
-              className="text-sm text-blue-600 hover:underline font-medium"
-            >
-              View all posts →
-            </Link>
-          )}
-        </div>
-
-        {totalCommunity === 0 ? (
-          /* ── Empty state — CTA to start the first post ── */
-          <div className="rounded-xl bg-gray-50 border border-gray-100 p-8 text-center">
-            <div className="text-4xl mb-3">💬</div>
-            <p className="text-sm font-bold text-gray-700 mb-2">Be the first to post in {cityName}</p>
-            <p className="text-xs text-gray-400 mb-5 max-w-xs mx-auto">
-              Share a restaurant rec, ask a local question, or post a neighborhood tip. Your neighbors are listening.
-            </p>
-            <Link
-              href={`/community?city=${encodeURIComponent(cityName)}`}
-              className="inline-block text-sm font-bold px-5 py-2.5 rounded-xl transition hover:opacity-90 mb-3"
-              style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}
-            >
-              Start a Post in {cityName} →
-            </Link>
-            <p className="text-xs text-gray-400">
-              <Link href="/community" className="text-blue-500 hover:underline">
-                Browse all city boards →
-              </Link>
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {[
-              { label: 'Recommendations', emoji: '⭐', q: 'Recommendations' },
-              { label: 'For Sale',         emoji: '🏷️', q: 'For Sale' },
-              { label: 'Questions',        emoji: '❓', q: 'Question' },
-            ].map(({ label, emoji, q }) => {
-              const count = communityCounts[q] ?? 0
-              return (
-                <Link
-                  key={q}
-                  href={`/community?city=${encodeURIComponent(cityName)}&category=${encodeURIComponent(q)}`}
-                  className="flex items-center gap-2 text-sm font-semibold px-4 py-3 rounded-xl border border-gray-200 bg-white hover:border-blue-300 hover:text-blue-700 hover:shadow-sm transition"
-                >
-                  <span className="text-lg">{emoji}</span>
-                  <div className="flex-1 min-w-0">
-                    <span className="block">{label}</span>
-                    {count > 0 && (
-                      <span className="text-[11px] text-gray-400 font-normal">{count} post{count !== 1 ? 's' : ''}</span>
-                    )}
-                  </div>
-                </Link>
-              )
-            })}
-          </div>
-        )}
-      </div>
-
-      {/* ── Empty state — 0 businesses (Fix #9) ── */}
-      {total === 0 && (
-        <div className="mb-8 text-center py-16 bg-white rounded-2xl border border-gray-200">
-          <div className="text-5xl mb-4">{cfg.emoji}</div>
-          <h2 className="text-xl font-bold text-gray-900 mb-2">Building {cityName}&apos;s Directory</h2>
-          <p className="text-gray-500 text-sm mb-6 max-w-sm mx-auto leading-relaxed">
-            We&apos;re adding businesses to {cityName} — check back soon, or help us grow by submitting a listing!
-          </p>
           <Link
-            href="/submit-business"
-            className="inline-block px-6 py-3 rounded-xl text-sm font-bold transition hover:opacity-90"
-            style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}
+            href={`/community?city=${encodeURIComponent(cityName)}`}
+            className="text-sm text-blue-600 hover:underline font-medium"
           >
-            + Add a Business — It&apos;s Free
+            View all posts →
           </Link>
         </div>
-      )}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {[
+            { label: 'Recommendations', emoji: '⭐', q: 'Recommendations' },
+            { label: 'For Sale',         emoji: '🏷️', q: 'For Sale' },
+            { label: 'Questions',        emoji: '❓', q: 'Question' },
+          ].map(({ label, emoji, q }) => (
+            <Link
+              key={q}
+              href={`/community?city=${encodeURIComponent(cityName)}&category=${encodeURIComponent(q)}`}
+              className="flex items-center gap-2 text-sm font-semibold px-4 py-3 rounded-xl border border-gray-200 bg-white hover:border-blue-300 hover:text-blue-700 hover:shadow-sm transition"
+            >
+              <span className="text-lg">{emoji}</span>
+              <span>{label} in {cityName}</span>
+            </Link>
+          ))}
+        </div>
+      </div>
 
-      {/* ── Popular in [City] — image cards (Fix #1, #3) ── */}
+      {/* ── Popular in [City] ── */}
       {popular.length > 0 && (
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
@@ -521,7 +401,6 @@ export default async function CityPage({ params }: PageProps) {
               View all →
             </Link>
           </div>
-          {/* grid-cols-1 on mobile, 2 on sm, 3 on lg (Fix #8) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {popular.map((biz) => (
               <BusinessCard key={biz.id} biz={biz} cfg={cfg} />
@@ -530,11 +409,10 @@ export default async function CityPage({ params }: PageProps) {
         </div>
       )}
 
-      {/* ── Recently Added — deduplicated (Fix #6) ── */}
+      {/* ── Recently Added ── */}
       {recent.length > 0 && (
         <div className="mb-8">
           <h2 className="text-lg font-bold text-gray-900 mb-4">Recently Added</h2>
-          {/* 1 col mobile, 2 sm, 4 lg (Fix #8) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {recent.map((biz) => (
               <BusinessCard key={biz.id} biz={biz} cfg={cfg} />

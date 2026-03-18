@@ -1,8 +1,61 @@
 export const runtime = 'edge'
 
 import { getSupabaseClient, type Business } from '@/lib/supabase'
-import { CITIES, CITY_BY_NAME, CITY_BY_SLUG, CITIES_209, CITIES_SOUTH_BAY } from '@/lib/cities'
 import Link from 'next/link'
+
+// ── City config ───────────────────────────────────────────────────────────────
+const CITIES = ['Mountain House', 'Tracy', 'Lathrop', 'Manteca', 'Brentwood'] as const
+type City = (typeof CITIES)[number]
+
+const CITY_CFG: Record<City, {
+  slug: string
+  emoji: string
+  gradient: string
+  chip: string
+  population: string
+  county: string
+}> = {
+  'Mountain House': {
+    slug: 'mountain-house',
+    emoji: '🏘️',
+    gradient: 'linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%)',
+    chip: 'bg-blue-50 text-blue-700',
+    population: '~31k',
+    county: 'San Joaquin County',
+  },
+  Tracy: {
+    slug: 'tracy',
+    emoji: '🌿',
+    gradient: 'linear-gradient(135deg,#14532d 0%,#16a34a 100%)',
+    chip: 'bg-green-50 text-green-700',
+    population: '~103k',
+    county: 'San Joaquin County',
+  },
+  Lathrop: {
+    slug: 'lathrop',
+    emoji: '🔮',
+    gradient: 'linear-gradient(135deg,#581c87 0%,#9333ea 100%)',
+    chip: 'bg-purple-50 text-purple-700',
+    population: '~28k',
+    county: 'San Joaquin County',
+  },
+  Manteca: {
+    slug: 'manteca',
+    emoji: '🍊',
+    gradient: 'linear-gradient(135deg,#7c2d12 0%,#ea580c 100%)',
+    chip: 'bg-orange-50 text-orange-700',
+    population: '~90k',
+    county: 'San Joaquin County',
+  },
+  Brentwood: {
+    slug: 'brentwood',
+    emoji: '🌊',
+    gradient: 'linear-gradient(135deg,#134e4a 0%,#0d9488 100%)',
+    chip: 'bg-teal-50 text-teal-700',
+    population: '~65k',
+    county: 'Contra Costa County',
+  },
+}
 
 // ── Categories ────────────────────────────────────────────────────────────────
 const CATEGORIES = [
@@ -29,7 +82,7 @@ const QUICK_TAGS = [
 ]
 
 // ── Data fetching ─────────────────────────────────────────────────────────────
-async function getData(activeCity: string) {
+async function getData(activeCity: City) {
   const supabase = getSupabaseClient()
   const [
     bizTotalResult,
@@ -255,7 +308,7 @@ function BizMiniCard({
   chipOverride?: string
   badge?: string
 }) {
-  const fallbackCfg = CITY_BY_NAME[biz.city] ?? CITY_BY_NAME['Mountain House']
+  const fallbackCfg = CITY_CFG[biz.city as City] ?? CITY_CFG['Mountain House']
   const gradient = gradientOverride ?? fallbackCfg.gradient
   const chip     = chipOverride     ?? fallbackCfg.chip
   return (
@@ -278,7 +331,7 @@ function BizMiniCard({
       <span className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full ${chip}`}>
         {biz.category}
       </span>
-      {biz.rating != null && biz.rating > 0 && (
+      {biz.rating != null && (
         <div className="text-xs text-amber-500 font-semibold mt-1.5">
           ★ {biz.rating.toFixed(1)}
         </div>
@@ -295,11 +348,13 @@ interface PageProps {
 export default async function HomePage({ searchParams }: PageProps) {
   const params = await searchParams
 
-  // Resolve active city: ?city= param (slug) → name, default Mountain House
-  const paramSlug = (params.city ?? '').toLowerCase()
-  const activeCityConfig = CITY_BY_SLUG[paramSlug] ?? CITY_BY_NAME['Mountain House']
-  const activeCity = activeCityConfig.name
-  const cfg = activeCityConfig
+  // Resolve city from slug param
+  const activeCity: City =
+    (CITIES.find(
+      (c) => CITY_CFG[c].slug === (params.city ?? '').toLowerCase()
+    ) as City) ?? 'Mountain House'
+
+  const cfg = CITY_CFG[activeCity]
   const {
     totalBiz,
     cityBizMap,
@@ -325,7 +380,7 @@ export default async function HomePage({ searchParams }: PageProps) {
           Your Local Community Hub
         </h1>
         <p className="text-sm opacity-85 mb-6">
-          Find local businesses, connect with neighbors, discover events across the 209 &amp; South Bay — Mountain House, Tracy, San Jose, Santa Clara, Sunnyvale and more
+          Find local businesses, connect with neighbors, discover events across Mountain House, Tracy, Lathrop, Manteca &amp; Brentwood
         </p>
 
         <form action="/directory" method="GET" className="flex gap-2 max-w-xl mx-auto mb-5 flex-col sm:flex-row">
@@ -359,20 +414,18 @@ export default async function HomePage({ searchParams }: PageProps) {
       {/* ── Browse by City ── */}
       <div className="flex items-center justify-between mb-4 gap-2">
         <h2 className="text-lg font-bold text-gray-900">Browse by City</h2>
-        <Link href="/discover" className="text-sm text-blue-600 hover:underline font-medium whitespace-nowrap shrink-0">
+        <Link href="/directory" className="text-sm text-blue-600 hover:underline font-medium whitespace-nowrap shrink-0">
           All Cities →
         </Link>
       </div>
-
-      {/* 209 / San Joaquin */}
-      <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-2">209 · San Joaquin &amp; East Bay</p>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-4">
-        {CITIES_209.map((c) => {
-          const count = cityBizMap[c.name] ?? 0
-          const isActive = c.name === activeCity
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-12">
+        {CITIES.map((city) => {
+          const c = CITY_CFG[city]
+          const count = cityBizMap[city] ?? 0
+          const isActive = city === activeCity
           return (
             <Link
-              key={c.slug}
+              key={city}
               href={`/${c.slug}`}
               className="rounded-2xl p-5 text-white relative overflow-hidden hover:-translate-y-1 hover:shadow-xl transition-all block"
               style={{ background: c.gradient }}
@@ -382,42 +435,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                   ✓ Selected
                 </span>
               )}
-              <div className="text-base font-extrabold mb-0.5">{c.name}</div>
-              <div className="text-[10px] opacity-70 mb-3">{c.county}</div>
-              <div className="flex gap-4">
-                <div className="text-xs opacity-85">
-                  <strong className="block text-base font-extrabold">{count || '—'}</strong>
-                  Businesses
-                </div>
-                <div className="text-xs opacity-85">
-                  <strong className="block text-base font-extrabold">{c.population}</strong>
-                  Pop.
-                </div>
-              </div>
-            </Link>
-          )
-        })}
-      </div>
-
-      {/* South Bay / FIFA 2026 */}
-      <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-2">South Bay · ⚽ FIFA World Cup 2026</p>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
-        {CITIES_SOUTH_BAY.map((c) => {
-          const count = cityBizMap[c.name] ?? 0
-          const isActive = c.name === activeCity
-          return (
-            <Link
-              key={c.slug}
-              href={`/${c.slug}`}
-              className="rounded-2xl p-5 text-white relative overflow-hidden hover:-translate-y-1 hover:shadow-xl transition-all block"
-              style={{ background: c.gradient }}
-            >
-              {isActive && (
-                <span className="absolute top-3 right-3 bg-white/25 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                  ✓ Selected
-                </span>
-              )}
-              <div className="text-base font-extrabold mb-0.5">{c.name}</div>
+              <div className="text-base font-extrabold mb-0.5">{city}</div>
               <div className="text-[10px] opacity-70 mb-3">{c.county}</div>
               <div className="flex gap-4">
                 <div className="text-xs opacity-85">
@@ -518,7 +536,7 @@ export default async function HomePage({ searchParams }: PageProps) {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {featuredBiz.map((biz) => {
-              const c = CITY_BY_NAME[biz.city] ?? CITY_BY_NAME['Mountain House']
+              const c = CITY_CFG[biz.city as City] ?? CITY_CFG['Mountain House']
               return (
                 <Link
                   key={biz.id}
@@ -538,7 +556,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                   <span className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full ${c.chip}`}>
                     {biz.city}
                   </span>
-                  {biz.rating != null && biz.rating > 0 && (
+                  {biz.rating != null && (
                     <div className="text-xs text-amber-500 font-semibold mt-1.5">
                       ★ {biz.rating.toFixed(1)}
                     </div>
@@ -617,7 +635,7 @@ export default async function HomePage({ searchParams }: PageProps) {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {upcomingEvents.map((event) => {
               const { month, day } = formatEventDate(event.start_date)
-              const c = CITY_BY_NAME[event.city] ?? CITY_BY_NAME['Mountain House']
+              const c = CITY_CFG[event.city as City] ?? CITY_CFG['Mountain House']
               return (
                 <Link
                   key={event.id}
@@ -660,10 +678,13 @@ export default async function HomePage({ searchParams }: PageProps) {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {activityItems.map((item) => {
-              // Use shared city config chip classes (split into bg + text parts)
-              const cityChip = CITY_BY_NAME[item.city]?.chip ?? 'bg-gray-50 text-gray-600'
-              const [chipBg, chipText] = cityChip.split(' ')
-              const cityColor = { bg: chipBg ?? 'bg-gray-50', text: chipText ?? 'text-gray-600' }
+              const cityColor = {
+                'Mountain House': { bg: 'bg-blue-50',   text: 'text-blue-700'   },
+                'Tracy':          { bg: 'bg-green-50',  text: 'text-green-700'  },
+                'Lathrop':        { bg: 'bg-purple-50', text: 'text-purple-700' },
+                'Manteca':        { bg: 'bg-orange-50', text: 'text-orange-700' },
+                'Brentwood':      { bg: 'bg-teal-50',   text: 'text-teal-700'   },
+              }[item.city] ?? { bg: 'bg-gray-50', text: 'text-gray-600' }
 
               const typeBadge = {
                 'Community': { bg: 'bg-indigo-50', text: 'text-indigo-600', icon: '💬' },
