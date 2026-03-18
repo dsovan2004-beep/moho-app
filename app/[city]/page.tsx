@@ -167,14 +167,15 @@ async function getCityData(cityName: string) {
   const supabase = getSupabaseClient()
   const [popularResult, recentResult, catCountsResult, communityResult] = await Promise.allSettled([
     // Top-rated businesses — join business_images for card thumbnails
+    // Sort: rated first (nulls last), then alphabetical — matches directory sort logic
     supabase
       .from('businesses')
       .select('*, business_images(image_url, position, verified, source)')
       .eq('city', cityName)
       .eq('status', 'approved')
       .eq('verified', true)
-      .not('rating', 'is', null)
-      .order('rating', { ascending: false })
+      .order('rating', { ascending: false, nullsFirst: false })
+      .order('name',   { ascending: true })
       .limit(6),
 
     // Most recently added — fetch 10 so dedup still yields 4 unique
