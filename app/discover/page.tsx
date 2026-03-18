@@ -32,45 +32,49 @@ export const metadata = {
 }
 
 // ── Data ──────────────────────────────────────────────────────────────────────
+// Supabase PostgREST caps responses at 1000 rows by default.
+// With 1800+ businesses we must paginate to get ALL records — otherwise
+// South Bay cities (seeded last) are mostly truncated from the count matrix.
 
-async function getCountMatrix(): Promise<Record<string, Record<string, number>>> {
+async function getBusinessCounts(): Promise<{
+  matrix: Record<string, Record<string, number>>
+  totals: Record<string, number>
+}> {
   const supabase = getSupabaseClient()
-  const { data, error } = await supabase
-    .from('businesses')
-    .select('city, category')
-    .eq('status', 'approved')
-    .eq('verified', true)
+  const PAGE = 1000
+  let from = 0
+  const all: Array<{ city: string; category: string }> = []
 
-  if (error || !data) return {}
+  while (true) {
+    const { data } = await supabase
+      .from('businesses')
+      .select('city, category')
+      .eq('status', 'approved')
+      .eq('verified', true)
+      .range(from, from + PAGE - 1)
+
+    if (!data || data.length === 0) break
+    all.push(...data)
+    if (data.length < PAGE) break
+    from += PAGE
+  }
 
   const matrix: Record<string, Record<string, number>> = {}
-  for (const row of data) {
+  const totals: Record<string, number> = {}
+
+  for (const row of all) {
     if (!matrix[row.city]) matrix[row.city] = {}
     matrix[row.city][row.category] = (matrix[row.city][row.category] ?? 0) + 1
-  }
-  return matrix
-}
-
-async function getTotals(): Promise<Record<string, number>> {
-  const supabase = getSupabaseClient()
-  const { data } = await supabase
-    .from('businesses')
-    .select('city')
-    .eq('status', 'approved')
-    .eq('verified', true)
-
-  if (!data) return {}
-  const totals: Record<string, number> = {}
-  for (const row of data) {
     totals[row.city] = (totals[row.city] ?? 0) + 1
   }
-  return totals
+
+  return { matrix, totals }
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default async function DiscoverPage() {
-  const [matrix, totals] = await Promise.all([getCountMatrix(), getTotals()])
+  const { matrix, totals } = await getBusinessCounts()
 
   // Schema.org SiteLinksSearchBox / ItemList for SEO
   const cityListSchema = {
