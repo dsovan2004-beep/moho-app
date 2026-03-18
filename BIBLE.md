@@ -1228,5 +1228,89 @@ A city expansion is only complete when ALL of the following are true:
 
 ---
 
+## City System Architecture — LOCKED
+
+*(Added March 2026 — post UI Consistency Sprint)*
+
+### Single Source of Truth
+
+All city configuration is defined in one place:
+
+```
+lib/cities.ts
+```
+
+This is the **only** source of truth for city data. No other file may define a city list, city array, or city config object.
+
+### Supported Cities (v1 Expansion — March 2026)
+
+**209 / San Joaquin & East Bay:**
+
+| City | Region | County |
+|------|--------|--------|
+| Mountain House | 209 | San Joaquin County |
+| Tracy | 209 | San Joaquin County |
+| Lathrop | 209 | San Joaquin County |
+| Manteca | 209 | San Joaquin County |
+| Brentwood | 209 | Contra Costa County |
+
+**South Bay (FIFA Expansion):**
+
+| City | Region | County |
+|------|--------|--------|
+| San Jose | south-bay | Santa Clara County |
+| Santa Clara | south-bay | Santa Clara County |
+| Sunnyvale | south-bay | Santa Clara County |
+
+### Non-Negotiable Rules
+
+1. **Any new city = update `lib/cities.ts` ONLY.** No other files need a city list edit. All components derive their city data from the shared config.
+2. **All components must import from `@/lib/cities`.** No hardcoded city arrays, objects, or string lists anywhere in the app.
+3. **No duplicate lists across pages.** Homepage, Discover, Directory, and all future pages must pull from the same config.
+4. **Violations = reject PR.** A pull request that introduces a hardcoded city array must be rejected and rewritten to use the shared config.
+
+### City Config Shape
+
+Each city entry in `lib/cities.ts` must include:
+
+```typescript
+{
+  slug: string        // URL segment (e.g. 'mountain-house')
+  name: string        // Display name (e.g. 'Mountain House')
+  region: '209' | 'south-bay'
+  county: string
+  emoji: string
+  gradient: string    // CSS gradient for city hero/card
+  chip: string        // Tailwind classes for city badge (e.g. 'bg-blue-50 text-blue-700')
+  population: string
+  tagline: string
+  dotColor: string    // Hex color for dot indicators
+}
+```
+
+### Convenience Exports (from `lib/cities.ts`)
+
+| Export | Type | Use |
+|--------|------|-----|
+| `CITIES` | `CityConfig[]` | All 8 cities in display order |
+| `CITIES_209` | `CityConfig[]` | 5 cities filtered by region='209' |
+| `CITIES_SOUTH_BAY` | `CityConfig[]` | 3 cities filtered by region='south-bay' |
+| `CITY_BY_SLUG` | `Record<string, CityConfig>` | O(1) lookup by URL slug |
+| `CITY_BY_NAME` | `Record<string, CityConfig>` | O(1) lookup by display name |
+| `CITY_NAMES` | `string[]` | Flat list of display names |
+| `CITY_SLUGS_LIST` | `string[]` | Flat list of URL slugs |
+
+### City State Sync Rule
+
+City state in the nav layout is derived from the current pathname — not from a `?city=` URL param or component-level state:
+
+```
+pathname → getCityFromPath() → active city
+```
+
+When the user is on a city route (e.g. `/san-jose/restaurants`), the nav picker must always reflect that city. A `?city=` param is only used on global pages (e.g. `/directory?city=Tracy`). This prevents state drift between the URL and the UI.
+
+---
+
 MoHoLocal Product Bible v8
 Confidential — March 2026

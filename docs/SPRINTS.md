@@ -86,7 +86,7 @@ A **Data Sprint** covers seeding or enriching business directory data within exi
 | Sprint 1 | Platform Stability | ✅ COMPLETE | 2025 |
 | Sprint 2 | Directory & Search UX | ✅ COMPLETE | 2025 |
 | Sprint 3 | Verified Photo Pipeline | ✅ COMPLETE | March 2026 |
-| Sprint 3.5 | South Bay Expansion | ✅ COMPLETE | March 2026 |
+| Sprint 3.5 | South Bay Expansion + UI System Unification | ✅ COMPLETE | March 2026 |
 | Sprint 4 | SEO Surface Expansion | ✅ COMPLETE | March 2026 |
 | Sprint 5 | Distribution & Traffic Activation | 🔜 NEXT | Target: April 2026 |
 
@@ -129,10 +129,20 @@ Phase 3 — Image Enrichment
 
 Phase 4 — Distribution & Indexing
 [ ] Submit /san-jose, /santa-clara, /sunnyvale to Google Search Console  ← Founder action
-[x] BIBLE.md updated — Expansion Standard v1 section added
-[x] PLAYBOOK.md updated — v8, Phase 3 mandatory, Success Criteria, Locked Execution Order
-[x] ROADMAP.md updated — Sprint 3.5 marked COMPLETE with final metrics
-[x] SPRINTS.md created — Expansion DoD standard locked
+[x] BIBLE.md updated — Expansion Standard v1 + City System Architecture sections added
+[x] PLAYBOOK.md updated — v9, City Handling / UI Consistency / Rating Display standards added
+[x] ROADMAP.md updated — Sprint 3.5 COMPLETE with final metrics + UI system tasks
+[x] SPRINTS.md updated — Sprint 3.5 DoD complete, Sprint 5 added to history
+
+Phase 5 — UI System Unification (added to Sprint 3.5 scope post-data rollout)
+[x] lib/cities.ts created — single source of truth for all 8 cities (commit 347ce8e)
+[x] Homepage, Discover, Directory — hardcoded city arrays removed, imports from lib/cities.ts
+[x] South Bay cities visible in Browse by City, Choose Your City, Directory filter chips
+[x] City state sync fixed — getCityFromPath() + pathname-driven useEffect in layout.tsx (commit e0b97ce)
+[x] Zero-rating UI suppressed — all cards use `rating != null && rating > 0` guard
+[x] app/[city]/page.tsx — rating guard fixed
+[x] app/[city]/[category]/page.tsx — rating guard fixed
+[x] Cloudflare build confirmed green — all 63 edge routes compiled
 ```
 
 ### Key Commits
@@ -154,5 +164,67 @@ Phase 4 — Distribution & Indexing
 
 ---
 
-MoHoLocal Sprints Reference v1
+## UI System Sprint Definition of Done
+
+*(Added March 2026 — derived from Sprint 3.5 UI Unification phase)*
+
+A **UI System Sprint** covers architectural consistency fixes — shared configs, state management, and rendering correctness. It is complete when:
+
+```
+[ ] Shared config file (e.g. lib/cities.ts) is the single source of truth
+[ ] All consuming pages import from shared config — no local duplicates
+[ ] UI surfaces are verified to match (nav, homepage, discover, directory)
+[ ] State sync verified — URL/pathname always drives active state (no drift)
+[ ] Rendering guards correct — no JSX falsy-zero text nodes
+[ ] Build is green — no TypeScript errors, all edge routes compile
+[ ] Standards documented in BIBLE.md and PLAYBOOK.md
+[ ] Sprint marked COMPLETE in ROADMAP.md and SPRINTS.md
+```
+
+---
+
+## Sprint 5 — Distribution & Traffic Activation
+
+**Theme:** Turn the content we've built into inbound traffic
+**Status:** 🔜 NEXT
+**Target:** April 2026
+
+### Focus Areas
+
+- Google Search Console indexing for all city pages (South Bay + 209 Sprint 4 pages)
+- First backlinks from local community channels
+- South Bay FIFA pages ranked before June 2026 Levi's Stadium kickoff
+- 209 directory density growth (next data push)
+
+### Task List
+
+| Task | Owner | Status |
+|------|-------|--------|
+| Submit `/san-jose`, `/santa-clara`, `/sunnyvale` to GSC | Founder | ⬜ |
+| Submit Sprint 4 discovery pages to GSC (20 pages) | Founder | ⬜ |
+| Verify sitemap includes all South Bay + Sprint 4 pages | Claude | ⬜ |
+| Post Best Of pages in 209 Facebook groups | Founder | ⬜ |
+| Share FIFA pages in South Bay community channels | Founder | ⬜ |
+| Reddit distribution — r/SanJose, r/bayarea, r/209 | Founder | ⬜ |
+| Monitor GSC for impressions on new pages (30-day check) | Founder | ⬜ |
+| Increase 209 directory density — next batch seed for Tracy, Manteca | Claude | ⬜ |
+| Review claim listing conversion rate | Claude | ⬜ |
+
+### Success Criteria
+
+```
+[ ] All South Bay pages indexed in GSC (URL inspection confirms indexed)
+[ ] GSC shows >0 impressions on /san-jose, /santa-clara, /sunnyvale within 30 days
+[ ] At least 1 South Bay page ranking on page 1 for a targeted local query
+[ ] 209 directory grows by ≥100 verified listings (next data push)
+[ ] FIFA discovery pages live and crawlable before May 2026
+```
+
+### Deadline
+
+Levi's Stadium games begin June 2026. Pages must be indexed and ranking by May 2026. Sprint 5 must complete no later than **April 15, 2026**.
+
+---
+
+MoHoLocal Sprints Reference v2
 March 2026

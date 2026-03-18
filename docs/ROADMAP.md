@@ -273,7 +273,16 @@ Added `DISCOVERY_PAGES` array to `/sitemap.xml/route.ts`:
 | Image enrichment — Sunnyvale | ✅ Complete — 61 enriched, 296 photos |
 | BIBLE.md — Expansion Standard v1 section added | ✅ Complete |
 | PLAYBOOK.md — Success Criteria + Locked Execution Order added, version bumped to v8 | ✅ Complete |
+| **`lib/cities.ts` — Canonical 8-city config created (single source of truth)** | ✅ Complete |
+| **Hardcoded city arrays removed from homepage, discover, directory** | ✅ Complete |
+| **South Bay cities visible in Browse by City, Choose Your City, Directory filters** | ✅ Complete |
+| **City state sync fix — nav picker and banner now derive city from pathname** | ✅ Complete |
+| **Zero-rating UI cleanup — `rating=0`/`null`/`review_count=0` hides rating UI globally** | ✅ Complete |
+| **BIBLE.md — City System Architecture section added (locked rules)** | ✅ Complete |
+| **PLAYBOOK.md — City Handling, UI Consistency, and Rating Display standards added** | ✅ Complete |
 | Submit `/san-jose`, `/santa-clara`, `/sunnyvale` to Google Search Console | ⬜ Founder action required |
+
+> **Platform note:** With shared city config, city state sync, and unified UI surfaces complete, the platform is now structurally ready for multi-city scaling. Adding any future city requires editing a single file: `lib/cities.ts`.
 
 ### Success Criteria
 
@@ -283,6 +292,10 @@ Added `DISCOVERY_PAGES` array to `/sitemap.xml/route.ts`:
 - [x] 1,624 verified Google Places photos saved to Supabase Storage
 - [x] Zero duplicate records (dedup guard confirmed idempotent)
 - [x] Every enriched listing has at least 1 verified image (Google Places)
+- [x] `lib/cities.ts` created — single source of truth for all 8 cities
+- [x] Nav, Homepage, Discover, Directory unified — all derive from shared config
+- [x] City state sync fixed — pathname always drives active city in nav
+- [x] Zero-rating UI suppressed across all card surfaces
 - [ ] Submit city pages to Google Search Console (founder action)
 
 ### Execution Instructions (Founder)
@@ -319,6 +332,8 @@ python3.11 verify_business_places.py --city "Sunnyvale"
 | `f0a9592` | Cross-city dedup fix (OSM city validation + global address dedup) |
 | `adf1580` | seed_southbay.py — auto-load .env.local (_load_env_local() function) |
 | *(sprint close)* | BIBLE.md Expansion Standard v1 + PLAYBOOK.md v8 + ROADMAP.md Sprint 3.5 COMPLETE + Sprint 5 |
+| `e0b97ce` | City state sync fix — getCityFromPath(), pathname-driven nav, handleCitySelect routing |
+| `347ce8e` | lib/cities.ts + unified city config across homepage/discover/directory + zero-rating UI fix |
 
 ---
 

@@ -384,6 +384,84 @@ Periodically verify the site is functioning correctly.
 
 ---
 
+## City Handling Standard
+
+*(Added March 2026 — derived from UI Consistency Sprint)*
+
+**Rule: Always import from `lib/cities.ts`. Never define cities inline in components.**
+
+```typescript
+// ✅ CORRECT
+import { CITIES, CITIES_209, CITIES_SOUTH_BAY, CITY_BY_SLUG, CITY_BY_NAME } from '@/lib/cities'
+
+// ❌ WRONG — do not do this
+const CITIES = ['Mountain House', 'Tracy', 'Lathrop', 'Manteca']
+```
+
+The `lib/cities.ts` config is the single source of truth. Every component that needs city data (homepage, discover, directory, nav, city pages) must import from it. This ensures that adding a new city requires changing exactly one file.
+
+Helpers available from `lib/cities.ts`:
+
+| Export | Use case |
+|--------|----------|
+| `CITIES` | Iterate all 8 cities |
+| `CITIES_209` | 209 / San Joaquin region only |
+| `CITIES_SOUTH_BAY` | South Bay region only |
+| `CITY_BY_SLUG['mountain-house']` | O(1) lookup for route-derived city |
+| `CITY_BY_NAME['Mountain House']` | O(1) lookup for DB-derived city |
+
+---
+
+## UI Consistency Rule
+
+*(Added March 2026)*
+
+The nav city picker, homepage Browse by City, `/discover` Choose Your City, and `/directory` city filter list are all **the same list** sourced from `lib/cities.ts`. If one surface updates, all surfaces update automatically — because they share a single import.
+
+**Enforcement checklist (required before merging any city-related change):**
+
+- [ ] Nav city picker shows all cities from `lib/cities.ts`
+- [ ] Homepage Browse by City shows all cities from `lib/cities.ts`
+- [ ] `/discover` Choose Your City shows all cities from `lib/cities.ts`
+- [ ] `/directory` city filter chips show all cities from `lib/cities.ts`
+- [ ] City groupings (209 vs South Bay) display correctly in each surface
+
+Any code that diverges from this (hardcoded subset, separate array, etc.) is a regression and must be fixed before deployment.
+
+---
+
+## Rating Display Rule
+
+*(Added March 2026)*
+
+**Rule: If `rating === 0`, `rating === null`, or `review_count === 0` → hide all rating UI. No stars, no number, no empty placeholder.**
+
+This applies to every business card, business detail page, and any surface that renders ratings.
+
+**Correct guard:**
+
+```typescript
+// ✅ CORRECT — handles both null and zero
+{biz.rating != null && biz.rating > 0 && biz.review_count != null && biz.review_count > 0 && (
+  <div className="flex items-center gap-1">
+    <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+    <span>{biz.rating.toFixed(1)}</span>
+    <span>({biz.review_count})</span>
+  </div>
+)}
+
+// ❌ WRONG — renders literal "0" as text node when rating=0
+{biz.rating && biz.rating > 0 && (
+  <div>...</div>
+)}
+```
+
+**Why `biz.rating && ...` is wrong:** In JavaScript, `0 && expression` evaluates to `0`. React renders `0` as a text node on screen. This silently produces a "0" character under business names for any listing with a stored zero rating.
+
+**Fix:** Always use `!= null && > 0` as the rating guard, never just truthy check.
+
+---
+
 ## City Expansion Process
 
 Adding a new city to MoHoLocal:
@@ -425,9 +503,11 @@ In `app/new-resident/[city]/page.tsx` — add:
 
 Define the city gradient in both the new-resident page and any city-selector components.
 
-**Step 4 — Update supported city lists**
+**Step 4 — Add city to `lib/cities.ts` (the only file you need to edit)**
 
-Update `CLAUDE.md` and `PLAYBOOK.md` with the new city.
+Add a new `CityConfig` entry to the `CITIES` array in `lib/cities.ts`. All app surfaces (homepage, discover, directory, nav) will automatically include the new city. Do not add the city to any other file's array.
+
+After adding the entry, update `CLAUDE.md` and `PLAYBOOK.md` to reflect the new city in documentation.
 
 **Step 5 — Test and deploy**
 
@@ -1039,5 +1119,5 @@ South Bay expansion (March 2026) is the reference implementation of this play:
 
 ---
 
-MoHoLocal Operations Playbook v8
+MoHoLocal Operations Playbook v9
 March 2026
