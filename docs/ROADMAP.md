@@ -445,6 +445,48 @@ Submit all 20 new pages in Google Search Console → URL Inspection → "Request
 
 ---
 
+## SPRINT 4.5 — Data & UX Polish 🏃 ACTIVE — March 2026
+
+**Theme:** Stabilize before Sprint 5 (Growth Engine)
+**Goal:** Fix all visual regressions, data gaps, and empty UX states before activating traffic
+
+> This sprint is a prerequisite to Sprint 5. No growth traffic should be activated while there are broken visuals or empty-feeling city pages.
+
+### Sprint 4.5 Tasks
+
+| Task | Status | Notes |
+|------|--------|-------|
+| **Image fallback system** — replace city-colored gradient blocks with neutral gray placeholder | ✅ Complete | commit TBD |
+| **Community CTA upgrade** — replace "Coming Soon" with "Be the first to post in [City]" + amber button | ✅ Complete | commit TBD |
+| **Category matrix cleanup** — South Bay empty cells muted/non-clickable, "🍽️ dining" column label, mobile chips skip South Bay empties | ✅ Complete | commit TBD |
+| **South Bay data diagnostic** — SQL diagnostic script to find why Santa Clara/Sunnyvale show 2 listings | ✅ Complete | `sql/sprint45_southbay_diagnostic.sql` |
+| **South Bay data fix** — run SQL fix on founder's machine to restore Santa Clara + Sunnyvale to correct count | ⬜ Founder action | Run Step 1-2 of diagnostic, then Fix A or B as appropriate |
+| **South Bay listing target** — Santa Clara ≥ 20 public listings, Sunnyvale ≥ 20 | ⬜ Pending data fix | |
+| **Mobile QA pass** — validate city chips wrap, grids responsive, no overflow | ⬜ Founder action | Spot-check on iPhone |
+
+### Founder Actions Required
+
+```sql
+-- 1. Run diagnostic to identify root cause
+-- Open: https://supabase.com/dashboard/project/ozjlfgipfzykzrjakwzb/editor
+-- File: sql/sprint45_southbay_diagnostic.sql
+-- Run Step 1 first, review output, then run the appropriate fix
+
+-- 2. After fix: verify /santa-clara and /sunnyvale show 20+ listings
+-- Visit https://www.moholocal.com/santa-clara and https://www.moholocal.com/sunnyvale
+```
+
+### Success Criteria
+
+- [ ] No red/colored gradient blocks anywhere on the site (verify on /santa-clara, /sunnyvale)
+- [ ] Community section shows actionable CTA on all city pages (not "Coming Soon")
+- [ ] South Bay matrix columns show "🍽️ dining" note and empty cells are clearly muted
+- [ ] Santa Clara shows ≥ 20 verified listings (founder DB action)
+- [ ] Sunnyvale shows ≥ 20 verified listings (founder DB action)
+- [ ] Mobile: city chips wrap cleanly, no overflow on /discover or /[city]
+
+---
+
 ## SPRINT 5 — Distribution & Traffic Activation 🔜 NEXT — March 2026
 
 **Theme:** Turn the content we've built into inbound traffic

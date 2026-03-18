@@ -289,11 +289,9 @@ function BusinessCard({
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div
-            className="w-full h-full flex items-center justify-center text-4xl"
-            style={{ background: cfg.gradient }}
-          >
-            <span role="img" aria-label={biz.category}>{emoji}</span>
+          // Neutral gray placeholder — never use city gradient (avoids red/dark blocks)
+          <div className="w-full h-full flex items-center justify-center bg-gray-100">
+            <span className="text-4xl opacity-25" role="img" aria-label={biz.category}>{emoji}</span>
           </div>
         )}
       </div>
@@ -444,17 +442,25 @@ export default async function CityPage({ params }: PageProps) {
         </div>
 
         {totalCommunity === 0 ? (
-          /* ── Coming Soon state (Fix #5) ── */
+          /* ── Empty state — CTA to start the first post ── */
           <div className="rounded-xl bg-gray-50 border border-gray-100 p-8 text-center">
             <div className="text-4xl mb-3">💬</div>
-            <p className="text-sm font-bold text-gray-700 mb-1">Community Board Coming Soon</p>
-            <p className="text-xs text-gray-400 mb-4">Be the first to post in {cityName} — share a recommendation, question, or tip.</p>
+            <p className="text-sm font-bold text-gray-700 mb-2">Be the first to post in {cityName}</p>
+            <p className="text-xs text-gray-400 mb-5 max-w-xs mx-auto">
+              Share a restaurant rec, ask a local question, or post a neighborhood tip. Your neighbors are listening.
+            </p>
             <Link
-              href="/community"
-              className="inline-block text-xs font-semibold text-blue-600 hover:underline"
+              href={`/community?city=${encodeURIComponent(cityName)}`}
+              className="inline-block text-sm font-bold px-5 py-2.5 rounded-xl transition hover:opacity-90 mb-3"
+              style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}
             >
-              Browse other city boards →
+              Start a Post in {cityName} →
             </Link>
+            <p className="text-xs text-gray-400">
+              <Link href="/community" className="text-blue-500 hover:underline">
+                Browse all city boards →
+              </Link>
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

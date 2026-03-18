@@ -88,6 +88,7 @@ A **Data Sprint** covers seeding or enriching business directory data within exi
 | Sprint 3 | Verified Photo Pipeline | ✅ COMPLETE | March 2026 |
 | Sprint 3.5 | South Bay Expansion + UI System Unification | ✅ COMPLETE | March 2026 |
 | Sprint 4 | SEO Surface Expansion | ✅ COMPLETE | March 2026 |
+| Sprint 4.5 | Data & UX Polish | 🏃 ACTIVE | March 2026 |
 | Sprint 5 | Distribution & Traffic Activation | 🔜 NEXT | Target: April 2026 |
 
 ---
@@ -161,6 +162,24 @@ Phase 5 — UI System Unification (added to Sprint 3.5 scope post-data rollout)
 3. **Service role key vs anon key.** Seed scripts require `SUPABASE_SERVICE_ROLE_KEY` (not anon key). Always verify key type before diagnosing 401 errors.
 4. **GOOGLE_PLACES_API_KEY must be in .env.local.** Canonical file: `moho-app-scaffold/.env.local`. All scripts now auto-load this file via `_load_env_local()`.
 5. **Image match rate varies by city density.** Santa Clara matched at 52% (below 60% threshold) due to limited OSM address precision. 60% threshold applies to the overall expansion batch — not individually per city.
+
+---
+
+## Data & UX Polish Sprint Definition of Done
+
+*(Added March 2026 — derived from Sprint 4.5)*
+
+A **Data & UX Polish Sprint** covers visual regressions, data completeness gaps, and empty-state UX issues. It is complete when:
+
+```
+[ ] Image placeholders: no city-colored gradient blocks anywhere — only neutral gray
+[ ] Community section: every city shows an actionable CTA (not "Coming Soon")
+[ ] Category matrix: South Bay empty cells visually muted/non-clickable, labeled "🍽️ dining"
+[ ] South Bay data: Santa Clara and Sunnyvale each show ≥ 20 public verified listings
+[ ] Mobile QA: city chips wrap, grids responsive, no horizontal overflow on /discover or /[city]
+[ ] Build is green — no TypeScript errors, all edge routes compile
+[ ] Standards documented in ROADMAP.md and SPRINTS.md
+```
 
 ---
 

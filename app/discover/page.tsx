@@ -222,6 +222,9 @@ export default async function DiscoverPage() {
                       >
                         <span className="text-lg">{city.emoji}</span>
                         <span className="text-[11px] font-bold text-gray-600">{city.name}</span>
+                        {city.region === 'south-bay' && (
+                          <span className="text-[9px] text-gray-400 font-normal leading-none mt-0.5">🍽️ dining</span>
+                        )}
                       </Link>
                     </th>
                   ))}
@@ -240,25 +243,27 @@ export default async function DiscoverPage() {
                       const count = matrix[city.name]?.[cat.name] ?? 0
                       return (
                         <td key={city.slug} className="text-center">
-                          <Link
-                            href={`/${city.slug}/${cat.slug}`}
-                            className={`
-                              inline-flex flex-col items-center justify-center w-full min-h-[52px]
-                              rounded-xl border text-xs font-semibold transition-all
-                              ${count > 0
-                                ? `${city.chip} hover:shadow-sm hover:-translate-y-0.5`
-                                : 'bg-gray-50 border-gray-100 text-gray-300 hover:bg-gray-100'}
-                            `}
-                          >
-                            {count > 0 ? (
-                              <>
-                                <span className="text-base leading-none mb-0.5">{cat.emoji}</span>
-                                <span className="font-bold">{count}</span>
-                              </>
-                            ) : (
+                          {count > 0 ? (
+                            <Link
+                              href={`/${city.slug}/${cat.slug}`}
+                              className={`inline-flex flex-col items-center justify-center w-full min-h-[52px] rounded-xl border text-xs font-semibold transition-all ${city.chip} hover:shadow-sm hover:-translate-y-0.5`}
+                            >
+                              <span className="text-base leading-none mb-0.5">{cat.emoji}</span>
+                              <span className="font-bold">{count}</span>
+                            </Link>
+                          ) : city.region === 'south-bay' ? (
+                            // South Bay: non-restaurant categories intentionally empty — no link, no hover
+                            <div className="inline-flex items-center justify-center w-full min-h-[52px] rounded-xl border border-gray-50 bg-white cursor-default">
+                              <span className="text-[10px] text-gray-200">—</span>
+                            </div>
+                          ) : (
+                            <Link
+                              href={`/${city.slug}/${cat.slug}`}
+                              className="inline-flex flex-col items-center justify-center w-full min-h-[52px] rounded-xl border bg-gray-50 border-gray-100 text-gray-300 hover:bg-gray-100 text-xs font-semibold transition-all"
+                            >
                               <span className="text-[10px]">—</span>
-                            )}
-                          </Link>
+                            </Link>
+                          )}
                         </td>
                       )
                     })}
@@ -282,6 +287,8 @@ export default async function DiscoverPage() {
                 <div className="flex flex-wrap gap-2">
                   {CITIES.map((city) => {
                     const count = matrix[city.name]?.[cat.name] ?? 0
+                    // South Bay cities with 0 count: skip chip entirely (intentional limited coverage)
+                    if (count === 0 && city.region === 'south-bay') return null
                     return (
                       <Link
                         key={city.slug}

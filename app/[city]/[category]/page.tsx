@@ -279,11 +279,9 @@ function BusinessCard({ biz, cityCfg, catEmoji }: {
             className="w-full h-full object-cover"
           />
         ) : (
-          <div
-            className="w-full h-full flex items-center justify-center text-4xl"
-            style={{ background: cityCfg.gradient }}
-          >
-            <span role="img" aria-label={biz.category}>{catEmoji}</span>
+          // Neutral gray placeholder — never use city gradient (avoids colored blocks)
+          <div className="w-full h-full flex items-center justify-center bg-gray-100">
+            <span className="text-4xl opacity-25" role="img" aria-label={biz.category}>{catEmoji}</span>
           </div>
         )}
       </div>
