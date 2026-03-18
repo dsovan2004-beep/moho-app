@@ -989,20 +989,55 @@ All three must be present:
 - **Nav city picker:** expansion cities are NOT added to the nav picker until they have full-category coverage
 - **Expansion is allowed ONLY when tied to real user demand or a defined revenue opportunity**
 
+### Success Criteria
+
+A city expansion is only marked **COMPLETE** when all criteria are met:
+
+| Criteria | Threshold | Verification |
+|----------|-----------|--------------|
+| Image match rate | ≥60% of seeded businesses have ≥1 photo | `verify_business_places.py` summary output |
+| Galleries visible | Business detail pages render image galleries | Spot-check 5 pages on moholocal.com |
+| No broken gallery | Zero businesses with `image_url` but no `business_images` row | SQL audit |
+| City pages live | `/[city]` and `/[city]/[category]` return real results | Browser check |
+| Google Search Console | New city URL prefix submitted and processing | GSC dashboard |
+
+If any criteria is not met — the expansion sprint is **NOT complete**. Do not mark it done in ROADMAP.md.
+
+### Execution Order (LOCKED)
+
+The order below is mandatory. Each step is a gate for the next.
+
+```
+Step 1  Founder approves scope expansion (written directive)
+Step 2  Add city routes to CITY_MAP
+Step 3  Write or extend seed script (OSM/Overpass primary)
+Step 4  Dry run seed script — review for quality
+Step 5  Seed with --force-approve (founder authorized)
+Step 6  IMAGE ENRICHMENT — run verify_business_places.py per city  ← MANDATORY
+Step 7  Verify: city pages render, gallery images visible
+Step 8  Submit new pages to Google Search Console
+Step 9  Update BIBLE.md, ROADMAP.md, PLAYBOOK.md to reflect new scope
+```
+
+**Step 6 is a hard gate. No city expansion may be declared complete without it.**
+
 ### Reference Implementation
 
 South Bay expansion (March 2026) is the reference implementation of this play:
 
-| Step | Implementation |
-|------|---------------|
-| Demand trigger | FIFA World Cup 2026 at Levi's Stadium + Google search intent |
-| Cities added | San Jose, Santa Clara, Sunnyvale |
-| Seed script | `seed_southbay.py` with `--force-approve` |
-| City routes | `[city]/page.tsx`, `[city]/[category]/page.tsx` |
-| Discovery pages | `/restaurants-near-levis-stadium`, `/best-bars-watch-world-cup-san-jose` |
-| Image enrichment | `verify_business_places.py --city "San Jose"` (+ Santa Clara, Sunnyvale) — **PENDING** |
+| Step | Implementation | Status |
+|------|---------------|--------|
+| Demand trigger | FIFA World Cup 2026 at Levi's Stadium + Google search intent | ✅ |
+| Cities added | San Jose, Santa Clara, Sunnyvale | ✅ |
+| Seed script | `seed_southbay.py` with `--force-approve` | ✅ 507 records |
+| City routes | `[city]/page.tsx`, `[city]/[category]/page.tsx` | ✅ |
+| Discovery pages | `/restaurants-near-levis-stadium`, `/best-bars-watch-world-cup-san-jose` | ✅ |
+| Image enrichment | `verify_business_places.py --city "San Jose/Santa Clara/Sunnyvale"` | ✅ COMPLETE |
+| Photos saved | 1,624 photos across 328 enriched businesses | ✅ |
+| Match rate | 65% overall (San Jose 66%, Santa Clara 52%, Sunnyvale 73%) | ✅ ≥60% |
+| Google Search Console | Submit `/san-jose`, `/santa-clara`, `/sunnyvale` | ⬜ Founder action |
 
 ---
 
-MoHoLocal Operations Playbook v7
+MoHoLocal Operations Playbook v8
 March 2026

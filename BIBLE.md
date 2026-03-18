@@ -1188,5 +1188,45 @@ All future seed scripts must be modeled after `seed_businesses_5.py` and `seed_b
 
 ---
 
+## Expansion Standard — v1 (South Bay Proven Model)
+
+*(Locked March 2026 — based on San Jose / Santa Clara / Sunnyvale rollout)*
+
+The South Bay expansion established the canonical playbook for all future city rollouts. These rules are non-negotiable and apply to every new city, regardless of scope or category coverage.
+
+**Six Locked Rules:**
+
+| # | Rule | Detail |
+|---|------|--------|
+| 1 | Full pipeline required | Every new city MUST complete: seed → dedupe → approve → verify → image enrichment. No step may be skipped. |
+| 2 | Minimum image match rate | ≥60% of seeded businesses must receive at least one verified Google Places photo. Below 60% = rollout incomplete. |
+| 3 | Images are NOT optional | A listing without at least one verified image is considered INCOMPLETE regardless of `status` or `verified` flags. |
+| 4 | Canonical env file | All scripts load from `moho-app-scaffold/.env.local`. No alternate env file location is permitted. |
+| 5 | Auto-load required | Every seed script and enrichment script must auto-discover and load `.env.local` without requiring manual `export` commands in the shell session. |
+| 6 | Data quality gate | Every inserted record must pass: valid street address (starts with number) + valid phone (non-synthetic) + non-generic business name. |
+
+**South Bay Reference Results (March 2026):**
+
+| City | Seeded | Enriched | Photos | Match Rate |
+|------|--------|----------|--------|------------|
+| San Jose | 324 | 215 | 1,075 | 66% |
+| Santa Clara | 100 | 52 | 253 | 52% |
+| Sunnyvale | 83 | 61 | 296 | 73% |
+| **Total** | **507** | **328** | **1,624** | **65%** |
+
+**Expansion Definition of Done (DoD):**
+
+A city expansion is only complete when ALL of the following are true:
+
+- [ ] Seed script ran successfully (records in DB)
+- [ ] Dedup guard confirmed idempotency (re-run shows 0 new records)
+- [ ] All records approved via `--force-approve` (founder authorized)
+- [ ] Image enrichment ran: ≥60% match rate achieved
+- [ ] Gallery images visible on business detail pages (spot check)
+- [ ] City pages return real results at `/[city]` and `/[city]/[category]`
+- [ ] City submitted to Google Search Console
+
+---
+
 MoHoLocal Product Bible v8
 Confidential — March 2026
