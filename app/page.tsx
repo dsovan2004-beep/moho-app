@@ -408,10 +408,11 @@ export default async function HomePage({ searchParams }: PageProps) {
       {/* ── What's Happening Now ── */}
       {(upcomingEvent || recentPosts.length > 0 || latestBiz) && (
         <div className="mb-8">
-          <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center gap-2 mb-1">
             <span className="inline-block w-2 h-2 rounded-full bg-green-400 animate-pulse shrink-0" />
             <h2 className="text-sm font-bold text-gray-700 uppercase tracking-widest">What&apos;s Happening Now</h2>
           </div>
+          <p className="text-xs text-gray-400 mb-3">Live updates from your area</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {/* Latest community post */}
             {recentPosts[0] && (
@@ -421,12 +422,12 @@ export default async function HomePage({ searchParams }: PageProps) {
               >
                 <span className="text-xl shrink-0 mt-0.5">💬</span>
                 <div className="min-w-0">
-                  <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-wider mb-0.5">Latest Post</p>
+                  <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-wider mb-0.5">🟢 Happening Now</p>
                   <p className="text-sm font-semibold text-gray-900 group-hover:text-indigo-700 transition-colors line-clamp-2 leading-snug">
                     {recentPosts[0].title}
                   </p>
-                  <p className="text-[10px] text-gray-400 mt-1">
-                    {recentPosts[0].city} · {timeAgo(recentPosts[0].created_at)}
+                  <p className="text-[10px] text-gray-500 font-medium mt-1">
+                    {recentPosts[0].city} &bull; {timeAgo(recentPosts[0].created_at)}
                   </p>
                 </div>
               </Link>
@@ -440,12 +441,12 @@ export default async function HomePage({ searchParams }: PageProps) {
               >
                 <span className="text-xl shrink-0 mt-0.5">📅</span>
                 <div className="min-w-0">
-                  <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider mb-0.5">Next Event</p>
+                  <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider mb-0.5">📅 Coming Up Soon</p>
                   <p className="text-sm font-semibold text-gray-900 group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug">
                     {upcomingEvent.title}
                   </p>
-                  <p className="text-[10px] text-gray-400 mt-1">
-                    {upcomingEvent.city} · {new Date(upcomingEvent.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                  <p className="text-[10px] text-gray-500 font-medium mt-1">
+                    {upcomingEvent.city} &bull; {new Date(upcomingEvent.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                   </p>
                 </div>
               </Link>
@@ -459,12 +460,12 @@ export default async function HomePage({ searchParams }: PageProps) {
               >
                 <span className="text-xl shrink-0 mt-0.5">{getCategoryEmoji(latestBiz.category)}</span>
                 <div className="min-w-0">
-                  <p className="text-[10px] font-bold text-amber-600 uppercase tracking-wider mb-0.5">New Listing</p>
+                  <p className="text-[10px] font-bold text-amber-600 uppercase tracking-wider mb-0.5">🆕 Just Added Nearby</p>
                   <p className="text-sm font-semibold text-gray-900 group-hover:text-amber-700 transition-colors line-clamp-2 leading-snug">
                     {latestBiz.name}
                   </p>
-                  <p className="text-[10px] text-gray-400 mt-1">
-                    {latestBiz.city} · Added {timeAgo(latestBiz.created_at)}
+                  <p className="text-[10px] text-gray-500 font-medium mt-1">
+                    {latestBiz.city} &bull; Added {timeAgo(latestBiz.created_at)}
                   </p>
                 </div>
               </Link>
@@ -822,7 +823,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                     <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${cityChip}`}>
                       {post.city}
                     </span>
-                    <span className="text-[10px] text-gray-400 ml-auto">
+                    <span className="text-[10px] text-gray-500 font-medium ml-auto">
                       {timeAgo(post.created_at)}
                     </span>
                   </div>
@@ -833,62 +834,7 @@ export default async function HomePage({ searchParams }: PageProps) {
         </div>
       )}
 
-      {/* ── People are talking about… (Activity Strip) ── */}
-      {activityItems.length > 0 && (
-        <div className="mb-12">
-          <div className="mb-4">
-            <h2 className="text-lg font-bold text-gray-900">Activity in the 209</h2>
-            <p className="text-xs text-gray-400 mt-0.5">Community posts, lost pets, and events — all in one place</p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {activityItems.map((item) => {
-              // Use shared city config chip classes (split into bg + text parts)
-              const cityChip = CITY_BY_NAME[item.city]?.chip ?? 'bg-gray-50 text-gray-600'
-              const [chipBg, chipText] = cityChip.split(' ')
-              const cityColor = { bg: chipBg ?? 'bg-gray-50', text: chipText ?? 'text-gray-600' }
-
-              const typeBadge = {
-                'Community': { bg: 'bg-indigo-50', text: 'text-indigo-600', icon: '💬' },
-                'Lost Pet':  { bg: 'bg-red-50',    text: 'text-red-600',    icon: '🐾' },
-                'Event':     { bg: 'bg-emerald-50',text: 'text-emerald-600',icon: '📅' },
-              }[item.type] ?? { bg: 'bg-gray-50', text: 'text-gray-600', icon: '📌' }
-
-              return (
-                <Link
-                  key={`${item.type}-${item.id}`}
-                  href={item.href}
-                  className="group flex items-start gap-3 bg-white rounded-xl border border-gray-200 px-4 py-3.5 hover:shadow-md hover:-translate-y-0.5 transition-all"
-                >
-                  <span className="text-xl mt-0.5 shrink-0">{typeBadge.icon}</span>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-700 line-clamp-2 leading-snug mb-1.5 transition-colors">
-                      {item.title}
-                    </p>
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${typeBadge.bg} ${typeBadge.text}`}>
-                        {item.type}
-                      </span>
-                      {item.city && (
-                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${cityColor.bg} ${cityColor.text}`}>
-                          {item.city}
-                        </span>
-                      )}
-                      <span className="text-[10px] text-gray-400 ml-auto">
-                        {timeAgo(item.created_at)}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              )
-            })}
-          </div>
-          <div className="mt-3 text-right">
-            <Link href="/community" className="text-xs text-blue-500 hover:underline font-medium">
-              See all community posts →
-            </Link>
-          </div>
-        </div>
-      )}
+      {/* Activity Strip removed — content merged into "From Your Neighbors" above */}
 
       {/* ── Quick-nav cards ── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
