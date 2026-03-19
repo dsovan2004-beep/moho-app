@@ -119,6 +119,50 @@ export default {
     }
 
     // ── Manual run routes ──
+
+    // /run/all — run all three jobs in sequence (use for debugging + manual verification)
+    if (pathname === '/run/all') {
+      const startedAt = new Date().toISOString()
+      const results: Record<string, unknown> = {}
+
+      console.log('[manual] /run/all triggered at', startedAt)
+
+      try {
+        console.log('[manual] START directory')
+        const dirLogs = await runDirectoryIngestion(env)
+        aggregateLogs(dirLogs)
+        results.directory = buildRunResponse('directory', dirLogs)
+        console.log('[manual] END directory — inserted:', dirLogs[0]?.inserted ?? 0)
+      } catch (err) {
+        console.error('[manual] FAIL directory:', String(err))
+        results.directory = { error: String(err) }
+      }
+
+      try {
+        console.log('[manual] START events')
+        const evtLogs = await runEventsIngestion(env)
+        aggregateLogs(evtLogs)
+        results.events = buildRunResponse('events', evtLogs)
+        console.log('[manual] END events — inserted:', evtLogs[0]?.inserted ?? 0)
+      } catch (err) {
+        console.error('[manual] FAIL events:', String(err))
+        results.events = { error: String(err) }
+      }
+
+      try {
+        console.log('[manual] START lostfound')
+        const lfLogs = await runLostFoundIngestion(env)
+        aggregateLogs(lfLogs)
+        results.lostfound = buildRunResponse('lostfound', lfLogs)
+        console.log('[manual] END lostfound — inserted:', lfLogs[0]?.inserted ?? 0)
+      } catch (err) {
+        console.error('[manual] FAIL lostfound:', String(err))
+        results.lostfound = { error: String(err) }
+      }
+
+      return json({ started_at: startedAt, completed_at: new Date().toISOString(), results })
+    }
+
     if (pathname === '/run/directory') {
       const logs = await runDirectoryIngestion(env)
       return json(buildRunResponse('directory', logs))
@@ -167,8 +211,23 @@ export default {
     // ── Default ──
     return json({
       worker: 'moho-ingestion',
-      routes: ['/health', '/run/directory', '/run/events', '/run/lostfound', '/validate', 'POST /submit-signal', 'POST /promote-submission'],
-      crons:  ['Mon 03:00 UTC (directory)', 'Mon 04:00 UTC (events)', 'Mon 05:00 UTC (lost & found)'],
+      routes: [
+        '/health',
+        '/run/all        — run all 3 jobs now (directory + events + lostfound)',
+        '/run/directory  — directory only',
+        '/run/events     — events only',
+        '/run/lostfound  — lost & found only',
+        '/validate       — check all source URLs',
+        'POST /submit-signal',
+        'POST /promote-submission',
+      ],
+      crons: [
+        'Mon 03:00 UTC — directory     (0 3 * * 2)',
+        'Mon 04:00 UTC — events        (0 4 * * 2)',
+        'Mon 05:00 UTC — lost & found  (0 5 * * 2)',
+        'Thu 04:00 UTC — events midwk  (0 4 * * 5)',
+      ],
+      routing: 'by UTC hour (3=directory, 4=events, 5=lostfound)',
     })
   },
 }
