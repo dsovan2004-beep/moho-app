@@ -43,6 +43,8 @@ async function getData(activeCity: string) {
     lostFoundCountResult,
     activityPostsResult,
     activityLostResult,
+    latestBizResult,
+    recentPostsResult,
   ] = await Promise.allSettled([
     // Total count
     supabase.from('businesses').select('*', { count: 'exact', head: true }).eq('status', 'approved').eq('verified', true),
@@ -104,6 +106,22 @@ async function getData(activeCity: string) {
       .neq('status', 'reunited')
       .order('created_at', { ascending: false })
       .limit(3),
+    // Most recently added business (for What's Happening Now)
+    supabase
+      .from('businesses')
+      .select('id, name, category, city, created_at')
+      .eq('status', 'approved')
+      .eq('verified', true)
+      .order('created_at', { ascending: false })
+      .limit(1),
+    // Recent community posts for From Your Neighbors section (3 posts)
+    supabase
+      .from('community_posts')
+      .select('id, title, category, city, created_at')
+      .neq('status', 'flagged')
+      .neq('status', 'removed')
+      .order('created_at', { ascending: false })
+      .limit(3),
   ])
 
   const totalBiz =
@@ -145,6 +163,23 @@ async function getData(activeCity: string) {
 
   const lostFoundCount =
     lostFoundCountResult.status === 'fulfilled' ? (lostFoundCountResult.value.count ?? 0) : 0
+
+  // ── What's Happening Now items ───────────────────────────────────────────────
+  const latestBiz: Business | null =
+    latestBizResult.status === 'fulfilled' && latestBizResult.value.data?.[0]
+      ? latestBizResult.value.data[0] as Business
+      : null
+
+  const recentPosts: Array<{ id: string; title: string; category: string; city: string; created_at: string }> =
+    recentPostsResult.status === 'fulfilled'
+      ? (recentPostsResult.value.data ?? []).map((p: Record<string, unknown>) => ({
+          id:         String(p.id ?? ''),
+          title:      String(p.title ?? ''),
+          category:   String(p.category ?? ''),
+          city:       String(p.city ?? ''),
+          created_at: String(p.created_at ?? ''),
+        }))
+      : []
 
   // ── Activity strip items ─────────────────────────────────────────────────────
   type ActivityItem = {
@@ -210,6 +245,10 @@ async function getData(activeCity: string) {
     communityPostCount,
     lostFoundCount,
     activityItems,
+    latestBiz,
+    recentPosts,
+    // Single next event for What's Happening Now (first of already-sorted upcomingEvents)
+    upcomingEvent: (upcomingEvents.length > 0 ? upcomingEvents[0] : null) as (typeof upcomingEvents[0]) | null,
   }
 }
 
@@ -283,6 +322,13 @@ function BizMiniCard({
           ★ {biz.rating.toFixed(1)}
         </div>
       )}
+      {biz.created_at && (() => {
+        const daysSince = Math.floor((Date.now() - new Date(biz.created_at).getTime()) / (1000 * 60 * 60 * 24))
+        if (daysSince <= 30) return (
+          <div className="text-[9px] text-gray-400 mt-1">Added {timeAgo(biz.created_at)}</div>
+        )
+        return null
+      })()}
     </Link>
   )
 }
@@ -311,6 +357,9 @@ export default async function HomePage({ searchParams }: PageProps) {
     communityPostCount,
     lostFoundCount,
     activityItems,
+    latestBiz,
+    recentPosts,
+    upcomingEvent,
   } = await getData(activeCity)
 
   return (
@@ -355,6 +404,74 @@ export default async function HomePage({ searchParams }: PageProps) {
           ))}
         </div>
       </div>
+
+      {/* ── What's Happening Now ── */}
+      {(upcomingEvent || recentPosts.length > 0 || latestBiz) && (
+        <div className="mb-8">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="inline-block w-2 h-2 rounded-full bg-green-400 animate-pulse shrink-0" />
+            <h2 className="text-sm font-bold text-gray-700 uppercase tracking-widest">What&apos;s Happening Now</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {/* Latest community post */}
+            {recentPosts[0] && (
+              <Link
+                href={`/community/${recentPosts[0].id}`}
+                className="group flex items-start gap-3 bg-indigo-50 rounded-xl border border-indigo-100 px-4 py-3 hover:shadow-md hover:-translate-y-0.5 transition-all"
+              >
+                <span className="text-xl shrink-0 mt-0.5">💬</span>
+                <div className="min-w-0">
+                  <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-wider mb-0.5">Latest Post</p>
+                  <p className="text-sm font-semibold text-gray-900 group-hover:text-indigo-700 transition-colors line-clamp-2 leading-snug">
+                    {recentPosts[0].title}
+                  </p>
+                  <p className="text-[10px] text-gray-400 mt-1">
+                    {recentPosts[0].city} · {timeAgo(recentPosts[0].created_at)}
+                  </p>
+                </div>
+              </Link>
+            )}
+
+            {/* Next upcoming event */}
+            {upcomingEvent && (
+              <Link
+                href={`/events/${upcomingEvent.id}`}
+                className="group flex items-start gap-3 bg-emerald-50 rounded-xl border border-emerald-100 px-4 py-3 hover:shadow-md hover:-translate-y-0.5 transition-all"
+              >
+                <span className="text-xl shrink-0 mt-0.5">📅</span>
+                <div className="min-w-0">
+                  <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider mb-0.5">Next Event</p>
+                  <p className="text-sm font-semibold text-gray-900 group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug">
+                    {upcomingEvent.title}
+                  </p>
+                  <p className="text-[10px] text-gray-400 mt-1">
+                    {upcomingEvent.city} · {new Date(upcomingEvent.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                  </p>
+                </div>
+              </Link>
+            )}
+
+            {/* Recently added business */}
+            {latestBiz && (
+              <Link
+                href={`/business/${latestBiz.id}`}
+                className="group flex items-start gap-3 bg-amber-50 rounded-xl border border-amber-100 px-4 py-3 hover:shadow-md hover:-translate-y-0.5 transition-all"
+              >
+                <span className="text-xl shrink-0 mt-0.5">{getCategoryEmoji(latestBiz.category)}</span>
+                <div className="min-w-0">
+                  <p className="text-[10px] font-bold text-amber-600 uppercase tracking-wider mb-0.5">New Listing</p>
+                  <p className="text-sm font-semibold text-gray-900 group-hover:text-amber-700 transition-colors line-clamp-2 leading-snug">
+                    {latestBiz.name}
+                  </p>
+                  <p className="text-[10px] text-gray-400 mt-1">
+                    {latestBiz.city} · Added {timeAgo(latestBiz.created_at)}
+                  </p>
+                </div>
+              </Link>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* ── Browse by City ── */}
       <div className="flex items-center justify-between mb-4 gap-2">
@@ -550,13 +667,16 @@ export default async function HomePage({ searchParams }: PageProps) {
         </div>
       )}
 
-      {/* ── Trending in {City} ── */}
+      {/* ── Trending This Week ── */}
       {trendingFinal.length > 0 && (
         <div className="mb-12">
           <div className="flex items-center justify-between mb-4 gap-2">
-            <h2 className="text-lg font-bold text-gray-900 leading-tight">
-              🔥 Trending in {activeCity}
-            </h2>
+            <div>
+              <h2 className="text-lg font-bold text-gray-900 leading-tight">
+                🔥 Trending This Week in {activeCity}
+              </h2>
+              <p className="text-xs text-gray-400 mt-0.5">Most reviewed locals right now</p>
+            </div>
             <Link
               href={`/directory?city=${encodeURIComponent(activeCity)}`}
               className="text-sm text-blue-600 hover:underline font-medium whitespace-nowrap shrink-0"
@@ -565,15 +685,21 @@ export default async function HomePage({ searchParams }: PageProps) {
             </Link>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            {trendingFinal.map((biz) => (
-              <BizMiniCard
-                key={biz.id}
-                biz={biz}
-                gradientOverride={cfg.gradient}
-                chipOverride={cfg.chip}
-                badge="🔥"
-              />
-            ))}
+            {trendingFinal.map((biz) => {
+              // "New this week" badge for listings added in last 7 days
+              const isNewThisWeek = biz.created_at
+                ? (Date.now() - new Date(biz.created_at).getTime()) < 7 * 24 * 60 * 60 * 1000
+                : false
+              return (
+                <BizMiniCard
+                  key={biz.id}
+                  biz={biz}
+                  gradientOverride={cfg.gradient}
+                  chipOverride={cfg.chip}
+                  badge={isNewThisWeek ? '🆕' : '🔥'}
+                />
+              )
+            })}
           </div>
         </div>
       )}
@@ -651,12 +777,68 @@ export default async function HomePage({ searchParams }: PageProps) {
         </div>
       )}
 
+      {/* ── From Your Neighbors ── */}
+      {recentPosts.length > 0 && (
+        <div className="mb-12">
+          <div className="flex items-center justify-between mb-4 gap-2">
+            <div>
+              <h2 className="text-lg font-bold text-gray-900">From Your Neighbors</h2>
+              <p className="text-xs text-gray-400 mt-0.5">What people are posting right now</p>
+            </div>
+            <Link href="/community" className="text-sm text-blue-600 hover:underline font-medium whitespace-nowrap shrink-0">
+              Community board →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {recentPosts.map((post) => {
+              const cityChip = CITY_BY_NAME[post.city]?.chip ?? 'bg-gray-50 text-gray-600'
+              const CATEGORY_COLORS: Record<string, string> = {
+                General: 'bg-gray-100 text-gray-700',
+                Recommendations: 'bg-blue-100 text-blue-700',
+                'For Sale': 'bg-green-100 text-green-700',
+                'Free Items': 'bg-teal-100 text-teal-700',
+                Jobs: 'bg-purple-100 text-purple-700',
+                Services: 'bg-indigo-100 text-indigo-700',
+                Safety: 'bg-red-100 text-red-700',
+                Neighbors: 'bg-amber-100 text-amber-700',
+                Question: 'bg-orange-100 text-orange-700',
+              }
+              const catColor = CATEGORY_COLORS[post.category] ?? 'bg-gray-100 text-gray-700'
+              return (
+                <Link
+                  key={post.id}
+                  href={`/community/${post.id}`}
+                  className="group bg-white rounded-xl border border-gray-200 px-4 py-3.5 hover:shadow-md hover:-translate-y-0.5 transition-all"
+                >
+                  <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-700 line-clamp-2 leading-snug mb-2 transition-colors">
+                    {post.title}
+                  </p>
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {post.category && (
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${catColor}`}>
+                        {post.category}
+                      </span>
+                    )}
+                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${cityChip}`}>
+                      {post.city}
+                    </span>
+                    <span className="text-[10px] text-gray-400 ml-auto">
+                      {timeAgo(post.created_at)}
+                    </span>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
       {/* ── People are talking about… (Activity Strip) ── */}
       {activityItems.length > 0 && (
         <div className="mb-12">
           <div className="mb-4">
-            <h2 className="text-lg font-bold text-gray-900">People are talking about…</h2>
-            <p className="text-xs text-gray-400 mt-0.5">Recent local buzz from across the community</p>
+            <h2 className="text-lg font-bold text-gray-900">Activity in the 209</h2>
+            <p className="text-xs text-gray-400 mt-0.5">Community posts, lost pets, and events — all in one place</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {activityItems.map((item) => {

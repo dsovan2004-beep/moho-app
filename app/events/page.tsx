@@ -33,6 +33,35 @@ function parseEventDate(dateStr: string): Date {
   return new Date(dateStr) // datetime strings with T already carry offset info
 }
 
+// Bucket an upcoming event into a time label
+function getEventBucket(dateStr: string): 'today' | 'tomorrow' | 'this-weekend' | 'this-week' | 'upcoming' {
+  const now   = new Date()
+  const event = parseEventDate(dateStr)
+
+  const todayStart  = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  const todayEnd    = new Date(todayStart.getTime() + 24 * 60 * 60 * 1000)
+  const tomorrowEnd = new Date(todayStart.getTime() + 2 * 24 * 60 * 60 * 1000)
+  const thisWeekEnd = new Date(todayStart.getTime() + 7 * 24 * 60 * 60 * 1000)
+
+  if (event >= todayStart && event < todayEnd)    return 'today'
+  if (event >= todayEnd   && event < tomorrowEnd) return 'tomorrow'
+  // Weekend = Saturday (6) or Sunday (0) within the next 7 days
+  const eventDay = event.getDay()
+  if (event >= tomorrowEnd && event < thisWeekEnd && (eventDay === 6 || eventDay === 0)) return 'this-weekend'
+  if (event >= tomorrowEnd && event < thisWeekEnd) return 'this-week'
+  return 'upcoming'
+}
+
+const BUCKET_META: Record<string, { label: string; emoji: string; desc: string }> = {
+  'today':        { label: 'Today',        emoji: '🔴', desc: 'Happening today' },
+  'tomorrow':     { label: 'Tomorrow',     emoji: '📅', desc: 'Coming up tomorrow' },
+  'this-weekend': { label: 'This Weekend', emoji: '🎉', desc: 'This Saturday & Sunday' },
+  'this-week':    { label: 'This Week',    emoji: '📆', desc: 'Happening this week' },
+  'upcoming':     { label: 'Upcoming',     emoji: '🗓️', desc: 'Coming up soon' },
+}
+
+const BUCKET_ORDER = ['today', 'tomorrow', 'this-weekend', 'this-week', 'upcoming'] as const
+
 function formatDate(dateStr: string) {
   const d = parseEventDate(dateStr)
   return {
@@ -103,6 +132,19 @@ function EventCard({ event }: { event: Event }) {
             )}
             {event.location && <span>📍 {event.location}</span>}
           </div>
+          {/* Bucket label chip on each card — immediate visual context */}
+          {(() => {
+            const bucket = getEventBucket(event.start_date)
+            if (bucket === 'upcoming') return null
+            const meta = BUCKET_META[bucket]
+            return (
+              <div className="mt-2">
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-600">
+                  {meta.emoji} {meta.label}
+                </span>
+              </div>
+            )
+          })()}
         </div>
       </div>
     </article>
@@ -119,6 +161,16 @@ export default async function EventsPage({ searchParams }: PageProps) {
   const now = new Date()
   const upcoming = events.filter((e) => parseEventDate(e.start_date) >= now)
   const past     = events.filter((e) => parseEventDate(e.start_date) < now)
+
+  // Sub-bucket upcoming events for time labels
+  const buckets = BUCKET_ORDER.reduce<Record<string, typeof upcoming>>((acc, key) => {
+    acc[key] = []
+    return acc
+  }, {})
+  for (const event of upcoming) {
+    const bucket = getEventBucket(event.start_date)
+    buckets[bucket].push(event)
+  }
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -152,19 +204,28 @@ export default async function EventsPage({ searchParams }: PageProps) {
         </div>
       ) : (
         <>
-          {/* Upcoming */}
-          {upcoming.length > 0 && (
-            <section className="mb-8">
-              <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">
-                Upcoming · {upcoming.length}
-              </h2>
-              <div className="space-y-3">
-                {upcoming.map((event) => (
-                  <EventCard key={event.id} event={event} />
-                ))}
-              </div>
-            </section>
-          )}
+          {/* Upcoming — bucketed into time labels */}
+          {upcoming.length > 0 && BUCKET_ORDER.map((key) => {
+            const group = buckets[key]
+            if (!group || group.length === 0) return null
+            const meta = BUCKET_META[key]
+            return (
+              <section key={key} className="mb-8">
+                <div className="flex items-center gap-2 mb-3">
+                  <span>{meta.emoji}</span>
+                  <h2 className="text-xs font-bold uppercase tracking-widest text-gray-500">
+                    {meta.label}
+                  </h2>
+                  <span className="text-xs text-gray-400 font-medium">· {group.length} event{group.length !== 1 ? 's' : ''}</span>
+                </div>
+                <div className="space-y-3">
+                  {group.map((event) => (
+                    <EventCard key={event.id} event={event} />
+                  ))}
+                </div>
+              </section>
+            )
+          })}
 
           {/* Past */}
           {past.length > 0 && (
