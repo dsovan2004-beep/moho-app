@@ -2,12 +2,14 @@
 //
 // DEFAULT SOURCES (no credentials required — run every Monday 5am UTC):
 //   1. SJAnimalServicesAdapter — San Joaquin County Animal Services (public)
-//   2. Times209Adapter         — 209times.com/feed/ pet keyword filter
-//   3. TracyPressAdapter       — tracypress.com/feed/ pet keyword filter
-//   4. PatchAdapter            — patch.com/california/[city]/rss.xml pet filter
+//   2. TracyPressAdapter       — tracypress.com/feed/ pet keyword filter
+//   3. PatchAdapter            — patch.com/california/[city]/rss.xml pet filter
+//
+// BLOCKED (do not re-add):
+//   209times-rss — permanently removed: too many violent/unrelated stories
 //
 // OPTIONAL (only runs when PETFINDER_CLIENT_ID + SECRET are present):
-//   5. PetFinderAdapter        — PetFinder API OAuth2
+//   4. PetFinderAdapter        — PetFinder API OAuth2
 //
 // All records land with needs_review=true. Human always reviews before publish.
 // Stale records (>30 days) auto-archived before ingestion.
@@ -144,28 +146,6 @@ const SJAnimalServicesAdapter: SourceAdapter<RawLostFound> = {
       })
     }
     return results
-  },
-}
-
-// ── Adapter 2: 209 Times RSS — pet keyword filter (DEFAULT) ──────────────────
-
-const TIMES209_URLS = [
-  'https://209times.com/feed/',
-  'https://www.209times.com/feed/',
-  'https://209times.com/rss.xml',
-]
-
-const Times209Adapter: SourceAdapter<RawLostFound> = {
-  name:     '209times-rss',
-  type:     'rss',
-  required: false,
-  isAvailable: () => true,
-
-  async fetch() {
-    const found = await fetchFirstWorkingRss(TIMES209_URLS)
-    if (!found) return []
-    // 209times covers the entire 209 area — use Tracy as fallback city
-    return rssToLostFound(parseRssItems(found.xml), 'Tracy', '209times-rss')
   },
 }
 
@@ -308,7 +288,7 @@ export async function runLostFoundIngestion(env: Env): Promise<RunLog[]> {
   }
 
   const adapterResults: AdapterResult<RawLostFound>[] = await runAdapters(
-    [SJAnimalServicesAdapter, Times209Adapter, TracyPressAdapter, PatchAdapter, PetFinderAdapter],
+    [SJAnimalServicesAdapter, TracyPressAdapter, PatchAdapter, PetFinderAdapter],
     env,
     (msg) => logWarning(log, msg),
   )
