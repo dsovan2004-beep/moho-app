@@ -124,6 +124,13 @@ export interface Business {
   hours?: string
   claimed?: boolean
   created_at: string
+  // Populated when queried with .select('*, business_images(image_url, position, verified, source)')
+  business_images?: Array<{
+    image_url: string
+    position: number
+    verified?: boolean
+    source?: string
+  }>
 }
 
 export interface BusinessImage {

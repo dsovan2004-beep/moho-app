@@ -1,57 +1,8 @@
 export const runtime = 'edge'
 
 import { getSupabaseClient } from '@/lib/supabase'
+import { CITIES, CITIES_209, CITIES_SOUTH_BAY } from '@/lib/cities'
 import Link from 'next/link'
-
-// ── Config ────────────────────────────────────────────────────────────────────
-
-const CITIES = [
-  {
-    name:     'Mountain House',
-    slug:     'mountain-house',
-    emoji:    '🏘️',
-    county:   'San Joaquin County',
-    gradient: 'linear-gradient(135deg,#1e3a5f 0%,#1e40af 100%)',
-    chip:     'bg-blue-50 text-blue-700 border-blue-200',
-    tagline:  "California's newest master-planned community",
-  },
-  {
-    name:     'Tracy',
-    slug:     'tracy',
-    emoji:    '🌿',
-    county:   'San Joaquin County',
-    gradient: 'linear-gradient(135deg,#14532d 0%,#15803d 100%)',
-    chip:     'bg-green-50 text-green-700 border-green-200',
-    tagline:  'A thriving Central Valley hub',
-  },
-  {
-    name:     'Lathrop',
-    slug:     'lathrop',
-    emoji:    '🔮',
-    county:   'San Joaquin County',
-    gradient: 'linear-gradient(135deg,#581c87 0%,#7e22ce 100%)',
-    chip:     'bg-purple-50 text-purple-700 border-purple-200',
-    tagline:  "One of California's fastest-growing cities",
-  },
-  {
-    name:     'Manteca',
-    slug:     'manteca',
-    emoji:    '🍊',
-    county:   'San Joaquin County',
-    gradient: 'linear-gradient(135deg,#7c2d12 0%,#c2410c 100%)',
-    chip:     'bg-orange-50 text-orange-700 border-orange-200',
-    tagline:  'Small-town charm with big-city convenience',
-  },
-  {
-    name:     'Brentwood',
-    slug:     'brentwood',
-    emoji:    '🌾',
-    county:   'Contra Costa County',
-    gradient: 'linear-gradient(135deg,#134e4a 0%,#0d9488 100%)',
-    chip:     'bg-teal-50 text-teal-700 border-teal-200',
-    tagline:  'East Bay gem with small-town spirit',
-  },
-]
 
 const CATEGORIES = [
   { name: 'Restaurants',       slug: 'restaurants',    emoji: '🍽️' },
@@ -70,56 +21,60 @@ const CATEGORIES = [
 export const metadata = {
   title: 'Discover Local Businesses by City & Category | MoHoLocal',
   description:
-    'Find local businesses across Mountain House, Tracy, Lathrop, Manteca, and Brentwood. Browse restaurants, home services, health, automotive, beauty, and more — all from your 209 community.',
+    'Find local businesses across Mountain House, Tracy, Lathrop, Manteca, Brentwood, San Jose, Santa Clara, and Sunnyvale. Browse restaurants, home services, health, automotive, beauty, and more.',
   openGraph: {
-    title: 'Explore the 209 | MoHoLocal',
+    title: 'Explore the 209 & South Bay | MoHoLocal',
     description:
-      'Your regional guide to local businesses across the 209. Pick your city and category to find exactly what you need.',
+      'Your regional guide to local businesses across the 209 and South Bay. Pick your city and category to find exactly what you need.',
     url: 'https://www.moholocal.com/discover',
     siteName: 'MoHoLocal',
   },
 }
 
 // ── Data ──────────────────────────────────────────────────────────────────────
+// Supabase PostgREST caps responses at 1000 rows by default.
+// With 1800+ businesses we must paginate to get ALL records — otherwise
+// South Bay cities (seeded last) are mostly truncated from the count matrix.
 
-async function getCountMatrix(): Promise<Record<string, Record<string, number>>> {
+async function getBusinessCounts(): Promise<{
+  matrix: Record<string, Record<string, number>>
+  totals: Record<string, number>
+}> {
   const supabase = getSupabaseClient()
-  const { data, error } = await supabase
-    .from('businesses')
-    .select('city, category')
-    .eq('status', 'approved')
-    .eq('verified', true)
+  const PAGE = 1000
+  let from = 0
+  const all: Array<{ city: string; category: string }> = []
 
-  if (error || !data) return {}
+  while (true) {
+    const { data } = await supabase
+      .from('businesses')
+      .select('city, category')
+      .eq('status', 'approved')
+      .eq('verified', true)
+      .range(from, from + PAGE - 1)
+
+    if (!data || data.length === 0) break
+    all.push(...data)
+    if (data.length < PAGE) break
+    from += PAGE
+  }
 
   const matrix: Record<string, Record<string, number>> = {}
-  for (const row of data) {
+  const totals: Record<string, number> = {}
+
+  for (const row of all) {
     if (!matrix[row.city]) matrix[row.city] = {}
     matrix[row.city][row.category] = (matrix[row.city][row.category] ?? 0) + 1
-  }
-  return matrix
-}
-
-async function getTotals(): Promise<Record<string, number>> {
-  const supabase = getSupabaseClient()
-  const { data } = await supabase
-    .from('businesses')
-    .select('city')
-    .eq('status', 'approved')
-    .eq('verified', true)
-
-  if (!data) return {}
-  const totals: Record<string, number> = {}
-  for (const row of data) {
     totals[row.city] = (totals[row.city] ?? 0) + 1
   }
-  return totals
+
+  return { matrix, totals }
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default async function DiscoverPage() {
-  const [matrix, totals] = await Promise.all([getCountMatrix(), getTotals()])
+  const { matrix, totals } = await getBusinessCounts()
 
   // Schema.org SiteLinksSearchBox / ItemList for SEO
   const cityListSchema = {
@@ -160,7 +115,7 @@ export default async function DiscoverPage() {
             Explore Local Businesses
           </h1>
           <p className="text-white/75 text-sm max-w-xl leading-relaxed mb-5">
-            Find restaurants, services, and shops across Mountain House, Tracy, Lathrop, Manteca &amp; Brentwood.
+            Find restaurants, services, and shops across the 209 and South Bay — Mountain House, Tracy, Lathrop, Manteca, Brentwood, San Jose, Santa Clara &amp; Sunnyvale.
           </p>
 
           {/* Search bar — routes to /directory?q= which already handles the param */}
@@ -191,9 +146,38 @@ export default async function DiscoverPage() {
 
         {/* ── City cards ── */}
         <section className="mb-12">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Choose Your City</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {CITIES.map((city) => {
+          <h2 className="text-lg font-bold text-gray-900 mb-3">Choose Your City</h2>
+
+          {/* 209 / San Joaquin */}
+          <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-2">209 · San Joaquin &amp; East Bay</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
+            {CITIES_209.map((city) => {
+              const total = totals[city.name] ?? 0
+              return (
+                <Link
+                  key={city.slug}
+                  href={`/${city.slug}`}
+                  className="group rounded-2xl p-5 text-white relative overflow-hidden hover:-translate-y-1 hover:shadow-xl transition-all block"
+                  style={{ background: city.gradient }}
+                >
+                  <div className="text-3xl mb-2">{city.emoji}</div>
+                  <div className="font-extrabold text-base mb-0.5">{city.name}</div>
+                  <div className="text-[11px] opacity-60 mb-3">{city.county}</div>
+                  <div className="text-xs opacity-80">{city.tagline}</div>
+                  {total > 0 && (
+                    <div className="absolute bottom-3 right-4 text-xs font-bold opacity-70">
+                      {total} listings
+                    </div>
+                  )}
+                </Link>
+              )
+            })}
+          </div>
+
+          {/* South Bay / FIFA 2026 */}
+          <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-2">South Bay · ⚽ FIFA World Cup 2026</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {CITIES_SOUTH_BAY.map((city) => {
               const total = totals[city.name] ?? 0
               return (
                 <Link
@@ -242,6 +226,9 @@ export default async function DiscoverPage() {
                       >
                         <span className="text-lg">{city.emoji}</span>
                         <span className="text-[11px] font-bold text-gray-600">{city.name}</span>
+                        {city.region === 'south-bay' && (
+                          <span className="text-[9px] text-gray-400 font-normal leading-none mt-0.5">🍽️ dining</span>
+                        )}
                       </Link>
                     </th>
                   ))}
@@ -260,25 +247,27 @@ export default async function DiscoverPage() {
                       const count = matrix[city.name]?.[cat.name] ?? 0
                       return (
                         <td key={city.slug} className="text-center">
-                          <Link
-                            href={`/${city.slug}/${cat.slug}`}
-                            className={`
-                              inline-flex flex-col items-center justify-center w-full min-h-[52px]
-                              rounded-xl border text-xs font-semibold transition-all
-                              ${count > 0
-                                ? `${city.chip} hover:shadow-sm hover:-translate-y-0.5`
-                                : 'bg-gray-50 border-gray-100 text-gray-300 hover:bg-gray-100'}
-                            `}
-                          >
-                            {count > 0 ? (
-                              <>
-                                <span className="text-base leading-none mb-0.5">{cat.emoji}</span>
-                                <span className="font-bold">{count}</span>
-                              </>
-                            ) : (
+                          {count > 0 ? (
+                            <Link
+                              href={`/${city.slug}/${cat.slug}`}
+                              className={`inline-flex flex-col items-center justify-center w-full min-h-[52px] rounded-xl border text-xs font-semibold transition-all ${city.chip} hover:shadow-sm hover:-translate-y-0.5`}
+                            >
+                              <span className="text-base leading-none mb-0.5">{cat.emoji}</span>
+                              <span className="font-bold">{count}</span>
+                            </Link>
+                          ) : city.region === 'south-bay' ? (
+                            // South Bay: non-restaurant categories intentionally empty — no link, no hover
+                            <div className="inline-flex items-center justify-center w-full min-h-[52px] rounded-xl border border-gray-50 bg-white cursor-default">
+                              <span className="text-[10px] text-gray-200">—</span>
+                            </div>
+                          ) : (
+                            <Link
+                              href={`/${city.slug}/${cat.slug}`}
+                              className="inline-flex flex-col items-center justify-center w-full min-h-[52px] rounded-xl border bg-gray-50 border-gray-100 text-gray-300 hover:bg-gray-100 text-xs font-semibold transition-all"
+                            >
                               <span className="text-[10px]">—</span>
-                            )}
-                          </Link>
+                            </Link>
+                          )}
                         </td>
                       )
                     })}
@@ -302,6 +291,8 @@ export default async function DiscoverPage() {
                 <div className="flex flex-wrap gap-2">
                   {CITIES.map((city) => {
                     const count = matrix[city.name]?.[cat.name] ?? 0
+                    // South Bay cities with 0 count: skip chip entirely (intentional limited coverage)
+                    if (count === 0 && city.region === 'south-bay') return null
                     return (
                       <Link
                         key={city.slug}
@@ -328,7 +319,7 @@ export default async function DiscoverPage() {
         {/* ── Quick picks — highest count tiles across the board ── */}
         <section className="mb-12">
           <h2 className="text-lg font-bold text-gray-900 mb-1">Popular Right Now</h2>
-          <p className="text-sm text-gray-500 mb-4">The most-listed categories across all five cities.</p>
+          <p className="text-sm text-gray-500 mb-4">The most-listed categories across all cities.</p>
           <div className="flex flex-wrap gap-3">
             {CITIES.flatMap((city) =>
               CATEGORIES.map((cat) => ({
@@ -361,7 +352,7 @@ export default async function DiscoverPage() {
         >
           <p className="font-extrabold text-xl mb-2">Own a local business?</p>
           <p className="text-white/75 text-sm mb-5">
-            Get listed on MoHoLocal — free for businesses across the 209 and East Bay.
+            Get listed on MoHoLocal — free for businesses across the 209 and South Bay.
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
             <Link

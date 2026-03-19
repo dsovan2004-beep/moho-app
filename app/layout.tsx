@@ -9,7 +9,14 @@ import { getSupabaseClient, signOut } from '@/lib/supabase'
 import type { User } from '@supabase/supabase-js'
 import './globals.css'
 
-const CITIES = ['Mountain House', 'Tracy', 'Lathrop', 'Manteca', 'Brentwood']
+const CITIES = [
+  // 209 / San Joaquin County
+  'Mountain House', 'Tracy', 'Lathrop', 'Manteca', 'Brentwood',
+  // South Bay / Santa Clara County (FIFA World Cup 2026 expansion)
+  'San Jose', 'Santa Clara', 'Sunnyvale',
+]
+
+const SOUTH_BAY_CITIES = new Set(['San Jose', 'Santa Clara', 'Sunnyvale'])
 
 const CITY_THEMES: Record<string, { bg: string; accent: string; light: string; county: string }> = {
   'Mountain House': {
@@ -42,6 +49,25 @@ const CITY_THEMES: Record<string, { bg: string; accent: string; light: string; c
     light: '#f0fdfa',
     county: 'Contra Costa County',
   },
+  // South Bay — FIFA / discovery traffic expansion
+  'San Jose': {
+    bg: '#1e3a5f',
+    accent: '#0369a1',
+    light: '#f0f9ff',
+    county: 'Santa Clara County',
+  },
+  'Santa Clara': {
+    bg: '#7e1d1d',
+    accent: '#b91c1c',
+    light: '#fef2f2',
+    county: 'Santa Clara County',
+  },
+  Sunnyvale: {
+    bg: '#78350f',
+    accent: '#d97706',
+    light: '#fffbeb',
+    county: 'Santa Clara County',
+  },
 }
 
 const CITY_DOT: Record<string, string> = {
@@ -50,6 +76,10 @@ const CITY_DOT: Record<string, string> = {
   Lathrop:          '#9333ea',
   Manteca:          '#ea580c',
   Brentwood:        '#0d9488',
+  // South Bay
+  'San Jose':       '#0369a1',
+  'Santa Clara':    '#b91c1c',
+  Sunnyvale:        '#d97706',
 }
 
 const CITY_SLUGS: Record<string, string> = {
@@ -58,6 +88,28 @@ const CITY_SLUGS: Record<string, string> = {
   Lathrop:          'lathrop',
   Manteca:          'manteca',
   Brentwood:        'brentwood',
+  // South Bay
+  'San Jose':       'san-jose',
+  'Santa Clara':    'santa-clara',
+  Sunnyvale:        'sunnyvale',
+}
+
+// Reverse map: slug → display city name (for getCityFromPath)
+const SLUG_TO_CITY: Record<string, string> = {
+  'mountain-house': 'Mountain House',
+  'tracy':          'Tracy',
+  'lathrop':        'Lathrop',
+  'manteca':        'Manteca',
+  'brentwood':      'Brentwood',
+  'san-jose':       'San Jose',
+  'santa-clara':    'Santa Clara',
+  'sunnyvale':      'Sunnyvale',
+}
+
+function getCityFromPath(path: string): string | null {
+  // Extract first segment: '/san-jose/restaurants' → 'san-jose'
+  const segment = path.split('/')[1] ?? ''
+  return SLUG_TO_CITY[segment] ?? null
 }
 
 // Explore dropdown items (Best Of + Discover)
@@ -114,17 +166,31 @@ function NavContent() {
   const router = useRouter()
 
   const [city, setCity] = useState<string>(() => {
+    // 1. Derive from pathname first (highest priority)
+    const pathCity = getCityFromPath(pathname)
+    if (pathCity) return pathCity
+    // 2. Fall back to ?city= query param
     const urlCity = searchParams.get('city')
-    return urlCity && CITIES.includes(urlCity) ? urlCity : 'Mountain House'
+    if (urlCity && CITIES.includes(urlCity)) return urlCity
+    // 3. Default
+    return 'Mountain House'
   })
   const theme = CITY_THEMES[city] ?? CITY_THEMES['Mountain House']
 
+  // Sync city state whenever the route changes
   useEffect(() => {
+    const pathCity = getCityFromPath(pathname)
+    if (pathCity) {
+      // Path wins — /san-jose always → San Jose
+      if (pathCity !== city) setCity(pathCity)
+      return
+    }
+    // Non-city path — fall back to ?city= param
     const urlCity = searchParams.get('city')
     if (urlCity && CITIES.includes(urlCity) && urlCity !== city) {
       setCity(urlCity)
     }
-  }, [searchParams])
+  }, [pathname, searchParams])
 
   // Auth state
   const [user, setUser] = useState<User | null>(null)
@@ -180,9 +246,19 @@ function NavContent() {
   function handleCitySelect(c: string) {
     setCity(c)
     setCityPickerOpen(false)
-    const params = new URLSearchParams(searchParams.toString())
-    params.set('city', c)
-    router.push(`${pathname}?${params.toString()}`)
+    // Navigate to the city's root page so pathname-based sync stays consistent.
+    // If user is on a city/category page (e.g. /mountain-house/restaurants)
+    // and switches to Tracy, take them to /tracy — not /mountain-house/restaurants?city=Tracy.
+    const currentCityFromPath = getCityFromPath(pathname)
+    if (currentCityFromPath) {
+      // On a city page — jump to new city root
+      router.push(`/${CITY_SLUGS[c]}`)
+    } else {
+      // On a global page (directory, events, etc.) — keep path, update ?city=
+      const params = new URLSearchParams(searchParams.toString())
+      params.set('city', c)
+      router.push(`${pathname}?${params.toString()}`)
+    }
   }
 
   async function handleSignOut() {
@@ -241,11 +317,33 @@ function NavContent() {
               </button>
 
               {cityPickerOpen && (
-                <div className="absolute left-0 mt-2 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
-                  <div className="px-4 py-2.5 border-b border-gray-100">
-                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Select your city</p>
+                <div className="absolute left-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
+                  {/* 209 / San Joaquin Section */}
+                  <div className="px-4 py-2 border-b border-gray-100">
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">209 · San Joaquin</p>
                   </div>
-                  {CITIES.map((c) => (
+                  {CITIES.filter(c => !SOUTH_BAY_CITIES.has(c)).map((c) => (
+                    <button
+                      key={c}
+                      onClick={() => handleCitySelect(c)}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left transition-colors hover:bg-gray-50"
+                      style={{ color: city === c ? CITY_DOT[c] : '#374151', fontWeight: city === c ? 700 : 400 }}
+                    >
+                      <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: CITY_DOT[c] }} />
+                      {c}
+                      {city === c && (
+                        <svg className="ml-auto w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
+                    </button>
+                  ))}
+
+                  {/* South Bay Section */}
+                  <div className="px-4 py-2 border-t border-b border-gray-100 bg-gray-50">
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">South Bay · ⚽ FIFA 2026</p>
+                  </div>
+                  {CITIES.filter(c => SOUTH_BAY_CITIES.has(c)).map((c) => (
                     <button
                       key={c}
                       onClick={() => handleCitySelect(c)}
@@ -301,9 +399,23 @@ function NavContent() {
 
                     {/* Browse by City */}
                     <div className="px-4 py-2">
-                      <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Browse by City</p>
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">209 · San Joaquin</p>
+                      <div className="space-y-0.5 mb-2">
+                        {CITIES.filter(c => !SOUTH_BAY_CITIES.has(c)).map((c) => (
+                          <Link
+                            key={c}
+                            href={`/${CITY_SLUGS[c]}`}
+                            onClick={() => setDirectoryOpen(false)}
+                            className="flex items-center gap-2.5 py-1.5 text-sm text-gray-700 hover:text-gray-900 transition-colors"
+                          >
+                            <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: CITY_DOT[c] }} />
+                            {c}
+                          </Link>
+                        ))}
+                      </div>
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 pt-2 border-t border-gray-100">South Bay · ⚽ FIFA 2026</p>
                       <div className="space-y-0.5">
-                        {CITIES.map((c) => (
+                        {CITIES.filter(c => SOUTH_BAY_CITIES.has(c)).map((c) => (
                           <Link
                             key={c}
                             href={`/${CITY_SLUGS[c]}`}
@@ -680,14 +792,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     { label: 'Lathrop',        slug: 'lathrop',        color: '#9333ea' },
                     { label: 'Manteca',        slug: 'manteca',        color: '#ea580c' },
                     { label: 'Brentwood',      slug: 'brentwood',      color: '#0d9488' },
-                  ].map(({ label, color }) => (
-                    <span
+                    { label: 'San Jose',       slug: 'san-jose',       color: '#0369a1' },
+                    { label: 'Santa Clara',    slug: 'santa-clara',    color: '#b91c1c' },
+                    { label: 'Sunnyvale',      slug: 'sunnyvale',      color: '#d97706' },
+                  ].map(({ label, slug, color }) => (
+                    <Link
                       key={label}
-                      className="text-xs font-semibold px-2.5 py-1 rounded-full"
+                      href={`/${slug}`}
+                      className="text-xs font-semibold px-2.5 py-1 rounded-full transition hover:opacity-80"
                       style={{ backgroundColor: `${color}22`, color, border: `1px solid ${color}44` }}
                     >
                       {label}
-                    </span>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -768,7 +884,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="border-t border-gray-800">
             <div className="max-w-7xl mx-auto px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
               <p className="text-xs text-gray-600 text-center sm:text-left">
-                © {new Date().getFullYear()} MoHoLocal · Serving Mountain House, Tracy, Lathrop, Manteca &amp; Brentwood
+                © {new Date().getFullYear()} MoHoLocal · Serving the 209 &amp; South Bay, CA
               </p>
               <div className="flex items-center gap-4">
                 {[

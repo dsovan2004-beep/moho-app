@@ -4,6 +4,7 @@ export const runtime = 'edge'
 import { useState, useEffect, useRef } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { getSupabaseClient, type Business } from '@/lib/supabase'
+import { CITIES as CITY_LIST, CITY_BY_NAME } from '@/lib/cities'
 import Link from 'next/link'
 
 const PAGE_SIZE = 20
@@ -38,16 +39,8 @@ function getCategoryEmoji(cat: string): string {
   return '🏢'
 }
 
-const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca', 'Brentwood']
-
-// City badge chip colours — matches city branding
-const CITY_CHIP: Record<string, string> = {
-  'Mountain House': 'bg-blue-50 text-blue-700',
-  'Tracy':          'bg-green-50 text-green-700',
-  'Lathrop':        'bg-purple-50 text-purple-700',
-  'Manteca':        'bg-orange-50 text-orange-700',
-  'Brentwood':      'bg-teal-50 text-teal-700',
-}
+// City filter list — "All Cities" sentinel + all cities from canonical source
+const CITIES = ['All Cities', ...CITY_LIST.map(c => c.name)]
 
 // Sort options (only visible when no search query — relevance is automatic when searching)
 const SORT_OPTIONS = [
@@ -79,8 +72,8 @@ function sortByRelevance(bizs: Business[], q: string): Business[] {
 }
 
 // ── Star rating ───────────────────────────────────────────────────────────────
-function StarRating({ rating }: { rating?: number }) {
-  if (!rating) return null
+function StarRating({ rating }: { rating?: number | null }) {
+  if (rating == null || rating <= 0) return null
   const full = Math.floor(rating)
   return (
     <span className="flex items-center gap-0.5 text-amber-400 text-sm">
@@ -144,7 +137,7 @@ function BusinessCard({ biz, activeCategory }: { biz: Business; activeCategory: 
 
         {/* Contact row — phone + website clickable directly from list */}
         <div className="flex items-center gap-3 mt-2 flex-wrap">
-          <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${CITY_CHIP[biz.city] ?? 'bg-gray-100 text-gray-600'}`}>
+          <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${CITY_BY_NAME[biz.city]?.chip ?? 'bg-gray-100 text-gray-600'}`}>
             📍 {biz.city}
           </span>
           {biz.address && (
