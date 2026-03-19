@@ -242,10 +242,13 @@ export async function runAdapters<T>(
     }
 
     try {
+      console.log(`[adapter] START ${adapter.name}`)
       const items = await adapter.fetch(env)
+      console.log(`[adapter] END   ${adapter.name} — ${items.length} item(s)`)
       results.push({ source: adapter.name, items, raw_count: items.length, error: null })
     } catch (err) {
       const msg = `Adapter "${adapter.name}" failed: ${(err as Error).message}`
+      console.warn(`[adapter] FAIL  ${adapter.name}: ${(err as Error).message}`)
       logWarning(msg)
       results.push({ source: adapter.name, items: [], raw_count: 0, error: msg })
     }

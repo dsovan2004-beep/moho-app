@@ -395,31 +395,48 @@ async function handlePromoteSubmission(req: Request, env: Env): Promise<Response
 }
 
 // ── Route cron trigger to correct handler ─────────────────────────────────────
+//
+// Route by UTC HOUR, not by exact cron string.
+// Routing by exact string is fragile — any wrangler.toml day-of-week edit
+// silently breaks all jobs (they fall through to the else/warn branch).
+// Hour-based routing is immune to day-of-week changes.
+//
+//   Hour 3  → Directory ingestion   (Mon 03:00 UTC)
+//   Hour 4  → Events ingestion      (Mon + Thu 04:00 UTC)
+//   Hour 5  → Lost & Found          (Mon 05:00 UTC)
 
 async function handleScheduled(event: ScheduledEvent, env: Env): Promise<void> {
-  const cron = event.cron
-  console.log(`[ingestion-worker] Cron triggered: ${cron} at ${new Date().toISOString()}`)
+  const cron         = event.cron
+  const firedAt      = new Date(event.scheduledTime)
+  const utcHour      = firedAt.getUTCHours()
+
+  console.log(`[cron] TRIGGER cron="${cron}" firedAt=${firedAt.toISOString()} utcHour=${utcHour}`)
 
   try {
-    if (cron === '0 3 * * 1') {
-      console.log('[ingestion-worker] Starting directory ingestion…')
+    if (utcHour === 3) {
+      console.log('[cron] START directory')
       const logs = await runDirectoryIngestion(env)
       aggregateLogs(logs)
-    } else if (cron === '0 4 * * 1' || cron === '0 4 * * 4') {
-      // Runs Monday (full weekly refresh) AND Thursday (mid-week catch-up).
-      // Thursday run picks up events announced Tue/Wed and refreshes farmers market dates.
-      console.log(`[ingestion-worker] Starting events ingestion (${cron === '0 4 * * 4' ? 'Thursday mid-week' : 'Monday full'} run)…`)
+      console.log('[cron] END directory')
+
+    } else if (utcHour === 4) {
+      // Runs Monday (full weekly refresh) AND Thursday (mid-week catch-up)
+      console.log('[cron] START events')
       const logs = await runEventsIngestion(env)
       aggregateLogs(logs)
-    } else if (cron === '0 5 * * 1') {
-      console.log('[ingestion-worker] Starting lost & found ingestion…')
+      console.log('[cron] END events')
+
+    } else if (utcHour === 5) {
+      console.log('[cron] START lost-and-found')
       const logs = await runLostFoundIngestion(env)
       aggregateLogs(logs)
+      console.log('[cron] END lost-and-found')
+
     } else {
-      console.warn(`[ingestion-worker] Unknown cron expression: ${cron}`)
+      console.warn(`[cron] No job mapped for utcHour=${utcHour} cron="${cron}" — check wrangler.toml`)
     }
   } catch (err) {
-    console.error(`[ingestion-worker] Top-level error for cron ${cron}:`, err)
+    console.error(`[cron] FATAL error utcHour=${utcHour} cron="${cron}": ${String(err)}`)
   }
 }
 
