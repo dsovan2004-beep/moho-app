@@ -445,45 +445,59 @@ Submit all 20 new pages in Google Search Console → URL Inspection → "Request
 
 ---
 
-## SPRINT 4.5 — Data & UX Polish 🏃 ACTIVE — March 2026
+## SPRINT 4.5 — Data & UX Polish + Cron Hardening ✅ COMPLETE — March 2026
 
 **Theme:** Stabilize before Sprint 5 (Growth Engine)
-**Goal:** Fix all visual regressions, data gaps, and empty UX states before activating traffic
-
-> This sprint is a prerequisite to Sprint 5. No growth traffic should be activated while there are broken visuals or empty-feeling city pages.
+**Goal:** Fix all visual regressions, data gaps, empty UX states, and harden the ingestion worker
 
 ### Sprint 4.5 Tasks
 
 | Task | Status | Notes |
 |------|--------|-------|
-| **Image fallback system** — replace city-colored gradient blocks with neutral gray placeholder | ✅ Complete | commit TBD |
-| **Community CTA upgrade** — replace "Coming Soon" with "Be the first to post in [City]" + amber button | ✅ Complete | commit TBD |
-| **Category matrix cleanup** — South Bay empty cells muted/non-clickable, "🍽️ dining" column label, mobile chips skip South Bay empties | ✅ Complete | commit TBD |
+| **Image fallback system** — replace city-colored gradient blocks with neutral gray placeholder | ✅ Complete | |
+| **Community CTA upgrade** — replace "Coming Soon" with "Be the first to post in [City]" + amber button | ✅ Complete | |
+| **Category matrix cleanup** — South Bay empty cells muted/non-clickable, "🍽️ dining" column label, mobile chips skip South Bay empties | ✅ Complete | |
 | **South Bay data diagnostic** — SQL diagnostic script to find why Santa Clara/Sunnyvale show 2 listings | ✅ Complete | `sql/sprint45_southbay_diagnostic.sql` |
-| **South Bay data fix** — run SQL fix on founder's machine to restore Santa Clara + Sunnyvale to correct count | ⬜ Founder action | Run Step 1-2 of diagnostic, then Fix A or B as appropriate |
-| **South Bay listing target** — Santa Clara ≥ 20 public listings, Sunnyvale ≥ 20 | ⬜ Pending data fix | |
+| **South Bay data fix** — run SQL fix on founder's machine to restore Santa Clara + Sunnyvale | ⬜ Founder action | Run diagnostic, then Fix A or B |
+| **South Bay listing target** — Santa Clara ≥ 20 public listings, Sunnyvale ≥ 20 | ⬜ Pending founder DB action | |
 | **Mobile QA pass** — validate city chips wrap, grids responsive, no overflow | ⬜ Founder action | Spot-check on iPhone |
 
-### Founder Actions Required
+### Cron System Hardening (completed March 2026)
+
+| Task | Status | Commit |
+|------|--------|--------|
+| Fix wrangler.toml cron day-of-week numbers (CF uses 1=Sunday, not 1=Monday) | ✅ Complete | `6e5fa5e` |
+| Fix `handleScheduled` — route by UTC hour instead of fragile cron string matching | ✅ Complete | `6e5fa5e` |
+| Remove auto-approve violation in `events.ts` (Eventbrite/farmers-markets-static) | ✅ Complete | `6e5fa5e` |
+| Add structured JSON logging — `MOHO_RUN` / `MOHO_WEEKLY` prefixes to `logger.ts` | ✅ Complete | `6e5fa5e` |
+| Add per-adapter START/END/FAIL logging in `runAdapters()` | ✅ Complete | `6e5fa5e` |
+| Add `/run/all` manual endpoint — runs all 3 jobs in sequence with per-job try/catch | ✅ Complete | `cf33d97` |
+| **Permanently block `209times-rss` from lost-and-found pipeline** — violent content | ✅ Complete | `6a87079` |
+| Deploy updated worker from Mac terminal (`npx wrangler deploy`) | ✅ Complete | Version `6faa6537` |
+| Verify `/run/all` endpoint live and all 3 jobs execute | ✅ Complete | Manual curl verify |
+
+### Cron Schedule (confirmed live)
+
+| Job | Schedule | CF Cron | Status |
+|-----|----------|---------|--------|
+| Directory ingestion | Mon 03:00 UTC | `0 3 * * 2` | ✅ Live |
+| Events ingestion (full) | Mon 04:00 UTC | `0 4 * * 2` | ✅ Live |
+| Lost & Found ingestion | Mon 05:00 UTC | `0 5 * * 2` | ✅ Live |
+| Events ingestion (mid-week) | Thu 04:00 UTC | `0 4 * * 5` | ✅ Live |
+
+### Remaining Founder Actions (Sprint 4.5)
 
 ```sql
--- 1. Run diagnostic to identify root cause
--- Open: https://supabase.com/dashboard/project/ozjlfgipfzykzrjakwzb/editor
+-- Run South Bay diagnostic to restore Santa Clara / Sunnyvale listing counts:
+-- https://supabase.com/dashboard/project/ozjlfgipfzykzrjakwzb/editor
 -- File: sql/sprint45_southbay_diagnostic.sql
--- Run Step 1 first, review output, then run the appropriate fix
 
--- 2. After fix: verify /santa-clara and /sunnyvale show 20+ listings
--- Visit https://www.moholocal.com/santa-clara and https://www.moholocal.com/sunnyvale
+-- After fix: verify /santa-clara and /sunnyvale show 20+ listings
 ```
 
-### Success Criteria
-
-- [ ] No red/colored gradient blocks anywhere on the site (verify on /santa-clara, /sunnyvale)
-- [ ] Community section shows actionable CTA on all city pages (not "Coming Soon")
-- [ ] South Bay matrix columns show "🍽️ dining" note and empty cells are clearly muted
-- [ ] Santa Clara shows ≥ 20 verified listings (founder DB action)
-- [ ] Sunnyvale shows ≥ 20 verified listings (founder DB action)
-- [ ] Mobile: city chips wrap cleanly, no overflow on /discover or /[city]
+- Enable Workers Logs in Cloudflare dashboard → Workers & Pages → moho-ingestion → Settings → Observability → Enable
+- Revoke GitHub PAT in `push-cron-audit.sh` at github.com/settings/tokens
+- Mobile QA pass: spot-check on iPhone at /discover and /[city]
 
 ---
 

@@ -858,49 +858,88 @@ Each file push triggers a separate Cloudflare build. Only the last build matters
 
 ---
 
-## Step 13 — Cron & Worker Trust Model Compliance
+## Step 13 — Cron & Worker Operations
 
-All automated jobs in the `moho-ingestion` Cloudflare Worker have been audited against the verified-business / verified-photo trust model (March 2026).
+The `moho-ingestion` Cloudflare Worker is live at `https://moho-ingestion.dsovan2004.workers.dev`.
 
-**Active cron schedule (4 jobs):**
+**Active cron schedule (4 jobs, deployed March 2026):**
 
-| Job | Schedule | Status |
-|-----|----------|--------|
-| Directory ingestion | Mon 03:00 UTC | Safe — lands as `status='pending'` |
-| Events ingestion (full) | Mon 04:00 UTC | Safe — most land as `ingestion_status='pending'` |
-| Lost & Found ingestion | Mon 05:00 UTC | Safe — lands with `needs_review=true` |
-| Events ingestion (mid-week) | Thu 04:00 UTC | Safe — same pipeline as Monday events run |
+| Job | CF Cron | Schedule | Landing status |
+|-----|---------|----------|----------------|
+| Directory ingestion | `0 3 * * 2` | Mon 03:00 UTC | `status='pending'` |
+| Events ingestion (full) | `0 4 * * 2` | Mon 04:00 UTC | `ingestion_status='pending'` |
+| Lost & Found ingestion | `0 5 * * 2` | Mon 05:00 UTC | `needs_review=true` |
+| Events ingestion (mid-week) | `0 4 * * 5` | Thu 04:00 UTC | `ingestion_status='pending'` |
 
-**Active event source adapters (8 total):**
-EventbriteAdapter, PatchAdapter, TracyPressAdapter, CityCalendarAdapter, CountyCalendarAdapter, MHCSDAdapter, SJCountyLibraryAdapter, FarmersMarketsAdapter
+> ⚠️ Cloudflare Workers uses non-standard day-of-week: 1=Sunday, 2=Monday, 3=Tuesday, 4=Wednesday, 5=Thursday. Do NOT use standard cron references.
 
-**209Times permanently removed** — violent/low-quality content. Must not be re-added.
+**Manual trigger endpoints:**
 
-**Manual trigger for events pipeline:**
+```bash
+# Run all 3 jobs in sequence (returns JSON with per-job results)
+curl https://moho-ingestion.dsovan2004.workers.dev/run/all
+
+# Run individual jobs
+curl https://moho-ingestion.dsovan2004.workers.dev/run/directory
+curl https://moho-ingestion.dsovan2004.workers.dev/run/events
+curl https://moho-ingestion.dsovan2004.workers.dev/run/lostfound
+
+# Validate all RSS/API source URLs
+curl https://moho-ingestion.dsovan2004.workers.dev/validate
 ```
-https://moho-ingestion.dsovan2004.workers.dev/run/events
+
+**Active event source adapters:**
+
+| Adapter | Type | Status |
+|---------|------|--------|
+| EventbriteAdapter | API | Optional (requires `EVENTBRITE_API_KEY`) |
+| PatchAdapter | RSS | Active |
+| TracyPressAdapter | RSS | Active |
+| CityCalendarAdapter | RSS/scrape | Active |
+| CountyCalendarAdapter | RSS/scrape | Active |
+| MHCSDAdapter | RSS | Active |
+| SJCountyLibraryAdapter | RSS | Active |
+| FarmersMarketsAdapter | Static recurring | Active — 6 events always present |
+
+**Active lost-and-found source adapters:**
+
+| Adapter | Type | Status |
+|---------|------|--------|
+| SJAnimalServicesAdapter | Public API | Active |
+| TracyPressAdapter | RSS | Active |
+| PatchAdapter | RSS | Active |
+| PetFinderAdapter | API | Optional (requires `PETFINDER_CLIENT_ID` + `SECRET`) |
+
+**Permanently blocked sources:**
+
+| Source | Reason | Removed from |
+|--------|--------|-------------|
+| 209times-rss | Violent/inappropriate content — not suitable for community platform | Both events + lost-and-found |
+
+**Trust model compliance:**
+
+1. **Directory ingestion** — All records land as `status='pending'`. Never sets `verified=true`. Never touches `business_images`.
+2. **Events ingestion** — All records land as `ingestion_status='pending'`. No auto-approve (removed March 2026).
+3. **Lost & Found ingestion** — All records land with `needs_review=true`. No auto-approval.
+4. **Community Signal Inbox** (`POST /submit-signal`) — All submissions require admin approval.
+5. **Sitemap** (`GET /api/sitemap`) — Filters `status='approved' AND verified=true` only.
+
+**Deploying the worker (founder Mac terminal only — VM has no CLOUDFLARE_API_TOKEN):**
+
+```bash
+cd ~/Desktop/MoHoLocal/moho-app-scaffold
+git pull origin main
+cd workers
+npx wrangler deploy
 ```
 
-**Safe jobs (no changes needed):**
+**Observability — enable Workers Logs:**
 
-1. **Directory ingestion** (Mon 03:00 UTC) — All records land as `status='pending'`. Never touches `business_images`. Never sets `verified=true`. The `image_url` field stores an external URL reference only (not a gallery photo).
+Cloudflare dashboard → Workers & Pages → moho-ingestion → Settings → Observability → Enable
 
-2. **Events ingestion** (Mon/Thu 04:00 UTC) — Most records land as `ingestion_status='pending'`. Eventbrite and farmers markets auto-approve for high-confidence events is acceptable. Does not touch businesses or business_images.
-
-3. **Lost & Found ingestion** (Mon 05:00 UTC) — All records land with `needs_review=true`. No auto-approval. Does not touch businesses or business_images.
-
-4. **Community Signal Inbox** (`POST /submit-signal`) — All submissions require admin approval. `business_update` type never auto-promotes.
-
-**Fixed jobs:**
-
-5. **Sitemap generation** (`GET /api/sitemap`) — Was filtering businesses by `status='approved'` only. Now filters `status='approved' AND verified=true`. Without this fix, unverified businesses would appear in Google's index.
-
-**Hardened scripts (March 2026):**
-
-6. `seed_businesses_5.py` — Updated with `validate_trust_policy()` guard (hard abort if any record has wrong status/verified) and `get_existing_phones()` dedup check. Defaults: `status='pending'`, `verified=False`.
-7. `seed_businesses_6.py` — Same governance guards applied. Defaults: `status='pending'`, `verified=False`.
-
-These scripts are safe to run. They will refuse to insert if trust policy is violated and will skip duplicates automatically.
+Filter structured logs with:
+- `MOHO_RUN` — per-job ingestion result (JSON)
+- `MOHO_WEEKLY` — weekly aggregated summary (JSON)
 
 **Rules for future cron jobs:**
 
@@ -909,6 +948,7 @@ Any new automated job that touches businesses, images, or public-facing content 
 - No stock, placeholder, or unverified images
 - Allowed image sources: `google_places`, `owner_upload`, `admin_verified`
 - Public counts/listings must filter `verified=true`
+- No source that regularly produces violent/negative content may be added regardless of positive content mix
 
 ---
 
@@ -1018,9 +1058,9 @@ MoHoLocal's event ingestion pipeline is governed by an approved source list. Any
 
 **Permanently removed sources:**
 
-| Source | Reason | Removal date |
-|--------|--------|-------------|
-| 209Times | Content consistently violent and inappropriate for platform mission | March 2026 |
+| Source | Reason | Removed from | Removal date |
+|--------|--------|-------------|-------------|
+| 209times-rss | Content consistently violent and inappropriate for platform mission | Events pipeline + Lost & Found pipeline | March 2026 |
 
 **Rule:** No source that regularly produces crime, violence, or negative content may be added to the ingestion pipeline, regardless of whether the same source also produces positive content. The cost of filtering is too high and the risk of breakthrough is unacceptable.
 
@@ -1119,5 +1159,5 @@ South Bay expansion (March 2026) is the reference implementation of this play:
 
 ---
 
-MoHoLocal Operations Playbook v9
+MoHoLocal Operations Playbook v10
 March 2026
