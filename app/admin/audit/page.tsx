@@ -1,12 +1,12 @@
 'use client'
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { getSupabaseClient } from '@/lib/supabase'
 import Link from 'next/link'
 
-const ADMIN_EMAILS = ['dsovan2004@gmail.com', 'danyoeur1983@gmail.com']
+
 
 const CITIES = [
   { name: 'Mountain House', slug: 'mountain-house', gradient: 'linear-gradient(135deg,#1e3a5f 0%,#1e40af 100%)', emoji: '🏘️' },
@@ -36,9 +36,8 @@ export default function AuditDashboard() {
   // ── Auth ──────────────────────────────────────────────────────────────────
   useEffect(() => {
     const supabase = getSupabaseClient()
-    supabase.auth.getSession().then(({ data }) => {
-      const email = data.session?.user?.email ?? ''
-      if (email && ADMIN_EMAILS.includes(email)) {
+    supabase.rpc('is_directory_admin').then(({ data: isAdmin, error }) => {
+      if (!error && isAdmin === true) {
         setAuthorized(true)
       } else {
         router.replace('/')

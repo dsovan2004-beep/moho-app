@@ -1,8 +1,12 @@
 'use client'
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
+import { UUID } from '@/lib/directory-requests'
+import { RequestAccount, useRequestAccount } from '@/app/components/RequestAccount'
+import { getSupabaseClient } from '@/lib/supabase'
 
 const WORKER_URL = 'https://moho-ingestion.dsovan2004.workers.dev'
 
@@ -19,21 +23,27 @@ const SUBMISSION_TYPES = [
 type FormState = 'idle' | 'submitting' | 'success' | 'error'
 
 export default function SubmitPage() {
+  const params = useSearchParams()
+  const requestedType=params.get('submission_type') ?? ''
+  const businessId=params.get('business_id') ?? ''
+  const [petStatus,setPetStatus]=useState('lost')
+  const { user, checking } = useRequestAccount()
   const [formState, setFormState] = useState<FormState>('idle')
   const [errorMsg,  setErrorMsg]  = useState('')
 
-  const [city,           setCity]           = useState('')
-  const [submissionType, setSubmissionType] = useState('')
-  const [title,          setTitle]          = useState('')
+  const [city,           setCity]           = useState(CITIES.includes(params.get('city') ?? '') ? params.get('city')! : '')
+  const [submissionType, setSubmissionType] = useState(SUBMISSION_TYPES.some(t=>t.value===requestedType) ? requestedType : '')
+  const [title,          setTitle]          = useState((params.get('title') ?? '').slice(0,200))
   const [description,    setDescription]    = useState('')
   const [eventDate,      setEventDate]      = useState('')
-  const [contactUrl,     setContactUrl]     = useState('')
+  const [contactUrl,     setContactUrl]     = useState(UUID.test(businessId) ? `https://www.moholocal.com/business/${businessId}` : '')
 
   const selectedType = SUBMISSION_TYPES.find((t) => t.value === submissionType)
   const showEventDate = submissionType === 'event' || submissionType === 'garage_sale'
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (!user || formState === 'submitting') return
     setFormState('submitting')
     setErrorMsg('')
 
@@ -44,20 +54,23 @@ export default function SubmitPage() {
         city,
         submission_type: submissionType,
       }
+      if (submissionType === 'lost_pet') body.pet_status=petStatus
       if (eventDate)  body.event_date  = new Date(eventDate).toISOString()
       if (contactUrl) body.contact_url = contactUrl.trim()
 
+      const { data: { session } } = await getSupabaseClient().auth.getSession()
+      if (!session?.access_token) throw new Error('Sign in before submitting.')
       const res = await fetch(`${WORKER_URL}/submit-signal`, {
         method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
         body:    JSON.stringify(body),
       })
 
       if (res.ok) {
         setFormState('success')
       } else {
-        const data = await res.json() as { message?: string; errors?: string[] }
-        const msg  = data.errors?.join(', ') ?? data.message ?? 'Something went wrong — try again'
+        const data = await res.json() as { message?: string; error?: string; errors?: string[] }
+        const msg  = data.errors?.join(', ') ?? data.message ?? data.error ?? 'Something went wrong — try again'
         setErrorMsg(msg)
         setFormState('error')
       }
@@ -75,7 +88,7 @@ export default function SubmitPage() {
           <div className="text-5xl mb-4">🙌</div>
           <h2 className="text-2xl font-black text-gray-900 mb-2">Thanks for the tip!</h2>
           <p className="text-gray-500 text-sm mb-8">
-            Your submission is in. Our team reviews everything before it goes live — usually within 24 hours.
+            Your submission is in. Our team reviews everything before it goes live — and keeps it pending until approved.
           </p>
           <div className="flex gap-3 justify-center">
             <button
@@ -127,7 +140,9 @@ export default function SubmitPage() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        {!user && !checking && <RequestAccount returnTo={`/submit${params.size ? `?${params.toString()}` : ''}`} />}
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <fieldset disabled={!user || checking || formState === 'submitting'} className="space-y-5">
 
           {/* City */}
           <div>
@@ -178,6 +193,7 @@ export default function SubmitPage() {
             </div>
           </div>
 
+          {submissionType === 'lost_pet' && <div className="rounded-xl border border-amber-200 bg-amber-50 p-4"><label htmlFor="pet-status" className="block font-bold text-sm">Report status</label><select id="pet-status" value={petStatus} onChange={e=>setPetStatus(e.target.value)} className="mt-2 border border-slate-300 rounded-lg p-2 bg-white"><option value="lost">Lost pet</option><option value="found">Found pet / sighting</option><option value="reunited">Reunited update</option></select><p className="text-sm text-slate-600 mt-3">Include the sighting date and a neighborhood or nearby public landmark. Share a contact link only if you have permission; keep private home addresses and sensitive ownership details out of the report. Reports are reviewed before publication.</p></div>}
           {/* Title */}
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-1.5">
@@ -272,7 +288,8 @@ export default function SubmitPage() {
             No spam, no selling your info. Ever.
           </p>
 
-        </form>
+        </fieldset>
+          </form>
       </div>
     </div>
   )

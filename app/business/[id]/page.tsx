@@ -1,4 +1,8 @@
-export const runtime = 'edge'
+import { serializeJsonLd } from '@/lib/json-ld'
+import ListingEvidence from '@/app/components/ListingEvidence'
+import { CHECK_COLUMNS } from '@/lib/listing-evidence'
+import { PUBLIC_BUSINESS_COLUMNS } from '@/lib/supabase'
+export const runtime = 'nodejs'
 
 import { getSupabaseClient, type Business, type BusinessImage } from '@/lib/supabase'
 import Link from 'next/link'
@@ -177,7 +181,7 @@ async function getBusiness(id: string) {
   const supabase = getSupabaseClient()
   const { data, error } = await supabase
     .from('businesses')
-    .select('*')
+    .select(`${PUBLIC_BUSINESS_COLUMNS},listing_checks(${CHECK_COLUMNS})`)
     .eq('id', id)
     .eq('status', 'approved')
     .eq('verified', true)
@@ -190,7 +194,7 @@ async function getRelated(city: string, category: string, excludeId: string) {
   const supabase = getSupabaseClient()
   const { data } = await supabase
     .from('businesses')
-    .select('*')
+    .select(PUBLIC_BUSINESS_COLUMNS)
     .eq('city', city)
     .eq('category', category)
     .eq('status', 'approved')
@@ -215,7 +219,7 @@ async function getBusinessImages(businessId: string) {
 
 // ── Star rating ───────────────────────────────────────────────────────────────
 function StarRating({ rating, reviewCount }: { rating?: number; reviewCount?: number }) {
-  if (!rating) return null
+  if (!rating || !reviewCount || reviewCount <= 0) return null
   const full = Math.floor(rating)
   const half = rating % 1 >= 0.5
   return (
@@ -291,7 +295,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
       {/* JSON-LD structured data for Google rich results */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
 
       {/* Breadcrumb */}
@@ -299,14 +303,14 @@ export default async function BusinessDetailPage({ params }: PageProps) {
         <Link href="/" className="hover:text-blue-600 transition">Home</Link>
         <span>›</span>
         <Link
-          href={`/${CITY_TO_SLUG[biz.city] ?? biz.city.toLowerCase().replace(/\s+/g, '-')}`}
+          href={(CITY_TO_SLUG[biz.city] ? `/${CITY_TO_SLUG[biz.city]}` : `/directory?q=${encodeURIComponent(biz.name)}`)}
           className="hover:text-blue-600 transition"
         >
           {city.emoji} {biz.city}
         </Link>
         <span>›</span>
         <Link
-          href={`/${CITY_TO_SLUG[biz.city] ?? biz.city.toLowerCase().replace(/\s+/g, '-')}/${CAT_TO_SLUG[biz.category] ?? biz.category.toLowerCase().replace(/\s+/g, '-')}`}
+          href={(CITY_TO_SLUG[biz.city] ? `/${CITY_TO_SLUG[biz.city]}/${CAT_TO_SLUG[biz.category] ?? biz.category.toLowerCase().replace(/\s+/g, '-')}` : `/directory?q=${encodeURIComponent(biz.name)}`)}
           className="hover:text-blue-600 transition"
         >
           {biz.category}
@@ -339,12 +343,12 @@ export default async function BusinessDetailPage({ params }: PageProps) {
               <div className="flex flex-wrap gap-2 mb-2">
                 {biz.verified && (
                   <span className="inline-flex items-center gap-1 bg-green-400/20 border border-green-300/40 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                    ✓ Verified
+                    Listing approved
                   </span>
                 )}
                 {biz.claimed && (
                   <span className="inline-flex items-center gap-1 bg-white/20 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                    🏷️ Claimed
+                    Owner claim approved
                   </span>
                 )}
               </div>
@@ -366,9 +370,9 @@ export default async function BusinessDetailPage({ params }: PageProps) {
                 <span className="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full">
                   📍 {biz.city}, CA
                 </span>
-                {biz.rating && (
+                {(biz.rating ?? 0) > 0 && (biz.review_count ?? 0) > 0 && (
                   <span className="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                    ⭐ {biz.rating.toFixed(1)}
+                    ⭐ {biz.rating?.toFixed(1)}
                     {biz.review_count ? ` · ${biz.review_count} ${biz.review_count === 1 ? 'review' : 'reviews'}` : ''}
                   </span>
                 )}
@@ -422,6 +426,8 @@ export default async function BusinessDetailPage({ params }: PageProps) {
         </div>
       </div>
 
+      <ListingEvidence check={biz.listing_checks} />
+
       {/* ── Photo Gallery ── only verified Google Places / owner / admin images */}
       {verifiedImages.length > 0 && (
         <div className="mb-8">
@@ -453,13 +459,13 @@ export default async function BusinessDetailPage({ params }: PageProps) {
             )}
             <div className="flex flex-wrap gap-2 mt-4">
               <Link
-                href={`/${CITY_TO_SLUG[biz.city] ?? biz.city.toLowerCase().replace(/\s+/g, '-')}/${CAT_TO_SLUG[biz.category] ?? biz.category.toLowerCase().replace(/\s+/g, '-')}`}
+                href={(CITY_TO_SLUG[biz.city] ? `/${CITY_TO_SLUG[biz.city]}/${CAT_TO_SLUG[biz.category] ?? biz.category.toLowerCase().replace(/\s+/g, '-')}` : `/directory?q=${encodeURIComponent(biz.name)}`)}
                 className={`text-xs font-semibold px-3 py-1 rounded-full hover:opacity-80 transition ${city.chip}`}
               >
                 {catEmoji} {biz.category}
               </Link>
               <Link
-                href={`/${CITY_TO_SLUG[biz.city] ?? biz.city.toLowerCase().replace(/\s+/g, '-')}`}
+                href={(CITY_TO_SLUG[biz.city] ? `/${CITY_TO_SLUG[biz.city]}` : `/directory?q=${encodeURIComponent(biz.name)}`)}
                 className={`text-xs font-semibold px-3 py-1 rounded-full hover:opacity-80 transition ${city.chip}`}
               >
                 {city.emoji} {biz.city}
@@ -517,13 +523,13 @@ export default async function BusinessDetailPage({ params }: PageProps) {
               icon="🏙️"
               label="City"
               value={`${city.emoji} ${biz.city}, CA`}
-              internalHref={`/${CITY_TO_SLUG[biz.city] ?? biz.city.toLowerCase().replace(/\s+/g, '-')}`}
+              internalHref={(CITY_TO_SLUG[biz.city] ? `/${CITY_TO_SLUG[biz.city]}` : `/directory?q=${encodeURIComponent(biz.name)}`)}
             />
             <InfoRow
               icon="📂"
               label="Category"
               value={`${catEmoji} ${biz.category}`}
-              internalHref={`/${CITY_TO_SLUG[biz.city] ?? biz.city.toLowerCase().replace(/\s+/g, '-')}/${CAT_TO_SLUG[biz.category] ?? biz.category.toLowerCase().replace(/\s+/g, '-')}`}
+              internalHref={(CITY_TO_SLUG[biz.city] ? `/${CITY_TO_SLUG[biz.city]}/${CAT_TO_SLUG[biz.category] ?? biz.category.toLowerCase().replace(/\s+/g, '-')}` : `/directory?q=${encodeURIComponent(biz.name)}`)}
             />
 
             {/* No contact info fallback */}
@@ -649,7 +655,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
 
           {/* Back to city link */}
           <Link
-            href={`/${CITY_TO_SLUG[biz.city] ?? biz.city.toLowerCase().replace(/\s+/g, '-')}`}
+            href={(CITY_TO_SLUG[biz.city] ? `/${CITY_TO_SLUG[biz.city]}` : `/directory?q=${encodeURIComponent(biz.name)}`)}
             className="block text-center text-sm text-gray-400 hover:text-blue-600 transition py-2"
           >
             ← Back to {biz.city}
@@ -679,9 +685,9 @@ export default async function BusinessDetailPage({ params }: PageProps) {
                 <h3 className="font-bold text-gray-900 group-hover:text-blue-700 transition text-xs line-clamp-2 leading-snug">
                   {r.name}
                 </h3>
-                {r.rating && (
+                {(r.rating ?? 0) > 0 && (r.review_count ?? 0) > 0 && (
                   <span className="text-xs text-amber-500 font-medium mt-1 block">
-                    ★ {r.rating.toFixed(1)}
+                    ★ {r.rating?.toFixed(1)}
                   </span>
                 )}
                 {!r.rating && (

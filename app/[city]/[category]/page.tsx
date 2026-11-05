@@ -1,4 +1,6 @@
-export const runtime = 'edge'
+import { serializeJsonLd } from '@/lib/json-ld'
+import { PUBLIC_BUSINESS_COLUMNS } from '@/lib/supabase'
+export const runtime = 'nodejs'
 
 import { getSupabaseClient, type Business } from '@/lib/supabase'
 import Link from 'next/link'
@@ -226,7 +228,7 @@ async function getBusinesses(city: string, category: string): Promise<Business[]
   const supabase = getSupabaseClient()
   const { data, error } = await supabase
     .from('businesses')
-    .select('*, business_images(image_url, position, verified, source)')
+    .select(`${PUBLIC_BUSINESS_COLUMNS}, business_images(image_url, position, verified, source)`)
     .eq('city', city)
     .eq('category', category)
     .eq('status', 'approved')
@@ -387,7 +389,7 @@ export default async function CityLandingPage({ params }: PageProps) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbSchema) }} />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 

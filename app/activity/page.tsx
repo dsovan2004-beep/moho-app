@@ -1,4 +1,4 @@
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 import { getSupabaseClient } from '@/lib/supabase'
 import Link from 'next/link'
@@ -58,7 +58,7 @@ async function fetchActivityFeed(city?: string): Promise<ActivityItem[]> {
   // Recently verified businesses — trust filter required on all public queries
   const bizQuery = supabase
     .from('businesses')
-    .select('id, name, description, city, category, created_at, image_url')
+    .select('id, name, description, city, category, created_at')
     .eq('status', 'approved')
     .eq('verified', true)
     .order('created_at', { ascending: false })

@@ -1,4 +1,4 @@
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 /**
  * Dynamic sitemap at /api/sitemap (legacy endpoint).

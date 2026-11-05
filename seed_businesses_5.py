@@ -8,6 +8,7 @@
 # the 3-rule ingestion safeguard (real address, real phone, non-generic name).
 # See: docs/BULK_IMPORT_DATA_SOURCES.md
 import sys
+import os
 print("ERROR: seed_businesses_5.py is permanently disabled.")
 print("This script produced fabricated data — see Sprint 1 integrity audit (March 2026).")
 print("Use seed_overpass.py for all new ingestion.")
@@ -24,11 +25,7 @@ import urllib.request
 import urllib.error
 
 SUPABASE_URL = "https://ozjlfgipfzykzrjakwzb.supabase.co"
-SERVICE_ROLE_KEY = (
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-    ".eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im96amxmZ2lwZnp5a3pyamFrd3piIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQzMzI3NiwiZXhwIjoyMDg4MDA5Mjc2fQ"
-    ".g9f2Il1nWEfgyuvTXHUiHn4EgWsrHVV1QBbdxehT0gM"
-)
+SERVICE_ROLE_KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
 
 BUSINESSES = [
 
@@ -1274,7 +1271,7 @@ def insert_businesses():
     url = f"{SUPABASE_URL}/rest/v1/businesses"
     headers = {
         "apikey": SERVICE_ROLE_KEY,
-        "Authorization": f"Bearer {SERVICE_ROLE_KEY}",
+        **({} if SERVICE_ROLE_KEY.startswith("sb_secret_") else {"Authorization": f"Bearer {SERVICE_ROLE_KEY}"}),
         "Content-Type": "application/json",
         "Prefer": "return=representation",
     }

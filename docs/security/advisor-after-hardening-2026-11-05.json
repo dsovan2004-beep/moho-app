@@ -1,0 +1,65 @@
+{
+  "result": {
+    "lints": [
+      {
+        "name": "rls_enabled_no_policy",
+        "title": "RLS Enabled No Policy",
+        "level": "INFO",
+        "facing": "EXTERNAL",
+        "categories": [
+          "SECURITY"
+        ],
+        "description": "Detects cases where row level security (RLS) has been enabled on a table but no RLS policies have been created.",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy",
+        "count": 5,
+        "findings": [
+          {
+            "detail": "Table \\`directory_private.admins\\` has RLS enabled, but no policies exist",
+            "metadata": {
+              "name": "admins",
+              "type": "table",
+              "schema": "directory_private"
+            },
+            "observed_at": "2026-11-05T23:25:00.724Z"
+          },
+          {
+            "detail": "Table \\`directory_private.business_audit\\` has RLS enabled, but no policies exist",
+            "metadata": {
+              "name": "business_audit",
+              "type": "table",
+              "schema": "directory_private"
+            },
+            "observed_at": "2026-11-05T23:25:00.724Z"
+          },
+          {
+            "detail": "Table \\`directory_private.contribution_events\\` has RLS enabled, but no policies exist",
+            "metadata": {
+              "name": "contribution_events",
+              "type": "table",
+              "schema": "directory_private"
+            },
+            "observed_at": "2026-11-05T23:25:00.724Z"
+          },
+          {
+            "detail": "Table \\`directory_private.listing_corrections\\` has RLS enabled, but no policies exist",
+            "metadata": {
+              "name": "listing_corrections",
+              "type": "table",
+              "schema": "directory_private"
+            },
+            "observed_at": "2026-11-05T23:25:00.724Z"
+          },
+          {
+            "detail": "Table \\`directory_private.reaction_events\\` has RLS enabled, but no policies exist",
+            "metadata": {
+              "name": "reaction_events",
+              "type": "table",
+              "schema": "directory_private"
+            },
+            "observed_at": "2026-11-05T23:25:00.724Z"
+          }
+        ]
+      }
+    ]
+  }
+}

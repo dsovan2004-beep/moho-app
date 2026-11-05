@@ -1,12 +1,14 @@
 'use client'
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { getSupabaseClient } from '@/lib/supabase'
 import Link from 'next/link'
+import BusinessRequestInbox from '@/app/components/BusinessRequestInbox'
+import { reviewBusiness } from '@/lib/review-business'
 
-const ADMIN_EMAILS = ['dsovan2004@gmail.com', 'danyoeur1983@gmail.com']
+
 const WORKER_URL   = 'https://moho-ingestion.dsovan2004.workers.dev'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -89,10 +91,10 @@ export default function AdminPage() {
   // ── Auth ───────────────────────────────────────────────────────────────────
   useEffect(() => {
     const supabase = getSupabaseClient()
-    supabase.auth.getSession().then(({ data }) => {
-      const email = data.session?.user?.email ?? ''
-      const token = data.session?.access_token ?? ''
-      if (email && ADMIN_EMAILS.includes(email)) {
+    supabase.auth.getSession().then(async ({ data: sessionData }) => {
+      const token = sessionData.session?.access_token ?? ''
+      const { data: isAdmin, error } = await supabase.rpc('is_directory_admin')
+      if (!error && isAdmin === true) {
         setAuthorized(true)
         setAccessToken(token)
       } else {
@@ -119,9 +121,9 @@ export default function AdminPage() {
     const supabase = getSupabaseClient()
     setBizLoading(true)
     const { data } = await supabase
-      .from('businesses')
+      .rpc('admin_businesses')
       .select('id,name,category,city,address,phone,website,contact_email,description,hours,created_at,status')
-      .eq('status', status)
+      .in('status', status === 'pending' ? ['pending', 'pending_review'] : [status])
       .order('created_at', { ascending: false })
     setBusinesses((data as PendingBusiness[]) || [])
     setBizLoading(false)
@@ -135,28 +137,23 @@ export default function AdminPage() {
       const { count } = await supabase
         .from('businesses')
         .select('id', { count: 'exact', head: true })
-        .eq('status', s)
+        .in('status', s === 'pending' ? ['pending', 'pending_review'] : [s])
       counts[s] = count || 0
     }
     setBizStats({ pending: counts.pending, approved: counts.approved, rejected: counts.rejected })
   }
 
   async function updateBizStatus(id: string, status: 'approved' | 'rejected') {
-    const supabase = getSupabaseClient()
     setBizActionId(id)
-    const { error } = await supabase.from('businesses').update({ status }).eq('id', id)
-    if (!error) {
-      setBusinesses((prev) => prev.filter((b) => b.id !== id))
-      setBizStats((s) => ({
-        ...s,
-        [activeSection as BusinessTab]: s[activeSection as BusinessTab] - 1,
-        [status]: s[status] + 1,
-      }))
-      showToast(status === 'approved' ? '✅ Approved!' : '🗑️ Rejected', true)
-    } else {
-      showToast('Error — try again', false)
-    }
-    setBizActionId(null)
+    try {
+      const saved = await reviewBusiness(id, status === 'approved' ? 'approve' : 'reject')
+      if (saved) {
+        await loadBizTab(activeSection)
+        await loadBizStats()
+        showToast(status === 'approved' ? 'Approved with dated evidence' : 'Rejected', true)
+      }
+    } catch (err) { showToast(err instanceof Error ? err.message : 'Review failed', false) }
+    finally { setBizActionId(null) }
   }
 
   // ── Submission helpers ─────────────────────────────────────────────────────
@@ -266,6 +263,8 @@ export default function AdminPage() {
       </div>
 
       <div className="max-w-5xl mx-auto px-4 py-8">
+
+        <BusinessRequestInbox />
 
         {/* City Audit link */}
         <Link

@@ -3,6 +3,32 @@
 
 This document defines sprint governance standards and the canonical Definition of Done (DoD) for each sprint type. It supplements ROADMAP.md (which tracks sprint status) by capturing the rules that govern how sprints are structured and closed.
 
+
+## Current relaunch sprint — November 5, 2026
+
+This relaunch supersedes the historical March/April expansion and distribution plans below. `docs/ROADMAP.md` is the canonical backlog; `docs/BACKLOG.md` is the active execution queue. Update these three records with every material scope, test, deployment or blocker change. Completed code, deployed behavior, verified evidence and unresolved work must be recorded separately.
+
+| Sprint | Scope | Current state |
+|---|---|---|
+| R1 | Security, credentials, submissions and claims | Code/database fixes deployed; 39 automated tests and live Google/submission/rejection acceptance pass. Legacy apikey access is disabled and the previous HS256 verifier revoked; old-key REST/Auth/Storage checks return 401, while modern server and signed-in requester access pass. Native build setup remains in progress. Close R1 after clean source builds and setup-permission removal. |
+| R2 | Regional discovery, listing evidence and mobile redesign | First pass deployed for shared Mountain House/Tracy/Lathrop/Manteca discovery. 72 candidates triaged; 23 quarantined, 3 corrected from official websites, 46 remain unchecked. Exact-service shortlists and 390px layout checks implemented. |
+| R3 | Useful pilot and pet-report lifecycle | Backlog. Build sufficient independently checked choices before outreach; validate resident outcomes. Preserve existing pet filters/reunited states, with moderated reporting and recent/history separation. Owner updates and freshness confirmation remain open. |
+
+### Relaunch definition of done
+
+- RLS stays enabled; negative role tests pass; credentials committed in history no longer authorize requests.
+- Submission/claim/review changes preserve private receipts, source evidence and atomic ownership; no self-publication.
+- Modern keys work after legacy retirement; one real account acceptance test and a clean source-to-Cloudflare build pass.
+- Listings have dated, scoped sources. Website checks are not owner, license, insurance, availability or quality endorsements.
+- Preserve business IDs and existing route entry points. Honest empty service shortlists are acceptable; no invented records or doorway pages.
+- Photo enrichment is conditional on useful verified information and image rights; no new bulk seeding is authorized for this relaunch.
+- Initial editorial checking prioritizes Mountain House/Tracy; regional UI reuse does not claim complete audits of Lathrop/Manteca.
+- No Facebook outreach, private-post republication or member-list export is authorized. Research remains qualitative and sampled.
+
+Acceptance evidence: `docs/security/continuation-2026-11-05.txt`, `docs/security/deployment-evidence.json`, `docs/research/home-services-triage-2026-11-05.json`, and `docs/ux/`.
+
+---
+
 ---
 
 ## Expansion Definition of Done (DoD)
@@ -89,7 +115,7 @@ A **Data Sprint** covers seeding or enriching business directory data within exi
 | Sprint 3.5 | South Bay Expansion + UI System Unification | ✅ COMPLETE | March 2026 |
 | Sprint 4 | SEO Surface Expansion | ✅ COMPLETE | March 2026 |
 | Sprint 4.5 | Data & UX Polish + Cron Hardening | ✅ COMPLETE (code) / ⬜ Founder DB actions pending | March 2026 |
-| Sprint 5 | Distribution & Traffic Activation | 🏃 ACTIVE | Target: April 2026 |
+| Sprint 5 | Distribution & Traffic Activation | Historical plan; superseded by current relaunch | Originally targeted April 2026 |
 
 ---
 

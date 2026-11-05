@@ -1,0 +1,16 @@
+node_modules/
+.next/
+.vercel/
+.wrangler/
+.env*
+!.env.example
+*.tsbuildinfo
+coverage/
+.DS_Store
+supabase/.temp/
+.local-postgres/
+.open-next/
+.dev.vars*
+
+# Local account-control proof may contain account identifiers; keep it out of Git.
+docs/security/screenshots/

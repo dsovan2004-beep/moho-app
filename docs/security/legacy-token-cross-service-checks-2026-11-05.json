@@ -1,0 +1,10 @@
+[
+  {
+    "endpoint": "/auth/v1/admin/users",
+    "legacy_bearer_status": 401
+  },
+  {
+    "endpoint": "/storage/v1/bucket",
+    "legacy_bearer_status": 401
+  }
+]

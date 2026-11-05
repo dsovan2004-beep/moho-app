@@ -2,17 +2,17 @@
 // Cloudflare Worker with cron triggers + manual run/validate HTTP routes.
 //
 // Cron schedule (all times UTC):
-//   0 3 * * 1  →  Monday 03:00 — Directory ingestion
-//   0 4 * * 1  →  Monday 04:00 — Events ingestion (full weekly refresh)
-//   0 5 * * 1  →  Monday 05:00 — Lost & Found ingestion
-//   0 4 * * 4  →  Thursday 04:00 — Events ingestion (mid-week catch-up)
+//   0 3 * * 1  →  Tuesday 03:00 — Directory ingestion
+//   0 4 * * 1  →  Tuesday 04:00 — Events ingestion (full weekly refresh)
+//   0 5 * * 1  →  Tuesday 05:00 — Lost & Found ingestion
+//   0 4 * * 4  →  Friday 04:00 — Events ingestion (mid-week catch-up)
 //
 // HTTP routes:
 //   GET  /health              — health check
-//   GET  /run/directory       — trigger directory ingestion manually
-//   GET  /run/events          — trigger events ingestion manually
-//   GET  /run/lostfound       — trigger lost & found ingestion manually
-//   GET  /validate            — validate all known source URLs and report verdicts
+//   POST /run/directory       — trigger directory ingestion manually
+//   POST /run/events          — trigger events ingestion manually
+//   POST /run/lostfound       — trigger lost & found ingestion manually
+//   POST /validate            — validate all known source URLs and report verdicts
 //   POST /submit-signal       — community signal inbox (manual intake)
 //   POST /promote-submission  — approve or reject a community submission (admin only)
 //
@@ -21,6 +21,8 @@
 // Test:   cd workers && npx wrangler dev --test-scheduled
 //         curl "http://localhost:8787/__scheduled?cron=0+3+*+*+1"
 
+import type { ScheduledEvent, ExecutionContext } from '@cloudflare/workers-types'
+import { requireAdmin, readJsonBody } from './lib/admin-auth'
 import { runDirectoryIngestion } from './jobs/directory'
 import { runEventsIngestion }    from './jobs/events'
 import { runLostFoundIngestion } from './jobs/lostfound'
@@ -28,7 +30,7 @@ import { aggregateLogs }         from './lib/logger'
 import { validateUrl }           from './lib/sources'
 import { insertRow, updateRow, selectRows } from './lib/supabase'
 import { normalizeCity }         from './lib/normalize'
-import type { Env }              from './lib/types'
+import type { Env, RunLog }              from './lib/types'
 
 // ── Community Signal Inbox — validation constants ─────────────────────────────
 
@@ -37,6 +39,7 @@ const VALID_SUBMISSION_TYPES = new Set([
 ])
 
 interface SignalBody {
+  pet_status?: string
   title?:           string
   description?:     string
   city?:            string
@@ -56,7 +59,7 @@ interface PromoteBody {
   action?:        'approve' | 'reject'
 }
 
-const ADMIN_EMAILS = new Set(['dsovan2004@gmail.com', 'danyoeur1983@gmail.com'])
+
 
 // ── All known source URLs — used by /validate endpoint ───────────────────────
 
@@ -116,6 +119,15 @@ export default {
     // ── Health check ──
     if (pathname === '/health') {
       return json({ status: 'ok', worker: 'moho-ingestion', ts: new Date().toISOString() })
+    }
+
+    // Internal intake and expensive/mutating routes require a verified admin.
+    const protectedRoutes = ['/run/all', '/run/directory', '/run/events', '/run/lostfound',
+      '/validate', '/submit-signal', '/promote-submission']
+    if (protectedRoutes.includes(pathname)) {
+      if (req.method !== 'POST') return json({ error: 'POST required' }, 405)
+      const denied = await requireAdmin(req, env, pathname !== '/submit-signal')
+      if (denied) return new Response(denied.body, { status: denied.status, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } })
     }
 
     // ── Manual run routes ──
@@ -222,10 +234,10 @@ export default {
         'POST /promote-submission',
       ],
       crons: [
-        'Mon 03:00 UTC — directory     (0 3 * * 2)',
-        'Mon 04:00 UTC — events        (0 4 * * 2)',
-        'Mon 05:00 UTC — lost & found  (0 5 * * 2)',
-        'Thu 04:00 UTC — events midwk  (0 4 * * 5)',
+        'Tue 03:00 UTC — directory     (0 3 * * 2)',
+        'Tue 04:00 UTC — events        (0 4 * * 2)',
+        'Tue 05:00 UTC — lost & found  (0 5 * * 2)',
+        'Fri 04:00 UTC — events midwk  (0 4 * * 5)',
       ],
       routing: 'by UTC hour (3=directory, 4=events, 5=lostfound)',
     })
@@ -240,10 +252,15 @@ async function handleSubmitSignal(req: Request, env: Env): Promise<Response> {
 
   // Parse JSON body
   try {
-    body = (await req.json()) as SignalBody
+    body = (await readJsonBody(req)) as SignalBody
   } catch {
     console.warn('[submit-signal] Failed to parse JSON body')
     return json({ status: 'error', message: 'Invalid JSON body' }, 400)
+  }
+
+  if (!body || typeof body !== 'object' || Array.isArray(body) ||
+      Object.entries(body).some(([key, value]) => !['ocr_confidence', 'confidence_score'].includes(key) && typeof value !== 'string')) {
+    return json({ status: 'error', message: 'Invalid field types' }, 422)
   }
 
   // ── Validation ──────────────────────────────────────────────────────────────
@@ -292,6 +309,7 @@ async function handleSubmitSignal(req: Request, env: Env): Promise<Response> {
   }
 
   // Optional fields — only include if provided
+  if (body.pet_status) row.pet_status = body.pet_status
   if (body.event_date)    row.event_date    = body.event_date
   if (body.image_url)     row.image_url     = body.image_url.trim()
   if (body.contact_url)   row.contact_url   = body.contact_url.trim()
@@ -301,12 +319,21 @@ async function handleSubmitSignal(req: Request, env: Env): Promise<Response> {
   if (typeof body.ocr_confidence === 'number')  row.ocr_confidence  = body.ocr_confidence
   if (typeof body.confidence_score === 'number') row.confidence_score = body.confidence_score
 
-  const result = await insertRow(env, 'community_submissions', row)
-
-  if (!result.ok) {
-    console.error('[submit-signal] DB insert failed:', result.error)
-    return json({ status: 'error', message: 'Failed to save submission' }, 500)
+  // Authenticated, rate-limited RPC saves a pending signal. Never insert using
+  // service-role authority on behalf of an arbitrary public caller.
+  const token = req.headers.get('Authorization')?.replace(/^Bearer /, '') || req.headers.get('X-Admin-Token')
+  const saved = await fetch(`${env.SUPABASE_URL}/rest/v1/rpc/create_community_signal`, {
+    method: 'POST', headers: { apikey: env.SUPABASE_SERVICE_ROLE_KEY, Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ p_payload: row }),
+  })
+  if (!saved.ok) {
+    const error = await saved.json() as { code?: string }
+    return json({ status: 'error', message: error.code === 'P0001' ? 'Daily submission limit reached' : 'Submission was not saved' },
+      error.code === 'P0001' ? 429 : error.code === '22023' ? 422 : 503)
   }
+  const id: unknown = await saved.json()
+  if (typeof id !== 'string') return json({ status: 'error', message: 'No saved submission reference' }, 503)
+  const result = { id }
 
   // ── Structured log ──────────────────────────────────────────────────────────
   console.log(JSON.stringify({
@@ -332,36 +359,16 @@ async function handleSubmitSignal(req: Request, env: Env): Promise<Response> {
 // ADMIN_EMAILS before taking any action.
 
 async function handlePromoteSubmission(req: Request, env: Env): Promise<Response> {
-  // ── Auth check via Supabase JWT ────────────────────────────────────────────
-  const token = req.headers.get('X-Admin-Token') ?? ''
-  if (token) {
-    // Verify with Supabase auth
-    const userRes = await fetch(`${env.SUPABASE_URL}/auth/v1/user`, {
-      headers: {
-        apikey:        env.SUPABASE_SERVICE_ROLE_KEY,
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    if (userRes.ok) {
-      const user = (await userRes.json()) as { email?: string }
-      if (!user.email || !ADMIN_EMAILS.has(user.email)) {
-        return json({ error: 'forbidden' }, 403)
-      }
-    }
-    // If Supabase can't verify (e.g. anon key mismatch), we fall through —
-    // the endpoint is low-risk since it can only affect existing submissions.
-  }
-
   // ── Parse body ─────────────────────────────────────────────────────────────
   let body: PromoteBody
   try {
-    body = (await req.json()) as PromoteBody
+    body = (await readJsonBody(req)) as PromoteBody
   } catch {
     return json({ error: 'Invalid JSON body' }, 400)
   }
 
   const { submission_id, action } = body
-  if (!submission_id) return json({ error: 'submission_id is required' }, 400)
+  if (typeof submission_id !== 'string' || !/^[0-9a-f-]{36}$/i.test(submission_id)) return json({ error: 'Valid submission_id is required' }, 400)
   if (action !== 'approve' && action !== 'reject') {
     return json({ error: 'action must be "approve" or "reject"' }, 400)
   }
@@ -370,6 +377,7 @@ async function handlePromoteSubmission(req: Request, env: Env): Promise<Response
   const rows = await selectRows<Record<string, unknown>>(env, 'community_submissions', { id: submission_id })
   if (!rows.length) return json({ error: 'submission not found' }, 404)
   const sub = rows[0]
+  if (sub.needs_review !== true) return json({ error: 'Submission already reviewed' }, 409)
 
   // ── Reject: just mark reviewed, no promotion ───────────────────────────────
   if (action === 'reject') {
@@ -405,8 +413,9 @@ async function handlePromoteSubmission(req: Request, env: Env): Promise<Response
       description:  sub.description,
       city:         sub.city,
       type:         'pet',
-      status:       'lost',
+      status:       sub.pet_status ?? 'lost',
       contact_name: 'Community Submission',
+      source_url: sub.contact_url ?? null,
       image_url:    sub.image_url ?? null,
       source:       'community',
       needs_review: false,
@@ -422,6 +431,7 @@ async function handlePromoteSubmission(req: Request, env: Env): Promise<Response
       city:        sub.city,
       category:    submissionType === 'garage_sale' ? 'For Sale' : 'General',
       author_name: 'Community Tip',
+      status: 'approved',
     })
     promoted_table = 'community_posts'
     promoted_id    = result.id
@@ -460,9 +470,9 @@ async function handlePromoteSubmission(req: Request, env: Env): Promise<Response
 // silently breaks all jobs (they fall through to the else/warn branch).
 // Hour-based routing is immune to day-of-week changes.
 //
-//   Hour 3  → Directory ingestion   (Mon 03:00 UTC)
-//   Hour 4  → Events ingestion      (Mon + Thu 04:00 UTC)
-//   Hour 5  → Lost & Found          (Mon 05:00 UTC)
+//   Hour 3  → Directory ingestion   (Tue 03:00 UTC)
+//   Hour 4  → Events ingestion      (Tue + Fri 04:00 UTC)
+//   Hour 5  → Lost & Found          (Tue 05:00 UTC)
 
 async function handleScheduled(event: ScheduledEvent, env: Env): Promise<void> {
   const cron         = event.cron
@@ -479,7 +489,7 @@ async function handleScheduled(event: ScheduledEvent, env: Env): Promise<void> {
       console.log('[cron] END directory')
 
     } else if (utcHour === 4) {
-      // Runs Monday (full weekly refresh) AND Thursday (mid-week catch-up)
+      // Runs Tuesday (full weekly refresh) AND Friday (mid-week catch-up)
       console.log('[cron] START events')
       const logs = await runEventsIngestion(env)
       aggregateLogs(logs)
@@ -502,9 +512,9 @@ async function handleScheduled(event: ScheduledEvent, env: Env): Promise<void> {
 // ── Response helpers ──────────────────────────────────────────────────────────
 
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin':  '*',
+  'Access-Control-Allow-Origin':  'https://www.moholocal.com',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Token',
+  'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Token, Authorization',
 }
 
 function json(data: unknown, status = 200): Response {
@@ -518,8 +528,9 @@ function corsPreflightResponse(): Response {
   return new Response(null, { status: 204, headers: CORS_HEADERS })
 }
 
-function buildRunResponse(job: string, logs: ReturnType<typeof Array.prototype.flatMap>) {
-  const log = logs[0] ?? {}
+function buildRunResponse(job: string, logs: RunLog[]) {
+  const log = logs[0]
+  if (!log) return { job, error: 'No ingestion log returned' }
   return {
     job,
     run_at:          log.run_at,

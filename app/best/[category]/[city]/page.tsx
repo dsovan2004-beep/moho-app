@@ -1,4 +1,6 @@
-export const runtime = 'edge'
+import { serializeJsonLd } from '@/lib/json-ld'
+import { PUBLIC_BUSINESS_COLUMNS } from '@/lib/supabase'
+export const runtime = 'nodejs'
 
 import { getSupabaseClient, type Business } from '@/lib/supabase'
 import Link from 'next/link'
@@ -212,7 +214,7 @@ export default async function BestOfPage({ params }: PageProps) {
   const supabase = getSupabaseClient()
   const { data, error } = await supabase
     .from('businesses')
-    .select('*')
+    .select(PUBLIC_BUSINESS_COLUMNS)
     .eq('city', cityName)
     .eq('category', catInfo.dbCategory)
     .eq('status', 'approved')
@@ -275,8 +277,8 @@ export default async function BestOfPage({ params }: PageProps) {
   return (
     <>
       {/* Schema.org JSON-LD */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(itemListSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbSchema) }} />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 

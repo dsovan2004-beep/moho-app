@@ -1,4 +1,5 @@
-export const runtime = 'edge'
+import { PUBLIC_BUSINESS_COLUMNS } from '@/lib/supabase'
+export const runtime = 'nodejs'
 
 import { getSupabaseClient, type Business } from '@/lib/supabase'
 import Link from 'next/link'
@@ -170,7 +171,7 @@ async function getCityData(cityName: string) {
     // Sort: rated first (nulls last), then alphabetical — matches directory sort logic
     supabase
       .from('businesses')
-      .select('*, business_images(image_url, position, verified, source)')
+      .select(`${PUBLIC_BUSINESS_COLUMNS}, business_images(image_url, position, verified, source)`)
       .eq('city', cityName)
       .eq('status', 'approved')
       .eq('verified', true)
@@ -181,7 +182,7 @@ async function getCityData(cityName: string) {
     // Most recently added — fetch 10 so dedup still yields 4 unique
     supabase
       .from('businesses')
-      .select('*, business_images(image_url, position, verified, source)')
+      .select(`${PUBLIC_BUSINESS_COLUMNS}, business_images(image_url, position, verified, source)`)
       .eq('city', cityName)
       .eq('status', 'approved')
       .eq('verified', true)

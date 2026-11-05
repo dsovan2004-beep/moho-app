@@ -1,3 +1,5 @@
+import type { ListingCheck } from './listing-evidence'
+import { safeReturnTo } from './auth-return'
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 
 // ─── Browser singleton ────────────────────────────────────────────────────────
@@ -13,6 +15,7 @@ export function getSupabaseClient(): SupabaseClient {
     return createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      { auth: { flowType: 'pkce', persistSession: false, autoRefreshToken: false } },
     )
   }
   // Browser: reuse singleton
@@ -20,9 +23,18 @@ export function getSupabaseClient(): SupabaseClient {
     _browserClient = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      { auth: { flowType: 'pkce', detectSessionInUrl: false } },
     )
   }
   return _browserClient
+}
+
+// Preserve the existing allowlisted callback URL; store only the safe return
+// path locally rather than requiring new query-specific Auth redirect entries.
+function authCallbackUrl() {
+  const next = safeReturnTo(new URLSearchParams(window.location.search).get('next'))
+  window.sessionStorage.setItem('moho-auth-return', next)
+  return `${window.location.origin}/auth/callback`
 }
 
 // ─── Auth Helpers ─────────────────────────────────────────────────────────────
@@ -32,7 +44,7 @@ export async function signInWithGoogle() {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${window.location.origin}/auth/callback`,
+      redirectTo: authCallbackUrl(),
     },
   })
   return { error }
@@ -43,7 +55,7 @@ export async function signInWithFacebook() {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'facebook',
     options: {
-      redirectTo: `${window.location.origin}/auth/callback`,
+      redirectTo: authCallbackUrl(),
     },
   })
   return { error }
@@ -60,7 +72,10 @@ export async function signUpWithEmail(email: string, password: string, fullName?
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: fullName ? { data: { full_name: fullName } } : undefined,
+    options: {
+      ...(fullName ? { data: { full_name: fullName } } : {}),
+      emailRedirectTo: authCallbackUrl(),
+    },
   })
   return { data, error }
 }
@@ -76,6 +91,9 @@ export async function getUser() {
   const { data: { user } } = await supabase.auth.getUser()
   return user
 }
+
+// Explicit projection: email/contact_email are private follow-up details.
+export const PUBLIC_BUSINESS_COLUMNS = 'id,name,category,city,address,phone,website,description,hours,rating,review_count,claimed,verified,featured,status,created_at,updated_at,source,source_url,last_ingested_at,confidence_score,needs_review,image_source,google_place_id,verification_source,verified_at'
 
 // ─── Trust Gate Helper ───────────────────────────────────────────────────────
 // ALWAYS use this for any public-facing businesses query.
@@ -94,7 +112,7 @@ export async function getUser() {
 //
 // ⚠️ Admin and audit routes intentionally bypass this helper —
 //    they must remain auth-gated and scope their queries explicitly.
-export function trustedListings(supabase: SupabaseClient, columns = '*') {
+export function trustedListings(supabase: SupabaseClient, columns = PUBLIC_BUSINESS_COLUMNS) {
   return supabase
     .from('businesses')
     .select(columns)
@@ -105,6 +123,7 @@ export function trustedListings(supabase: SupabaseClient, columns = '*') {
 // ─── Table Types ─────────────────────────────────────────────────────────────
 
 export interface Business {
+  listing_checks?: ListingCheck | ListingCheck[] | null
   id: string
   name: string
   category: string
@@ -180,6 +199,7 @@ export interface LostAndFound {
   title: string
   description: string
   city: string
+  source_url?: string
   status: 'lost' | 'found' | 'reunited'
   type: string
   pet_type?: string

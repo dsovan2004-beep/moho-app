@@ -1,0 +1,170 @@
+MOHOLOCAL — MOUNTAIN HOUSE & TRACY RELAUNCH PLAN
+Prepared November 5, 2026 | Decision document; implementation not yet performed
+
+RECOMMENDATION
+Relaunch a focused, mobile-first local-services directory for Mountain House and Tracy. Keep Next.js, Cloudflare and Supabase. Redesign around choosing and contacting a provider for a specific job. Repair permissions and moderation before promotion, then launch a small inventory with documented checks. Listing volume is not the success measure.
+
+Suggested resident-facing promise: “Find local help for your home in Mountain House and Tracy.” Explain exactly which business details were checked and when. Never imply that a contact or license check guarantees workmanship.
+
+1. BASIS AND LIMITS
+This plan combines the read-only repository audit, live Supabase aggregates and policy inspection, Cloudflare configuration review, competitor research, and sampled Facebook discussions. Repository reviewed at commit 8bf92e2693b686f0ae9703c6585479e55107252e; it matched the Pages production source shown in Cloudflare. The ingestion Worker deploys separately, so source findings need comparison with its deployed version.
+No database writes, attack requests, emails, deployments or code fixes were performed. Build/runtime compatibility and every individual listing have not been comprehensively tested. This is an audit and prioritized implementation plan, not launch certification. Facebook sampling was qualitative and incomplete; membership and posting volume do not establish demand, revenue, or willingness to pay. Historical posts describe workflows, not current demand rates.
+
+2. EXISTING STACK AND WHAT TO REUSE
+Declared dependencies: Next.js ^15.0.0 (App Router), React/ReactDOM ^18, TypeScript ^5, Tailwind ^3.4, Supabase JS ^2.45. These are package ranges, not measured deployed runtime versions.
+Hosting: existing Cloudflare Pages, @cloudflare/next-on-pages adapter; separate moho-ingestion Cloudflare Worker and four scheduled triggers.
+Backend: Supabase PostgreSQL, Auth and Storage. Email: Resend REST API. Source: dsovan2004-beep/moho-app.
+
+KEEP, WITH REPAIRS
+- Existing business IDs and public URLs, Supabase records, permitted photos, and public business contact information as candidate inventory.
+- City/category browsing, directory pagination, business-detail layouts and direct call/website links.
+- Supabase Auth and RLS architecture; replace unsafe policies rather than disabling RLS.
+- Admin and audit screens as starting points; enforce authorization in the backend/database.
+- Submission, claim, correction and reporting concepts; replace their broken state handling.
+- City configuration and ingestion adapters as scaffolding. Ingest into restricted staging, never treat feed output as verified automatically.
+- Existing structured-data and image-source checks where accurate. Validate image provenance/rights before reuse.
+
+Do not retain unsupported verification badges, unexplained star ratings, misleading popularity labels or stale modules just because they are already built. Preserve useful existing routes and provide redirects for changed URLs. De-emphasize other cities in the launch navigation; do not mass-delete records or create empty city/category SEO pages.
+
+3. WHAT THE LIVE DATA ACTUALLY SHOWS
+Business records total: 1,959. Approved AND verified by current flags: 1,828.
+Mountain House: 197 total; 72 pass current public filters.
+Tracy: 360 total; 358 pass current public filters.
+Focus-city public inventory: 430. These flags are not proof of current business accuracy.
+Only 17 business records have a verification timestamp, all in Mountain House, dated March 12, 2026. Within focus public inventory, 55 Mountain House and all 358 Tracy records lack a verification date/source. All business source values are “manual”; this does not establish independent verification.
+Among public focus listings, 65 have neither phone nor website; 123 have a positive rating with no positive review count. Recheck provenance rather than asserting these ratings are fabricated.
+No business has claimed=true. Auth has 19 accounts; members has zero rows. These facts do not establish actual usage or completed jobs.
+There are four local reviews. Eleven stored events have no future event at audit; an October 29 ingestion timestamp means the pipeline is not necessarily inactive. Community content is sparse and old.
+Current public Home Services inventory: 17 Mountain House + 39 Tracy = 56 candidate records. Exact launch-service coverage requires a record-level audit.
+Repository history documents fabricated seed data and earlier restaurant cleanup. Do not assume every remaining record is fake or clean. Audit seed provenance across cities and categories before publication decisions.
+
+4. P0 — SECURITY AND INTEGRITY BEFORE PROMOTION
+Engineering/backend owner. Treat this as the first implementation workstream, ahead of visual launch work.
+
+A. Replace unsafe database permissions.
+Observed: businesses permits unrestricted authenticated UPDATE and INSERT; business_images permits broad authenticated writes; community_submissions has an ALL policy named service_role_all that actually applies to public. Public business SELECT exposes all rows, irrespective of UI filters. city_status can be updated by any authenticated user. Many table grants are broader than needed.
+Fix: define explicit resident, owner and admin capabilities. Public reads must expose only approved publishable fields/rows; keep owner contact, staging/raw submissions and moderation notes private. Use restricted views/RPC/server handlers as appropriate and enforce underlying access. Owners may propose permitted edits for their own listings, never set verification, moderation or featured flags. Lock staging and image writes to authorized actors. Audit pending_review view security and storage policies. Review grants separately from RLS.
+Acceptance: anon cannot read staging/private fields or mutate a listing; owner A cannot edit owner B; owners cannot self-approve/self-verify; admins can review; authorized ingestion still works. Test with actual anon/authenticated/owner/admin roles in a safe environment, not only a privileged SQL session.
+
+B. Make Worker authorization fail closed.
+Observed in workers/ingestion-worker.ts: moderation continues when an admin token is absent or when token validation fails. Manual ingestion run routes have no visible auth gate/method guard.
+Fix: require valid admin authorization before reading request bodies or mutating data; reject missing/invalid identity; use POST for mutating operations; protect internal triggers, limit rates and record audit events. Compare source with deployed Worker; do not call unsafe production routes to prove the issue.
+Acceptance: missing/invalid token => 401; authenticated non-admin => 403; authorized action logged; cron/internal processing remains functional.
+
+C. Protect form and email endpoints.
+Fix: server-side validation, request-size limits, bot/rate controls, origin/CSRF handling appropriate to the auth model, and email notification tied to a real saved request. Return durable request IDs. Email failure must not falsely imply the record failed or succeeded. Do not allow arbitrary unauthenticated email sends.
+
+D. Safe release foundation.
+Inventory actual deployed dependencies/runtime; establish a reproducible root dependency lock, build/type checks and supported Cloudflare deployment path. Review current advisories before selecting patch versions. Remove tracked dependency folders from source control after checking packaging needs. Review repository history for secrets without printing them; rotate only if exposure is established. Snapshot/export data and policies securely; record rollback procedures; keep production writes separate from staging tests.
+
+5. P1 — DATA AND WORKFLOW REPAIRS
+Engineering + founder/editorial owner. Start provider verification alongside P0; publication waits for security fixes.
+
+A. Establish a trustworthy publishing pipeline.
+Use explicit pending / needs-review / approved / rejected / archived semantics. Moderation approval and information verification must be distinct. Admin approval currently changes status but can leave verified=false, so the UI can say approved while the listing stays hidden. Main admin pending handling also misses pending_review records. Consolidate queues, show reasons, and enforce publish eligibility on the server.
+
+B. Recheck candidate inventory.
+Export IDs, names, categories, city, public contacts, provenance and timestamps. Deduplicate using several signals, with human review; a shared phone alone does not prove duplication. Compare first-party business sites and relevant official registries. Confirm exact services and cities served with owners when needed. Quarantine unresolved identity/source conflicts; preserve an audit trail. Hide unsupported stars until rating source/count is established. Do not copy group testimonials or private contacts.
+Every pilot listing needs: business identity; specific services; located-in city separate from cities served; at least one working public contact method; source URL; checked date/scope; correction link; publishable address policy. Show city/service area for home-based providers unless a public address is appropriate. Regulatory checks are separate evidence with dated source links, not blanket quality endorsements.
+Proposed maintenance standard: monthly review of links/corrections; recheck core listing facts every 90 days; availability automatically expires after a short, clearly stated period. Adjust cadence to measured cost and change rate. Expired availability becomes unknown, not permanently available.
+
+C. Rebuild claims as requests, not a boolean toggle.
+Current claim flow directly sets claimed=true without durable ownership evidence; a zero-row update can appear successful. Contact details are sent through best-effort email rather than a stored claim. Introduce business_claims with requester ID, evidence reference, status, review timestamps and reviewer; approve a separate owner membership relation. Verify business control before access. Never expose submitted private evidence publicly. Notify after save; show exact request state.
+
+D. Make submissions/corrections work end to end.
+Current guest submission attempts a browser insert despite authenticated-only policy. Choose a supported guest intake endpoint with anti-abuse controls and restricted pending staging, or explain sign-in before form entry. Do not open direct business INSERT as the shortcut. Validate fields, preserve form errors, confirm saved request ID, show pending status, and provide moderation ownership. Use the canonical city list instead of inconsistent hardcoded lists.
+
+E. Fix misleading and irrelevant UI data.
+Homepage city/category aggregation is unpaginated; the default row cap explains inconsistent counts against the database. Use scoped aggregate queries or complete pagination and consistent public eligibility. Scope homepage modules to the selected city/service area. Replace “Trending This Week” unless there is a real time-window metric; all-time review count is not weekly demand. Handle Supabase error objects explicitly rather than silently showing zero. Hide stale events and empty community modules from the main launch experience until actively maintained.
+
+6. UX/UI REDESIGN — MOBILE FIRST
+Design/product owner, implemented on the existing stack. Test clickable flows with residents before polishing all pages.
+
+Navigation: Find services | New to the area | For business owners. Persistent Mountain House / Tracy selector, visible on mobile. No required sign-in to browse or contact. City choice filters service coverage, not just provider street address.
+
+Homepage:
+1. Plain promise and search: “What do you need help with?” + city selector.
+2. Four launch-category shortcuts and painting as a specific service.
+3. Short explanation of checked facts and dates.
+4. Relevant, recently checked providers; avoid unsupported “best” rankings.
+5. Small newcomer guide linking official local resources.
+6. Owner add/claim and resident correction actions.
+Reduce competing feeds, counters and decorative sections. Use accessible contrast, readable type, consistent spacing and clear tap targets. Photos should help identify work/businesses, not fill cards with generic imagery.
+
+Results page:
+Task search and city remain visible. Cards show name, exact services, serves-your-city, checked date/scope and call/website actions. Display location and service area separately. Filters: specific service, cities served, owner-confirmed small-job acceptance and languages where available. Only offer availability filters after sufficient fresh data. Explain default ordering; separate any sponsored placement visibly. Useful empty states suggest related tasks or request a category, not unrelated providers from distant cities.
+
+Business page:
+Lead with services, service area and direct contact. Then hours/contact preferences, owner-supplied job-size/estimate details, photos, dated checks, reviews with clear source/count, and report-a-problem. Sticky mobile contact action. “Information checked,” “Owner confirmed,” and “Resident review” are distinct concepts. Unknown fields stay unknown. Owner confirmation requires a real verification process.
+
+Forms/admin:
+Short add-business, correction and claim flows with understandable states and saved confirmation. Admin queue displays missing evidence, duplicates, last check and unresolved conflicts; checks and publishing are separate actions. Design empty/loading/error/success states, keyboard navigation and basic screen-reader labels, not only ideal screenshots.
+
+Proposed UX acceptance: at least 15 of 20 pilot residents find two plausible options in two minutes; at least eight contact one. Check both cities and narrow mobile screens. These are internal experimental gates, not established industry benchmarks.
+
+7. LAUNCH CATEGORIES AND SUPPLY TARGET
+This is a qualitative priority, not a measured market-size ranking.
+1. Handyman / small repairs, with painting as an explicit service: sampled Mountain House/Tracy requests described precise jobs, unfinished work and deadlines.
+2. Plumbing: repeated trust-oriented recommendation signals in Mountain House sampling; validate Tracy coverage before publishing.
+3. House cleaning: observed recommendations and cross-city service needs; list recurring, deep and move-out cleaning separately when confirmed.
+4. Landscaping / yard maintenance: observed local project/referral needs; distinguish recurring maintenance from larger projects.
+
+Initial target: 30–40 unique checked providers across the four categories, including roughly 4–5 useful choices per category serving each city. A provider may serve both cities only when confirmed; do not duplicate records to inflate counts. Inventory and owner responsiveness determine whether each category is ready. If supply is thin, launch fewer categories rather than misleading coverage.
+Next validation round: auto repair, catering/event food, then childcare/preschools. Family-service details need category-specific checks; tutoring demand was not directly established in the sampled posts. Defer broad restaurant expansion, real estate, health, shopping, jobs/rentals and a full social feed. Existing valid listings may remain accessible; launch emphasis is narrower.
+
+8. HOW TO DIFFERENTIATE FROM FACEBOOK AND DIRECTORIES
+Facebook already supplies referrals and lived experience. MoHoLocal can make the next step easier: compare exact job fit, cities served, current public contact information and dated checks on shareable pages. Do not claim to replace community trust or import private conversations.
+Aapli Marathi Shala: learn from community relevance, reviewed submissions, contact people and offers with expiry. Its sampled directory showed 76 entries. Differentiate through exact service taxonomy, independently documented checks and service geography, not just claims/offers that others already support.
+BaseLocal: regional city coverage, newsletters and listing-check disclosures mean a regional footprint alone is not differentiation. Adopt clear freshness and sponsorship disclosures; build deeper task fit for the two focus cities. Audience and conversion were not measured.
+Chambers/local guides: established business discovery and city relevance. Complement these with useful detail for small/home-based service businesses and resident tasks; do not assume competitors exclude those businesses without checking.
+Epic Gazette/Central Valley Locals: already demonstrate regional directory coverage. Sample relevance/navigation gaps suggest an opening for stronger geographic consistency; no market-wide failure rate was established.
+Google/Yelp/Nextdoor/Thumbtack remain substitutes. MoHoLocal's opportunity is a tightly maintained local shortlist, not the existence of a directory feature.
+
+9. ASTRO, CLOUDFLARE AND COST
+Cloudflare is already the host. Astro would replace Next.js, not Cloudflare or the database. Astro is MIT-licensed and has no framework license fee; Next.js also has no framework license fee. Switching frameworks alone does not remove operational costs or repair permissions/data.
+Astro supports Cloudflare and on-demand rendering, and can reuse React components through its integration. It could suit a content-heavy directory. Migration still requires page/routing conversion, auth/forms/admin integration, caching/freshness decisions, URL parity and regression testing. Static generation requires a deliberate refresh strategy for changing listings. React reuse is partial, not an automatic port of Next.js pages.
+Decision: retain current architecture for this relaunch. If later justified, prototype one public category page and business page on Cloudflare and compare measured load, implementation complexity and maintenance effort. Do not migrate all routes before proving a benefit.
+Astro license: https://github.com/withastro/astro/blob/main/LICENSE
+Cloudflare adapter: https://docs.astro.build/en/guides/integrations-guide/cloudflare/
+Cloudflare pricing: https://developers.cloudflare.com/workers/platform/pricing/
+Supabase pricing: https://supabase.com/pricing
+Free tiers can support an eligible small pilot within usage limits; this audit did not establish the account's current billing plan, remaining quotas or monthly bill. Domain renewal, email, database/storage/egress, image transformations, paid APIs and maintenance are separate costs. Supabase Free has inactivity pausing; assess production reliability and backup needs before relying on it. Existing Cloudflare hosting should be reused, not bought again.
+
+10. ORDER OF EXECUTION AND RELEASE GATES
+Planning estimate: 4–6 weeks for one experienced implementer plus founder/provider-verification time; confirm after environment setup. Security findings or verification bottlenecks can change the estimate. Workstreams can overlap, but each release gate must pass.
+
+Week 1 — Secure and baseline.
+Engineering: snapshot/policy inventory, least-privilege access, Worker auth, intake/email controls, reproducible build/deployment verification. Founder: triage 56 Home Services candidate records, begin provider conversations. Gate: role-based authorization tests pass; rollback is ready.
+
+Week 2 — Repair workflows and define the redesign.
+Engineering: durable claims, owner relations, consistent publication workflow, guest intake, aggregation and error handling. Design: clickable mobile homepage/results/detail/forms. Founder: verify contacts/services and record source evidence. Gate: submit -> review -> publish -> claim -> correction works in staging, with denied cross-owner edits.
+
+Weeks 3–4 — Implement focused experience.
+Engineering/design: scoped search, service taxonomy/coverage, redesigned pages, clear trust labels, contact actions and correction queue. Add basic privacy-conscious analytics and SEO hygiene. Maintain old URL redirects, canonical URLs and sitemap; keep pending/private pages out of indexing. Resolve bare-domain Cloudflare error and confirm one canonical HTTPS host. Gate: 30–40 checked records with useful coverage, accurate counts, no unsupported ratings/badges, mobile/accessibility smoke checks and deployment checks pass.
+
+Weeks 5–6 — Resident pilot, then limited relaunch.
+Founder/product: recruit 20 residents across the two cities and at least 10 providers; use real recent tasks and follow up on contact outcomes with consent. Engineering: fix observed friction; monitor errors, costs and abuse. Publish clear ownership/contact, privacy, listing standards and correction policies. Gate: pilot targets below are met or the scope is narrowed and retested. No paid traffic before stable contact paths and useful coverage.
+
+11. MEASUREMENT, DISTRIBUTION AND REVENUE
+Primary question: did the resident find a suitable, reachable provider?
+Track search task/category/city; no-result rate; detail/contact actions; provider response; resident-reported fit; corrections and time to resolve; stale contact rate; operating time per maintained listing. A contact click is not a completed job. Avoid collecting unnecessary personal details or sending inquiry text into analytics.
+Proposed pilot gates: >=15/20 find two plausible options within two minutes; >=8/20 contact a provider; >=80% of contacted providers reply within two business days (report denominator); no known broken primary contact in pilot inventory; all displayed verification claims have dated evidence. Small samples are directional, not proof of product-market fit. Compare the last real search against the pilot rather than only asking if people like the idea.
+Distribution: direct shareable service/business pages, local search, opt-in owner/resident invitations and potential administrator partnerships. Facebook rules differ. Living in Tracy and Tracy Foodies prohibit promotions; do not advertise there without separately established permission. No outreach has been sent or authorized by this plan. Do not scrape/export members or copy testimonials. Use business-promotion groups only after checking rules and obtaining authorization for outreach.
+Keep basic listings free through the pilot. Test paid sponsorship or enhanced owner tools only after evidence of useful inquiries and owner willingness to pay. Disclose sponsorship; payment never purchases a favorable verification result. Delay lead fees, subscriptions and booking/payment systems until outcomes justify the operating burden.
+
+12. DEFERRED WORK / AVOID SCOPE CREEP
+No framework rewrite, AI concierge, native mobile app, full social network, multi-city expansion, booking marketplace or mass scraping for the initial relaunch. These are possible later decisions, not prerequisites. Focus engineering on the trust and contact journey first.
+
+13. EVIDENCE AND SOURCE INDEX
+Local audit checkout: moho-app-audit/ at commit stated above.
+Key code: lib/supabase.ts; app/page.tsx; app/discover/page.tsx; app/directory/page.tsx; app/business/[id]/page.tsx; app/claim-listing/[id]/page.tsx; app/submit-business/page.tsx; app/admin/page.tsx; app/admin/audit/page.tsx; app/components/ReviewSection.tsx; app/api/notify/claim/route.ts; app/api/notify/submit/route.ts; workers/ingestion-worker.ts; workers/wrangler.toml; package.json; docs/ROADMAP.md.
+Data/policy evidence: read-only Supabase aggregates, columns, grants and pg_policies reviewed November 5, 2026. No personal account/contact records reproduced.
+Earlier detailed research: market-research-2026-11-05.txt; facebook-deep-dive-2026-11-05.txt. Earlier pilot thresholds were preliminary; this document uses the consolidated 20-resident pilot above.
+MoHoLocal: https://www.moholocal.com/
+Aapli Marathi Shala: https://mhshala.org/directory/
+Tracy Chamber: https://tracychamber.org/directory/
+Mountain House Local: https://www.mountainhouselocal.com/directory/category/home-and-garden
+Public Mountain House handyman thread: https://www.facebook.com/groups/590827082964592/posts/1428936772486948/
+Public Tracy painting thread: https://www.facebook.com/groups/397855840786578/posts/2027114214527391/
+Public Tracy preschool thread: https://www.facebook.com/groups/397855840786578/posts/1590465288192288/
+Facebook discussion claims are unverified personal accounts. Competitor displayed inventory/features are point-in-time observations, not independently measured audience or conversion.

@@ -132,3 +132,6 @@ export const CITY_SLUGS_LIST: string[] = CITIES.map(c => c.slug)
 
 export const CITIES_209        = CITIES.filter(c => c.region === '209')
 export const CITIES_SOUTH_BAY  = CITIES.filter(c => c.region === 'south-bay')
+
+// Regional relaunch: shared discovery, with evidence tracked separately for each city.
+export const RELAUNCH_CITY_NAMES = ['Mountain House', 'Tracy', 'Lathrop', 'Manteca'] as const

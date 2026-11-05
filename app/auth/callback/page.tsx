@@ -4,9 +4,10 @@
 // PKCE flow stores the code verifier in localStorage. The code exchange must happen
 // on the client side so Supabase can retrieve the verifier and complete the handshake.
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
-import { useEffect, useState } from 'react'
+import { safeReturnTo } from '@/lib/auth-return'
+import { useEffect, useState, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { getSupabaseClient } from '@/lib/supabase'
 import { Suspense } from 'react'
@@ -16,33 +17,38 @@ function CallbackHandler() {
   const searchParams = useSearchParams()
   const [status, setStatus] = useState<'loading' | 'error'>('loading')
   const [errorMsg, setErrorMsg] = useState('')
+  const exchangedCode = useRef<string | null>(null)
 
   useEffect(() => {
+    const returnTo = safeReturnTo(searchParams.get('next') || window.sessionStorage.getItem('moho-auth-return'))
     const code = searchParams.get('code')
     const error = searchParams.get('error')
     const errorDescription = searchParams.get('error_description')
 
     if (error) {
-      setErrorMsg(errorDescription || error)
+      setErrorMsg('Sign-in could not be completed. Please start again in this browser.')
       setStatus('error')
       return
     }
 
     if (code) {
+      if (exchangedCode.current === code) return
+      exchangedCode.current = code
       const supabase = getSupabaseClient()
       supabase.auth
         .exchangeCodeForSession(code)
         .then(({ error }) => {
           if (error) {
-            setErrorMsg(error.message)
+            setErrorMsg('This sign-in link could not be completed. Please start again in the same browser.')
             setStatus('error')
           } else {
-            router.replace('/')
+            window.sessionStorage.removeItem('moho-auth-return')
+            router.replace(returnTo)
           }
         })
     } else {
       // No code — might be a direct visit, just go home
-      router.replace('/')
+      router.replace(returnTo)
     }
   }, [searchParams, router])
 

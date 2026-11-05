@@ -1,0 +1,137 @@
+HISTORICAL INITIAL RELEASE RECORD — see continuation-2026-11-05.txt and deployment-evidence.json for current fixes, live acceptance and open credential gate.
+
+MoHoLocal security and business request release — November 5, 2026
+
+Scope: P0 business/staging permissions, Worker authorization, saved submissions,
+ownership claims, moderation evidence, dependency/runtime support and regression checks.
+The wider data cleanup and visual redesign remain in docs/ROADMAP.md.
+
+STACK AND RELEASE
+Next.js 15.5.29, React 18.3.1, Supabase JS 2.119.0, Tailwind 3, TypeScript 5.
+Cloudflare remains the host; Supabase remains the database/Auth/Storage provider.
+The deprecated next-on-pages adapter capped Next.js at <=15.5.2. This release uses
+OpenNext 1.20.16 and Wrangler 4.157.0 to run the patched app on Cloudflare Workers.
+The www.moholocal.com/* Worker route serves the existing hostname; DNS was not changed.
+Legacy Cloudflare Pages still exists but is not the active application behind that route.
+Node 22+ is required for local builds. Dynamic rendering preserves current database reads.
+No R2, new database, payment service, paid plan upgrade or API subscription was added.
+
+SOURCE AND BACKLOG
+Implementation folder: ~/Desktop/MoHoLocal/moho-app-scaffold/
+Branch: codex/security-submissions-claims
+The relaunch scope is prioritized in docs/ROADMAP.md. Historical sprint text is retained.
+CLAUDE.md and BIBLE.md were not modified. Existing vendored node_modules were removed
+from Git tracking while local copies were retained; package locks now define installs.
+The redundant app/package.json was removed; install/build from the repository root.
+Public keys belong in ignored .env.local; no service-role key is required in the web app.
+
+DATABASE CHANGES — APPLIED
+20261105100215_secure_directory_requests
+20261105100432_restrict_private_business_columns
+Local filenames were synchronized to the actual hosted migration history versions.
+The original policy/view/constraint/trigger catalog is recorded in
+policy-baseline-2026-11-05.json. This is a metadata baseline, not a full data backup.
+Changes are additive except for explicit privilege/policy replacement and the rating
+aggregate trigger. No existing business was deleted, claimed or newly verified.
+Verified live counts after rollout: 1,959 business rows; 1,828 eligible public flags;
+zero business requests and zero owner assignments created by tests.
+
+Authorization:
+- Existing confirmed admin accounts are bootstrapped into a private membership table.
+- Browser users cannot self-promote, update another listing/image, or edit city status.
+- Staging/raw submissions and the pending-review view are not public APIs.
+- Business email/contact_email are denied in direct browser SELECT. Public queries use
+  an explicit safe projection; authorized admins use a checked full-projection RPC.
+- New tables retain RLS. Requesters can read only their own requests/owner relation;
+  direct request inserts/updates are denied. Privileged functions live in a non-exposed
+  schema, pin their search paths, and validate identity/authorization internally.
+- Review inserts still update rating aggregates through a narrowly scoped trigger.
+
+Submission/claim flow:
+- A confirmed account is required before form entry. Browsing/contact stays public.
+- Server validates identity using Auth getUser, not editable user metadata.
+- Only permitted fields are accepted; bodies and field lengths are bounded.
+- Same-origin browser writes use bearer tokens. Database limits are persistent:
+  five business requests per account per day, with idempotency keys and claim deduplication.
+- The saved pending receipt is confirmed before success is shown. My business requests
+  shows the requester's decisions. No ownership flag changes during claim submission.
+- Admin approval requires recorded notes and a public evidence URL. Claim approval
+  locks the business and assigns one owner atomically. Competing approvals cannot
+  replace an existing owner. A nomination/submission does not establish ownership.
+- Submission publication creates an approved/checked listing only after explicit human
+  review with dated evidence; legacy moderation now records evidence as well.
+- The old public arbitrary-recipient notification endpoints return 410. No emails were
+  sent during verification. Notification automation can be added using saved records.
+- OAuth uses PKCE with the existing callback URL. A safe local return path restores
+  the originating form without requiring new redirect allowlist entries.
+
+Worker:
+- Manual run and validation routes require POST and a verified admin.
+- Missing/invalid tokens and Auth/RPC outages reject the action; no fail-open path.
+- Community signals remain available to confirmed residents using a separately
+  rate-limited RPC (10/day), always pending; direct raw staging writes remain denied.
+- Screenshot intake uses a short-lived admin session token, never anonymous uploads.
+  For the local processor provide MOHO_ADMIN_ACCESS_TOKEN in the process environment;
+  never commit it. Existing scheduled jobs retain service-role access and four crons.
+- Signal-folder anonymous uploads were removed; a restrictive policy prevents older
+  permissive authenticated upload policies bypassing the admin-only signals folder.
+
+VERIFICATION
+- 23 Node regression tests: isolated PostgreSQL fixture + the exact two migrations,
+  real anon/authenticated role simulation, requester isolation, private columns,
+  denied self-publication, repeat requests/rate limits, atomic claims, competing
+  approvals, evidence-bound publication/rejection, legacy review aggregation,
+  confirmed community intake, HTTP validation and Worker negative authorization.
+- Root TypeScript and Worker TypeScript checks pass.
+- Next/OpenNext production build and both Wrangler dry runs pass.
+- npm audit reports zero known vulnerabilities for root, Worker and script lockfiles
+  at the time of this release. This is not a guarantee against unknown vulnerabilities.
+- Browser checks on the preview and main domain confirmed signed-out submission and
+  claim gating, and Mountain House directory results (20 displayed / 72 eligible).
+- Live Data API returned public id/name data with 72 Mountain House eligible rows;
+  private contact_email and community_submissions reads were denied (HTTP 401).
+- No real customer account was impersonated. No production test claim/submission,
+  review, owner assignment, event, email, message or ingestion job was created/run.
+- Provider OAuth sign-in and a first real admin review still need ordinary account
+  acceptance testing; automated tests cover their server/database contracts.
+- Python requests to Cloudflare hosts hit the existing Browser Integrity Check (1010);
+  browser checks were used to verify deployed pages without changing that setting.
+
+REMAINING ADVISORS AND OPERATIONS
+The insecure pending-review view and mutable helper search-path notices were fixed.
+Two no-policy private tables deliberately deny browser access. Remaining notices:
+- pg_trgm resides in public: plan a separately tested extension-schema move.
+- Existing anonymous toggle_reaction remains a public definer function; redesign
+  reaction identity/rate controls rather than merely hiding the advisory.
+- Compromised-password checking is disabled; verify plan availability before changing it.
+See advisor-follow-up-2026-11-05.json for exact remediation URLs and scope.
+
+The web and ingestion Workers were deployed manually with the authenticated CLI.
+Connect moho-web to GitHub Builds or supply scoped deployment CI credentials before
+assuming main pushes deploy this new app. GitHub currently has no Actions secrets.
+The old Pages build command is incompatible with this branch and must not be used
+as its production delivery path. This remains OPS-02 in the backlog.
+
+REPRODUCING CHECKS
+1. Use Node 22+ and npm ci from the repository root.
+2. Put only public Supabase URL/key in ignored .env.local (see .env.example).
+3. Start an isolated local PostgreSQL cluster on 127.0.0.1:55439. The database test
+   harness drops/recreates only moho_security_test on that fixed local port; its
+   database user must be permitted to create roles/databases. Never point it at hosting.
+4. npm test
+5. npm run typecheck
+6. npx tsc --noEmit -p workers/tsconfig.json
+7. npm run cf:build
+8. git -c core.whitespace=cr-at-eol diff --check (existing CRLF files are preserved).
+
+DEPLOY AND ROLLBACK
+Web: npm run deploy (builds OpenNext before Wrangler upload).
+Ingestion: npx wrangler deploy --config workers/wrangler.toml from the root.
+Preserve existing ingestion secrets; never put its service-role key into client vars.
+The two database migrations are already applied; do not reapply them manually.
+Keep deployment version IDs in deployment-evidence.json.
+Rollback after private-column restriction must use a compatible OpenNext version
+with explicit public projections. Do not restore broad database grants or revert to
+the old Pages app/old select('*') queries. Prefer a tested forward repair. Before the
+final restriction, the two-stage rollout intentionally kept public SELECT compatible.
+Subsequent database changes need additive migrations and renewed role-based checks.

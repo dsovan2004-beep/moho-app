@@ -1,11 +1,14 @@
 'use client'
 
-export const runtime = 'edge'
+import { PUBLIC_BUSINESS_COLUMNS } from '@/lib/supabase'
 
-import { useState, useEffect } from 'react'
+export const runtime = 'nodejs'
+
+import { useState, useEffect, useRef } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { getSupabaseClient } from '@/lib/supabase'
+import { RequestAccount, useRequestAccount, sendBusinessRequest } from '@/app/components/RequestAccount'
 import type { Business } from '@/lib/supabase'
 
 const ROLES = ['Owner', 'Manager', 'Employee']
@@ -37,6 +40,9 @@ function blurRing(e: React.FocusEvent<HTMLElement>) {
 const FIELD_BASE = 'w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder-gray-400 focus:outline-none transition bg-white'
 
 export default function ClaimListingPage() {
+  const { user, checking } = useRequestAccount()
+  const requestKey = useRef('')
+  const [receipt, setReceipt] = useState('')
   const params = useParams()
   const id = params?.id as string
 
@@ -59,7 +65,7 @@ export default function ClaimListingPage() {
     const supabase = getSupabaseClient()
     supabase
       .from('businesses')
-      .select('*')
+      .select(PUBLIC_BUSINESS_COLUMNS)
       .eq('id', id)
       .eq('status', 'approved')
       .eq('verified', true)
@@ -75,40 +81,20 @@ export default function ClaimListingPage() {
   }, [id])
 
   async function handleClaim(e: React.FormEvent) {
-    const supabase = getSupabaseClient()
     e.preventDefault()
-    if (!business) return
+    if (!business || !user || submitting) return
     setSubmitting(true)
     setSubmitError(null)
-
-    const { error } = await supabase
-      .from('businesses')
-      .update({ claimed: true })
-      .eq('id', business.id)
-      .eq('status', 'approved')
-      .eq('verified', true)
-
-    if (error) {
-      setSubmitError(error.message)
-      setSubmitting(false)
-    } else {
+    try {
+      requestKey.current ||= crypto.randomUUID()
+      const id = await sendBusinessRequest({ kind: 'claim', businessId: business.id,
+        payload: { owner_name: ownerName, owner_phone: ownerPhone, role }, requestKey: requestKey.current })
+      setReceipt(id)
+      setOwnerEmail(user.email ?? '')
       setClaimed(true)
-
-      // Fire-and-forget founder alert — never blocks the success screen
-      fetch('/api/notify/claim', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          businessId:   business.id,
-          businessName: business.name,
-          businessCity: business.city,
-          ownerName,
-          ownerPhone,
-          ownerEmail,
-          role,
-        }),
-      }).catch(() => {/* intentionally silent */})
-    }
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : 'We could not save your claim. Please retry.')
+    } finally { setSubmitting(false) }
   }
 
   // ── Loading ─────────────────────────────────────────────────────────────────
@@ -155,13 +141,14 @@ export default function ClaimListingPage() {
             ✅
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Claim request received!</h1>
+          <p className="text-xs text-gray-500 break-all mb-4">Request reference: {receipt}</p>
+          <Link href="/my-requests" className="underline text-sm inline-block mb-4">Track my requests</Link>
           <p className="text-gray-500 mb-2">
             Thanks, <strong>{ownerName}</strong>. We've received your request to claim{' '}
             <strong>{business.name}</strong>.
           </p>
           <p className="text-sm text-gray-400 mb-8">
-            Our team will verify your ownership and follow up at <strong>{ownerEmail}</strong> within
-            1–2 business days.
+            Your request is pending ownership verification. Follow-up uses <strong>{ownerEmail}</strong>. Ownership has not yet been assigned.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
@@ -241,7 +228,10 @@ export default function ClaimListingPage() {
             </div>
           )}
 
+          {!user && !checking && <RequestAccount returnTo={`/claim-listing/${id}`} />}
+          {checking && <p role="status">Checking your account…</p>}
           <form onSubmit={handleClaim} className="space-y-5">
+            <fieldset disabled={!user || submitting} className="space-y-5 disabled:opacity-60">
 
             {/* Name + Role row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -276,16 +266,16 @@ export default function ClaimListingPage() {
             {/* Email */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="ownerEmail">
-                Business Email <span className="text-red-400">*</span>
+                Confirmed account email <span className="text-red-400">*</span>
               </label>
               <input
                 id="ownerEmail" type="email" required
-                value={ownerEmail} onChange={(e) => setOwnerEmail(e.target.value)}
+                value={user?.email ?? ''} readOnly
                 placeholder="owner@yourbusiness.com"
                 className={FIELD_BASE}
                 onFocus={focusRing} onBlur={blurRing}
               />
-              <p className="text-xs text-gray-400 mt-1">We'll use this to verify your claim and send confirmation.</p>
+              <p className="text-xs text-gray-400 mt-1">This is your confirmed account email, kept private for ownership follow-up.</p>
             </div>
 
             {/* Phone */}
@@ -309,8 +299,8 @@ export default function ClaimListingPage() {
             >
               <span className="text-lg leading-none mt-0.5">ℹ️</span>
               <p className="text-gray-600">
-                Claiming a listing lets you update your business info, add photos, and respond to community
-                questions. Our team reviews all claims within 1–2 business days.
+                Ownership is assigned only after review. We may ask you to demonstrate control using
+                the business’s published contact details. You can track the decision in My business requests.
               </p>
             </div>
 
@@ -335,6 +325,7 @@ export default function ClaimListingPage() {
               </button>
             </div>
 
+            </fieldset>
           </form>
         </div>
 

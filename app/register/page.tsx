@@ -1,8 +1,9 @@
 'use client'
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
-import { useState } from 'react'
+import { safeReturnTo } from '@/lib/auth-return'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { signInWithGoogle, signInWithFacebook, signUpWithEmail } from '@/lib/supabase'
@@ -56,6 +57,8 @@ const BENEFITS = [
 
 export default function RegisterPage() {
   const router = useRouter()
+  const [returnTo, setReturnTo] = useState('/')
+  useEffect(() => { setReturnTo(safeReturnTo(new URLSearchParams(window.location.search).get('next'))) }, [])
   const [fullName, setFullName]   = useState('')
   const [email, setEmail]         = useState('')
   const [password, setPassword]   = useState('')
@@ -100,7 +103,7 @@ export default function RegisterPage() {
       setError(error.message)
       setLoading(false)
     } else if (data.session) {
-      router.push('/')
+      router.push(returnTo)
     } else {
       setSuccess(true)
       setLoading(false)
@@ -301,7 +304,7 @@ export default function RegisterPage() {
         {/* Footer */}
         <p className="text-center mt-5 text-sm text-gray-500">
           Already have an account?{' '}
-          <Link href="/login" className="font-semibold hover:underline" style={{ color: '#1e3a5f' }}>
+          <Link href={`/login?next=${encodeURIComponent(returnTo)}`} className="font-semibold hover:underline" style={{ color: '#1e3a5f' }}>
             Sign in
           </Link>
         </p>

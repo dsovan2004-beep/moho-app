@@ -7,10 +7,15 @@
 
 import type { Env, SupabaseRow } from './types'
 
+function serviceHeaders(env: Env): Record<string, string> {
+  return { apikey: env.SUPABASE_SERVICE_ROLE_KEY,
+    ...(env.SUPABASE_SERVICE_ROLE_KEY.startsWith('sb_secret_') ? {} : { Authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}` }),
+  }
+}
+
 function headers(env: Env, extra?: Record<string, string>): HeadersInit {
   return {
-    apikey:          env.SUPABASE_SERVICE_ROLE_KEY,
-    Authorization:   `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+    ...serviceHeaders(env),
     'Content-Type':  'application/json',
     Prefer:          'return=representation,resolution=merge-duplicates',
     ...extra,
@@ -30,8 +35,7 @@ export async function selectRows<T extends SupabaseRow>(
   const url = `${env.SUPABASE_URL}/rest/v1/${table}?${params}&limit=5`
   const res = await fetch(url, {
     headers: {
-      apikey:        env.SUPABASE_SERVICE_ROLE_KEY,
-      Authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+      ...serviceHeaders(env),
     },
   })
   if (!res.ok) return []
@@ -74,8 +78,7 @@ export async function insertRow(
   const res = await fetch(url, {
     method:  'POST',
     headers: {
-      apikey:         env.SUPABASE_SERVICE_ROLE_KEY,
-      Authorization:  `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+      ...serviceHeaders(env),
       'Content-Type': 'application/json',
       Prefer:         'return=representation',
     },
@@ -102,8 +105,7 @@ export async function updateRow(
   const res = await fetch(url, {
     method:  'PATCH',
     headers: {
-      apikey:         env.SUPABASE_SERVICE_ROLE_KEY,
-      Authorization:  `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+      ...serviceHeaders(env),
       'Content-Type': 'application/json',
       Prefer:         'return=representation',
     },
@@ -124,8 +126,7 @@ export async function archiveStaleEvents(env: Env): Promise<number> {
   const res = await fetch(url, {
     method: 'PATCH',
     headers: {
-      apikey:         env.SUPABASE_SERVICE_ROLE_KEY,
-      Authorization:  `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+      ...serviceHeaders(env),
       'Content-Type': 'application/json',
       Prefer:         'return=representation',
     },
@@ -143,8 +144,7 @@ export async function archiveStaleLostFound(env: Env): Promise<number> {
   const res = await fetch(url, {
     method: 'PATCH',
     headers: {
-      apikey:         env.SUPABASE_SERVICE_ROLE_KEY,
-      Authorization:  `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+      ...serviceHeaders(env),
       'Content-Type': 'application/json',
       Prefer:         'return=representation',
     },

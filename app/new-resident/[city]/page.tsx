@@ -1,4 +1,5 @@
-export const runtime = 'edge'
+import { PUBLIC_BUSINESS_COLUMNS } from '@/lib/supabase'
+export const runtime = 'nodejs'
 
 import { getSupabaseClient, type Business } from '@/lib/supabase'
 import Link from 'next/link'
@@ -309,15 +310,15 @@ export default async function NewResidentCityPage({ params }: PageProps) {
   try {
     const [healthRes, foodRes, essentialRes] = await Promise.all([
       supabase
-        .from('businesses').select('*')
+        .from('businesses').select(PUBLIC_BUSINESS_COLUMNS)
         .eq('city', cityName).eq('category', 'Health & Wellness').eq('status', 'approved').eq('verified', true)
         .order('rating', { ascending: false }).limit(6),
       supabase
-        .from('businesses').select('*')
+        .from('businesses').select(PUBLIC_BUSINESS_COLUMNS)
         .eq('city', cityName).eq('category', 'Restaurants').eq('status', 'approved').eq('verified', true)
         .order('rating', { ascending: false }).limit(6),
       supabase
-        .from('businesses').select('*')
+        .from('businesses').select(PUBLIC_BUSINESS_COLUMNS)
         .eq('city', cityName).eq('status', 'approved').eq('verified', true)
         .in('category', ['Home Services', 'Pet Services', 'Automotive', 'Beauty & Spa', 'Retail', 'Education', 'Real Estate'])
         .order('rating', { ascending: false }).limit(8),

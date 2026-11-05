@@ -1,4 +1,5 @@
-export const runtime = 'edge'
+import { serializeJsonLd } from '@/lib/json-ld'
+export const runtime = 'nodejs'
 
 import { getSupabaseClient, type Business } from '@/lib/supabase'
 import Link from 'next/link'
@@ -143,7 +144,7 @@ export default async function BestBreakfastMountainHousePage() {
   return (
     <>
       {schemas.map((s, i) => (
-        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(s) }} />
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(s) }} />
       ))}
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
