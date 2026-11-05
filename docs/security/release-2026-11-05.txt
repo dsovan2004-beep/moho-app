@@ -1,3 +1,5 @@
+HISTORICAL INITIAL RELEASE RECORD — see continuation-2026-11-05.txt and deployment-evidence.json for current fixes, live acceptance and open credential gate.
+
 MoHoLocal security and business request release — November 5, 2026
 
 Scope: P0 business/staging permissions, Worker authorization, saved submissions,

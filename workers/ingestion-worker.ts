@@ -2,10 +2,10 @@
 // Cloudflare Worker with cron triggers + manual run/validate HTTP routes.
 //
 // Cron schedule (all times UTC):
-//   0 3 * * 1  →  Monday 03:00 — Directory ingestion
-//   0 4 * * 1  →  Monday 04:00 — Events ingestion (full weekly refresh)
-//   0 5 * * 1  →  Monday 05:00 — Lost & Found ingestion
-//   0 4 * * 4  →  Thursday 04:00 — Events ingestion (mid-week catch-up)
+//   0 3 * * 1  →  Tuesday 03:00 — Directory ingestion
+//   0 4 * * 1  →  Tuesday 04:00 — Events ingestion (full weekly refresh)
+//   0 5 * * 1  →  Tuesday 05:00 — Lost & Found ingestion
+//   0 4 * * 4  →  Friday 04:00 — Events ingestion (mid-week catch-up)
 //
 // HTTP routes:
 //   GET  /health              — health check
@@ -39,6 +39,7 @@ const VALID_SUBMISSION_TYPES = new Set([
 ])
 
 interface SignalBody {
+  pet_status?: string
   title?:           string
   description?:     string
   city?:            string
@@ -233,10 +234,10 @@ export default {
         'POST /promote-submission',
       ],
       crons: [
-        'Mon 03:00 UTC — directory     (0 3 * * 2)',
-        'Mon 04:00 UTC — events        (0 4 * * 2)',
-        'Mon 05:00 UTC — lost & found  (0 5 * * 2)',
-        'Thu 04:00 UTC — events midwk  (0 4 * * 5)',
+        'Tue 03:00 UTC — directory     (0 3 * * 2)',
+        'Tue 04:00 UTC — events        (0 4 * * 2)',
+        'Tue 05:00 UTC — lost & found  (0 5 * * 2)',
+        'Fri 04:00 UTC — events midwk  (0 4 * * 5)',
       ],
       routing: 'by UTC hour (3=directory, 4=events, 5=lostfound)',
     })
@@ -308,6 +309,7 @@ async function handleSubmitSignal(req: Request, env: Env): Promise<Response> {
   }
 
   // Optional fields — only include if provided
+  if (body.pet_status) row.pet_status = body.pet_status
   if (body.event_date)    row.event_date    = body.event_date
   if (body.image_url)     row.image_url     = body.image_url.trim()
   if (body.contact_url)   row.contact_url   = body.contact_url.trim()
@@ -411,8 +413,9 @@ async function handlePromoteSubmission(req: Request, env: Env): Promise<Response
       description:  sub.description,
       city:         sub.city,
       type:         'pet',
-      status:       'lost',
+      status:       sub.pet_status ?? 'lost',
       contact_name: 'Community Submission',
+      source_url: sub.contact_url ?? null,
       image_url:    sub.image_url ?? null,
       source:       'community',
       needs_review: false,
@@ -428,6 +431,7 @@ async function handlePromoteSubmission(req: Request, env: Env): Promise<Response
       city:        sub.city,
       category:    submissionType === 'garage_sale' ? 'For Sale' : 'General',
       author_name: 'Community Tip',
+      status: 'approved',
     })
     promoted_table = 'community_posts'
     promoted_id    = result.id
@@ -466,9 +470,9 @@ async function handlePromoteSubmission(req: Request, env: Env): Promise<Response
 // silently breaks all jobs (they fall through to the else/warn branch).
 // Hour-based routing is immune to day-of-week changes.
 //
-//   Hour 3  → Directory ingestion   (Mon 03:00 UTC)
-//   Hour 4  → Events ingestion      (Mon + Thu 04:00 UTC)
-//   Hour 5  → Lost & Found          (Mon 05:00 UTC)
+//   Hour 3  → Directory ingestion   (Tue 03:00 UTC)
+//   Hour 4  → Events ingestion      (Tue + Fri 04:00 UTC)
+//   Hour 5  → Lost & Found          (Tue 05:00 UTC)
 
 async function handleScheduled(event: ScheduledEvent, env: Env): Promise<void> {
   const cron         = event.cron
@@ -485,7 +489,7 @@ async function handleScheduled(event: ScheduledEvent, env: Env): Promise<void> {
       console.log('[cron] END directory')
 
     } else if (utcHour === 4) {
-      // Runs Monday (full weekly refresh) AND Thursday (mid-week catch-up)
+      // Runs Tuesday (full weekly refresh) AND Friday (mid-week catch-up)
       console.log('[cron] START events')
       const logs = await runEventsIngestion(env)
       aggregateLogs(logs)

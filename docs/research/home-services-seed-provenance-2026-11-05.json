@@ -1,0 +1,310 @@
+[
+  {
+    "id": "4e64aae9-19e3-4ba1-8b40-6a73ae9b3c23",
+    "name": "209 HVAC Solutions",
+    "city": "Mountain House",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 49,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  },
+  {
+    "id": "836afe55-430f-4982-b7b8-0179d3eb4ad3",
+    "name": "Clean Air Duct Pros",
+    "city": "Mountain House",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 133,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  },
+  {
+    "id": "0fa06689-2c4c-4fe0-9608-33ee78755319",
+    "name": "MH Gutter & Downspout Co.",
+    "city": "Mountain House",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 157,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  },
+  {
+    "id": "93441d13-ee5c-40f5-843b-d42450152238",
+    "name": "Mountain House Pool Service",
+    "city": "Mountain House",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 85,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  },
+  {
+    "id": "a6491e11-a93d-4fe2-9771-e22d211fd3e7",
+    "name": "Mountain House Roofing Co.",
+    "city": "Mountain House",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 37,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  },
+  {
+    "id": "78c5af47-6a73-4309-9a4d-bf535dca6be2",
+    "name": "Mustang Garage Doors",
+    "city": "Mountain House",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 121,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  },
+  {
+    "id": "3af830b5-56d3-4c45-bebf-735eeafdbe76",
+    "name": "Premier Pest Control \u2014 Mountain House",
+    "city": "Mountain House",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 97,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  },
+  {
+    "id": "e4321190-2950-44ba-b530-1e252521d76e",
+    "name": "Rosewood Remodeling",
+    "city": "Mountain House",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 169,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  },
+  {
+    "id": "0716e4a8-a790-4438-9f39-4910ceb0f7e9",
+    "name": "Sunrise Tile & Flooring",
+    "city": "Mountain House",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 73,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  },
+  {
+    "id": "6b3083bd-9cce-4a0f-b643-05dd0e025ad7",
+    "name": "Traditions Painting & Drywall",
+    "city": "Mountain House",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 145,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  },
+  {
+    "id": "b45f512d-fb1d-4ee1-ba7d-36de35596223",
+    "name": "Valley Fence & Gates",
+    "city": "Mountain House",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 61,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  },
+  {
+    "id": "5912a73a-9f94-4f86-bdd0-cc29caf93329",
+    "name": "Wicklund Concrete & Pavers",
+    "city": "Mountain House",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 109,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  },
+  {
+    "id": "3aca29af-5016-4110-961d-f6f7f4887a75",
+    "name": "Central Valley Roofing \u2014 Tracy",
+    "city": "Tracy",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 667,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  },
+  {
+    "id": "83bd85ce-f805-4558-8e67-21f889522568",
+    "name": "Fresh Start Maid Service \u2014 Tracy",
+    "city": "Tracy",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 763,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  },
+  {
+    "id": "28d40539-daa7-4e8d-9929-78ea1ba21fe2",
+    "name": "MacArthur Painting Co.",
+    "city": "Tracy",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 739,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  },
+  {
+    "id": "a3e25b3b-3717-46d4-987b-82cfe6d70aac",
+    "name": "Naglee Landscaping & Irrigation",
+    "city": "Tracy",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 691,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  },
+  {
+    "id": "a43a2660-1525-4ba6-bc60-c2b77173267a",
+    "name": "Schulte Electric",
+    "city": "Tracy",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 715,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  },
+  {
+    "id": "2b06ae31-af8d-4fcd-8df1-1ba31ca24bfa",
+    "name": "Tracy Fence & Deck Co.",
+    "city": "Tracy",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 751,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  },
+  {
+    "id": "23232154-10e3-4e92-8f84-14ac709f703d",
+    "name": "Tracy Flooring & Carpet",
+    "city": "Tracy",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 727,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  },
+  {
+    "id": "c4ab3846-b1a9-40fc-ac49-995140605b3c",
+    "name": "Tracy HVAC & Air Quality",
+    "city": "Tracy",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 775,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  },
+  {
+    "id": "7c24b3ff-ab32-4eef-9cc3-1894266b6b77",
+    "name": "Tracy Pool & Spa Specialists",
+    "city": "Tracy",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 703,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  },
+  {
+    "id": "05528456-fe03-4def-b1ff-240f62ccf40e",
+    "name": "Tracy Solar & Battery",
+    "city": "Tracy",
+    "was_public": true,
+    "matches": [
+      {
+        "file": "seed_businesses_5.py",
+        "line": 679,
+        "same_phone": true,
+        "same_address": true
+      }
+    ]
+  }
+]

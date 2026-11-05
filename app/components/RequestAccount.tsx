@@ -23,7 +23,7 @@ export function useRequestAccount() {
 
 export function RequestAccount({ returnTo }: { returnTo: string }) {
   return <div className="rounded-xl border border-blue-100 bg-blue-50 p-5 mb-6 text-sm text-gray-700">
-    <p>Sign in with a confirmed email before adding a business or requesting ownership. Your request stays pending until reviewed.</p>
+    <p>Sign in with a confirmed email before submitting a report, adding a business or requesting ownership. Your request stays pending until reviewed.</p>
     <Link className="inline-block mt-3 font-semibold underline" href={`/login?next=${encodeURIComponent(returnTo)}`}>Sign in to continue →</Link>
     <p className="mt-2 text-xs">You can browse listings and contact businesses without an account.</p>
   </div>

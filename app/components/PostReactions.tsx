@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+import { getSupabaseClient } from '@/lib/supabase'
 import { useState, useEffect, useCallback } from 'react'
 
 // ── Config ─────────────────────────────────────────────────────────────────────
@@ -23,13 +25,18 @@ interface Props {
 export default function PostReactions({ postId }: Props) {
   const [counts, setCounts]       = useState<Record<string, number>>({})
   const [myReactions, setMyReactions] = useState<Set<string>>(new Set())
+  const [error, setError] = useState('')
+  const [signInNeeded, setSignInNeeded] = useState(false)
   const [loading, setLoading]     = useState(true)
   const [pending, setPending]     = useState<string | null>(null)  // which type is in-flight
 
   // Fetch initial state from API
   const loadReactions = useCallback(async () => {
     try {
-      const res = await fetch(`/api/reactions?post_id=${encodeURIComponent(postId)}`)
+      const { data: { session } } = await getSupabaseClient().auth.getSession()
+      const res = await fetch(`/api/reactions?post_id=${encodeURIComponent(postId)}`, {
+        headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {},
+      })
       if (!res.ok) return
       const json = await res.json()
       setCounts(json.counts ?? {})
@@ -43,45 +50,26 @@ export default function PostReactions({ postId }: Props) {
 
   useEffect(() => { loadReactions() }, [loadReactions])
 
-  // Toggle a reaction with optimistic UI
+  // Only confirmed account writes are accepted. Update from the saved result.
   async function handleReact(type: ReactionType) {
-    if (pending) return  // debounce concurrent taps
-
-    const alreadyReacted = myReactions.has(type)
-
-    // Optimistic update
-    setPending(type)
-    setCounts((prev) => ({
-      ...prev,
-      [type]: Math.max(0, (prev[type] ?? 0) + (alreadyReacted ? -1 : 1)),
-    }))
-    setMyReactions((prev) => {
-      const next = new Set(prev)
-      alreadyReacted ? next.delete(type) : next.add(type)
-      return next
-    })
-
+    if (pending) return
+    setPending(type); setError(''); setSignInNeeded(false)
     try {
+      const { data: { session } } = await getSupabaseClient().auth.getSession()
+      if (!session?.access_token) { setSignInNeeded(true); return }
       const res = await fetch('/api/reactions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
         body: JSON.stringify({ post_id: postId, reaction_type: type }),
       })
-      if (res.ok) {
-        const json = await res.json()
-        // Sync with authoritative server counts
-        if (json.counts) {
-          setCounts(json.counts)
-        }
-      } else {
-        // Roll back optimistic update on error
-        await loadReactions()
+      const result = await res.json()
+      if (!res.ok) {
+        if (res.status === 401) setSignInNeeded(true)
+        throw new Error(result.error || 'Reaction could not be saved.')
       }
-    } catch {
-      await loadReactions()
-    } finally {
-      setPending(null)
-    }
+      setCounts(result.counts ?? {})
+      setMyReactions(new Set(result.myReactions ?? []))
+    } catch (err) { setError(err instanceof Error ? err.message : 'Reactions unavailable.') }
+    finally { setPending(null) }
   }
 
   if (loading) {
@@ -139,6 +127,8 @@ export default function PostReactions({ postId }: Props) {
         })}
       </div>
 
+      {signInNeeded && <p className="mt-2 text-sm"><Link className="underline" href={`/login?next=${encodeURIComponent(`/community/${postId}`)}`}>Sign in to react</Link></p>}
+      {error && <p role="alert" className="mt-2 text-xs text-red-700">{error}</p>}
       {/* Total reactions summary */}
       {totalReactions > 0 && (
         <p className="mt-2 text-xs text-gray-400">

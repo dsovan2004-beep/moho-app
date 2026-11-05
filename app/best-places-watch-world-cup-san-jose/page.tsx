@@ -1,3 +1,4 @@
+import { serializeJsonLd } from '@/lib/json-ld'
 export const runtime = 'nodejs'
 
 import { getSupabaseClient, type Business } from '@/lib/supabase'
@@ -182,7 +183,7 @@ export default async function WatchPartyPage() {
         <script
           key={i}
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(s) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(s) }}
         />
       ))}
 

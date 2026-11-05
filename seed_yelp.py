@@ -32,12 +32,8 @@ from typing import Optional
 # ── Config ─────────────────────────────────────────────────────────────────────
 
 SUPABASE_URL = "https://ozjlfgipfzykzrjakwzb.supabase.co"
-# Reads SUPABASE_SERVICE_ROLE_KEY (canonical project name) with SUPABASE_KEY as legacy fallback
-SUPABASE_KEY = (
-    os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
-    or os.environ.get("SUPABASE_KEY")
-    or "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im96amxmZ2lwZnp5a3pyamFrd3piIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQzMzI3NiwiZXhwIjoyMDg4MDA5Mjc2fQ.g9f2Il1nWEfgyuvTXHUiHn4EgWsrHVV1QBbdxehT0gM"
-)
+# Read the server key from the environment only; modern keys use the apikey header.
+SUPABASE_KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
 
 YELP_API_KEY = os.environ.get("YELP_API_KEY", "")
 YELP_SEARCH_URL = "https://api.yelp.com/v3/businesses/search"
@@ -237,7 +233,7 @@ def get_existing_names(city: str) -> set:
         url,
         headers={
             "apikey": SUPABASE_KEY,
-            "Authorization": f"Bearer {SUPABASE_KEY}",
+            **({} if SUPABASE_KEY.startswith("sb_secret_") else {"Authorization": f"Bearer {SUPABASE_KEY}"}),
         },
     )
     try:
@@ -259,7 +255,7 @@ def insert_businesses(records: list) -> tuple:
         method="POST",
         headers={
             "apikey": SUPABASE_KEY,
-            "Authorization": f"Bearer {SUPABASE_KEY}",
+            **({} if SUPABASE_KEY.startswith("sb_secret_") else {"Authorization": f"Bearer {SUPABASE_KEY}"}),
             "Content-Type": "application/json",
             "Prefer": "resolution=ignore-duplicates,return=minimal",
         },

@@ -1,3 +1,4 @@
+import { serializeJsonLd } from '@/lib/json-ld'
 export const runtime = 'nodejs'
 
 import { getSupabaseClient } from '@/lib/supabase'
@@ -93,7 +94,7 @@ export default async function DiscoverPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(cityListSchema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(cityListSchema) }}
       />
 
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

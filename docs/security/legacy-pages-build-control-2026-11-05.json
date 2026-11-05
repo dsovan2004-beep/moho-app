@@ -1,0 +1,5 @@
+{
+  "project": "moho-app",
+  "production_deployments_enabled": false,
+  "preview_deployment_setting": "none"
+}

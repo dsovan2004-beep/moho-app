@@ -2,20 +2,40 @@
   "date": "2026-11-05",
   "primary_url": "https://www.moholocal.com",
   "web_worker": "moho-web",
-  "web_version": "dcf74807-a47e-4268-abd6-332b1bade802",
+  "web_version": "0711c6ca-b67d-47a0-b946-026cd717e751",
   "web_route": "www.moholocal.com/*",
   "ingestion_worker": "moho-ingestion",
-  "ingestion_version": "92eb616f-6694-422c-82b5-a22285ef80cb",
+  "ingestion_version": "b4c8d845-93b0-4999-a2ea-8e2f138e02fd",
   "database_project": "ozjlfgipfzykzrjakwzb",
   "migrations": [
     "20261105100215_secure_directory_requests",
-    "20261105100432_restrict_private_business_columns"
+    "20261105100432_restrict_private_business_columns",
+    "20261105220240_authenticated_reactions_and_extension_security",
+    "20261105230100_listing_evidence_and_service_areas",
+    "20261105232042_close_legacy_intake_paths",
+    "20261105232316_harden_published_contributions"
   ],
-  "regression_tests": { "passed": 23, "failed": 0 },
-  "npm_audit": { "root": 0, "workers": 0, "scripts": 0 },
+  "regression_tests": {
+    "passed": 39,
+    "failed": 0
+  },
+  "npm_audit": {
+    "root": 0,
+    "workers": 0,
+    "scripts": 0
+  },
   "preserved_business_rows": 1959,
-  "production_test_requests_created": 0,
+  "production_test_requests_created": 1,
   "production_test_owners_created": 0,
-  "real_account_acceptance_test": "pending",
-  "automatic_worker_git_deployment": "pending OPS-02"
+  "real_account_acceptance_test": "Google PKCE sign-in, saved pending receipt, admin rejection, requester rejected status passed",
+  "automatic_worker_git_deployment": "setup in progress OPS-02",
+  "modern_web_publishable_key": true,
+  "modern_ingestion_secret_key": true,
+  "legacy_credential_revoked": false,
+  "legacy_credential_last_read_status": 200,
+  "production_test_request_result": "rejected; no business published",
+  "public_business_rows": 1805,
+  "quarantined_business_rows": 23,
+  "website_checked_existing_providers": 3,
+  "unsupported_ratings_cleared": 168
 }

@@ -131,3 +131,70 @@ test('login return paths cannot redirect to external or arbitrary locations', ()
   for (const path of ['https://attacker.test', '//attacker.test', '/\\attacker.test', '/admin', '/%2f%2fattacker.test']) assert.equal(safeReturnTo(path), '/')
   assert.equal(safeReturnTo('/submit-business'), '/submit-business')
 })
+
+test('reaction HTTP writes reject anonymous, spoofed identity, cross-origin and quota failures', async () => {
+  process.env.NEXT_PUBLIC_SUPABASE_URL = env.SUPABASE_URL
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'test-only-publishable-key'
+  const { POST, GET } = await import('../app/api/reactions/route')
+  const payload = { post_id: '00000000-0000-4000-8000-000000000099', reaction_type: 'helpful' }
+  assert.equal((await POST(new Request('https://www.moholocal.com/api/reactions', { method: 'POST' }))).status, 401)
+  let rpcCalls = 0
+  globalThis.fetch = async (url, init) => {
+    if (String(url).endsWith('/auth/v1/user')) return Response.json({ id: 'account', email_confirmed_at: '2026-01-01', app_metadata: {}, user_metadata: {} })
+    rpcCalls++
+    const data = JSON.parse(String(init?.body))
+    assert.deepEqual(Object.keys(data).sort(), ['p_post_id', 'p_type'])
+    return Response.json({ code: 'P0001' }, { status: 400 })
+  }
+  assert.equal((await POST(request({ ...payload, user_id: 'someone-else' }))).status, 400)
+  assert.equal((await POST(request(payload, 'https://attacker.test'))).status, 403)
+  assert.equal(rpcCalls, 0)
+  assert.equal((await POST(request(payload))).status, 429)
+  assert.equal(rpcCalls, 1)
+  assert.equal((await GET(new Request('https://www.moholocal.com/api/reactions?post_id=bad'))).status, 400)
+})
+
+test('tracked source files contain no embedded JWT credentials', () => {
+  const { execFileSync } = require('node:child_process')
+  const { readFileSync } = require('node:fs')
+  const paths = execFileSync('git', ['ls-files', '-z'], { encoding: 'utf8' }).split('\0').filter(Boolean)
+  const tokenPattern = new RegExp('ey' + 'J[A-Za-z0-9_-]{15,}')
+  for (const path of paths) {
+    let content: string
+    try { content = readFileSync(path, 'utf8') } catch { continue }
+    assert.equal(tokenPattern.test(content), false, `Embedded credential in ${path}`)
+    assert.equal(new RegExp('sb_'+'secret_[A-Za-z0-9_-]{35,}').test(content),false,`Embedded modern credential in ${path}`)
+  }
+})
+
+test('Worker supports independently rotatable secret keys without putting them into a user JWT header', async () => {
+  const { selectRows, insertRow } = await import('../workers/lib/supabase')
+  for (const key of ['sb_secret_test-only-not-real', 'legacy-test-only-not-real']) {
+    let calls = 0
+    globalThis.fetch = async (_url, init) => {
+      calls++
+      const h = new Headers(init?.headers)
+      assert.equal(h.get('apikey'), key)
+      assert.equal(h.get('authorization'), key.startsWith('sb_secret_') ? null : `Bearer ${key}`)
+      return Response.json([{ id: 'fixture' }])
+    }
+    const testEnv = { ...env, SUPABASE_SERVICE_ROLE_KEY: key }
+    await selectRows(testEnv, 'businesses', { id: 'fixture' })
+    assert.equal((await insertRow(testEnv, 'community_submissions', { title: 'Fixture' })).ok, true)
+    assert.equal(calls, 2)
+  }
+})
+
+test('report and pet login return paths preserve only the bounded intake query fields', () => {
+  assert.equal(safeReturnTo('/submit?submission_type=lost_pet'),'/submit?submission_type=lost_pet')
+  assert.equal(safeReturnTo('/submit?next=https://attacker.test'),'/')
+  assert.equal(safeReturnTo('/submit?title='+'x'.repeat(1501)),'/')
+})
+
+test('structured listing data cannot terminate its HTML script container', async () => {
+ const { serializeJsonLd }=await import('../lib/json-ld')
+ const payload={name:'</script><script>alert("fixture")</script>',description:'Neighborhood \u2028 report \u2029'}
+ const rendered=serializeJsonLd(payload)
+ assert.equal(rendered.includes('<'),false)
+ assert.deepEqual(JSON.parse(rendered),payload)
+})

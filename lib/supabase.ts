@@ -1,3 +1,4 @@
+import type { ListingCheck } from './listing-evidence'
 import { safeReturnTo } from './auth-return'
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 
@@ -22,7 +23,7 @@ export function getSupabaseClient(): SupabaseClient {
     _browserClient = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      { auth: { flowType: 'pkce' } },
+      { auth: { flowType: 'pkce', detectSessionInUrl: false } },
     )
   }
   return _browserClient
@@ -122,6 +123,7 @@ export function trustedListings(supabase: SupabaseClient, columns = PUBLIC_BUSIN
 // ─── Table Types ─────────────────────────────────────────────────────────────
 
 export interface Business {
+  listing_checks?: ListingCheck | ListingCheck[] | null
   id: string
   name: string
   category: string
@@ -197,6 +199,7 @@ export interface LostAndFound {
   title: string
   description: string
   city: string
+  source_url?: string
   status: 'lost' | 'found' | 'reunited'
   type: string
   pet_type?: string

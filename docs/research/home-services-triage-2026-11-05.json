@@ -1,0 +1,736 @@
+{
+  "date": "2026-11-05",
+  "method": "Desk research and exact seed-provenance comparison; not phone, owner, license or quality verification",
+  "candidates": [
+    {
+      "id": "4e64aae9-19e3-4ba1-8b40-6a73ae9b3c23",
+      "original_name": "209 HVAC Solutions",
+      "original_city": "Mountain House",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 49,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "59a0466f-610f-4281-8709-60391c94720a",
+      "original_name": "All Access Garage Door Service",
+      "original_city": "Mountain House",
+      "was_public": false,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "5bf4c780-b579-4c84-9e3e-a72f83764d1a",
+      "original_name": "All-Pro HVAC Mountain House",
+      "original_city": "Mountain House",
+      "was_public": false,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "bef38801-a428-4cf5-9b05-8c56b0e226cb",
+      "original_name": "Alpine Roofing Mountain House",
+      "original_city": "Mountain House",
+      "was_public": false,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "3f7f656f-d0e3-41e2-b550-2874ce654d46",
+      "original_name": "Bay Area Electric \u2014 Mountain House",
+      "original_city": "Mountain House",
+      "was_public": false,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "7e444d49-d0a6-4d6b-8106-72852a1a6b3c",
+      "original_name": "Bay Valley Electric",
+      "original_city": "Mountain House",
+      "was_public": false,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "836afe55-430f-4982-b7b8-0179d3eb4ad3",
+      "original_name": "Clean Air Duct Pros",
+      "original_city": "Mountain House",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 133,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "f7f3697a-b982-44dc-9cc7-369dd98e4438",
+      "original_name": "Clean Pro Window Cleaning",
+      "original_city": "Mountain House",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "3c117e4e-5ea6-47fb-b540-ea9aa6d62bb0",
+      "original_name": "Clean Sweep Housekeeping",
+      "original_city": "Mountain House",
+      "was_public": false,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "c29e2802-1bb2-4b73-8f92-c5b4dcfe5e02",
+      "original_name": "Crystal Clean House Cleaning",
+      "original_city": "Mountain House",
+      "was_public": false,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "46f8cdf6-4836-4b14-acf0-247363527ecb",
+      "original_name": "Desert Rose Landscaping",
+      "original_city": "Mountain House",
+      "was_public": false,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "1ebacfae-9442-4111-9d01-5aad2965fd76",
+      "original_name": "Green Earth Pest Control MH",
+      "original_city": "Mountain House",
+      "was_public": false,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "49508914-fb08-401e-b83c-f93ef5048016",
+      "original_name": "MH Electrical Services",
+      "original_city": "Mountain House",
+      "was_public": false,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "0fa06689-2c4c-4fe0-9608-33ee78755319",
+      "original_name": "MH Gutter & Downspout Co.",
+      "original_city": "Mountain House",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 157,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "c6db0507-fc98-4904-8116-de8cb341bd3a",
+      "original_name": "Mountain House Garage Door Pros",
+      "original_city": "Mountain House",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "2f307de7-caa1-456a-9024-91f1e5175764",
+      "original_name": "Mountain House Landscaping",
+      "original_city": "Mountain House",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "41e848dd-40ac-4842-94df-0510301c0a47",
+      "original_name": "Mountain House Plumbing",
+      "original_city": "Mountain House",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "b60af188-6664-4d15-aa24-51da24489755",
+      "original_name": "Mountain House Plumbing & Rooter",
+      "original_city": "Mountain House",
+      "was_public": true,
+      "outcome": "quarantined_official_website_geographic_identity_mismatch",
+      "evidence": "https://mhplumbing.com/"
+    },
+    {
+      "id": "93441d13-ee5c-40f5-843b-d42450152238",
+      "original_name": "Mountain House Pool Service",
+      "original_city": "Mountain House",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 85,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "4792a78b-d8d2-4452-bb25-30876bc294e4",
+      "original_name": "Mountain House Pro Plumbing",
+      "original_city": "Mountain House",
+      "was_public": false,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "a6491e11-a93d-4fe2-9771-e22d211fd3e7",
+      "original_name": "Mountain House Roofing Co.",
+      "original_city": "Mountain House",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 37,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "78c5af47-6a73-4309-9a4d-bf535dca6be2",
+      "original_name": "Mustang Garage Doors",
+      "original_city": "Mountain House",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 121,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "69d8b5a9-1e32-4696-9acc-eac560d39b98",
+      "original_name": "Nashville Garage Door Repair & Spring Replacement",
+      "original_city": "Mountain House",
+      "was_public": false,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "3af830b5-56d3-4c45-bebf-735eeafdbe76",
+      "original_name": "Premier Pest Control \u2014 Mountain House",
+      "original_city": "Mountain House",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 97,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "6d41957d-be8e-4527-ae11-8718a1d8296b",
+      "original_name": "Premier Roofing & Solar",
+      "original_city": "Mountain House",
+      "was_public": false,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "e4321190-2950-44ba-b530-1e252521d76e",
+      "original_name": "Rosewood Remodeling",
+      "original_city": "Mountain House",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 169,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "70427785-6aba-4d6e-8016-4113d33c528b",
+      "original_name": "ServiceMaster Restore Mountain House",
+      "original_city": "Mountain House",
+      "was_public": false,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "13789004-0ef1-4ec9-a4b2-867e66b2257d",
+      "original_name": "SJV Landscaping & Sprinklers",
+      "original_city": "Mountain House",
+      "was_public": false,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "2fb8c190-37fb-4baa-a038-94376cdcf234",
+      "original_name": "Stanley Steemer Mountain House",
+      "original_city": "Mountain House",
+      "was_public": false,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "0716e4a8-a790-4438-9f39-4910ceb0f7e9",
+      "original_name": "Sunrise Tile & Flooring",
+      "original_city": "Mountain House",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 73,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "6b3083bd-9cce-4a0f-b643-05dd0e025ad7",
+      "original_name": "Traditions Painting & Drywall",
+      "original_city": "Mountain House",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 145,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "b45f512d-fb1d-4ee1-ba7d-36de35596223",
+      "original_name": "Valley Fence & Gates",
+      "original_city": "Mountain House",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 61,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "5912a73a-9f94-4f86-bdd0-cc29caf93329",
+      "original_name": "Wicklund Concrete & Pavers",
+      "original_city": "Mountain House",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 109,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "4507a087-e7f0-4ed3-aaf8-0be89cc977d3",
+      "original_name": "Ace Hardware",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "1a20d6fd-74dc-4f4d-8e8a-6daa6c514bf6",
+      "original_name": "Ace Hardware Tracy",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "d7a0922c-2454-4f43-a260-31796b728ff8",
+      "original_name": "All Climate HVAC Tracy",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "a1477a9a-4eae-4a51-89b6-b159b861796f",
+      "original_name": "American Key Tech",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "851964f2-ef0d-4765-a431-26581188f2a2",
+      "original_name": "Budget Blinds Tracy",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "3aca29af-5016-4110-961d-f6f7f4887a75",
+      "original_name": "Central Valley Roofing \u2014 Tracy",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 667,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "01fcfc17-d884-4d55-9125-391cab867a37",
+      "original_name": "CLEVELAND TRENCHER",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "6d0d05ac-9ace-4a48-a714-7b0010ebac4a",
+      "original_name": "Comfort Zone HVAC \u2014 Tracy",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "52d55058-b30d-40de-97cf-c8d5b80ffe69",
+      "original_name": "Delta Plumbing Solutions",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "40bb8920-bc93-48e2-b810-e98c606fd7c9",
+      "original_name": "Eco Pest Control Tracy",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "83bd85ce-f805-4558-8e67-21f889522568",
+      "original_name": "Fresh Start Maid Service \u2014 Tracy",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 763,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "de5eb1ce-a907-4c40-900b-51c704aac9c4",
+      "original_name": "Green Thumb Landscaping Tracy",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "42d32b26-fd04-463b-9bd8-aa653b26f83c",
+      "original_name": "Green Valley Pest Control \u2014 Tracy",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "38eadae0-d02e-4f79-9911-95ea2c40f132",
+      "original_name": "Harbor Freight Tools",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "c0d491e5-8ee1-4966-b90f-2e2fda3c61c9",
+      "original_name": "Home Depot Tracy",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "165d113b-00f4-4a66-99f0-bbdf0c8339e2",
+      "original_name": "Lowe's Tracy",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "28d40539-daa7-4e8d-9929-78ea1ba21fe2",
+      "original_name": "MacArthur Painting Co.",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 739,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "aea50b94-f9d9-4faa-b08b-89bd46ed66dc",
+      "original_name": "Molly Maid Tracy",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "existing_listing_corrected_from_official_website",
+      "evidence": "https://www.mollymaid.com/locations/california/mountain-house/"
+    },
+    {
+      "id": "2fd05112-ed75-4e3c-9133-3a9a1dcc517a",
+      "original_name": "Mr. Handyman Tracy",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "existing_listing_corrected_from_official_website",
+      "evidence": "https://www.mrhandyman.com/livermore-pleasanton/"
+    },
+    {
+      "id": "a3e25b3b-3717-46d4-987b-82cfe6d70aac",
+      "original_name": "Naglee Landscaping & Irrigation",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 691,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "a75fd6e6-f755-4de3-9d82-41493c63255e",
+      "original_name": "RESA Power Tracy",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "1f306383-3cd8-4b85-8e1b-7417df93ecac",
+      "original_name": "Roto-Rooter Tracy",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "existing_listing_corrected_from_official_website",
+      "evidence": "https://www.rotorooter.com/tracyca/"
+    },
+    {
+      "id": "a43a2660-1525-4ba6-bc60-c2b77173267a",
+      "original_name": "Schulte Electric",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 715,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "2faebf86-9a2f-4999-ac28-f7e91b35e5e6",
+      "original_name": "SJC Fencing & Gates",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "9c337ea6-5899-417f-ade9-fff0493ae893",
+      "original_name": "Terminix Tracy",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "0424631c-a91c-4b81-9a94-013e58b8e6e1",
+      "original_name": "The Home Depot",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "2b06ae31-af8d-4fcd-8df1-1ba31ca24bfa",
+      "original_name": "Tracy Fence & Deck Co.",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 751,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "94af9620-15d1-451b-af09-c285554fcf09",
+      "original_name": "Tracy Fence & Gate",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "23232154-10e3-4e92-8f84-14ac709f703d",
+      "original_name": "Tracy Flooring & Carpet",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 727,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "3acef3db-254b-44a0-a879-4d8f0227f7f5",
+      "original_name": "Tracy Heating & Air",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "c4ab3846-b1a9-40fc-ac49-995140605b3c",
+      "original_name": "Tracy HVAC & Air Quality",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 775,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "141567b3-a880-4c3f-8f3f-40fdb42d34e1",
+      "original_name": "Tracy Plumbing & Drain",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "7c24b3ff-ab32-4eef-9cc3-1894266b6b77",
+      "original_name": "Tracy Pool & Spa Specialists",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 703,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "aff5ef9f-927c-4f1b-8871-6d05e69d385a",
+      "original_name": "Tracy Roof Masters",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "39948cee-5f26-4f26-9665-196062c107ef",
+      "original_name": "Tracy Rooter & Plumbing",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "05528456-fe03-4def-b1ff-240f62ccf40e",
+      "original_name": "Tracy Solar & Battery",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "quarantined_exact_disabled_seed_match",
+      "evidence": [
+        {
+          "file": "seed_businesses_5.py",
+          "line": 679,
+          "same_phone": true,
+          "same_address": true
+        }
+      ]
+    },
+    {
+      "id": "bef60fb9-6e64-4478-a795-63a43b6f8c60",
+      "original_name": "Tracy Solar Solutions",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "47e49ed1-2566-46b3-aaff-d46cd0acb17a",
+      "original_name": "TracyElectric Contractors",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    },
+    {
+      "id": "203ec58d-0738-4ca4-a31d-1a5bb2749ba6",
+      "original_name": "Two Men and a Truck Tracy",
+      "original_city": "Tracy",
+      "was_public": true,
+      "outcome": "not_independently_rechecked",
+      "evidence": null
+    }
+  ]
+}

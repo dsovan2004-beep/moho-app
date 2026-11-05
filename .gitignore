@@ -11,3 +11,6 @@ supabase/.temp/
 .local-postgres/
 .open-next/
 .dev.vars*
+
+# Local account-control proof may contain account identifiers; keep it out of Git.
+docs/security/screenshots/

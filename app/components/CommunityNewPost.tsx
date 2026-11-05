@@ -33,6 +33,7 @@ export default function CommunityNewPost({ currentCity }: Props) {
   const [photoPreview, setPhotoPreview] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
+  const [receiptNote, setReceiptNote] = useState('')
 
   async function handleOpen() {
     const supabase = getSupabaseClient()
@@ -113,6 +114,7 @@ export default function CommunityNewPost({ currentCity }: Props) {
       author_name: authorName,
       user_id: user.id,
       image_url: imageUrl,
+      status: 'pending',
       likes: 0,
       reply_count: 0,
     })
@@ -122,6 +124,7 @@ export default function CommunityNewPost({ currentCity }: Props) {
       setSubmitting(false)
     } else {
       handleClose()
+      setReceiptNote('Your post was submitted for review.')
       setSubmitting(false)
       router.refresh()
     }
@@ -129,6 +132,7 @@ export default function CommunityNewPost({ currentCity }: Props) {
 
   return (
     <>
+      {receiptNote && <p role="status" className="text-sm text-blue-900">{receiptNote}</p>}
       {/* + New Post button */}
       <button
         onClick={handleOpen}

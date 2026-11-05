@@ -24,6 +24,8 @@ test('setup isolated fixture and apply the exact production migration', () => {
   const schema = readFileSync('tests/fixtures/schema.sql', 'utf8').replace(/create role ([^;]+);/g,
     (_match, definition) => `do $$ begin create role ${definition}; exception when duplicate_object then null; end $$;`)
   sql(schema)
+  sql(readFileSync('sql/add_post_reactions.sql', 'utf8'))
+  sql('create extension pg_trgm; create index fixture_business_trgm on public.businesses using gin(name gin_trgm_ops);')
   sql(`insert into auth.users values ('${admin}','dsovan2004@gmail.com',now()),('${alice}','alice@example.test',now()),('${bob}','bob@example.test',now()),('${unconfirmed}','unconfirmed@example.test',null);`)
   for (const migration of readdirSync('supabase/migrations').filter(f => f.endsWith('.sql')).sort()) {
     sql(readFileSync(`supabase/migrations/${migration}`, 'utf8'))
@@ -138,4 +140,93 @@ test('review aggregate updates still work without granting arbitrary business up
     ${as(alice)} insert into public.reviews(business_id,user_id,rating,comment,reviewer_name) values('${business}','${alice}',4,'Fixture local review','Fixture Alice');
     select rating::text||':'||review_count::text from public.businesses where id='${business}'; rollback;`)
   assert.equal(result, '4.0:1')
+})
+
+const publicPost = '00000000-0000-4000-8000-000000000030'
+const pendingPost = '00000000-0000-4000-8000-000000000031'
+const seedPosts = `insert into public.community_posts(id,title,content,city,category,status,user_id,author_name) values
+  ('${publicPost}','Fixture published post','Fixture content','Tracy','General','approved','${alice}','Fixture Alice'),
+  ('${pendingPost}','Fixture pending post','Fixture pending content','Tracy','General','pending','${alice}','Fixture Alice');`
+
+test('pending community content is private; account holders cannot self-publish', () => {
+  assert.equal(sql(`begin; ${seedPosts} set local role anon; select count(*) from public.community_posts; rollback;`), '1')
+  assert.throws(() => sql(`begin; ${as(alice)} insert into public.community_posts(title,content,city,category,status,user_id,author_name)
+    values('Forged','Forged content','Tracy','General','approved','${alice}','Fixture Alice'); rollback;`), /row-level security/)
+})
+
+test('account reactions derive identity, isolate users and expose only public counts', () => {
+  const result = sql(`begin; ${seedPosts} ${as(alice)} select public.toggle_account_reaction('${publicPost}','helpful')->>'action';
+    ${as(bob)} select public.my_reaction_state('${publicPost}')->'myReactions';
+    select public.toggle_account_reaction('${publicPost}','helpful')->'counts'->>'helpful';
+    ${as(alice)} select public.toggle_account_reaction('${publicPost}','helpful')->>'action';
+    reset role; select user_id from public.post_reactions where post_id='${publicPost}';
+    set local role anon; select count from public.reaction_counts where post_id='${publicPost}'; rollback;`).split('\n')
+  assert.deepEqual(result, ['added','[]','2','removed',bob,'1'])
+  assert.throws(() => sql(`begin; set local role anon; select ip_hash from public.post_reactions; rollback;`), /permission denied/)
+  assert.throws(() => sql(`begin; ${as(bob)} select user_id from public.post_reactions; rollback;`), /permission denied/)
+})
+
+test('anonymous legacy reaction RPCs, direct inserts, unconfirmed users and pending posts are denied', () => {
+  assert.throws(() => sql(`begin; set local role anon; select public.toggle_reaction('${publicPost}','helpful','forged','${alice}'); rollback;`), /permission denied/)
+  assert.throws(() => sql(`begin; ${as(alice)} insert into public.post_reactions(post_id,reaction_type,user_id,ip_hash) values('${publicPost}','helpful','${bob}','forged'); rollback;`), /permission denied/)
+  assert.throws(() => sql(`begin; ${as(unconfirmed)} select public.toggle_account_reaction('${publicPost}','helpful'); rollback;`), /Confirmed sign-in/)
+  assert.throws(() => sql(`begin; ${seedPosts} ${as(alice)} select public.toggle_account_reaction('${pendingPost}','helpful'); rollback;`), /Published post not found/)
+})
+
+test('the persistent reaction budget stops the 61st change within an hour', () => {
+  assert.throws(() => sql(`begin; ${seedPosts} ${as(alice)} select public.toggle_account_reaction('${publicPost}','helpful') from generate_series(1,61); rollback;`), /Reaction rate limit/)
+})
+
+test('relocating pg_trgm preserves index-backed public filtering and similarity access', () => {
+  assert.equal(sql(`begin; set local role anon; select extensions.similarity('tracy','tracy');
+    select count(id) from public.businesses where name ilike '%fixture%'; rollback;`), '1\n1')
+})
+
+test('listing evidence follows public listing visibility; raw corrections and evidence writes remain private', () => {
+  const pending = '00000000-0000-4000-8000-000000000011'
+  const result = sql(`begin; insert into public.listing_checks(business_id,source_url,checked_fields,scope_note)
+    values('${business}','https://example.test',array['website'],'Desk check only'),('${pending}','https://example.test',array['website'],'Pending');
+    set local role anon; select count(*) from public.listing_checks; rollback;`)
+  assert.equal(result, '1')
+  assert.throws(() => sql(`begin; ${as(alice)} insert into public.listing_checks(business_id,source_url,checked_fields,scope_note) values('${business}','https://example.test','{}','Forged'); rollback;`), /permission denied/)
+  assert.throws(() => sql(`begin; ${as(alice)} select * from directory_private.listing_corrections; rollback;`), /permission denied/)
+})
+
+test('legacy suggestion, correction and pet endpoints cannot bypass the moderated intake quota', () => {
+  assert.throws(() => sql(`begin; set local role anon; insert into public.business_suggestions(business_name,city,status) values('Injected','Tracy','approved'); rollback;`), /permission denied/)
+  assert.throws(() => sql(`begin; set local role anon; insert into public.listing_reports(reason,status) values('Injected','approved'); rollback;`), /permission denied/)
+  assert.throws(() => sql(`begin; ${as(alice)} insert into public.lost_and_found(type,description,city,status) values('pet','Injected','Tracy','reunited'); rollback;`), /permission denied/)
+})
+
+test('pet intake preserves reported status privately and rejects forged status values', () => {
+  const payload=JSON.stringify({title:'Fixture found dog',description:'Fixture report',city:'Tracy',submission_type:'lost_pet',pet_status:'found'})
+  const result=sql(`begin; ${as(alice)} select public.create_community_signal('${payload}'::jsonb); reset role;
+    select pet_status||':'||needs_review from public.community_submissions where submitted_by='${alice}'; rollback;`).split('\n')
+  assert.match(result[0], /^[0-9a-f-]{36}$/)
+  assert.equal(result[1], 'found:true')
+  assert.throws(()=>sql(`begin; ${as(alice)} select public.create_community_signal('${payload.replace('"pet_status":"found"','"pet_status":"approved"')}'::jsonb); rollback;`), /Invalid pet report status/)
+})
+
+test('public pet reads hide archived and unmoderated records', () => {
+  const result=sql(`begin; insert into public.lost_and_found(type,description,city,status,needs_review) values
+    ('pet','Published fixture','Tracy','found',false),('pet','Archived fixture','Tracy','archived',false),('pet','Pending fixture','Tracy','lost',true);
+    set local role anon; select count(*) from public.lost_and_found; rollback;`)
+  assert.equal(result,'1')
+})
+
+test('reply and review reads inherit parent publication; unconfirmed and cross-parent writes are denied', () => {
+ const published=publicPost,pending=pendingPost
+ const result=sql(`begin; ${seedPosts}
+ insert into public.community_replies(post_id,user_id,author_name,content) values('${published}','${alice}','Alice','Public'),('${pending}','${alice}','Alice','Private');
+ insert into public.reviews(business_id,user_id,rating) values('${business}','${alice}',5),('00000000-0000-4000-8000-000000000011','${alice}',5);
+ set local role anon; select count(*) from public.community_replies; select count(*) from public.reviews; rollback;`).split('\n')
+ assert.deepEqual(result,['1','1'])
+ assert.throws(()=>sql(`begin; ${seedPosts} ${as(alice)} insert into public.community_replies(post_id,user_id,author_name,content) values('${pending}','${alice}','Alice','Injected'); rollback;`),/row-level security/)
+ assert.throws(()=>sql(`begin; ${as(unconfirmed)} insert into public.reviews(business_id,user_id,rating) values('${business}','${unconfirmed}',5); rollback;`),/Confirmed account required/)
+})
+
+test('direct account contributions use a persistent server-timestamped quota', () => {
+ assert.throws(()=>sql(`begin; insert into directory_private.contribution_events(user_id) select '${bob}' from generate_series(1,60);
+ ${as(bob)} insert into public.community_posts(user_id,title,content,city,category,status) values('${bob}','Fixture post','Fixture content','Tracy','General','pending'); rollback;`),/Daily contribution limit reached/)
+ assert.throws(()=>sql(`begin; ${as(alice)} select * from directory_private.contribution_events; rollback;`),/permission denied/)
 })

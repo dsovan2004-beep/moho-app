@@ -8,6 +8,9 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import { getSupabaseClient, type Business } from '@/lib/supabase'
 import { CITIES as CITY_LIST, CITY_BY_NAME } from '@/lib/cities'
 import Link from 'next/link'
+import ListingEvidence from '@/app/components/ListingEvidence'
+import { CHECK_COLUMNS } from '@/lib/listing-evidence'
+import { SERVICE_CHOICES } from '@/lib/services'
 
 const PAGE_SIZE = 20
 
@@ -131,7 +134,7 @@ function BusinessCard({ biz, activeCategory }: { biz: Business; activeCategory: 
           </div>
         </div>
 
-        <StarRating rating={biz.rating} />
+        {(biz.review_count ?? 0) > 0 && <StarRating rating={biz.rating} />}
 
         {biz.description && (
           <p className="text-sm text-gray-500 mt-1 line-clamp-2">{biz.description}</p>
@@ -140,12 +143,14 @@ function BusinessCard({ biz, activeCategory }: { biz: Business; activeCategory: 
         {/* Contact row — phone + website clickable directly from list */}
         <div className="flex items-center gap-3 mt-2 flex-wrap">
           <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${CITY_BY_NAME[biz.city]?.chip ?? 'bg-gray-100 text-gray-600'}`}>
-            📍 {biz.city}
+            📍 Located in {biz.city}
           </span>
           {biz.address && (
             <span className="text-xs text-gray-400 truncate max-w-[160px]">{biz.address}</span>
           )}
         </div>
+
+        <ListingEvidence check={biz.listing_checks} />
 
         {/* Phone + website on separate row — visible without clicking through */}
         {(biz.phone || biz.website) && (
@@ -182,17 +187,21 @@ export default function DirectoryPage() {
   const searchParams = useSearchParams()
   const router = useRouter()
 
-  const city     = searchParams.get('city')     ?? 'All Cities'
+  const requestedCity = searchParams.get('city') ?? 'All Cities'
+  const city = CITIES.includes(requestedCity) ? requestedCity : 'All Cities'
   const category = searchParams.get('category') ?? 'All'
+  const service = SERVICE_CHOICES.find(item => item.key === searchParams.get('service'))
   const query    = searchParams.get('q')        ?? ''
-  const sortBy   = searchParams.get('sort')     ?? 'rating'
+  const sortBy   = searchParams.get('sort')     ?? 'name'
 
   const [businesses, setBusinesses] = useState<Business[]>([])
+  const [loadError, setLoadError] = useState(false)
   const [total, setTotal] = useState(0)
   const [offset, setOffset] = useState(0)
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
   const [searchInput, setSearchInput] = useState(query)
+  const fetchSequence = useRef(0)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Refetch whenever any filter/sort/query changes (URL-driven)
@@ -201,8 +210,9 @@ export default function DirectoryPage() {
     setBusinesses([])
     fetchPage(0, true)
     setSearchInput(query)
+    return () => { fetchSequence.current++; if (debounceRef.current) clearTimeout(debounceRef.current) }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [city, category, query, sortBy])
+  }, [city, category, query, sortBy, service?.key])
 
   // Instant debounced search — push to URL 300ms after user stops typing
   function handleSearchInput(value: string) {
@@ -212,6 +222,7 @@ export default function DirectoryPage() {
       const params = new URLSearchParams()
       params.set('city', city)
       params.set('category', category)
+      if (service) params.set('service',service.key)
       if (value.trim()) {
         params.set('q', value.trim())
       } else {
@@ -222,6 +233,7 @@ export default function DirectoryPage() {
   }
 
   async function fetchPage(from: number, reset = false) {
+    const requestId = ++fetchSequence.current
     const supabase = getSupabaseClient()
     if (reset) setLoading(true)
     else       setLoadingMore(true)
@@ -230,18 +242,34 @@ export default function DirectoryPage() {
 
     let req = supabase
       .from('businesses')
-      .select(PUBLIC_BUSINESS_COLUMNS, { count: 'exact' })
+      .select(`${PUBLIC_BUSINESS_COLUMNS},listing_checks(${CHECK_COLUMNS})`, { count: 'exact' })
       .eq('status', 'approved')
       .eq('verified', true)
       .range(from, to)
 
-    if (city !== 'All Cities') req = req.eq('city', city)
+    if (city !== 'All Cities') {
+      const { data: checks, error: checkError } = await supabase.from('listing_checks').select('business_id').contains('service_areas', [city])
+      if (requestId !== fetchSequence.current) return
+      if (checkError) { setLoadError(true); setLoading(false); setLoadingMore(false); return }
+      const ids = (checks ?? []).map(row => row.business_id).filter(id => /^[0-9a-f-]{36}$/i.test(id))
+      req = ids.length ? req.or(`city.eq."${city}",id.in.(${ids.join(',')})`) : req.eq('city', city)
+    }
     if (category !== 'All')    req = req.eq('category', category)
+    if (service) {
+      let checked = supabase.from('listing_checks').select('business_id').contains('service_tags', [service.tag])
+      if (city !== 'All Cities') checked = checked.contains('service_areas', [city])
+      const {data: matching, error: matchError} = await checked
+      if (requestId !== fetchSequence.current) return
+      if (matchError) { setLoadError(true); setLoading(false); setLoadingMore(false); return }
+      const ids = (matching ?? []).map(row => row.business_id)
+      req = req.in('id',ids.length ? ids : ['00000000-0000-0000-0000-000000000000'])
+    }
 
-    if (query) {
+    const safeQuery = query.replace(/[^\p{L}\p{N}\s'-]/gu, ' ').trim().slice(0,100)
+    if (safeQuery) {
       // Expand search to name, description, category, city, and address
       req = req.or(
-        `name.ilike.%${query}%,description.ilike.%${query}%,category.ilike.%${query}%,city.ilike.%${query}%,address.ilike.%${query}%`
+        `name.ilike.%${safeQuery}%,description.ilike.%${safeQuery}%,category.ilike.%${safeQuery}%,city.ilike.%${safeQuery}%,address.ilike.%${safeQuery}%`
       )
       // Fetch alphabetically; relevance re-sort happens client-side below
       req = req.order('name', { ascending: true })
@@ -258,7 +286,10 @@ export default function DirectoryPage() {
       }
     }
 
-    const { data, count } = await req
+    const { data, count, error } = await req
+    if (requestId !== fetchSequence.current) return
+    if (error) { setLoadError(true); setLoading(false); setLoadingMore(false); return }
+    setLoadError(false)
     let newBizs = (data ?? []) as Business[]
 
     // Client-side relevance re-sort when search query is active
@@ -280,6 +311,7 @@ export default function DirectoryPage() {
     const params = new URLSearchParams()
     params.set('city', city)
     params.set('category', category)
+      if (service) params.set('service',service.key)
     if (searchInput.trim()) {
       params.set('q', searchInput.trim())
     } else {
@@ -292,6 +324,7 @@ export default function DirectoryPage() {
     const params = new URLSearchParams()
     params.set('city', newCity)
     params.set('category', newCat)
+    if (service && ['All','Home Services'].includes(newCat)) params.set('service',service.key)
     if (query) params.set('q', query)
     else       params.set('sort', sortBy)
     return `/directory?${params.toString()}`
@@ -301,6 +334,7 @@ export default function DirectoryPage() {
     const params = new URLSearchParams()
     params.set('city', city)
     params.set('category', category)
+      if (service) params.set('service',service.key)
     if (query) params.set('q', query)
     params.set('sort', newSort)
     return `/directory?${params.toString()}`
@@ -311,9 +345,13 @@ export default function DirectoryPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-6">
-        <h1 className="text-3xl font-extrabold text-gray-900">Business Directory</h1>
-        <p className="text-gray-500 mt-1">Discover local businesses across the 209 and East Bay</p>
+        <h1 className="text-3xl font-extrabold text-gray-900">Find your local help</h1>
+        <p className="text-gray-500 mt-1">Find local help in Mountain House, Tracy and nearby cities. Confirm the exact service area with each business.</p>
       </div>
+
+      {loadError && <p role="alert" className="mb-5 bg-amber-50 border border-amber-300 p-4 rounded-xl">We couldn't load these listings. <button onClick={() => fetchPage(0, true)} className="font-bold underline">Try again</button></p>}
+      <div className="flex flex-wrap gap-2 mb-5" aria-label="Home service shortcuts">{SERVICE_CHOICES.map(item => <Link key={item.key} aria-current={service?.key === item.key ? 'page' : undefined} className={`px-4 py-2 rounded-full text-sm border ${service?.key === item.key ? 'bg-[#1e3a5f] text-white border-[#1e3a5f]' : 'border-slate-300 bg-white text-slate-700 hover:border-blue-600'}`} href={`/directory?${new URLSearchParams({city,category:'Home Services',service:item.key})}`}>{item.label}</Link>)}</div>
+      {service && <div className="bg-[#f0f4ec] border border-[#dce5d5] p-4 rounded-xl mb-5"><p className="font-semibold">{service.label} · website-checked shortlist</p><p className="text-sm text-slate-600 mt-1">Only providers with dated source evidence for this service and city appear here. This is a contact shortlist, not a quality endorsement.</p><Link className="inline-block mt-2 text-sm underline" href={`/directory?${new URLSearchParams({city,category:'Home Services'})}`}>Browse all existing home-service listings →</Link></div>}
 
       {/* ── Mobile: search + filter chips ── */}
       <div className="lg:hidden mb-4 space-y-3">
@@ -501,7 +539,7 @@ export default function DirectoryPage() {
               )}
               {query && (
                 <Link
-                  href={filterUrl(city, category)}
+                  href={`/directory?${new URLSearchParams({city,category,sort:sortBy})}`}
                   className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition"
                 >
                   🔍 &ldquo;{query}&rdquo; <span className="ml-0.5 opacity-60">✕</span>
@@ -519,7 +557,7 @@ export default function DirectoryPage() {
           {/* Header row — stacks on mobile, side-by-side on sm+ */}
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mb-4">
             <p className="text-sm text-gray-500">
-              {loading ? (
+              {loadError ? <span>Results unavailable</span> : loading ? (
                 <span className="text-gray-400">Loading…</span>
               ) : query ? (
                 <>
@@ -557,7 +595,7 @@ export default function DirectoryPage() {
           {/* Relevance sort indicator */}
           {query && !loading && businesses.length > 0 && (
             <p className="text-xs text-gray-400 mb-3">
-              Sorted by relevance — name matches first, then by rating
+              Matching listings — confirm your exact job and service address directly
             </p>
           )}
 
@@ -575,10 +613,10 @@ export default function DirectoryPage() {
                 </div>
               ))}
             </div>
-          ) : businesses.length === 0 ? (
+          ) : loadError ? null : businesses.length === 0 ? (
             <div className="text-center py-20 text-gray-400">
               <p className="text-4xl mb-3">🔍</p>
-              <p className="font-medium text-gray-700">No businesses found</p>
+              <p className="font-medium text-gray-700">{service ? `No website-checked ${service.label.toLowerCase()} providers in this shortlist yet` : 'No businesses found'}</p>
               <p className="text-sm mt-1 mb-4">Try adjusting your filters or search term</p>
               {(city !== 'All Cities' || category !== 'All' || query) && (
                 <Link

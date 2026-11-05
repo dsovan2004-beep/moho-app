@@ -2,6 +2,7 @@ export const runtime = 'nodejs'
 
 import { getSupabaseClient, type LostAndFound } from '@/lib/supabase'
 import Link from 'next/link'
+import { CITY_NAMES } from '@/lib/cities'
 
 // ── Pet emoji map (matches index.html exactly) ───────────────────────────────
 function getPetEmoji(pet: LostAndFound): string {
@@ -22,6 +23,7 @@ function getPetEmoji(pet: LostAndFound): string {
 
 // ── Status config ─────────────────────────────────────────────────────────────
 const STATUS_CFG = {
+  active: { photoBg: 'linear-gradient(135deg,#e2e8f0,#cbd5e1)', badgeBg:'#64748b', label:'STATUS UNCONFIRMED', filterLabel:'Unconfirmed', cardBorder:'border-gray-200' },
   lost: {
     photoBg: 'linear-gradient(135deg,#fee2e2,#fecaca)',
     badgeBg: '#dc2626',
@@ -63,13 +65,14 @@ const CITY_EMOJI: Record<string, string> = {
 }
 
 // ── Data fetching ─────────────────────────────────────────────────────────────
-async function getPets(city?: string, status?: string) {
+async function getPets(city?: string, status?: string, includeOlder=false) {
   const supabase = getSupabaseClient()
   let req = supabase
     .from('lost_and_found')
     .select('*')
     .order('created_at', { ascending: false })
 
+  if (!includeOlder) req=req.gte('created_at',new Date(Date.now()-30*24*60*60*1000).toISOString())
   if (city && city !== 'All Cities') req = req.eq('city', city)
   if (status && status !== 'All') req = req.eq('status', status)
 
@@ -80,14 +83,14 @@ async function getPets(city?: string, status?: string) {
 
 // ── Card component ────────────────────────────────────────────────────────────
 function PetCard({ pet }: { pet: LostAndFound }) {
-  const cfg = STATUS_CFG[pet.status] ?? STATUS_CFG.lost
+  const cfg = STATUS_CFG[pet.status as keyof typeof STATUS_CFG] ?? STATUS_CFG.active
   const emoji = getPetEmoji(pet)
   const chipClass = CITY_CHIP[pet.city] ?? 'bg-gray-100 text-gray-600'
   const isReunited = pet.status === 'reunited'
 
   return (
     <div
-      className={`rounded-2xl overflow-hidden border-2 ${cfg.cardBorder} transition-all hover:-translate-y-0.5 hover:shadow-xl cursor-pointer`}
+      className={`rounded-2xl overflow-hidden border-2 ${cfg.cardBorder} transition-all hover:-translate-y-0.5 hover:shadow-xl`}
       style={isReunited ? { background: 'linear-gradient(135deg,#f0fdf4,white)' } : { background: 'white' }}
     >
       {/* Photo area */}
@@ -131,6 +134,8 @@ function PetCard({ pet }: { pet: LostAndFound }) {
             <span>📍</span><span>{pet.location_detail}, {pet.city}</span>
           </div>
         )}
+        <p className="text-xs text-slate-500 mb-2">Reported: {pet.created_at && Number.isFinite(Date.parse(pet.created_at)) ? new Date(pet.created_at).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric',timeZone:'America/Los_Angeles'}) : 'date unavailable'}. Current status needs confirmation.</p>
+        {pet.source_url && /^https?:\/\//i.test(pet.source_url) && <a href={pet.source_url} target="_blank" rel="noopener noreferrer" className="block text-xs font-semibold text-blue-700 underline mb-2">Original report / contact link ↗</a>}
         {pet.last_seen && (
           <div className="flex items-center gap-1.5 text-xs text-gray-600 mb-1.5">
             <span>🕐</span><span>{pet.last_seen}</span>
@@ -182,7 +187,7 @@ function PetCard({ pet }: { pet: LostAndFound }) {
 
 // ── Page ─────────────────────────────────────────────────────────────────────
 interface PageProps {
-  searchParams: Promise<{ city?: string; status?: string }>
+  searchParams: Promise<{ city?: string; status?: string; history?: string }>
 }
 
 const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca', 'Brentwood']
@@ -195,15 +200,16 @@ const STATUSES = [
 
 export default async function LostAndFoundPage({ searchParams }: PageProps) {
   const params = await searchParams
-  const city = params.city ?? 'All Cities'
+  const city = CITY_NAMES.includes(params.city ?? '') ? params.city! : 'All Cities'
+  const includeOlder=params.history==='1'
   const status = params.status ?? 'All'
 
   let allPets: LostAndFound[] = []
   let filteredPets: LostAndFound[] = []
   try {
     ;[allPets, filteredPets] = await Promise.all([
-      getPets(city),
-      getPets(city, status),
+      getPets(city,undefined,includeOlder),
+      getPets(city, status,includeOlder),
     ])
   } catch (err) {
     console.error('LostAndFoundPage fetch failed:', err)
@@ -216,12 +222,13 @@ export default async function LostAndFoundPage({ searchParams }: PageProps) {
   return (
     <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
+      <div className="bg-blue-50 border border-blue-100 p-4 rounded-xl mb-5 text-sm text-slate-700">Reports are not live tracking. A report date does not confirm a pet is still missing. <Link className="font-semibold underline" href={`/lost-and-found?${new URLSearchParams({city,...(includeOlder ? {} : {history:'1'})})}`}>{includeOlder ? 'Show recent reports' : 'View older report history'}</Link></div>
       {/* ── Header ── */}
       <div className="flex items-start justify-between gap-4 flex-wrap mb-6">
         <div>
           <h1 className="text-2xl font-extrabold text-gray-900">🐾 Lost &amp; Found Pets</h1>
           <p className="text-gray-500 text-sm mt-1">
-            All 5 cities · Post a lost or found pet · Celebrate reunions 🎉
+            {includeOlder ? 'Report history; older reports may be out of date' : 'Reports added in the last 30 days'} · Confirm the date and current status before sharing.
           </p>
         </div>
         <Link
@@ -237,15 +244,15 @@ export default async function LostAndFoundPage({ searchParams }: PageProps) {
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
           <div className="text-3xl font-extrabold text-red-600">{lostCount}</div>
-          <div className="text-xs text-gray-500 mt-1">Currently Lost</div>
+          <div className="text-xs text-gray-500 mt-1">Lost reports</div>
         </div>
         <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
           <div className="text-3xl font-extrabold text-amber-600">{foundCount}</div>
-          <div className="text-xs text-gray-500 mt-1">Found — Seeking Owner</div>
+          <div className="text-xs text-gray-500 mt-1">Found reports</div>
         </div>
         <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
           <div className="text-3xl font-extrabold text-green-600">{reunitedCount}</div>
-          <div className="text-xs text-gray-500 mt-1">Reunited This Month 🎉</div>
+          <div className="text-xs text-gray-500 mt-1">Reunited reports</div>
         </div>
       </div>
 
@@ -259,7 +266,7 @@ export default async function LostAndFoundPage({ searchParams }: PageProps) {
           return (
             <Link
               key={c}
-              href={`/lost-and-found?city=${encodeURIComponent(c)}&status=${encodeURIComponent(status)}`}
+              href={`/lost-and-found?city=${encodeURIComponent(c)}&status=${encodeURIComponent(status)}${includeOlder ? '&history=1' : ''}`}
               className={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-all ${
                 isActive
                   ? 'bg-[#1e3a5f] text-white border-[#1e3a5f]'
@@ -286,7 +293,7 @@ export default async function LostAndFoundPage({ searchParams }: PageProps) {
           return (
             <Link
               key={key}
-              href={`/lost-and-found?city=${encodeURIComponent(city)}&status=${encodeURIComponent(key)}`}
+              href={`/lost-and-found?city=${encodeURIComponent(city)}&status=${encodeURIComponent(key)}${includeOlder ? '&history=1' : ''}`}
               className={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-all ${
                 isActive
                   ? activeStyle

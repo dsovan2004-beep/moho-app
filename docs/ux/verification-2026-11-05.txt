@@ -1,0 +1,27 @@
+MoHoLocal UX pass — November 5, 2026
+
+Live inspection confirmed truncated city counts, all-time data labeled weekly
+trending, and a plumber shortcut that opened every home service. Revised the
+homepage, results and detail trust presentation while preserving business IDs.
+
+Verified flows:
+- Four regional city choices update city-scoped search/task links.
+- House cleaning shortcut returns its explicit website-checked service shortlist;
+  it excludes unrelated drain cleaning, window cleaning and landscaping descriptions.
+- A Lathrop-based provider can appear for Mountain House because its official
+  service area explicitly includes the destination, without duplicating the listing.
+- Date/scope/source details explain precisely what a website check establishes.
+- Empty checked categories remain empty and offer clearly labeled broader browsing.
+- Recent pet reports and older history are separated; status/date caution remains.
+- Real Google sign-in and pending submission → admin rejection → requester status pass.
+
+Responsive inspection: 390 x 844 CSS pixels, document width 390 (no horizontal
+page overflow) on homepage and exact-service results. Raw tab screenshots captured
+at actual emulated resolution after the higher-level viewport helper failed to
+resize the hidden browser. Emulation was cleared afterward.
+
+Artifacts: home-desktop.png, home-mobile.png, results-mobile.png.
+Remaining: resident usability/keyboard testing, deeper legacy-city-page redesign,
+checked-provider supply (especially landscaping), owner-supplied job fit and
+availability expiry, and pet owner-update/freshness lifecycle. Facebook research
+is sampled qualitative evidence, not a complete group audit or proof of demand.

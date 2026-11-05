@@ -1,0 +1,95 @@
+MOHOLOCAL RELAUNCH — CONTINUATION EVIDENCE
+November 5, 2026
+
+STATUS
+Security and workflow code/database changes are deployed. The revised discovery
+experience is live at https://www.moholocal.com. This is not a completed relaunch:
+legacy credential retirement remains an OPEN P0 until requests using the old
+service credential are independently rejected. Native source builds are being
+connected; checked-provider supply and resident validation gates remain open.
+
+SECURITY CHANGES
+- Confirmed-account reactions derive identity server-side; durable 60/hour quota.
+  Anonymous public counts expose no account/IP identifiers. Old public definer
+  execution is revoked. Community content cannot self-publish.
+- pg_trgm moved to extensions; its trigram index/operator behavior was tested.
+- Supabase compromised-password protection enabled on the existing Pro plan.
+- Legacy anonymous suggestions/reports and direct pet publication are closed.
+  Existing entry URLs route to the saved, rate-limited moderated intake paths.
+- Lost/found/reunited input is preserved privately through moderation. Pending and
+  archived pet records are not public. Pet-image uploads require moderation access.
+- Replies/reviews inherit parent publication boundaries. Direct posts/replies/
+  reviews require confirmed account identity and share a durable 60/day budget.
+- JSON-LD text is escaped on 33 pages to prevent HTML script termination.
+- Embedded credentials removed from five legacy scripts; modern/legacy request
+  header compatibility updated. Disabled fabricated seed scripts remain disabled.
+- RLS remains enabled. Five private tables intentionally have no browser policy;
+  this is deny-by-default. Advisor warnings/errors are zero; this advisor result
+  does not detect or resolve a credential committed in Git history.
+
+CREDENTIAL / DEPLOYMENT CONTROL
+- Web build now uses the existing modern publishable key.
+- Ingestion Worker now uses the existing modern server key; raw requests send
+  sb_secret keys on apikey only. User-authenticated RPCs retain the user JWT.
+- Modern server staging read passed; modern public staging read was denied.
+- Legacy staging read STILL returned HTTP 200, including when its bearer token was
+  combined with a modern public apikey. API metadata still reported disabled=false
+  after the owner reported retirement. Do not claim revocation succeeded.
+- An approved dedicated Cloudflare deployment token was created, used successfully
+  for both Workers and registered with native Builds. Its original scopes are
+  Workers Scripts Edit + Account Settings Read on the account, and Workers Routes
+  Edit + Zone Read only for moholocal.com; expiry November 5, 2027.
+- Temporary Workers Builds Configuration Edit was separately approved for setup;
+  remove it after the native repository connections are verified.
+- Legacy Pages production and preview automatic builds are disabled to prevent its
+  incompatible build configuration from competing with the OpenNext Worker route.
+- Existing ingestion cron schedules are unchanged: Tuesday 03/04/05 UTC and Friday
+  04 UTC. Comments were corrected to match the actual configured weekdays.
+
+LIVE ACCEPTANCE
+Google sign-in exposed an automatic + explicit PKCE code-exchange race. The SDK's
+URL auto-exchange is disabled; the callback exchanges once with an effect guard.
+A repeat real-account Google flow reached /my-requests successfully.
+One private, clearly labeled QA submission was saved pending, shown with receipt,
+rejected by the authenticated admin with notes, and shown rejected to its requester.
+QA reference: a4988469-da06-492a-864b-d8c27f1af31d. No QA business was published.
+No ownership claim was submitted against an unrelated real business. Claim privacy,
+atomic assignment, duplicate/racing requests and cross-account denial are covered
+by isolated database regressions. No customer outreach or notification emails sent.
+
+VERIFICATION
+39 automated regressions pass against an isolated local PostgreSQL cluster and
+mock HTTP boundaries; main and ingestion TypeScript checks pass. Clean OpenNext
+build passes. Root/workers/scripts npm audits each report zero known vulnerabilities.
+Live website and runtime deployment checks supplement these tests. No assertion
+that these checks prove absence of all security or product issues is made.
+
+DATA / UX
+72 focus-city Home Services candidates were triaged; 56 were initially public.
+23 records were quarantined reversibly: 22 exact name/city/phone/address matches to
+disabled fabricated seed batches, plus one official website identity/geography
+mismatch (Maryland/Delaware). Three existing provider records were corrected from
+official sites, preserving IDs; 46 candidates still need independent rechecks.
+168 focus-city positive ratings without positive review counts were cleared with
+private audit records (includes unpublished rows). No matching public mismatch remains.
+All 1,959 business rows were retained; 1,805 retain public flags after quarantine.
+The three checked providers are website desk checks, not owner/license/insurance/
+availability or quality endorsements. Two advertise the four regional cities;
+Mr. Handyman's checked scope currently includes Mountain House and Tracy.
+
+Homepage: four regional city choices, task shortcuts, direct search, exact city
+counts, no false weekly trending, clear trust expectations and pet-report entry.
+Results/details: exact service tags, checked service areas separate from physical
+location, dated source scope and direct contacts. Unknown providers are labeled
+not rechecked. Landscaping's checked shortlist is honestly empty.
+Pet board: recent 30-day reports by default, explicit older history, report dates,
+status caution and original/contact links; owner updates/expiry remain backlog work.
+390px homepage/results layouts were inspected without horizontal document overflow.
+Browser emulation was reset. Screenshots are in docs/ux/.
+
+BACKLOG DISCIPLINE
+ROADMAP.md is canonical. BACKLOG.md records the next-work queue; SPRINTS.md records
+R1/R2/R3 acceptance and unresolved gates. Historical seeding/distribution plans do
+not authorize new fabricated listings or Facebook outreach. Preserve protected
+CLAUDE.md and BIBLE.md. Do not mark the relaunch complete while SEC-07 or supply/
+pilot gates remain open.
