@@ -1,0 +1,69 @@
+FACEBOOK DEEP DIVE — MOHOLOCAL
+Reviewed November 5, 2026, America/Los_Angeles
+
+DECISION
+Treat Facebook groups as established recommendation networks and potential partners. MoHoLocal needs to make provider comparisons and contact easier after a recommendation, not ask residents to abandon their groups. Neither membership counts nor group posting volume establish demand for a new directory or willingness to pay.
+
+WHAT WAS INSPECTED
+This pass inspected public recommendation results and opened three public threads to read visible replies: a Mountain House handyman request, a Tracy painting request, and a Tracy preschool request. It also inspected About/activity/rules for Living in Tracy, Tracy Foodies, Mountain House Businesses, and the Tracy/Mountain House/Manteca/Lathrop Information Bulletin Board. Other group observations in the earlier report were not re-audited comprehensively. No messages, comments, posts, join requests or outreach were sent. No private messages were accessed. Private-group findings from the earlier pass remain category-level only.
+
+EVIDENCE 1 — FINISH A SPECIFIC JOB, FIND SOMEONE DEPENDABLE
+Public Mountain House Community thread:
+https://www.facebook.com/groups/590827082964592/posts/1428936772486948/
+Resident sought completion of outdoor tile grouting, described a previous unfinished project and reported losing money. That account is an unverified personal report, not an independently established finding about any contractor. The resident emphasized dependable communication and an ongoing relationship rather than simply the cheapest price.
+Visible responses included a business name, a tagged provider, a bare phone number, website links, and invitations to continue by DM. Replies showed ages of approximately 6-7 weeks. Ten comments were displayed, but only the visible subset was read; Most relevant ordering can omit comments. Private DM outcomes are unknown.
+Implication: useful listings need exact tasks, minimum job size, location served, verified business identity and contact preference. A directory can reduce comparison work but cannot promise job completion or trustworthy workmanship merely from a contact/license check.
+
+EVIDENCE 2 — DEADLINE MATCHING
+Public Living in Tracy painting thread:
+https://www.facebook.com/groups/397855840786578/posts/2027114214527391/
+Resident described a mobile-home painting job with a move-in deadline. Visible responses included phone numbers, a named referral with a Yelp link and an image-only response. Six comments were displayed, four visible responses were inspected. Visible replies were approximately 48 weeks old. They did not visibly confirm the requested deadline, price, or job scope. No conclusion can be drawn about what happened in calls or DMs.
+Implication: shortlist by job type and owner-confirmed availability; avoid displaying stale availability as current. This historical thread demonstrates a workflow, not November demand volume.
+
+EVIDENCE 3 — SOCIAL PROOF ALREADY WORKS
+Public Living in Tracy preschool thread:
+https://www.facebook.com/groups/397855840786578/posts/1590465288192288/
+Four visible replies recommended three distinct preschools; one reply described a child's positive experience. Visible replies were approximately two years old. Contact details, current enrollment, age eligibility and schedule were not established in those replies.
+Implication: Facebook provides useful names and personal context. MoHoLocal could complement those referrals with independently checked program details and official links. Do not publish copied testimonials or characterize a school as endorsed by a whole group.
+
+OTHER OBSERVATIONS
+Mountain House Community recommendation results, sorted Most recent, included landscaper, mover, event-tent/drape, rental and handyman requests. Sorting is not proof that all returned posts are recent. A public nanny recommendation described a provider based in Tracy who sought work across multiple cities and offered specified languages. Treat personal service-provider posts as research leads, not permission to publish personal contact details.
+The cross-city bulletin-board feed sample included a Sacramento rental despite its four-city title. This establishes one geographic mismatch, not a measured spam rate. Earlier Tracy Foodies research found a complaint about repeated promotional posts, but one complaint cannot establish widespread dissatisfaction.
+
+GROUP ACTIVITY AND DISTRIBUTION
+Figures below were displayed by Facebook About pages at review; they are rounded membership counts and total posting activity, not service requests or unique potential customers. Membership overlaps across groups.
+
+Living in Tracy, California - Community Group
+https://www.facebook.com/groups/397855840786578/about
+12,198 total members; 70 posts in the last month; 3 new posts today.
+Rules explicitly prohibit business promotions/self-promotion, promotion of other groups/pages/apps/channels, and out-of-Tracy content. Do not use as a routine MoHoLocal advertising channel. Any proposed collaboration must be separately agreed with its administrators.
+
+Tracy Foodies
+https://www.facebook.com/groups/2603807653228252/about
+6,746 total members; 199 posts in the last month; 12 new posts today.
+Rules prohibit self-promotion, spam and irrelevant links. Suitable for understanding food-discovery needs. No permission to promote MoHoLocal or businesses was established.
+
+Mountain House Businesses
+https://www.facebook.com/groups/1162450227139406/about
+1,711 total members; 222 posts in the last month; 6 new posts today.
+The About view did not establish detailed posting rules. Its name alone is not permission to advertise. Potential source of owner conversations once outreach is authorized and administrators clarify expectations.
+
+Tracy/Mountain House/Manteca/Lathrop Information Bulletin Board
+https://www.facebook.com/groups/967423427514401/about
+6,534 total members; 883 posts in the last month; 49 new posts today.
+High publishing volume, not proven high buyer intent. A sample out-of-area post illustrates why city and service-area controls could be useful. No measured engagement, conversion or effective advertising permission established.
+
+PRODUCT PRIORITIES FROM THIS PASS
+1. Provider comparison for specific tasks: handyman/painting and landscaping remain strong initial categories; retain plumbing and cleaning from earlier evidence.
+2. Explicit cities served, separately from business address. Do not infer reach from a group name or area code.
+3. Business identity, contact method, source and checked date. Distinguish owner-submitted from resident-nominated information.
+4. Small-job acceptance, project scope and communication expectations supplied by owners.
+5. Availability information only with a confirmation date and expiry. Unknown is preferable to invented real-time capacity.
+6. Shareable direct-contact listing pages. Residents can keep their existing Facebook conversations while comparing useful details.
+7. Outcome collection with consent: did the resident receive a reply and find a fit? Never treat clicks or group comments as completed jobs.
+
+DISTRIBUTION RECOMMENDATION
+Prepare a small useful directory first. Seek authorized, administrator-approved partnerships rather than repetitive promotion. Possible offers to discuss: a maintained local-services resource, a correction channel, or a community-specific guide. Admin approval does not authorize copying members' private posts. Obtain publishable business details from owners or public primary sources. Establish additional channels through business websites, existing community organizations and an opt-in email list so acquisition does not rely on a single group.
+
+UNRESOLVED VALIDATION
+The three opened threads show what people ask and how replies are structured; they do not prove residents remain dissatisfied after calls/DMs. The next test should ask residents about completed searches and observe whether MoHoLocal saves time or improves outcomes. Provider willingness to participate, additional-work capacity, owner retention and willingness to pay remain unmeasured. This is not a complete audit of all Facebook groups or all accessible posts.

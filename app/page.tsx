@@ -1,4 +1,5 @@
-export const runtime = 'edge'
+import { PUBLIC_BUSINESS_COLUMNS } from '@/lib/supabase'
+export const runtime = 'nodejs'
 
 import { getSupabaseClient, type Business } from '@/lib/supabase'
 import { CITIES, CITY_BY_NAME, CITY_BY_SLUG, CITIES_209, CITIES_SOUTH_BAY } from '@/lib/cities'
@@ -47,7 +48,7 @@ async function getData(activeCity: string) {
     recentPostsResult,
   ] = await Promise.allSettled([
     // Total count
-    supabase.from('businesses').select('*', { count: 'exact', head: true }).eq('status', 'approved').eq('verified', true),
+    supabase.from('businesses').select(PUBLIC_BUSINESS_COLUMNS, { count: 'exact', head: true }).eq('status', 'approved').eq('verified', true),
     // City breakdown
     supabase.from('businesses').select('city').eq('status', 'approved').eq('verified', true),
     // Upcoming events (next 4)
@@ -62,7 +63,7 @@ async function getData(activeCity: string) {
     // Popular: top rated in active city
     supabase
       .from('businesses')
-      .select('*')
+      .select(PUBLIC_BUSINESS_COLUMNS)
       .eq('city', activeCity)
       .eq('status', 'approved')
       .eq('verified', true)
@@ -72,7 +73,7 @@ async function getData(activeCity: string) {
     // Trending: most reviewed in active city (proxy for most-visited/discussed)
     supabase
       .from('businesses')
-      .select('*')
+      .select(PUBLIC_BUSINESS_COLUMNS)
       .eq('city', activeCity)
       .eq('status', 'approved')
       .eq('verified', true)
@@ -83,7 +84,7 @@ async function getData(activeCity: string) {
     // Featured businesses
     supabase
       .from('businesses')
-      .select('*')
+      .select(PUBLIC_BUSINESS_COLUMNS)
       .eq('status', 'approved')
       .eq('verified', true)
       .eq('featured', true)

@@ -1,0 +1,93 @@
+MOUNTAIN HOUSE + TRACY: DIRECTORY MARKET RESEARCH
+Research date: November 5, 2026, America/Los_Angeles
+
+DECISION
+Launch a focused local-services directory for people choosing help for their home. Start with plumbing, handyman/small repairs, house cleaning, and landscaping. Include painters as a related service. Expand into automotive repair after validating sufficient local supply. Build a short newcomer guide alongside the listings. Childcare and catering merit the next validation round.
+
+This is a provisional product recommendation based on qualitative desk research, not proof of product-market fit or revenue potential.
+
+METHOD AND LIMITS
+Facebook discovery surfaced a working inventory of 101 candidate local/regional groups after URL deduplication and an initial exclusion of obvious unrelated cities. This inventory has NOT been fully audited for geography, rules, authenticity, or membership, and is not a count of all relevant groups in existence. Facebook search is personalized and incomplete. Do not describe 101 groups as content-reviewed.
+
+Content samples were read in Mountain House (private, joined), Mountain House Community (public, joined), Living in Tracy, California - Community Group (public), Tracy Foodies (public), and Mountain House Small Business Entrepreneurs (public; limited feed). About/rules pages were inspected for What's Happening in Mountain House, Mountain House Businesses, and Mountain House Questa Village. Depth varies by group.
+
+Recommendation searches used the term recommendations. Tracy community and food searches were also sorted Most recent. Several results were evidently historical; for example, one catering request referred to February 7, 2026. Individual post timestamps were frequently obscured in accessible text. No 30-day demand estimate, representative survey, or reliable trend rate can be derived. Comments are engagement signals, not unique buyers or sales. Search samples are biased toward recommendation-seeking users.
+
+Private-group content is summarized only at category level. No private member profiles, contact details, or verbatim testimonials are included. Public posts are leads for research, not independently verified endorsements. No posts, messages, join requests, or outreach were sent.
+
+RESIDENT PROBLEMS AND EVIDENCE
+
+1. Choosing trustworthy providers.
+Observed: Mountain House requests and recommendations concerned plumbing, flooring/door repairs, custom entertainment-center work, mechanics, landscaping/pergola projects, and home cleaning. Language emphasized honesty, reliability, fair pricing, and timelines. Public Mountain House Community results also contained plumbing and cleaning recommendations.
+Interpretation: a phonebook alone does not answer the selection question. Listings should specify actual services, service areas, source dates, business identity, and what has been checked. A contact check is not an endorsement of workmanship.
+Confidence: strongest qualitative problem signal in the sample; prevalence and satisfaction with existing answers unmeasured.
+
+2. Matching a provider to a specific job and deadline.
+Observed: a Tracy request sought painting of a mobile home before move-in; Mountain House requests described specific repair and landscaping tasks. A cleaning request in the Tracy group concerned a Lathrop home, illustrating that group audience and service geography cross city boundaries.
+Interpretation: filter by task and cities served, not just business location. Show last-confirmed service scope and let customers contact providers directly. Availability and pricing require owner confirmation; do not invent live availability.
+Confidence: medium qualitative evidence.
+
+3. New residents lack a local starting point.
+Observed: Tracy residents identifying themselves as newcomers asked for hair stylists, food recommendations, walking/biking locations, and recycling guidance. Other results asked about preschools and elementary private schools.
+Interpretation: a newcomer guide can connect local services with official city information. Public resources should link to primary authorities and have checked dates.
+Confidence: repeated qualitative evidence, no relocation-volume estimate.
+
+4. Recommendation discovery competes with repetitive advertising.
+Observed: a public Tracy Foodies post complained that repeated restaurant advertising had displaced useful recommendations, including ads for a Livermore restaurant. Food queries included birria tacos, hot-and-sour soup, catering for a specified event size, and wedding sweets.
+Interpretation: distinguish resident editorial guidance from sponsored listings; make city, cuisine, event size and service format explicit. This single complaint cannot establish group-wide dissatisfaction.
+Confidence: medium for food-discovery needs; low for the prevalence of advertising frustration.
+
+5. Listings can have ambiguous or inconsistent evidence.
+Observed: a sampled MoHoLocal pool-service page displayed a 4.9 score alongside 0 reviews and a Verified badge without an explanation in the extracted text. This may reflect separate rating data or rendering; it does not establish fabrication. Aksland Real Estate's Manteca chamber phone differed from the business website; this adjacent-city example illustrates why source conflicts need review, not that Mountain House/Tracy directories are broadly inaccurate.
+Interpretation: explain rating sources, verification scope, check dates, and unresolved conflicts. Avoid importing unverified stars or blanket trust badges.
+Confidence: directly observed page-level issues; not a market-wide error rate.
+
+BUSINESS PROBLEMS: EVIDENCE VS HYPOTHESIS
+Observed supply channels include Mountain House Businesses and Mountain House Small Business Entrepreneurs. Mountain House Businesses showed 222 posts in the last month on its About page. This is publishing activity, not proof of business outcomes. Public community results include provider promotions and referrals.
+Hypotheses to test with owners: repeated posting takes time; referrals disappear in feeds; inquiries may come from outside the service area; accurate profiles may improve lead quality. None of these costs, conversion effects, or willingness to pay has been measured. Free listing and claim workflows already exist in competing directories, so a basic listing is not a defensible paid proposition.
+
+EXISTING ALTERNATIVES
+Tracy Chamber: city/chamber business directory with name/category search and contact/classification information. Its embedded listing results did not render in the web-text view, so listing depth and full functionality were not assessed. Source: https://tracychamber.org/directory/
+
+Aapli Marathi Shala: community directory with 76 displayed businesses/services at review, categories, contact details, offers, and reviewed submissions. It already addresses community discovery. Source: https://mhshala.org/directory/
+
+Mountain House Local: local guide with category pages. The Home & Garden page displayed one business at review. This is a narrow category-page observation, not a count of all local providers. Source: https://www.mountainhouselocal.com/directory/category/home-and-garden
+
+MoHoLocal: broad directory with city/category search, owner claims, ratings, community board and events. Its homepage displayed 36 Mountain House and 146 Tracy businesses at review; these are site-displayed inventory figures, not audited active-business counts. Features alone will not differentiate us. Sources: https://www.moholocal.com/ and https://www.moholocal.com/business/93441d13-ee5c-40f5-843b-d42450152238
+
+Google, Yelp and other general alternatives have not been systematically audited in this pass. Do not claim that the market lacks local directories or that our concept is unique. Ownership of the directories reviewed was not established; treat them as existing alternatives, not necessarily unrelated competitors.
+
+LAUNCH PRIORITIES
+Tier 1 — Plumbing; handyman/small repairs; house cleaning; landscaping. Best alignment with observed selection problems. Related painting listings fit naturally. Order is editorial judgment rather than a statistically measured demand ranking.
+Tier 2 — Automotive repair. Mountain House trust-oriented request provides an initial signal; requires more Tracy evidence and supply validation.
+Tier 2 — Childcare/preschools and tutoring. Preschool/private-school requests and a public nanny recommendation support family-service discovery, but tutoring demand was not directly established in the inspected posts. Verify category-specific details before publishing; never label a person background-checked without evidence.
+Tier 2 — Catering and event food. More specific needs and useful filters than a broad restaurant list. Examples include cuisine, event size, service type, lead time, minimum order, and owner-confirmed dietary options.
+Later — Broad restaurant discovery, beauty, health, real estate, shopping, jobs, rentals, and a full social feed. Some have demand signals, but broad coverage would dilute the initial quality effort. This is a scope decision, not a judgment that residents do not need them.
+
+MINIMUM USEFUL LISTING
+Business identity; primary category and exact services; located-in city separately from cities served; public business phone and website; owner-confirmed booking/contact method; hours if confirmed; source URLs; checked date; verification scope; correction link; owner-claim status. Add estimates/call-out fees, minimum job size, availability and languages only when supplied and confirmed. Use relevant license registry evidence where applicable, with identifier and check date. A license status check must not become a general quality guarantee.
+
+Do not publish private home addresses merely because they appear in a filing. For home-based/service-area businesses, city and service area are normally sufficient. Obtain publishable business information independently of private-group comments.
+
+SUCCESS CRITERIA TO TEST BEFORE EXPANDING
+Proposed experiment, not completed research:
+Recruit 15 residents across both cities and 10 providers across launch categories. Ask residents about their last actual search: task, channels used, time spent, options contacted, outcome, and what was missing. Ask providers about their last five inquiries, referral channels, service geography, capacity, and actual spend. Avoid asking only whether they like the idea.
+
+Build a pilot with roughly 5-8 checked providers per initial category across the two cities, ensuring each city has actual coverage rather than duplicating records. Run 10 real resident search tasks. Proposed decision thresholds: at least 8 find two plausible providers in under two minutes, and at least 5 subsequently contact one. Verify contact outcomes with consent. These are internal experiment gates, not industry benchmarks.
+
+Track outdated contact rate, unmet searches, contacts per useful session, provider response and resident follow-through. Test willingness to pay only after demonstrable value; do not infer it from Facebook group size. Any paid placement must be clearly labeled and cannot buy a verification result.
+
+FACEBOOK SOURCE INDEX
+Private Mountain House: https://www.facebook.com/groups/MountainHouse/ (member access required; category-level findings only)
+Public Mountain House Community: https://www.facebook.com/groups/590827082964592/search/?q=recommendations
+Living in Tracy: https://www.facebook.com/groups/397855840786578/search/?q=recommendations
+Tracy Foodies: https://www.facebook.com/groups/2603807653228252/search/?q=recommendations
+Small Business Entrepreneurs: https://www.facebook.com/groups/2952608514866450/
+Mountain House Businesses: https://www.facebook.com/groups/1162450227139406/about
+What's Happening in Mountain House: https://www.facebook.com/groups/152008383454633/about
+Questa Village: https://www.facebook.com/groups/313985256586279/about
+
+Rules affect distribution: the inspected What's Happening group limits advertising frequency and geography; Questa's rules describe monthly business-ad limits. Both include privacy expectations. Recheck before any outreach. Group rules and search visibility do not authorize reposting testimonials or exporting member lists.
+
+OPEN QUESTIONS
+Are the observed provider-selection problems poorly served after residents receive replies? Do enough providers want additional work? Will residents choose our directory over existing channels? Can listings stay accurate at a sustainable cost? Which category generates completed jobs rather than clicks? These questions remain unvalidated.

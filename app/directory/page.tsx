@@ -1,5 +1,7 @@
 'use client'
-export const runtime = 'edge'
+
+import { PUBLIC_BUSINESS_COLUMNS } from '@/lib/supabase'
+export const runtime = 'nodejs'
 
 import { useState, useEffect, useRef } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
@@ -228,7 +230,7 @@ export default function DirectoryPage() {
 
     let req = supabase
       .from('businesses')
-      .select('*', { count: 'exact' })
+      .select(PUBLIC_BUSINESS_COLUMNS, { count: 'exact' })
       .eq('status', 'approved')
       .eq('verified', true)
       .range(from, to)

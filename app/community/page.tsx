@@ -1,4 +1,4 @@
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 import { getSupabaseClient, type CommunityPost } from '@/lib/supabase'
 import Link from 'next/link'

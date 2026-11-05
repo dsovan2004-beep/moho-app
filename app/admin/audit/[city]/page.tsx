@@ -1,12 +1,13 @@
 'use client'
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { getSupabaseClient } from '@/lib/supabase'
 import Link from 'next/link'
+import { reviewBusiness } from '@/lib/review-business'
 
-const ADMIN_EMAILS = ['dsovan2004@gmail.com', 'danyoeur1983@gmail.com']
+
 
 const CITY_MAP: Record<string, { name: string; gradient: string; emoji: string }> = {
   'mountain-house': { name: 'Mountain House', gradient: 'linear-gradient(135deg,#1e3a5f 0%,#1e40af 100%)', emoji: '🏘️' },
@@ -57,9 +58,8 @@ export default function CityAuditPage() {
   // ── Auth ──────────────────────────────────────────────────────────────────
   useEffect(() => {
     const supabase = getSupabaseClient()
-    supabase.auth.getSession().then(({ data }) => {
-      const email = data.session?.user?.email ?? ''
-      if (email && ADMIN_EMAILS.includes(email)) {
+    supabase.rpc('is_directory_admin').then(({ data: isAdmin, error }) => {
+      if (!error && isAdmin === true) {
         setAuthorized(true)
       } else {
         router.replace('/')
@@ -74,10 +74,10 @@ export default function CityAuditPage() {
     const supabase = getSupabaseClient()
     setLoading(true)
     const { data } = await supabase
-      .from('businesses')
+      .rpc('admin_businesses')
       .select('*')
       .eq('city', cityInfo.name)
-      .in('status', ['approved', 'pending'])
+      .in('status', ['approved', 'pending', 'pending_review'])
       .order('name', { ascending: true })
     setBusinesses((data as AuditBusiness[]) ?? [])
     setLoading(false)
@@ -91,60 +91,16 @@ export default function CityAuditPage() {
   // Approving a business requires BOTH status='approved' AND verified=true.
   // The public directory filters on both fields — setting only one is a no-op.
   async function toggleVerified(id: string, currentlyVerified: boolean) {
-    const supabase = getSupabaseClient()
     setTogglingId(id)
-    const newVerified = !currentlyVerified
-    // When approving: status='approved' + verified=true
-    // When revoking:  status='pending'  + verified=false
-    const update = newVerified
-      ? { verified: true,  status: 'approved' }
-      : { verified: false, status: 'pending'  }
-    const { error } = await supabase
-      .from('businesses')
-      .update(update)
-      .eq('id', id)
-    if (!error) {
-      setBusinesses((prev) =>
-        prev.map((b) => (b.id === id ? { ...b, ...update } : b))
-      )
-      showToast(newVerified ? '✅ Approved & verified' : '⚠️ Reverted to pending', true)
-    } else {
-      showToast('Error — try again', false)
-    }
-    setTogglingId(null)
+    try {
+      const saved = await reviewBusiness(id, currentlyVerified ? 'unpublish' : 'approve')
+      if (saved) { await loadBusinesses(); showToast('Review saved with evidence', true) }
+    } catch (err) { showToast(err instanceof Error ? err.message : 'Review failed', false) }
+    finally { setTogglingId(null) }
   }
 
-  // ── Bulk verify selected ──────────────────────────────────────────────────
-  // Must set status='approved' alongside verified=true — both required for
-  // a business to appear in the public directory.
   async function bulkVerify() {
-    if (selected.size === 0) return
-    const supabase = getSupabaseClient()
-    setTogglingId('bulk')
-
-    const ids = Array.from(selected)
-
-    // Supabase .in() has a limit — batch in groups of 50
-    let hasError = false
-    for (let i = 0; i < ids.length; i += 50) {
-      const batch = ids.slice(i, i + 50)
-      const { error } = await supabase
-        .from('businesses')
-        .update({ verified: true, status: 'approved' })
-        .in('id', batch)
-      if (error) { hasError = true; break }
-    }
-
-    if (!hasError) {
-      setBusinesses((prev) =>
-        prev.map((b) => (ids.includes(b.id) ? { ...b, verified: true, status: 'approved' } : b))
-      )
-      showToast(`✅ ${ids.length} businesses approved & verified!`, true)
-      setSelected(new Set())
-    } else {
-      showToast('Error — some updates may have failed', false)
-    }
-    setTogglingId(null)
+    showToast('Review listings individually and record their evidence before approval.', false)
   }
 
   function showToast(msg: string, ok: boolean) {

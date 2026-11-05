@@ -1,8 +1,9 @@
 'use client'
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
-import { useState } from 'react'
+import { safeReturnTo } from '@/lib/auth-return'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { signInWithGoogle, signInWithFacebook, signInWithEmail } from '@/lib/supabase'
@@ -18,6 +19,8 @@ function FacebookIcon() {
 
 export default function LoginPage() {
   const router = useRouter()
+  const [returnTo, setReturnTo] = useState('/')
+  useEffect(() => { setReturnTo(safeReturnTo(new URLSearchParams(window.location.search).get('next'))) }, [])
   const [email, setEmail]       = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading]           = useState(false)
@@ -56,7 +59,7 @@ export default function LoginPage() {
       setError(error.message)
       setLoading(false)
     } else {
-      router.push('/')
+      router.push(safeReturnTo(new URLSearchParams(window.location.search).get('next')))
     }
   }
 
@@ -208,7 +211,7 @@ export default function LoginPage() {
         {/* Footer link */}
         <p className="text-center mt-6 text-sm text-gray-500">
           Don&apos;t have an account?{' '}
-          <Link href="/register" className="font-semibold hover:underline" style={{ color: '#f59e0b' }}>
+          <Link href={`/register?next=${encodeURIComponent(returnTo)}`} className="font-semibold hover:underline" style={{ color: '#f59e0b' }}>
             Join free
           </Link>
         </p>

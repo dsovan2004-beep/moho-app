@@ -1,4 +1,5 @@
-export const runtime = 'edge'
+import { PUBLIC_BUSINESS_COLUMNS } from '@/lib/supabase'
+export const runtime = 'nodejs'
 
 import { getSupabaseClient, type Business } from '@/lib/supabase'
 import Link from 'next/link'
@@ -226,7 +227,7 @@ async function getBusinesses(city: string, category: string): Promise<Business[]
   const supabase = getSupabaseClient()
   const { data, error } = await supabase
     .from('businesses')
-    .select('*, business_images(image_url, position, verified, source)')
+    .select(`${PUBLIC_BUSINESS_COLUMNS}, business_images(image_url, position, verified, source)`)
     .eq('city', city)
     .eq('category', category)
     .eq('status', 'approved')

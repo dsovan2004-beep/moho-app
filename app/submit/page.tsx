@@ -1,8 +1,10 @@
 'use client'
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { RequestAccount, useRequestAccount } from '@/app/components/RequestAccount'
+import { getSupabaseClient } from '@/lib/supabase'
 
 const WORKER_URL = 'https://moho-ingestion.dsovan2004.workers.dev'
 
@@ -19,6 +21,7 @@ const SUBMISSION_TYPES = [
 type FormState = 'idle' | 'submitting' | 'success' | 'error'
 
 export default function SubmitPage() {
+  const { user, checking } = useRequestAccount()
   const [formState, setFormState] = useState<FormState>('idle')
   const [errorMsg,  setErrorMsg]  = useState('')
 
@@ -34,6 +37,7 @@ export default function SubmitPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (!user || formState === 'submitting') return
     setFormState('submitting')
     setErrorMsg('')
 
@@ -47,9 +51,11 @@ export default function SubmitPage() {
       if (eventDate)  body.event_date  = new Date(eventDate).toISOString()
       if (contactUrl) body.contact_url = contactUrl.trim()
 
+      const { data: { session } } = await getSupabaseClient().auth.getSession()
+      if (!session?.access_token) throw new Error('Sign in before submitting.')
       const res = await fetch(`${WORKER_URL}/submit-signal`, {
         method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
         body:    JSON.stringify(body),
       })
 
@@ -75,7 +81,7 @@ export default function SubmitPage() {
           <div className="text-5xl mb-4">🙌</div>
           <h2 className="text-2xl font-black text-gray-900 mb-2">Thanks for the tip!</h2>
           <p className="text-gray-500 text-sm mb-8">
-            Your submission is in. Our team reviews everything before it goes live — usually within 24 hours.
+            Your submission is in. Our team reviews everything before it goes live — and keeps it pending until approved.
           </p>
           <div className="flex gap-3 justify-center">
             <button
@@ -127,7 +133,9 @@ export default function SubmitPage() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        {!user && !checking && <RequestAccount returnTo="/submit" />}
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <fieldset disabled={!user || checking || formState === 'submitting'} className="space-y-5">
 
           {/* City */}
           <div>
@@ -272,7 +280,8 @@ export default function SubmitPage() {
             No spam, no selling your info. Ever.
           </p>
 
-        </form>
+        </fieldset>
+          </form>
       </div>
     </div>
   )

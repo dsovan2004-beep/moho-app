@@ -50,6 +50,8 @@ for (const f of ENV_CANDIDATES) {
 // Support NEXT_PUBLIC_ prefix (Next.js) or plain names (some setups)
 const SUPABASE_URL      = process.env.NEXT_PUBLIC_SUPABASE_URL      || process.env.SUPABASE_URL
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY
+// Short-lived confirmed admin session; never hardcode or commit this token.
+const ADMIN_ACCESS_TOKEN = process.env.MOHO_ADMIN_ACCESS_TOKEN
 const SCAFFOLD_DIR = path.resolve(__dirname, '..')
 const SIGNALS_DIR  = path.join(SCAFFOLD_DIR, 'signals-inbox')
 const RAW_DIR      = path.join(SIGNALS_DIR, 'raw')
@@ -368,7 +370,7 @@ function logFilename() {
  * Returns the public URL, or null if upload is unavailable/fails.
  */
 async function uploadScreenshotImage(imagePath, filename) {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY || !ADMIN_ACCESS_TOKEN) {
     console.log('  ⚠️  Image upload skipped — missing env vars:',
       !SUPABASE_URL ? 'NEXT_PUBLIC_SUPABASE_URL' : '',
       !SUPABASE_ANON_KEY ? 'NEXT_PUBLIC_SUPABASE_ANON_KEY' : '')
@@ -378,7 +380,7 @@ async function uploadScreenshotImage(imagePath, filename) {
   console.log(`  🔑  Supabase URL: ${SUPABASE_URL.slice(0, 40)}…`)
 
   try {
-    const supabase    = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    const supabase    = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { global: { headers: { Authorization: `Bearer ${ADMIN_ACCESS_TOKEN}` } }, auth: { persistSession: false, autoRefreshToken: false } })
     const imageBuffer = fs.readFileSync(imagePath)
     const ext         = path.extname(filename).toLowerCase()
     const mimeType    = (ext === '.jpg' || ext === '.jpeg') ? 'image/jpeg'
@@ -533,7 +535,7 @@ async function processFile(filename, log) {
   try {
     const res = await fetch(`${WORKER_URL}/submit-signal`, {
       method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${ADMIN_ACCESS_TOKEN ?? ''}` },
       body:    JSON.stringify(payload),
     })
 

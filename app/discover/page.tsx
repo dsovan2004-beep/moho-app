@@ -1,4 +1,4 @@
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 import { getSupabaseClient } from '@/lib/supabase'
 import { CITIES, CITIES_209, CITIES_SOUTH_BAY } from '@/lib/cities'

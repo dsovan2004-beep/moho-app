@@ -1,0 +1,572 @@
+{
+  "jsonb_build_object": {
+    "views": [
+      {
+        "viewname": "pending_review",
+        "definition": " SELECT 'business'::text AS record_type,\n    (businesses.id)::text AS id,\n    businesses.name AS title,\n    businesses.city,\n    businesses.source,\n    businesses.confidence_score,\n    businesses.created_at\n   FROM businesses\n  WHERE ((businesses.needs_review = true) AND (businesses.status = 'pending'::text))\nUNION ALL\n SELECT 'event'::text AS record_type,\n    (events.id)::text AS id,\n    events.title,\n    events.city,\n    events.source,\n    events.confidence_score,\n    events.created_at\n   FROM events\n  WHERE ((events.needs_review = true) AND (events.ingestion_status = 'pending'::text))\nUNION ALL\n SELECT 'lost_found'::text AS record_type,\n    (lost_and_found.id)::text AS id,\n    lost_and_found.title,\n    lost_and_found.city,\n    lost_and_found.source,\n    lost_and_found.confidence_score,\n    lost_and_found.created_at\n   FROM lost_and_found\n  WHERE ((lost_and_found.needs_review = true) AND (lost_and_found.ingestion_status = 'active'::text))\n  ORDER BY 7 DESC;"
+      }
+    ],
+    "policies": [
+      {
+        "cmd": "SELECT",
+        "qual": "true",
+        "roles": [
+          "public"
+        ],
+        "tablename": "community_posts",
+        "permissive": "PERMISSIVE",
+        "policyname": "Anyone can read community posts",
+        "schemaname": "public",
+        "with_check": null
+      },
+      {
+        "cmd": "INSERT",
+        "qual": null,
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "community_posts",
+        "permissive": "PERMISSIVE",
+        "policyname": "Authenticated users can post",
+        "schemaname": "public",
+        "with_check": "(auth.uid() = user_id)"
+      },
+      {
+        "cmd": "SELECT",
+        "qual": "true",
+        "roles": [
+          "public"
+        ],
+        "tablename": "community_posts",
+        "permissive": "PERMISSIVE",
+        "policyname": "Public read community_posts",
+        "schemaname": "public",
+        "with_check": null
+      },
+      {
+        "cmd": "SELECT",
+        "qual": "true",
+        "roles": [
+          "public"
+        ],
+        "tablename": "events",
+        "permissive": "PERMISSIVE",
+        "policyname": "Public read events",
+        "schemaname": "public",
+        "with_check": null
+      },
+      {
+        "cmd": "SELECT",
+        "qual": "true",
+        "roles": [
+          "public"
+        ],
+        "tablename": "members",
+        "permissive": "PERMISSIVE",
+        "policyname": "Public read members",
+        "schemaname": "public",
+        "with_check": null
+      },
+      {
+        "cmd": "INSERT",
+        "qual": null,
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "businesses",
+        "permissive": "PERMISSIVE",
+        "policyname": "Allow authenticated users to submit businesses",
+        "schemaname": "public",
+        "with_check": "true"
+      },
+      {
+        "cmd": "UPDATE",
+        "qual": "true",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "businesses",
+        "permissive": "PERMISSIVE",
+        "policyname": "Authenticated can update own businesses",
+        "schemaname": "public",
+        "with_check": null
+      },
+      {
+        "cmd": "SELECT",
+        "qual": "true",
+        "roles": [
+          "public"
+        ],
+        "tablename": "businesses",
+        "permissive": "PERMISSIVE",
+        "policyname": "Public read businesses",
+        "schemaname": "public",
+        "with_check": null
+      },
+      {
+        "cmd": "UPDATE",
+        "qual": "true",
+        "roles": [
+          "service_role"
+        ],
+        "tablename": "businesses",
+        "permissive": "PERMISSIVE",
+        "policyname": "Service role can update businesses",
+        "schemaname": "public",
+        "with_check": null
+      },
+      {
+        "cmd": "INSERT",
+        "qual": null,
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "lost_and_found",
+        "permissive": "PERMISSIVE",
+        "policyname": "Allow authenticated users to post lost found",
+        "schemaname": "public",
+        "with_check": "true"
+      },
+      {
+        "cmd": "SELECT",
+        "qual": "true",
+        "roles": [
+          "public"
+        ],
+        "tablename": "lost_and_found",
+        "permissive": "PERMISSIVE",
+        "policyname": "Public read lost_and_found",
+        "schemaname": "public",
+        "with_check": null
+      },
+      {
+        "cmd": "SELECT",
+        "qual": "true",
+        "roles": [
+          "public"
+        ],
+        "tablename": "reviews",
+        "permissive": "PERMISSIVE",
+        "policyname": "Anyone can read reviews",
+        "schemaname": "public",
+        "with_check": null
+      },
+      {
+        "cmd": "INSERT",
+        "qual": null,
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "reviews",
+        "permissive": "PERMISSIVE",
+        "policyname": "Authenticated users can insert reviews",
+        "schemaname": "public",
+        "with_check": "(auth.uid() = user_id)"
+      },
+      {
+        "cmd": "SELECT",
+        "qual": "true",
+        "roles": [
+          "public"
+        ],
+        "tablename": "community_replies",
+        "permissive": "PERMISSIVE",
+        "policyname": "Anyone can read replies",
+        "schemaname": "public",
+        "with_check": null
+      },
+      {
+        "cmd": "INSERT",
+        "qual": null,
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "community_replies",
+        "permissive": "PERMISSIVE",
+        "policyname": "Authenticated users can reply",
+        "schemaname": "public",
+        "with_check": "(auth.uid() = user_id)"
+      },
+      {
+        "cmd": "INSERT",
+        "qual": null,
+        "roles": [
+          "public"
+        ],
+        "tablename": "post_reactions",
+        "permissive": "PERMISSIVE",
+        "policyname": "Public insert post_reactions",
+        "schemaname": "public",
+        "with_check": "true"
+      },
+      {
+        "cmd": "SELECT",
+        "qual": "true",
+        "roles": [
+          "public"
+        ],
+        "tablename": "post_reactions",
+        "permissive": "PERMISSIVE",
+        "policyname": "Public read post_reactions",
+        "schemaname": "public",
+        "with_check": null
+      },
+      {
+        "cmd": "INSERT",
+        "qual": null,
+        "roles": [
+          "anon"
+        ],
+        "tablename": "objects",
+        "permissive": "PERMISSIVE",
+        "policyname": "Allow anon uploads to signals folder",
+        "schemaname": "storage",
+        "with_check": "((bucket_id = 'community-images'::text) AND ((storage.foldername(name))[1] = 'signals'::text))"
+      },
+      {
+        "cmd": "INSERT",
+        "qual": null,
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "objects",
+        "permissive": "PERMISSIVE",
+        "policyname": "Allow authenticated uploads to community-images",
+        "schemaname": "storage",
+        "with_check": "(bucket_id = 'community-images'::text)"
+      },
+      {
+        "cmd": "INSERT",
+        "qual": null,
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "objects",
+        "permissive": "PERMISSIVE",
+        "policyname": "Allow authenticated uploads to pet-images",
+        "schemaname": "storage",
+        "with_check": "(bucket_id = 'pet-images'::text)"
+      },
+      {
+        "cmd": "SELECT",
+        "qual": "(bucket_id = 'community-images'::text)",
+        "roles": [
+          "public"
+        ],
+        "tablename": "objects",
+        "permissive": "PERMISSIVE",
+        "policyname": "Allow public read of community-images",
+        "schemaname": "storage",
+        "with_check": null
+      },
+      {
+        "cmd": "INSERT",
+        "qual": null,
+        "roles": [
+          "anon"
+        ],
+        "tablename": "objects",
+        "permissive": "PERMISSIVE",
+        "policyname": "anon upload signals",
+        "schemaname": "storage",
+        "with_check": "((bucket_id = 'community-images'::text) AND ((storage.foldername(name))[1] = 'signals'::text))"
+      },
+      {
+        "cmd": "SELECT",
+        "qual": "(bucket_id = 'community-images'::text)",
+        "roles": [
+          "public"
+        ],
+        "tablename": "objects",
+        "permissive": "PERMISSIVE",
+        "policyname": "public read community-images",
+        "schemaname": "storage",
+        "with_check": null
+      },
+      {
+        "cmd": "ALL",
+        "qual": "true",
+        "roles": [
+          "public"
+        ],
+        "tablename": "community_submissions",
+        "permissive": "PERMISSIVE",
+        "policyname": "service_role_all",
+        "schemaname": "public",
+        "with_check": "true"
+      },
+      {
+        "cmd": "DELETE",
+        "qual": "true",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "business_images",
+        "permissive": "PERMISSIVE",
+        "policyname": "Authenticated users can delete business images",
+        "schemaname": "public",
+        "with_check": null
+      },
+      {
+        "cmd": "INSERT",
+        "qual": null,
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "business_images",
+        "permissive": "PERMISSIVE",
+        "policyname": "Authenticated users can insert business images",
+        "schemaname": "public",
+        "with_check": "true"
+      },
+      {
+        "cmd": "UPDATE",
+        "qual": "true",
+        "roles": [
+          "authenticated"
+        ],
+        "tablename": "business_images",
+        "permissive": "PERMISSIVE",
+        "policyname": "Authenticated users can update business images",
+        "schemaname": "public",
+        "with_check": "true"
+      },
+      {
+        "cmd": "SELECT",
+        "qual": "true",
+        "roles": [
+          "public"
+        ],
+        "tablename": "business_images",
+        "permissive": "PERMISSIVE",
+        "policyname": "Public read access for business images",
+        "schemaname": "public",
+        "with_check": null
+      },
+      {
+        "cmd": "SELECT",
+        "qual": "(auth.role() = 'service_role'::text)",
+        "roles": [
+          "public"
+        ],
+        "tablename": "business_suggestions",
+        "permissive": "PERMISSIVE",
+        "policyname": "Admins can read suggestions",
+        "schemaname": "public",
+        "with_check": null
+      },
+      {
+        "cmd": "INSERT",
+        "qual": null,
+        "roles": [
+          "public"
+        ],
+        "tablename": "business_suggestions",
+        "permissive": "PERMISSIVE",
+        "policyname": "Anyone can submit a suggestion",
+        "schemaname": "public",
+        "with_check": "true"
+      },
+      {
+        "cmd": "SELECT",
+        "qual": "(auth.role() = 'service_role'::text)",
+        "roles": [
+          "public"
+        ],
+        "tablename": "listing_reports",
+        "permissive": "PERMISSIVE",
+        "policyname": "Admins can read reports",
+        "schemaname": "public",
+        "with_check": null
+      },
+      {
+        "cmd": "INSERT",
+        "qual": null,
+        "roles": [
+          "public"
+        ],
+        "tablename": "listing_reports",
+        "permissive": "PERMISSIVE",
+        "policyname": "Anyone can submit a report",
+        "schemaname": "public",
+        "with_check": "true"
+      },
+      {
+        "cmd": "UPDATE",
+        "qual": "(auth.role() = 'authenticated'::text)",
+        "roles": [
+          "public"
+        ],
+        "tablename": "city_status",
+        "permissive": "PERMISSIVE",
+        "policyname": "Authenticated users can update city_status",
+        "schemaname": "public",
+        "with_check": null
+      },
+      {
+        "cmd": "SELECT",
+        "qual": "true",
+        "roles": [
+          "public"
+        ],
+        "tablename": "city_status",
+        "permissive": "PERMISSIVE",
+        "policyname": "Public can read city_status",
+        "schemaname": "public",
+        "with_check": null
+      }
+    ],
+    "triggers": [
+      {
+        "tgname": "update_business_rating_trigger",
+        "definition": "CREATE TRIGGER update_business_rating_trigger AFTER INSERT OR DELETE OR UPDATE ON public.reviews FOR EACH ROW EXECUTE FUNCTION update_business_rating()"
+      },
+      {
+        "tgname": "update_reply_count_trigger",
+        "definition": "CREATE TRIGGER update_reply_count_trigger AFTER INSERT OR DELETE ON public.community_replies FOR EACH ROW EXECUTE FUNCTION update_post_reply_count()"
+      }
+    ],
+    "constraints": [
+      {
+        "conname": "businesses_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "businesses"
+      },
+      {
+        "conname": "events_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "events"
+      },
+      {
+        "conname": "community_posts_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "community_posts"
+      },
+      {
+        "conname": "lost_and_found_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "lost_and_found"
+      },
+      {
+        "conname": "members_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "members"
+      },
+      {
+        "conname": "members_email_key",
+        "definition": "UNIQUE (email)",
+        "table_name": "members"
+      },
+      {
+        "conname": "reviews_rating_check",
+        "definition": "CHECK (((rating >= 1) AND (rating <= 5)))",
+        "table_name": "reviews"
+      },
+      {
+        "conname": "reviews_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "reviews"
+      },
+      {
+        "conname": "reviews_business_id_fkey",
+        "definition": "FOREIGN KEY (business_id) REFERENCES businesses(id) ON DELETE CASCADE",
+        "table_name": "reviews"
+      },
+      {
+        "conname": "reviews_user_id_fkey",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "table_name": "reviews"
+      },
+      {
+        "conname": "community_posts_user_id_fkey",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE SET NULL",
+        "table_name": "community_posts"
+      },
+      {
+        "conname": "community_replies_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "community_replies"
+      },
+      {
+        "conname": "community_replies_post_id_fkey",
+        "definition": "FOREIGN KEY (post_id) REFERENCES community_posts(id) ON DELETE CASCADE",
+        "table_name": "community_replies"
+      },
+      {
+        "conname": "community_replies_user_id_fkey",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+        "table_name": "community_replies"
+      },
+      {
+        "conname": "business_suggestions_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "business_suggestions"
+      },
+      {
+        "conname": "listing_reports_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "listing_reports"
+      },
+      {
+        "conname": "listing_reports_business_id_fkey",
+        "definition": "FOREIGN KEY (business_id) REFERENCES businesses(id) ON DELETE SET NULL",
+        "table_name": "listing_reports"
+      },
+      {
+        "conname": "community_submissions_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "community_submissions"
+      },
+      {
+        "conname": "community_submissions_type_check",
+        "definition": "CHECK ((submission_type = ANY (ARRAY['event'::text, 'lost_pet'::text, 'business_update'::text, 'community_tip'::text, 'garage_sale'::text])))",
+        "table_name": "community_submissions"
+      },
+      {
+        "conname": "business_images_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "business_images"
+      },
+      {
+        "conname": "business_images_business_id_fkey",
+        "definition": "FOREIGN KEY (business_id) REFERENCES businesses(id) ON DELETE CASCADE",
+        "table_name": "business_images"
+      },
+      {
+        "conname": "city_status_status_check",
+        "definition": "CHECK ((status = ANY (ARRAY['pending'::text, 'auditing'::text, 'verified'::text])))",
+        "table_name": "city_status"
+      },
+      {
+        "conname": "city_status_pkey",
+        "definition": "PRIMARY KEY (city)",
+        "table_name": "city_status"
+      },
+      {
+        "conname": "post_reactions_reaction_type_check",
+        "definition": "CHECK ((reaction_type = ANY (ARRAY['helpful'::text, 'love'::text, 'funny'::text, 'thanks'::text, 'following'::text])))",
+        "table_name": "post_reactions"
+      },
+      {
+        "conname": "post_reactions_pkey",
+        "definition": "PRIMARY KEY (id)",
+        "table_name": "post_reactions"
+      },
+      {
+        "conname": "post_reactions_post_id_reaction_type_ip_hash_key",
+        "definition": "UNIQUE (post_id, reaction_type, ip_hash)",
+        "table_name": "post_reactions"
+      },
+      {
+        "conname": "post_reactions_post_id_fkey",
+        "definition": "FOREIGN KEY (post_id) REFERENCES community_posts(id) ON DELETE CASCADE",
+        "table_name": "post_reactions"
+      },
+      {
+        "conname": "post_reactions_user_id_fkey",
+        "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE SET NULL",
+        "table_name": "post_reactions"
+      }
+    ]
+  }
+}

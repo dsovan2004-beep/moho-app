@@ -1,5 +1,45 @@
 # MoHoLocal Product Roadmap
 
+## Relaunch backlog — November 5, 2026 (current priority)
+
+Founder direction: retain Next.js, Cloudflare and Supabase; relaunch Mountain House and Tracy with a revised UX/UI. This backlog supersedes historical sprint priorities below. No new seeding or automatic publication. Security and workflow implementation is authorized; broader rollout follows the acceptance gates.
+
+| ID | Priority / workstream | Deliverable and acceptance | Dependency / status |
+|---|---|---|---|
+| SEC-01 | P0 · Backend | Replace unrestricted business/image/city/staging policies; public reads expose publishable rows/fields; cross-user writes denied; RLS stays on | Implemented and deployed; see docs/security/release-2026-11-05.txt |
+| SEC-02 | P0 · Worker | Fail-closed verified admin authorization; protect manual run/validation routes; mutating routes require POST; negative authorization tests | Implemented and deployed; see docs/security/release-2026-11-05.txt |
+| SEC-03 | P0 · Intake/email | Bounded validated requests, durable rate controls, trusted identity, same-origin writes; retire public arbitrary email endpoints | Implemented and deployed; see docs/security/release-2026-11-05.txt |
+| SEC-04 | P0 · Release | Capture schema/policy baseline; reproducible dependency/build checks; role-based regression tests; migration/rollback and deployment evidence | Checks pass; source-to-Cloudflare CI follow-up remains |
+| SEC-05 | P0 · Dependencies | Supported OpenNext Cloudflare build; patched pinned Next.js 15.5.29; existing adapter caps Next.js <=15.5.2; verify preview before Pages/domain cutover | Deployed with supported adapter; CI connection remains |
+| FLOW-01 | P1 · Submission | Save a pending request and receipt; explain sign-in if required; canonical cities; no self-publication; moderator can approve/reject with evidence | Implemented and deployed |
+| FLOW-02 | P1 · Claims | Durable requester-bound claim; no early claimed flag; admin checks ownership evidence; atomic owner assignment; duplicate/racing claims handled | Implemented and deployed |
+| FLOW-03 | P1 · Moderation | Unified pending/needs-review handling; approval distinct from information checks; affected-row confirmation; audit trail and accurate errors | Implemented and deployed |
+| DATA-01 | P1 · Editorial | Audit 56 existing focus-city Home Services candidates; inspect seed provenance/duplicates; check public contacts, exact services, service areas and sources | Can start alongside P0 · Backlog |
+| DATA-02 | P1 · Trust | Hide unsupported stars; dated scoped checks; private contact/evidence separation; image source/rights review; correction and recheck cadence | DATA-01 · Backlog |
+| DATA-03 | P1 · Accuracy | Correct aggregate counts, Supabase error handling, city-scoped modules and stale event/community presentation | SEC-01 · Backlog |
+| UX-01 | P2 · Product/design | Mobile prototypes: city/task homepage, results, business detail, submission and claims; test states, contrast, keyboard/touch access | FLOW contracts · Backlog |
+| UX-02 | P2 · Engineering | Implement exact-service taxonomy and cities-served model, clear contact actions, dated trust labels, scoped search/empty states | UX-01, DATA-01 · Backlog |
+| OPS-01 | P2 · Operations | Maintainable admin queues, correction ownership, monthly link checks and proposed 90-day fact rechecks; availability expires | FLOW-03 · Backlog |
+| SEO-01 | P2 · Release | Preserve IDs/URLs or redirect; canonical HTTPS host and bare-domain issue; sitemap/structured data; no private/pending indexing | SEC-04, UX-02 · Backlog |
+| PILOT-01 | P3 · Validation | 30–40 unique checked providers; four launch categories; useful coverage in both cities; 20 residents and 10 providers in pilot | P0/P1 gates · Backlog |
+| METRIC-01 | P3 · Analytics | Measure search success, no results, contacts, replies, corrections, freshness and maintenance cost with minimal personal data | UX-02 · Backlog |
+| GROW-01 | P3 · Distribution | Shareable useful pages; local search; owner/resident research; administrator partnerships subject to group rules and explicit outreach authorization | Pilot outcomes · Backlog |
+| SEC-06 | P1 · Follow-up | Authenticate/rate-limit legacy anonymous reactions; review pg_trgm schema and compromised-password checking availability; no-policy private tables intentionally deny browser access | Advisor findings recorded · Backlog |
+| OPS-02 | P1 · Delivery | Connect moho-web Worker to GitHub Builds or provision scoped CI credentials; legacy Pages main auto-build must not be used for the OpenNext branch | Manual deploy verified; GitHub has no deployment secrets · Backlog |
+| REV-01 | Later · Business | Free basic pilot; validate paid value; disclose sponsorship and separate payment from verification | Demonstrated useful inquiries · Deferred |
+| EXP-01 | Later · Categories | Validate auto repair, catering, childcare/preschools; expand geography only after maintenance economics work | Pilot outcomes · Deferred |
+| ARCH-01 | Later · Architecture | Optional measured Astro prototype; no framework migration for current relaunch | Demonstrated benefit · Deferred |
+
+Launch categories: handyman/small repairs (including painting), plumbing, house cleaning, landscaping/yard maintenance. Priority is qualitative, not a measured market-size ranking. Confirm approximately 4–5 useful choices per category serving each city; do not duplicate providers across cities.
+
+Pilot decision gates (proposed internal experiment, not industry benchmarks): at least 15/20 residents find two plausible providers within two minutes; at least 8 contact one; at least 80% of contacted providers reply within two business days (report denominator). Every public trust claim needs dated evidence and every pilot listing needs a working contact. Contact clicks do not establish completed jobs.
+
+Evidence baseline: read-only audit at 8bf92e2; 430 focus-city records pass existing public flags, only 17 business records have dated verification, 65 focus public records lack phone and website, and 123 have positive stars without positive review counts. These are candidate records, not independently checked businesses. Competitor/Facebook research supports task fit, service geography, contact clarity and documented freshness; it does not establish product-market fit. No outreach authorized by this backlog.
+
+Execution order: P0 access controls → saved submission/claim/moderation flows → checked data and redesigned discovery → pilot → expansion/revenue. Product, security, engineering, editorial and validation responsibilities remain explicit in each work item.
+
+---
+
 > **Version:** March 2026
 > **Source:** MoHoLocal Master Playbook and Product Bible
 

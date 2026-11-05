@@ -1,24 +1,15 @@
 'use client'
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Link from 'next/link'
-import { getSupabaseClient } from '@/lib/supabase'
+import { RequestAccount, useRequestAccount, sendBusinessRequest } from '@/app/components/RequestAccount'
+import { CITY_NAMES } from '@/lib/cities'
+import { BUSINESS_CATEGORIES } from '@/lib/directory-requests'
 
-const CATEGORIES = [
-  'Restaurants',
-  'Health & Wellness',
-  'Beauty & Spa',
-  'Home Services',
-  'Automotive',
-  'Pet Services',
-  'Real Estate',
-  'Education',
-  'Retail',
-]
-
-const CITIES = ['Mountain House', 'Tracy', 'Lathrop', 'Manteca']
+const CATEGORIES = BUSINESS_CATEGORIES
+const CITIES = CITY_NAMES
 
 const FIELD_STYLE = {
   base: 'w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder-gray-400 focus:outline-none transition bg-white',
@@ -34,6 +25,9 @@ function blurRing(e: React.FocusEvent<HTMLElement>) {
 }
 
 export default function SubmitBusinessPage() {
+  const { user, checking } = useRequestAccount()
+  const requestKey = useRef('')
+  const [receipt, setReceipt] = useState('')
   const [form, setForm] = useState({
     name: '',
     category: '',
@@ -54,45 +48,19 @@ export default function SubmitBusinessPage() {
   }
 
   async function handleSubmit(e: React.FormEvent) {
-    const supabase = getSupabaseClient()
     e.preventDefault()
+    if (!user || submitting) return
     setSubmitting(true)
     setError(null)
-
-    const { error } = await supabase.from('businesses').insert({
-      name:          form.name.trim(),
-      category:      form.category,
-      city:          form.city,
-      address:       form.address.trim(),
-      phone:         form.phone.trim() || null,
-      website:       form.website.trim() || null,
-      contact_email: form.contact_email.trim() || null,
-      description:   form.description.trim(),
-      hours:         form.hours.trim() || null,
-      status:        'pending',
-      claimed:       false,
-      verified:      false,
-    })
-
-    if (error) {
-      setError(error.message)
-      setSubmitting(false)
-    } else {
+    try {
+      requestKey.current ||= crypto.randomUUID()
+      const { contact_email: _privateEmail, ...payload } = form
+      const id = await sendBusinessRequest({ kind: 'submission', payload, requestKey: requestKey.current })
+      setReceipt(id)
       setSubmitted(true)
-
-      // Fire-and-forget confirmation to submitter — only if they provided an email
-      if (form.contact_email.trim()) {
-        fetch('/api/notify/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            businessName:   form.name.trim(),
-            businessCity:   form.city,
-            submitterEmail: form.contact_email.trim(),
-          }),
-        }).catch(() => {/* intentionally silent */})
-      }
-    }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'We could not save your request. Please retry.')
+    } finally { setSubmitting(false) }
   }
 
   // ── Success screen ──────────────────────────────────────────────────────────
@@ -111,8 +79,10 @@ export default function SubmitBusinessPage() {
             Thanks for adding <strong>{form.name}</strong> to MoHoLocal.
           </p>
           <p className="text-sm text-gray-400 mb-8">
-            Your listing is under review and will go live once approved — usually within 1–2 business days.
+            Your request is saved and pending review. A listing becomes public only after its details have been checked.
           </p>
+          <p className="text-xs text-gray-500 break-all mb-6">Request reference: {receipt}</p>
+          <Link href="/my-requests" className="underline text-sm inline-block mb-4">Track my requests</Link>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/directory"
@@ -125,6 +95,8 @@ export default function SubmitBusinessPage() {
               onClick={() => {
                 setForm({ name: '', category: '', city: '', address: '', phone: '', website: '', contact_email: '', description: '', hours: '' })
                 setSubmitted(false)
+                requestKey.current = ''
+                setReceipt('')
               }}
               className="px-6 py-2.5 rounded-xl text-sm font-semibold border border-gray-200 text-gray-600 hover:bg-gray-50 transition"
             >
@@ -148,7 +120,7 @@ export default function SubmitBusinessPage() {
           </Link>
           <h1 className="text-2xl font-bold text-gray-900 mt-3 mb-1">Add Your Business</h1>
           <p className="text-sm text-gray-500">
-            List your business on MoHoLocal — free for Mountain House, Tracy, Lathrop &amp; Manteca businesses.
+            Suggest a business in a supported city. Basic listings are free.
             Listings are reviewed before going live.
           </p>
         </div>
@@ -161,7 +133,10 @@ export default function SubmitBusinessPage() {
             </div>
           )}
 
+          {!user && !checking && <RequestAccount returnTo="/submit-business" />}
+          {checking && <p role="status">Checking your account…</p>}
           <form onSubmit={handleSubmit} className="space-y-6">
+            <fieldset disabled={!user || submitting} className="space-y-6 disabled:opacity-60">
 
             {/* ── Business Info ── */}
             <div>
@@ -219,10 +194,10 @@ export default function SubmitBusinessPage() {
                 {/* Address */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="address">
-                    Address <span className="text-red-400">*</span>
+                    Public business address (optional)
                   </label>
                   <input
-                    id="address" type="text" required
+                    id="address" type="text"
                     value={form.address} onChange={(e) => set('address', e.target.value)}
                     placeholder="123 Main St, Mountain House, CA 95391"
                     className={FIELD_STYLE.base}
@@ -303,7 +278,7 @@ export default function SubmitBusinessPage() {
                   </label>
                   <input
                     id="contact_email" type="email"
-                    value={form.contact_email} onChange={(e) => set('contact_email', e.target.value)}
+                    value={user?.email ?? ''} readOnly
                     placeholder="hello@yourbusiness.com"
                     className={FIELD_STYLE.base}
                     onFocus={focusRing} onBlur={blurRing}
@@ -337,6 +312,7 @@ export default function SubmitBusinessPage() {
               </button>
             </div>
 
+            </fieldset>
           </form>
         </div>
       </div>

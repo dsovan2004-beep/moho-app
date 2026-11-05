@@ -4,8 +4,9 @@
 // PKCE flow stores the code verifier in localStorage. The code exchange must happen
 // on the client side so Supabase can retrieve the verifier and complete the handshake.
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
+import { safeReturnTo } from '@/lib/auth-return'
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { getSupabaseClient } from '@/lib/supabase'
@@ -18,6 +19,7 @@ function CallbackHandler() {
   const [errorMsg, setErrorMsg] = useState('')
 
   useEffect(() => {
+    const returnTo = safeReturnTo(searchParams.get('next') || window.sessionStorage.getItem('moho-auth-return'))
     const code = searchParams.get('code')
     const error = searchParams.get('error')
     const errorDescription = searchParams.get('error_description')
@@ -37,12 +39,13 @@ function CallbackHandler() {
             setErrorMsg(error.message)
             setStatus('error')
           } else {
-            router.replace('/')
+            window.sessionStorage.removeItem('moho-auth-return')
+            router.replace(returnTo)
           }
         })
     } else {
       // No code — might be a direct visit, just go home
-      router.replace('/')
+      router.replace(returnTo)
     }
   }, [searchParams, router])
 
