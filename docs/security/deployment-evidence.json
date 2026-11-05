@@ -31,11 +31,19 @@
   "automatic_worker_git_deployment": "setup in progress OPS-02",
   "modern_web_publishable_key": true,
   "modern_ingestion_secret_key": true,
-  "legacy_credential_revoked": false,
-  "legacy_credential_last_read_status": 200,
+  "legacy_credential_revoked": true,
+  "legacy_credential_last_read_status": 401,
   "production_test_request_result": "rejected; no business published",
   "public_business_rows": 1805,
   "quarantined_business_rows": 23,
   "website_checked_existing_providers": 3,
-  "unsupported_ratings_cleared": 168
+  "unsupported_ratings_cleared": 168,
+  "legacy_api_keys_disabled": true,
+  "legacy_hs256_verifier_revoked": true,
+  "legacy_cross_service_rejection": {
+    "database": 401,
+    "auth_admin": 401,
+    "storage": 401
+  },
+  "post_retirement_real_account_access": "passed"
 }

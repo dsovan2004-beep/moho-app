@@ -10,7 +10,7 @@ This relaunch supersedes the historical March/April expansion and distribution p
 
 | Sprint | Scope | Current state |
 |---|---|---|
-| R1 | Security, credentials, submissions and claims | Code/database fixes deployed; 39 automated tests and live Google/submission/rejection acceptance pass. Legacy credential retirement remains an open P0 because the old key still passed its verification request. Native build setup in progress. Do not mark R1 complete yet. |
+| R1 | Security, credentials, submissions and claims | Code/database fixes deployed; 39 automated tests and live Google/submission/rejection acceptance pass. Legacy apikey access is disabled and the previous HS256 verifier revoked; old-key REST/Auth/Storage checks return 401, while modern server and signed-in requester access pass. Native build setup remains in progress. Close R1 after clean source builds and setup-permission removal. |
 | R2 | Regional discovery, listing evidence and mobile redesign | First pass deployed for shared Mountain House/Tracy/Lathrop/Manteca discovery. 72 candidates triaged; 23 quarantined, 3 corrected from official websites, 46 remain unchecked. Exact-service shortlists and 390px layout checks implemented. |
 | R3 | Useful pilot and pet-report lifecycle | Backlog. Build sufficient independently checked choices before outreach; validate resident outcomes. Preserve existing pet filters/reunited states, with moderated reporting and recent/history separation. Owner updates and freshness confirmation remain open. |
 

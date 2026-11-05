@@ -4,8 +4,7 @@ November 5, 2026
 STATUS
 Security and workflow code/database changes are deployed. The revised discovery
 experience is live at https://www.moholocal.com. This is not a completed relaunch:
-legacy credential retirement remains an OPEN P0 until requests using the old
-service credential are independently rejected. Native source builds are being
+legacy credentials are now retired and rejected. Native source builds are being
 connected; checked-provider supply and resident validation gates remain open.
 
 SECURITY CHANGES
@@ -32,9 +31,11 @@ CREDENTIAL / DEPLOYMENT CONTROL
 - Ingestion Worker now uses the existing modern server key; raw requests send
   sb_secret keys on apikey only. User-authenticated RPCs retain the user JWT.
 - Modern server staging read passed; modern public staging read was denied.
-- Legacy staging read STILL returned HTTP 200, including when its bearer token was
-  combined with a modern public apikey. API metadata still reported disabled=false
-  after the owner reported retirement. Do not claim revocation succeeded.
+- Initial verification showed the reported retirement had not taken effect. The
+  final setting was completed and the previously rotated HS256 verifier revoked.
+  Old-key database, Auth-admin and Storage requests now return HTTP 401, including
+  legacy bearer + modern public apikey. Modern server read remains HTTP 200 and
+  signed-in requester access still passes. Current P-256 signing key is unchanged.
 - An approved dedicated Cloudflare deployment token was created, used successfully
   for both Workers and registered with native Builds. Its original scopes are
   Workers Scripts Edit + Account Settings Read on the account, and Workers Routes
@@ -91,5 +92,5 @@ BACKLOG DISCIPLINE
 ROADMAP.md is canonical. BACKLOG.md records the next-work queue; SPRINTS.md records
 R1/R2/R3 acceptance and unresolved gates. Historical seeding/distribution plans do
 not authorize new fabricated listings or Facebook outreach. Preserve protected
-CLAUDE.md and BIBLE.md. Do not mark the relaunch complete while SEC-07 or supply/
+CLAUDE.md and BIBLE.md. Do not mark the relaunch complete while native build verification or supply/
 pilot gates remain open.
