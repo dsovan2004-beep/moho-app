@@ -1,0 +1,76 @@
+{
+  "date": "2026-11-05",
+  "method": "Individual primary website desk checks only; no phone calls, owner confirmation, credential validation, copied photos or ratings. Name/normalized phone/website dedup before insertion.",
+  "providers": [
+    {
+      "name": "Martin Stanko Landscape Construction",
+      "city": "Livermore",
+      "address": "",
+      "phone": "(408) 234-0955",
+      "website": "https://martinstankoconstruction.com/",
+      "description": "Landscape design and construction, sod and irrigation installation, patios, pavers and fencing advertised for Mountain House and Tracy. Website lists a Livermore base; no office street address established. Confirm project suitability and scheduling directly.",
+      "tags": [
+        "landscaping",
+        "landscape design",
+        "irrigation",
+        "patios",
+        "fencing"
+      ],
+      "areas": [
+        "Mountain House",
+        "Tracy"
+      ],
+      "note": "Official service-area list explicitly names Mountain House and Tracy. Public footer phone and Livermore base matched. No license or insurance endorsement."
+    },
+    {
+      "name": "Salen\u2019s Landscaping",
+      "city": "Elk Grove",
+      "address": "9261 Survey Rd., Elk Grove, CA 95624",
+      "phone": "(916) 423-4620",
+      "website": "https://salens.com/mountain-house-landscaping/",
+      "description": "Landscape construction, patios, turf and outdoor living projects advertised for Mountain House. Contact office is in Elk Grove. Lathrop and Manteca are also explicitly named; Tracy coverage has not been established. Confirm your exact project directly.",
+      "tags": [
+        "landscaping",
+        "patios",
+        "artificial turf",
+        "outdoor living"
+      ],
+      "areas": [
+        "Mountain House",
+        "Lathrop",
+        "Manteca"
+      ],
+      "note": "Contact details matched against https://salens.com/contact-us/. Mountain House service page explicitly confirms coverage. Tracy omitted because not established in this check. License, ratings, insurance and financing claims not adopted."
+    },
+    {
+      "name": "Premium Plumbing & Drain, Inc.",
+      "city": "Turlock",
+      "address": "2475 Acme Ct, Turlock, CA 95380",
+      "phone": "(209) 669-2090",
+      "website": "https://www.premiumplumbinginc.com/service-areas/tracy/",
+      "description": "Plumbing and drain services advertised for Tracy, including leak detection, drain cleaning, water heaters and fixture repairs. Contact office is in Turlock. Mountain House service has not been established. Confirm address coverage and appointment availability directly.",
+      "tags": [
+        "plumbing",
+        "drain cleaning",
+        "water heaters",
+        "leak detection"
+      ],
+      "areas": [
+        "Tracy"
+      ],
+      "note": "Official Tracy page contains named coverage, contact phone and Turlock office footer. No Mountain House assumption or same-day, license or insurance endorsement."
+    }
+  ],
+  "deferred": [
+    {
+      "name": "Acosta Landscaping",
+      "source": "https://www.acostalandscaping.net/",
+      "reason": "Official site is Rutherford/Napa-area with 707 contact; no named Mountain House/Tracy coverage. Do not confuse with Acosta Handyman."
+    },
+    {
+      "name": "MG House Cleaning",
+      "source": "https://mgcleanersjanitorial.com/",
+      "reason": "Recent classified ad names cities but primary website could not be read. Not published."
+    }
+  ]
+}

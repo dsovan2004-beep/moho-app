@@ -1,3 +1,4 @@
+import {NOTIFICATION_CRON,runNotificationDelivery} from './lib/notifications'
 // ── MoHoLocal Ingestion Worker ────────────────────────────────────────────────
 // Cloudflare Worker with cron triggers + manual run/validate HTTP routes.
 //
@@ -476,6 +477,8 @@ async function handlePromoteSubmission(req: Request, env: Env): Promise<Response
 //   Hour 5  → Lost & Found          (Tue 05:00 UTC)
 
 async function handleScheduled(event: ScheduledEvent, env: Env): Promise<void> {
+  if(event.cron===NOTIFICATION_CRON){await runNotificationDelivery(env);return}
+
   const cron         = event.cron
   const firedAt      = new Date(event.scheduledTime)
   const utcHour      = firedAt.getUTCHours()
@@ -490,7 +493,7 @@ async function handleScheduled(event: ScheduledEvent, env: Env): Promise<void> {
       console.log('[cron] END directory')
 
     } else if (utcHour === 4) {
-      // Runs Tuesday (full weekly refresh) AND Friday (mid-week catch-up)
+      // Runs Monday (full weekly refresh) AND Thursday (mid-week catch-up)
       console.log('[cron] START events')
       const logs = await runEventsIngestion(env)
       aggregateLogs(logs)

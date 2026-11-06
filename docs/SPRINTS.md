@@ -14,6 +14,17 @@ This relaunch supersedes the historical March/April expansion and distribution p
 | R2 | Regional discovery, listing evidence and mobile redesign | First pass deployed for shared Mountain House/Tracy/Lathrop/Manteca discovery. All 72 baseline candidates researched: 11 official-site corrections, 45 held including two duplicates, 16 already nonpublic/unresolved. Twelve individually curated additions bring website-checked listings to 23; Mountain House has landscaping 4, handyman 3, cleaning 3, plumbing 3; Tracy has 4/3/4/4 respectively. Owner confirmations and greater choice remain open. City-page redesign adds task search, service-area evidence and contacts; 320px/390px layout, search, skip-link focus, Escape dismissal and 44px contact targets verified on production; deployed. Discovery count failure handling and unsupported popularity labels corrected. |
 | R3 | Useful pilot and pet-report lifecycle | Discussions, private inbox, unread notifications and reporter status confirmation/archive deployed; privacy controls tested. Pilot and automatic expiry remain open. Build sufficient independently checked choices before outreach; validate resident outcomes. Preserve existing pet filters/reunited states, with moderated reporting and recent/history separation. Reporter updates and freshness confirmation are deployed; wider editing and expiry remain open. |
 
+
+### November 5 continuation — interaction and useful AI
+
+Founder requests more resident interaction and consideration of AI. Current execution remains opt-in email/closed-app push, automatic report expiry/renewal and more individually checked providers. Worker Web Push dependency preparation has begun; these capabilities are not yet deployed. Email delivery requires a usable sending credential; the legacy Pages encrypted credential is unavailable to the active Worker.
+
+AI-01 is planned after these delivery/freshness foundations: natural-language service/city discovery grounded in published listing evidence, explicit missing-data handling, ordinary search fallback and existing contact actions. No model/vendor selected, credentials provisioned or resident content sent to an AI service. AI-02 editorial assistance remains a later review-only workflow. Public discussions and private messages must not be used for training or enrichment by default. Acceptance measures: relevant supported matches, no invented listing facts, successful contacts and resident feedback.
+
+### Delivery continuation — implementation evidence
+
+MSG-03/PET-04: notification-only service worker, opt-in preferences, generic encrypted Web Push and Resend delivery, durable queue/leases/retries, token unsubscribe, 30-day report visibility and scheduled expiry implemented. Migration 20261106043716 applied. 67 regressions and local OpenNext build pass; advisors report zero WARN/ERROR with 12 intentional private-table INFO notices. Native deployment/real-browser acceptance pending; Resend sender/key not yet ready and no delivery claimed. Three independently website-checked additions published, bringing total checks to 26.
+
 ### Relaunch definition of done
 
 - RLS stays enabled; negative role tests pass; credentials committed in history no longer authorize requests.

@@ -6,6 +6,9 @@ import './globals.css'
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
+  manifest:'/manifest.webmanifest',
+  appleWebApp:{capable:true,title:'MoHoLocal',statusBarStyle:'default'},
+  icons:{apple:'/icons/moho-180.png'},
   title: 'MoHoLocal — Local Community Directory',
   description: 'Local directory, events, and community for Mountain House, Tracy and nearby cities.',
 }

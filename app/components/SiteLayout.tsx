@@ -1,4 +1,5 @@
 'use client'
+import {removeThisPushDevice} from '@/lib/notification-settings'
 
 
 import Link from 'next/link'
@@ -263,6 +264,7 @@ function NavContent() {
 
   async function handleSignOut() {
     setProfileOpen(false)
+    try { await removeThisPushDevice() } catch { /* Sign out still completes; alerts contain no private content. */ }
     await signOut()
     setUser(null)
   }

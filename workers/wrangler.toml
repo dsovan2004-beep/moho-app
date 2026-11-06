@@ -1,8 +1,8 @@
 # ── MoHoLocal Ingestion Worker — Cloudflare Worker Configuration ──────────────
 name              = "moho-ingestion"
 main              = "ingestion-worker.ts"
-compatibility_date = "2024-11-01"
-compatibility_flags = ["nodejs_compat"]
+compatibility_date = "2026-11-05"
+compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
 
 # ── Cron Triggers ─────────────────────────────────────────────────────────────
 # All times UTC.  Sequence is intentional — each job runs 1 hour apart so
@@ -11,6 +11,7 @@ compatibility_flags = ["nodejs_compat"]
 # Cloudflare Workers uses non-standard day-of-week numbering: 1=Sunday, 2=Monday, ... 5=Thursday, 7=Saturday
 # Standard cron uses 1=Monday. Always use Cloudflare's scheme here to avoid schedule drift.
 crons = [
+  "*/5 * * * *", # Opt-in notifications and pet expiry; independent of ingestion jobs
   "0 3 * * 2",   # Monday 03:00 UTC — Directory ingestion      (CF: 2=Monday)
   "0 4 * * 2",   # Monday 04:00 UTC — Events ingestion (weekly) (CF: 2=Monday)
   "0 5 * * 2",   # Monday 05:00 UTC — Lost & Found ingestion   (CF: 2=Monday)
@@ -21,6 +22,8 @@ crons = [
 [vars]
 SUPABASE_URL = "https://ozjlfgipfzykzrjakwzb.supabase.co"
 APP_ENV      = "production"
+EMAIL_SENDER_ENABLED = "false"
+VAPID_PUBLIC_KEY = "BIJ4QK9ivQ_uYG55rE1Zq8WJbXOSKHMfccA0RgiZmqdqDGNCumeA3UEIj8E8ctyVjZ9vlndyd_LTCpaqFp-Og0E"
 # Optional: set to a public HTTPS URL returning a JSON array of business records
 # (e.g. a GitHub raw file or Cloudflare R2 object).
 # MANUAL_BUSINESS_FEED_URL = "https://raw.githubusercontent.com/dsovan2004-beep/moho-app/main/data/businesses.json"
@@ -56,3 +59,5 @@ APP_ENV      = "production"
 # ── Local development ─────────────────────────────────────────────────────────
 # Test scheduled event: wrangler dev --test-scheduled
 # Then POST:           curl "http://localhost:8787/__scheduled?cron=0+3+*+*+1"
+
+# Public VAPID key; private counterpart lives in Worker secrets.

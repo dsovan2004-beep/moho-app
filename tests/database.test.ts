@@ -345,3 +345,61 @@ test('pet activity denies anonymous/unconfirmed calls, forged cursors and direct
  assert.throws(()=>sql(`begin;${petFixture()}${as(alice)}select ${activity('report_status',{pet_id:pet,status:'approved',revision:0})};rollback;`),/valid pet status/)
  assert.throws(()=>sql(`begin;${petFixture()}${as(alice)}select public.pet_activity_action('report_status',jsonb_build_object('pet_id','${pet}','status','lost','revision',n-1)) from generate_series(1,21)n;rollback;`),/Daily activity limit/)
 })
+
+const notify=(action:string,payload:Record<string,unknown>={})=>`public.notification_settings_action('${action}','${JSON.stringify(payload)}'::jsonb)`
+const prepare=`select public.notification_dispatch('prepare','{"email_ready":true,"push_ready":true}');`
+const optIn=`${as(alice)}select ${notify('email',{enabled:true})};reset role;`
+const incoming=`${as(bob)}select ${social('start_chat',{pet_id:pet,display_name:'Bob',body:'Private fixture message'})};reset role;`
+const devicePayload={subscription:{endpoint:'https://fcm.googleapis.com/fcm/send/fixture',keys:{p256dh:'B'.repeat(87),auth:'A'.repeat(22)}},label:'Fixture browser'}
+test('expired reports and comments are hidden immediately; owner can renew, holds remain held',()=>{
+ const r=sql(`begin;${petFixture()}${as(bob)}select ${social('comment',{pet_id:pet,display_name:'Bob',body:'Old sighting'})};reset role;update public.lost_and_found set expires_at=now()-interval '1 second' where id='${pet}';set local role anon;select count(id) from public.lost_and_found;select count(id) from public.pet_comments;reset role;${prepare}${as(alice)}select ${activity('my_reports')}->0->>'status';select ${activity('report_status',{pet_id:pet,status:'lost',revision:1})};reset role;set local role anon;select count(id) from public.lost_and_found;rollback;`).split('\n')
+ assert.equal(r[1],'0');assert.equal(r[2],'0');assert.equal(r[4],'expired');assert.equal(r.at(-1),'1')
+ assert.throws(()=>sql(`begin;${petFixture()}update public.lost_and_found set expires_at=now()-interval '1 day' where id='${pet}';${as(bob)}select ${social('comment',{pet_id:pet,display_name:'Bob',body:'Stale reply'})};rollback;`),/Report unavailable/)
+})
+test('notification private tables and service dispatcher are unavailable to residents and administrators',()=>{
+ for(const uid of [alice,admin]){
+  assert.throws(()=>sql(`begin;${as(uid)}select * from directory_private.push_subscriptions;rollback;`),/permission denied/)
+  assert.throws(()=>sql(`begin;${as(uid)}select public.notification_dispatch('prepare','{}');rollback;`),/permission denied/)
+ }
+ assert.throws(()=>sql(`begin;set local role anon;select ${notify('settings')};rollback;`),/permission denied/)
+ assert.throws(()=>sql(`begin;${as(unconfirmed)}select ${notify('settings')};rollback;`),/Confirmed sign-in/)
+})
+test('email is opt-in, readiness gated and recipient is the confirmed account address',()=>{
+ assert.throws(()=>sql(`begin;${as(alice)}select ${notify('email',{enabled:true})};rollback;`),/still being configured/)
+ const r=sql(`begin;${petFixture()}${prepare}${incoming}${prepare}select count(*) from directory_private.notification_jobs;${optIn}${prepare}select count(*) from directory_private.notification_jobs;${as(bob)}select public.pet_social_action('message',jsonb_build_object('conversation_id',(select id from public.pet_conversations limit 1),'body','New message'));reset role;${prepare}select recipient_email from directory_private.notification_jobs;rollback;`).split('\n')
+ assert.equal(r[3],'0');assert.equal(r[6],'0');assert.equal(r.at(-1),'alice@example.test')
+})
+test('push subscriptions reject arbitrary destinations and cannot be transferred between accounts',()=>{
+ assert.throws(()=>sql(`begin;${prepare}${as(alice)}select ${notify('subscribe',{...devicePayload,subscription:{...devicePayload.subscription,endpoint:'https://127.0.0.1/private'}})};rollback;`),/Unsupported push/)
+ assert.throws(()=>sql(`begin;${prepare}${as(alice)}select ${notify('subscribe',devicePayload)};${as(bob)}select ${notify('subscribe',devicePayload)};rollback;`),/previous account/)
+ const r=sql(`begin;${prepare}${as(alice)}select ${notify('subscribe',devicePayload)};${as(bob)}select ${notify('unsubscribe',{endpoint:devicePayload.subscription.endpoint})};reset role;select active from directory_private.push_subscriptions;rollback;`).split('\n')
+ assert.equal(r.at(-1),'t')
+})
+test('queued notifications cancel after reading, blocking or opting out',()=>{
+ for(const operation of ['read','block','optout']){
+  const action=operation==='read'?`select public.pet_activity_action('mark_read',jsonb_build_object('conversation_id',(select id from public.pet_conversations limit 1),'last_message_id',(select id from public.pet_messages limit 1)));`:operation==='block'?`select public.pet_social_action('block',jsonb_build_object('conversation_id',(select id from public.pet_conversations limit 1),'blocked',true));`:`select ${notify('email',{enabled:false})};`
+  const r=sql(`begin;${petFixture()}${prepare}${optIn}${incoming}${prepare}${as(alice)}${action}reset role;select public.notification_dispatch('claim','{}') is null;select status from directory_private.notification_jobs;rollback;`).split('\n')
+  assert.equal(r.at(-2),'t');assert.equal(r.at(-1),'cancelled')
+ }
+})
+test('leases, retries, sent cursors and cooldowns prevent duplicate notification jobs',()=>{
+ const r=sql(`begin;${petFixture()}${prepare}${optIn}${incoming}${prepare}select public.notification_dispatch('claim','{}') as j \\gset
+ select public.notification_dispatch('claim','{}') is null;
+ select public.notification_dispatch('finish',jsonb_build_object('id',(:'j'::jsonb)->>'id','lease_id',gen_random_uuid(),'decision','sent'))->>'saved';
+ select public.notification_dispatch('finish',jsonb_build_object('id',(:'j'::jsonb)->>'id','lease_id',(:'j'::jsonb)->>'lease_id','decision','sent'))->>'saved';
+ ${prepare}select count(*)||':'||min(status) from directory_private.notification_jobs;rollback;`).split('\n')
+ assert.equal(r.at(-5),'t');assert.equal(r.at(-4),'false');assert.equal(r.at(-3),'true');assert.equal(r.at(-1),'1:sent')
+})
+test('unsubscribe token stops emails without exposing account identity or allowing arbitrary recipient changes',()=>{
+ const r=sql(`begin;${prepare}${optIn}select unsubscribe_token as token from directory_private.notification_preferences where user_id='${alice}' \\gset
+ set local role anon;select public.unsubscribe_notification_email(:'token');select public.unsubscribe_notification_email(gen_random_uuid());reset role;select email_enabled from directory_private.notification_preferences;rollback;`).split('\n')
+ assert.deepEqual(r.slice(-3),['t','t','f'])
+})
+test('push re-registration preserves cursor; retry lease is delayed; gone subscriptions are retired',()=>{
+ const r=sql(`begin;${petFixture()}${prepare}${as(alice)}select ${notify('subscribe',devicePayload)};reset role;${incoming}${prepare}${as(alice)}select ${notify('subscribe',devicePayload)};reset role;select notified_seq< (select max(delivery_seq) from public.pet_messages) from directory_private.push_subscriptions;
+ set local role service_role;select public.notification_dispatch('claim','{}') as j \\gset
+ select public.notification_dispatch('finish',jsonb_build_object('id',(:'j'::jsonb)->>'id','lease_id',(:'j'::jsonb)->>'lease_id','decision','retry','retry_after',60));
+ select public.notification_dispatch('claim','{}') is null;reset role;update directory_private.notification_jobs set available_at=now()-interval '1 second';set local role service_role;select public.notification_dispatch('claim','{}') as retry \\gset
+ select public.notification_dispatch('finish',jsonb_build_object('id',(:'retry'::jsonb)->>'id','lease_id',(:'retry'::jsonb)->>'lease_id','decision','retire'));reset role;select active from directory_private.push_subscriptions;rollback;`).split('\n')
+ assert.equal(r[5],'t');assert.equal(r[7],'t');assert.equal(r.at(-1),'f')
+})

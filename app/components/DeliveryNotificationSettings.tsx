@@ -1,0 +1,40 @@
+'use client'
+import {useEffect,useState} from 'react'
+import {useRequestAccount} from './RequestAccount'
+import {notificationSettings,removeThisPushDevice,type NotificationSettings} from '@/lib/notification-settings'
+import {VAPID_PUBLIC_KEY} from '@/lib/push-config'
+export default function DeliveryNotificationSettings(){
+ const {user}=useRequestAccount()
+ const [state,setState]=useState<NotificationSettings|null>(null),[error,setError]=useState(''),[notice,setNotice]=useState(''),[busy,setBusy]=useState(false),[supported,setSupported]=useState(false),[deviceOn,setDeviceOn]=useState(false)
+ useEffect(()=>{
+  setState(null);setError('');setNotice('');setDeviceOn(false)
+  setSupported('serviceWorker'in navigator&&'PushManager'in window&&'Notification'in window)
+  if(!user)return;let active=true
+  notificationSettings().then(s=>{if(active)setState(s)}).catch(e=>{if(active)setError(e.message)})
+  if('serviceWorker'in navigator)navigator.serviceWorker.getRegistration('/notification-sw.js').then(r=>r?.pushManager?.getSubscription()).then(s=>{if(active)setDeviceOn(Boolean(s))}).catch(()=>{})
+  return()=>{active=false}
+ },[user?.id])
+ async function save(work:()=>Promise<void>){if(busy)return;setBusy(true);setError('');setNotice('');try{await work()}catch(e){setError(e instanceof Error?e.message:'Preferences could not save.')}finally{setBusy(false)}}
+ async function enablePush(){
+  // Called only from a resident click, never on page load.
+  const permission=await Notification.requestPermission()
+  if(permission!=='granted')throw new Error('Browser permission was not granted. Your inbox badges still work.')
+  const registration=await navigator.serviceWorker.register('/notification-sw.js',{scope:'/'})
+  await navigator.serviceWorker.ready
+  const bytes=Uint8Array.from(atob(VAPID_PUBLIC_KEY.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0))
+  const subscription=await registration.pushManager.getSubscription()??await registration.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:bytes})
+  try{setState(await notificationSettings('subscribe',{subscription:subscription.toJSON(),label:'My browser'}));setDeviceOn(true);localStorage.removeItem(`moho-dm-browser-alerts:${user!.id}`);setNotice('Push alerts enabled for this device. Delivery depends on browser and system settings.')}catch(e){await subscription.unsubscribe();setDeviceOn(false);throw e}
+ }
+ if(!user)return null
+ return <div className="border-t border-slate-200 mt-4 pt-4 space-y-4">
+  <div><h3 className="font-semibold">Alerts when you’re away</h3><p className="text-sm text-slate-600 mt-1">Optional alerts say a message is waiting; they never include its text or sender. New unread messages are grouped, with delivery checked about every five minutes. These are not emergency alerts.</p></div>
+  {state?<>
+   <div className="rounded-lg bg-slate-50 p-3"><h4 className="font-semibold text-sm">Message emails</h4><p className="text-sm mt-1">{state.email_ready?'Sent to your confirmed account email. Unsubscribe here or from any message alert.':'Email delivery is being configured. You will be able to opt in when it is ready.'}</p><button disabled={busy||(!state.email_ready&&!state.email_enabled)} onClick={()=>void save(async()=>{setState(await notificationSettings('email',{enabled:!state.email_enabled}));setNotice(state.email_enabled?'Message emails turned off.':'Message emails enabled for future unread messages.')})} className="min-h-11 mt-2 rounded-lg border border-slate-300 px-4 text-sm font-semibold disabled:opacity-50">{state.email_enabled?'Turn off message emails':'Enable message emails'}</button></div>
+   <div className="rounded-lg bg-slate-50 p-3"><h4 className="font-semibold text-sm">Push on this device</h4><p className="text-sm mt-1">{!state.push_ready?'Push delivery is being configured.':supported?'Receive alerts even when this tab is closed, where your browser and operating system support it.':'This browser cannot enable push here. Your unread inbox badges still work.'} On iPhone or iPad, add MoHoLocal to your Home Screen, open it there, then enable push.</p>{supported&&<button disabled={busy||(!state.push_ready&&!deviceOn)} onClick={()=>void save(async()=>{if(deviceOn){await removeThisPushDevice();setDeviceOn(false);setState(await notificationSettings());setNotice('Push alerts removed from this device.')}else await enablePush()})} className="min-h-11 mt-2 rounded-lg border border-slate-300 px-4 text-sm font-semibold disabled:opacity-50">{deviceOn?'Turn off push on this device':'Enable push on this device'}</button>}</div>
+   {state.devices.length>0&&<div><h4 className="font-semibold text-sm">Registered devices</h4><ul className="mt-2 divide-y">{state.devices.map(d=><li key={d.id} className="flex justify-between items-center gap-3 py-1 text-sm"><span>{d.label} · Added {new Date(d.created_at).toLocaleDateString('en-US',{timeZone:'America/Los_Angeles'})}</span><button disabled={busy} className="min-h-11 underline shrink-0" onClick={()=>void save(async()=>{setState(await notificationSettings('unsubscribe',{id:d.id}));setNotice('Device alerts removed. You can re-enable this browser using the push button.');setDeviceOn(false)})}>Remove</button></li>)}</ul></div>}
+  </>:!error?<p className="text-sm">Loading delivery preferences…</p>:null}
+  {error&&<p role="alert" className="text-sm text-red-800">{error} <button disabled={busy} className="underline min-h-11" onClick={()=>void save(async()=>setState(await notificationSettings()))}>Retry preferences</button></p>}
+  {notice&&<p role="status" className="text-sm text-green-800">{notice}</p>}
+  {busy&&<p role="status" className="text-sm">Saving notification preferences…</p>}
+ </div>
+}

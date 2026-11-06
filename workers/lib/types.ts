@@ -2,6 +2,10 @@
 
 // ── Env bindings (Cloudflare Worker env) ─────────────────────────────────────
 export interface Env {
+  RESEND_API_KEY?: string
+  EMAIL_SENDER_ENABLED?: string
+  VAPID_PUBLIC_KEY?: string
+  VAPID_PRIVATE_KEY?: string
   // Required — worker will not run without these
   SUPABASE_URL:              string   // var — set in wrangler.toml
   SUPABASE_SERVICE_ROLE_KEY: string   // secret — wrangler secret put

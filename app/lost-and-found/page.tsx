@@ -226,7 +226,7 @@ export default async function LostAndFoundPage({ searchParams }: PageProps) {
     <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
       <Link href="/my-pet-reports" className="inline-block underline font-semibold mb-4 min-h-11 py-2">Manage my pet reports →</Link>
-      <div className="bg-blue-50 border border-blue-100 p-4 rounded-xl mb-5 text-sm text-slate-700">Reports are not live tracking. A report date does not confirm a pet is still missing. <Link className="font-semibold underline" href={`/lost-and-found?${new URLSearchParams({city,...(includeOlder ? {} : {history:'1'})})}`}>{includeOlder ? 'Show recent reports' : 'View older report history'}</Link></div>
+      <div className="bg-blue-50 border border-blue-100 p-4 rounded-xl mb-5 text-sm text-slate-700">Reports expire from public results after 30 days without confirmation. Expiry does not mean a pet was found. Reporters can renew from My pet reports. A report date does not confirm a pet is still missing. <Link className="font-semibold underline" href={`/lost-and-found?${new URLSearchParams({city,...(includeOlder ? {} : {history:'1'})})}`}>{includeOlder ? 'Show recent reports' : 'View older report history'}</Link></div>
       {/* ── Header ── */}
       <div className="flex items-start justify-between gap-4 flex-wrap mb-6">
         <div>
