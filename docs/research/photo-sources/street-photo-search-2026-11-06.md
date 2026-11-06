@@ -14,7 +14,7 @@ The provider reports a 7680×3840 original, while its Download image control sup
 - KartaView terms explicitly permit imagery under CC BY-SA 4.0 (https://kartaview.org/terms). The documented legacy API hostname failed certificate verification; verification was not bypassed. The current api.kartaview.org HTTPS endpoint responded normally. No downloaded KartaView image used.
 - Mapillary public map with dateFrom2026-01-01/dateTo2026-11-06, centered at37.7719,-121.53204,z13: no selectable qualifying coverage seen within the city. The visible green route to the southeast lies outside the named city area and was not relabeled as Mountain House. Filter/extent screenshot: mountain-house-mapillary-2026-coverage-check.png. Source https://www.mapillary.com/app/?lat=37.7719&lng=-121.53204&z=13&dateFrom=2026-01-01&dateTo=2026-11-06&focus=map .
 - City copyright notice: https://www.mountainhouseca.gov/copyright explicitly reserves rights to content. A public page and current publication year do not establish photo reuse permission or capture date. City renderings are not photographs. No City image copied.
-- Photographer https://www.skyestoury.com/photography-mountain-house requires licensing; no fee accepted, license purchased or message sent.
+- Corrected on deeper inspection: https://www.skyestoury.com/photography-mountain-house depicts the Mountain House outdoor-food brand, not the California city. Excluded from local-photo sourcing; no license purchased or message sent.
 
 Keep the existing accurately labeled November 4,2026 Mountain House satellite view until a real 2026 street photo has both location/capture evidence and reusable rights. Next external dependency: a qualifying openly licensed image or express permission from a rights holder with 2026 capture confirmation. The exact requirement remains open; no claim both cities are complete.
 
@@ -29,3 +29,6 @@ City of Tracy Flickr Earth Day photo https://www.flickr.com/photos/cityoftracy/5
 
 
 Final Mountain House catalog check: Flickr search for `"Mountain House" California`, capture dates January 1–November 6, 2026, and “Commercial use & mods allowed” returned no matches. Evidence: mountain-house-flickr-2026-check.png. This documents that specific search, not proof that no suitable photo exists. Mountain House street-photo acquisition remains open pending a qualifying source or express permission with capture-date evidence.
+
+
+Facebook continuation: three joined Mountain House groups were reviewed in the signed-in browser. Two leads are held for missing capture/location/rights evidence, including one dated aerial that fails street-level scope; no photo published. See facebook-photo-review-2026-11-06.md for sanitized findings.
