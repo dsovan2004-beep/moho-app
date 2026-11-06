@@ -1,10 +1,10 @@
 # Seasonal engagement pilot — November 6, 2026
 
-Recommendation: add a year-specific Seasonal & Celebrations hub to the existing MoHoLocal application, with city filters for Mountain House, Tracy, Lathrop and Manteca. Start editorial verification in Mountain House and Tracy. This is a planned next sprint, not a deployed feature or a claim of measured engagement.
+Recommendation: add a year-specific Seasonal & Celebrations hub to the existing MoHoLocal application, with city filters for Mountain House, Tracy, Lathrop and Manteca. Start editorial verification in Mountain House and Tracy. The first browse/calendar increment is now deployed; discussions, seasonal notification consent and measured resident validation remain open.
 
 ## First release
 
-- Thanksgiving 2026: verified community meals, public volunteer/food-drive opportunities and useful local business links; publish only when organizer details and participation requirements are established. No Thanksgiving event has been verified for publication in this pass.
+- Thanksgiving 2026: verified community meals, public volunteer/food-drive opportunities and useful local business links; publish only when organizer details and participation requirements are established. The November 13 Mountain House Prime Time Seniors Friendsgiving brunch is now verified and published with participation/cost details.
 - Christmas / holiday season 2026: official parades, tree lightings and markets; city/date filters, source links and last-checked dates, shareable pages and add-to-calendar actions.
 - Event-linked discussions: reuse existing account, spam-budget, report and moderation patterns, with explicit published-event authorization boundaries. Do not assume pet-only thread permissions automatically apply to events.
 - Expire past events and offers; preserve archives with their year. Distinguish cancellation, schedule changes and unconfirmed details.
@@ -12,7 +12,7 @@ Recommendation: add a year-specific Seasonal & Celebrations hub to the existing 
 
 Halloween 2026 has passed. Plan Halloween 2027 with trunk-or-treat, public festivals and owner-submitted displays after current-season pilot validation.
 
-## Primary-source opportunities
+## Initial primary-source opportunities (superseded by the publication updates below)
 
 1. Mountain House: [MoHoHo Holidays](https://www.mountainhouseca.gov/277/MoHoHo-Holidays), December 5, 2026; city page includes a parade, tree lighting and holiday market. Date agrees with [Special Events](https://www.mountainhouseca.gov/203/Special-Events). **Time conflict:** the detailed holiday page says parade starts 5 PM, while the Special Events page opened in this check says 6 PM and tree lighting 6:45 PM. Do not publish a firm start time or timed reminder until the organizer sources agree or confirmation is obtained. No organizer outreach was sent.
 2. Tracy: [Holiday Light Parade and Tree Lighting](https://www.cityoftracy.org/I-Want-To/View/City-Calendar/2026/Events-Folder/Holiday-Light-Parade-and-Tree-Lighting), December 5, 2026, 6–8:30 PM; city page lists Downtown Tracy and Tracy City Center Association as organizer. Link to current organizer information; recheck before release.
@@ -36,7 +36,7 @@ Relevant event discovery, calendar saves, useful discussion replies, source corr
 
 The Mountain House detail and Special Events pages now both show the December 5 parade at 5 PM; Special Events lists tree lighting at 6 PM. The earlier conflict is resolved by this recheck. Published one MoHoHo event with unknown overall end/admission (not guessed). Published Tracy’s December 5 6–8:30 PM event with city-source free admission and downtown venue. Both use source `editorial_seasonal_2026`, approved status, source links and checked-date text. No event photograph borrowed; no Thanksgiving event invented. SQL: publish-seasonal-events-2026-11-06.sql.
 
-This supersedes the earlier candidate-only state for these two events. Full hubs, calendar actions, discussions and notifications remain unfinished scope. Homepage/native deployment acceptance pending.
+This supersedes the earlier candidate-only state for these two events. Full hubs, calendar actions, discussions and notifications remain unfinished scope. Homepage/native deployment acceptance completed; live filters, dates and calendar downloads verified in the morning release.
 
 
 ## Morning release increment

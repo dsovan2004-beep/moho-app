@@ -1,0 +1,54 @@
+{
+  "source_commit": "1fef2a8a17c702b3692a145f57ca0c24eb703ad7",
+  "native_build": "e0ac6380-e133-4e24-9544-639043e7d087",
+  "native_result": "success",
+  "web_version": "0abbc795-3a6c-41f8-949e-2d2b9a77aab8",
+  "http": [
+    {
+      "path": "public/images/cities/mountain-house-sentinel-20261104-1600.webp",
+      "status": 200,
+      "hash_matches": true
+    },
+    {
+      "path": "public/images/cities/mountain-house-sentinel-20261104-800.webp",
+      "status": 200,
+      "hash_matches": true
+    },
+    {
+      "path": "public/images/cities/tracy-sentinel-20261104-1600.webp",
+      "status": 200,
+      "hash_matches": true
+    },
+    {
+      "path": "public/images/cities/tracy-sentinel-20261104-800.webp",
+      "status": 200,
+      "hash_matches": true
+    },
+    {
+      "path": "events/2e668344-b790-44fc-827c-5085362caf76/calendar",
+      "status": 200,
+      "type": "text/calendar; charset=utf-8",
+      "calendar_correct": true
+    },
+    {
+      "path": "images/cities/mountain-house-naip-2024-1600.webp",
+      "status": 404
+    },
+    {
+      "path": "images/cities/tracy-downtown-archival-1600.webp",
+      "status": 404
+    },
+    {
+      "path": "events/not-valid/calendar",
+      "status": 404
+    }
+  ],
+  "tests_passed": 96,
+  "phone_widths": [
+    320,
+    390
+  ],
+  "desktop_width": 1280,
+  "actual_browser_calendar_download_validated": true,
+  "street_level_2026_photo_procurement": "open: capture and reuse evidence required"
+}

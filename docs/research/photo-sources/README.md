@@ -2,7 +2,7 @@
 
 The previous May 2024 USDA and archival Tracy photographs were rejected by the user. They have been removed from public assets and app references; evidence remains below for history. Only confirmed 2026 captures qualify.
 
-## Published candidates: November 4, 2026 Sentinel-2 views
+## Published: November 4, 2026 Sentinel-2 views
 
 Exact STAC item: S2B_10SFG_20261104_0_L2A. Acquisition: 2026-11-04T19:04:06.870000Z. Sensor: Sentinel-2B; provider true-color RGB asset at native 10 m resolution. Scene cloud cover 0.21546%; both city crops visually inspected with no obstructing cloud observed. These are satellite views, not street-level photography. The full source item and geographic crops are preserved as sentinel-20261104-item.json and sentinel-20261104-crops.json.
 

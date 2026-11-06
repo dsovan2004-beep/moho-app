@@ -1,0 +1,22 @@
+[
+  {
+    "path": "public/images/cities/mountain-house-sentinel-20261104-1600.webp",
+    "bytes": 274108,
+    "sha256": "e23942f08c85591023d14944d2c72f7afdaa5e03273cb75e634c09d8fa3c8187"
+  },
+  {
+    "path": "public/images/cities/mountain-house-sentinel-20261104-800.webp",
+    "bytes": 123938,
+    "sha256": "2a19ba15bb98471d2cdcdad0b05b483fbe97e4063c8aaaf2fecf03fd5d1ae7fd"
+  },
+  {
+    "path": "public/images/cities/tracy-sentinel-20261104-1600.webp",
+    "bytes": 504930,
+    "sha256": "7abbb69c49d6c2abb861675ea056c24a26edbb6014749c09c60ab1b0228f8f9a"
+  },
+  {
+    "path": "public/images/cities/tracy-sentinel-20261104-800.webp",
+    "bytes": 227784,
+    "sha256": "9fdbf7fb5824b19711a8bdbea01578095f040cc04be47c488caa9121465ad5da"
+  }
+]
