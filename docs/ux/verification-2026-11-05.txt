@@ -26,8 +26,8 @@ Follow-up: city pages now use task search, checked service-area providers, dated
 evidence, direct calls and pet links. Search preserved the Mountain House city
 and Molly query. City layout width equals viewport width at 390px. Mobile
 navigation exposes four 48px-high targets. City picker Escape closes the menu
-and returns focus to its trigger. These were local interaction checks; native
-deployment verification follows the final navigation changes.
+and returns focus to its trigger. These local interactions were repeated successfully on the production domain
+after clean native builds.
 
 Discovery pagination has stable ordering and rejects incomplete/error results.
 City/category pages no longer imply community ranking or universal verification.
@@ -41,3 +41,10 @@ spacing and the mobile city-label bounds were corrected. Lathrop and Santa Clara
 now report viewport/document width 320 with the city selector and join action
 inside the viewport. Skip to content is the first link and pressing Enter focuses
 main-content. All temporary browser device overrides were cleared.
+
+Production results follow-up: unnecessary mobile thumbnails no longer squeeze
+the details column. At 390px the evidence text area is 298px wide and call targets
+are 44px high. The source disclosure opens and exposes its date/scope/source.
+Home/results screenshots were refreshed from the settled visible viewport at
+390 x 720; city-mobile.png uses a 390 x 700 viewport clip. Capture scroll positions
+are intentional; these are rendered product screenshots, not design mockups.

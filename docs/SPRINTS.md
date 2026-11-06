@@ -11,7 +11,7 @@ This relaunch supersedes the historical March/April expansion and distribution p
 | Sprint | Scope | Current state |
 |---|---|---|
 | R1 | Security, credentials, submissions and claims | Code/database fixes deployed; 39 automated tests and live Google/submission/rejection acceptance pass. Legacy apikey access is disabled and the previous HS256 verifier revoked; old-key REST/Auth/Storage checks return 401, while modern server and signed-in requester access pass. R1 complete: both clean push-triggered native builds passed and temporary setup permission was removed (configuration registry now returns 403). |
-| R2 | Regional discovery, listing evidence and mobile redesign | First pass deployed for shared Mountain House/Tracy/Lathrop/Manteca discovery. 72 candidates triaged; 25 held including two duplicates; 8 corrected from official websites, 39 still require rechecks. Only 3 corrected records cover launch categories. City-page redesign adds task search, service-area evidence and contacts; 390px search/layout passed locally, deployment underway. Discovery count failure handling and unsupported popularity labels corrected. |
+| R2 | Regional discovery, listing evidence and mobile redesign | First pass deployed for shared Mountain House/Tracy/Lathrop/Manteca discovery. 72 candidates triaged; 25 held including two duplicates; 8 corrected from official websites, 39 still require rechecks. Only 3 corrected records cover launch categories. City-page redesign adds task search, service-area evidence and contacts; 320px/390px layout, search, skip-link focus, Escape dismissal and 44px contact targets verified on production; deployed. Discovery count failure handling and unsupported popularity labels corrected. |
 | R3 | Useful pilot and pet-report lifecycle | Backlog. Build sufficient independently checked choices before outreach; validate resident outcomes. Preserve existing pet filters/reunited states, with moderated reporting and recent/history separation. Owner updates and freshness confirmation remain open. |
 
 ### Relaunch definition of done
@@ -320,4 +320,6 @@ Levi's Stadium games begin June 2026. Pages must be indexed and ranking by May 2
 MoHoLocal Sprints Reference v2
 March 2026
 
-November 5 UX follow-up: mobile navigation now has visible 48px touch targets, Escape/focus handling and a skip link; city/category evidence and discovery count errors are corrected. TypeScript and local interactions pass; final navigation deployment is being verified. Design acceptance criteria: `docs/ux/design-standard.md`. No competitor-superiority or resident-validation claim is made.
+November 5 UX follow-up: mobile navigation now has visible 48px touch targets, Escape/focus handling and a skip link; city/category evidence and discovery count errors are corrected. TypeScript, clean native build and live interactions pass; revised navigation and mobile results are deployed. Design acceptance criteria: `docs/ux/design-standard.md`. No competitor-superiority or resident-validation claim is made.
+
+Release-hygiene finding: live /privacy and /terms show the app 404 page. PRIV-01 is an open gate before the broader public pilot; the bare-domain browser navigation successfully redirects to www.

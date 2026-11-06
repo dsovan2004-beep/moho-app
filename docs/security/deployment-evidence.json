@@ -2,10 +2,10 @@
   "date": "2026-11-05",
   "primary_url": "https://www.moholocal.com",
   "web_worker": "moho-web",
-  "web_version": "0711c6ca-b67d-47a0-b946-026cd717e751",
+  "web_version": "68da0d6a-66c1-4e26-b2b6-41925b569e42",
   "web_route": "www.moholocal.com/*",
   "ingestion_worker": "moho-ingestion",
-  "ingestion_version": "b4c8d845-93b0-4999-a2ea-8e2f138e02fd",
+  "ingestion_version": "1a58d313-f04d-4db8-9fad-094a14e86d68",
   "database_project": "ozjlfgipfzykzrjakwzb",
   "migrations": [
     "20261105100215_secure_directory_requests",
@@ -48,5 +48,31 @@
   "post_retirement_real_account_access": "passed",
   "website_checked_existing_businesses": 8,
   "website_checked_launch_category_providers": 3,
-  "unchecked_home_services_candidates": 39
+  "unchecked_home_services_candidates": 39,
+  "final_web_source_commit": "0ab0f270962977f954f0372031ab41270a651c7e",
+  "ingestion_source_commit": "29c46a1af395ed05e8a882723819c18234bffea1",
+  "final_web_build": "512f62bf-d70b-48d8-aa46-6139ce57be4a",
+  "temporary_build_setup_permission_removed": true,
+  "live_responsive_checks": {
+    "viewport": 320,
+    "document_width": 320,
+    "header_right_edge": 308,
+    "skip_link_focus": "main-content",
+    "city": "Lathrop"
+  },
+  "bare_domain_redirect": "browser confirmed www destination",
+  "ingestion_health": "browser confirmed status ok",
+  "open_release_policy_routes": [
+    "/privacy",
+    "/terms"
+  ],
+  "post_native_ci_requester_access": "passed: existing signed-in private rejected receipt visible",
+  "mobile_contact_check": {
+    "viewport": 390,
+    "document_width": 390,
+    "evidence_text_width": 298,
+    "call_target_height": 44
+  },
+  "temporary_plaintext_credential_copies_removed": true,
+  "actual_deployment_and_server_key_tracked_file_matches": 0
 }

@@ -75,11 +75,11 @@ mismatch (Maryland/Delaware). Eight existing business records were corrected fro
 official sites, preserving IDs; 39 candidates still need independent rechecks.
 Additional corrections include moving, window treatments and hardware retail; only three records
 cover launch categories. Two duplicate hardware-store listings are held reversibly
-with its canonical ID recorded; total held records are now 25.
+with their canonical IDs recorded; total held records are now 25.
 168 focus-city positive ratings without positive review counts were cleared with
 private audit records (includes unpublished rows). No matching public mismatch remains.
-All 1,959 business rows were retained; 1,805 retain public flags after quarantine.
-The three checked providers are website desk checks, not owner/license/insurance/
+All 1,959 business rows were retained; 1,803 retain public flags after quarantine/deduplication.
+The three launch-category providers have website desk checks, not owner/license/insurance/
 availability or quality endorsements. Two advertise the four regional cities;
 Mr. Handyman's checked scope currently includes Mountain House and Tracy.
 
@@ -91,7 +91,17 @@ not rechecked. Landscaping's checked shortlist is honestly empty.
 Pet board: recent 30-day reports by default, explicit older history, report dates,
 status caution and original/contact links; owner updates/expiry remain backlog work.
 390px homepage/results layouts were inspected without horizontal document overflow.
-Browser emulation was reset. Screenshots are in docs/ux/.
+Production 320px Lathrop navigation fits (header right edge 308); skip link is
+first and focuses main-content. 390px results use full-width evidence (298px
+text area) and 44px call targets. Source disclosure opens with dated scope/source.
+All browser device overrides were cleared. Screenshots are in docs/ux/.
+Both Workers passed native Git builds after temporary setup access was removed.
+Latest web build: 512f62bf-d70b-48d8-aa46-6139ce57be4a, source 0ab0f27.
+Ingestion health and signed-in rejected receipt access pass after native delivery.
+Temporary plaintext deployment/server credential files were removed; exact-value
+tracked-file scans found zero matches. Provider encrypted credentials remain.
+Privacy and Terms footer destinations show the app 404 page; PRIV-01 records
+the required policy/route work before the broader public pilot.
 
 BACKLOG DISCIPLINE
 ROADMAP.md is canonical. BACKLOG.md records the next-work queue; SPRINTS.md records

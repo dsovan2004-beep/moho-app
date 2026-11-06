@@ -1,25 +1,23 @@
 {
   "moho-web": {
-    "id": "a644d170-1341-4428-984b-874ef9589ca1",
+    "id": "393c9640-b571-43e2-9390-be330525888a",
     "source": "wrangler",
     "strategy": "percentage",
-    "author_email": "dsovan2004@gmail.com",
     "annotations": {
       "workers/triggered_by": "deployment"
     },
     "versions": [
       {
-        "version_id": "f22bee59-1f52-4f0c-9881-9d53f5b4c7d1",
+        "version_id": "68da0d6a-66c1-4e26-b2b6-41925b569e42",
         "percentage": 100
       }
     ],
-    "created_on": "2026-11-06T00:17:41.039556Z"
+    "created_on": "2026-11-06T00:33:43.936531Z"
   },
   "moho-ingestion": {
     "id": "80b8ebef-a57d-4fa9-974c-99b8fd364c92",
     "source": "wrangler",
     "strategy": "percentage",
-    "author_email": "dsovan2004@gmail.com",
     "annotations": {
       "workers/triggered_by": "deployment"
     },
