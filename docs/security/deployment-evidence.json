@@ -2,10 +2,10 @@
   "date": "2026-11-05",
   "primary_url": "https://www.moholocal.com",
   "web_worker": "moho-web",
-  "web_version": "a56e067e-0fcf-4e2a-9250-038a62d42030",
+  "web_version": "460f5eb3-bf11-45b1-b7e1-4b6f5ca86692",
   "web_route": "www.moholocal.com/*",
   "ingestion_worker": "moho-ingestion",
-  "ingestion_version": "b7284c08-ddee-4648-895e-70a324442bf1",
+  "ingestion_version": "82027f12-3291-49de-936a-be32e3422b03",
   "database_project": "ozjlfgipfzykzrjakwzb",
   "migrations": [
     "20261105100215_secure_directory_requests",
@@ -15,10 +15,11 @@
     "20261105232042_close_legacy_intake_paths",
     "20261105232316_harden_published_contributions",
     "20261106012112_pet_discussions_and_private_messages",
-    "20261106014512_pet_activity_notifications_and_status"
+    "20261106014512_pet_activity_notifications_and_status",
+    "20261106043716_delivery_notifications_and_pet_expiry"
   ],
   "regression_tests": {
-    "passed": 55,
+    "passed": 67,
     "failed": 0
   },
   "npm_audit": {
@@ -36,7 +37,7 @@
   "legacy_credential_revoked": true,
   "legacy_credential_last_read_status": 401,
   "production_test_request_result": "rejected; no business published",
-  "public_business_rows": 1795,
+  "public_business_rows": 1798,
   "quarantined_business_rows": 45,
   "website_checked_existing_providers": 6,
   "unsupported_ratings_cleared": 168,
@@ -49,10 +50,10 @@
   },
   "post_retirement_real_account_access": "passed",
   "website_checked_existing_businesses": 11,
-  "website_checked_launch_category_providers": 15,
-  "final_web_source_commit": "f4d8081f290014a672b23d5ddea05c05155769fb",
-  "ingestion_source_commit": "2e24ec91834ee4122664782809470edceb2cf5eb",
-  "final_web_build": "7e5d1fc0-6aed-40b4-943e-c47ffe4fd844",
+  "website_checked_launch_category_providers": 18,
+  "final_web_source_commit": "14618b42afe1719f98a4618d8cbeca46770fa39c",
+  "ingestion_source_commit": "e6b7e602821fbffa3916924dddb19d3d371ba09a",
+  "final_web_build": "02101758-f1ae-4b1c-adcd-b52feb5ffa42",
   "temporary_build_setup_permission_removed": true,
   "live_responsive_checks": {
     "viewport": 320,
@@ -73,11 +74,11 @@
   },
   "temporary_plaintext_credential_copies_removed": true,
   "actual_deployment_and_server_key_tracked_file_matches": 0,
-  "total_business_rows": 1971,
-  "new_individually_curated_rows": 12,
-  "website_checked_total_businesses": 23,
+  "total_business_rows": 1974,
+  "new_individually_curated_rows": 15,
+  "website_checked_total_businesses": 26,
   "unresolved_identity_or_owner_confirmation": 36,
-  "final_ingestion_build": "6b414196-da6f-4017-931d-25652faba570",
+  "final_ingestion_build": "f3a207b6-518d-47af-96c7-820eeab26edc",
   "completed_release_policy_routes": [
     "/privacy",
     "/terms"
@@ -90,7 +91,7 @@
   "advisor_result": {
     "warnings": 0,
     "errors": 0,
-    "info_intentional_private_no_policy": 8
+    "info_intentional_private_no_policy": 12
   },
   "remaining_desk_recheck_passes": 0,
   "notification_status_release": {
@@ -115,16 +116,16 @@
   },
   "launch_supply_by_city": {
     "Mountain House": {
-      "landscaping": 4,
+      "landscaping": 6,
       "handyman": 3,
       "house_cleaning": 3,
       "plumbing": 3
     },
     "Tracy": {
-      "landscaping": 4,
+      "landscaping": 5,
       "handyman": 3,
       "house_cleaning": 4,
-      "plumbing": 4
+      "plumbing": 5
     }
   },
   "footer_cleanup": {
@@ -148,5 +149,64 @@
   },
   "pet_archive_redirect": "Archived public-detail reports return to /my-pet-reports for restore rather than a public 404",
   "preview_server": "stopped after switching deliverable to production",
-  "temporary_viewport_overrides": "cleared"
+  "temporary_viewport_overrides": "cleared",
+  "away_notification_release": {
+    "native_builds": {
+      "web": {
+        "source": "14618b42afe1719f98a4618d8cbeca46770fa39c",
+        "status": "completed",
+        "conclusion": "success",
+        "build": "02101758-f1ae-4b1c-adcd-b52feb5ffa42"
+      },
+      "ingestion": {
+        "source": "e6b7e602821fbffa3916924dddb19d3d371ba09a",
+        "status": "completed",
+        "conclusion": "success",
+        "build": "f3a207b6-518d-47af-96c7-820eeab26edc"
+      }
+    },
+    "push": "deployed, resident opt-in available; OS delivery not exercised",
+    "private_message_contents_in_alerts": false,
+    "active_device_subscriptions": 0,
+    "email": "configured but disabled: operator setup email accepted, then failed asynchronously due to shared account monthly quota",
+    "email_sender_domain": "moholocal.com verified",
+    "email_key_scope": "Sending access restricted to moholocal.com; encrypted ingestion Worker secret",
+    "email_sender_enabled": false,
+    "operator_test": {
+      "provider_id": "01a1af31-6e12-7c7e-a9ba-d42bb7f46488",
+      "http_status": 200,
+      "delivery_status": "failed",
+      "reason": "monthly sending quota exhausted",
+      "new_resident_optins": 0,
+      "notification_jobs": 0,
+      "paid_plan_changes": false
+    },
+    "cron": "*/5 * * * * confirmed alongside unchanged ingestion schedules",
+    "cron_bootstrap": "prepare executed once after verified Worker deployment; no notification jobs created",
+    "browser_acceptance": [
+      "signed-in notification settings",
+      "push enable button available without granting permission",
+      "email disabled",
+      "account-scoped empty report management",
+      "non-issued-token unsubscribe GET and POST",
+      "inbox noindex",
+      "320px/390px no horizontal overflow",
+      "44px buttons; compact preferences; viewport cleared"
+    ],
+    "next_email_gate": "MSG-04: sending availability, actual delivered operator test and authenticated failure/bounce handling",
+    "evidence": [
+      "docs/notification-expiry-release-2026-11-05.md",
+      "docs/ux/away-notification-controls-mobile.png",
+      "docs/ux/email-quota-blocker.png"
+    ]
+  },
+  "automatic_pet_expiry": {
+    "window_days": 30,
+    "public_deadline_enforced_by_rls": true,
+    "preserved_report_rows": 60,
+    "scheduled_expiry_history": true,
+    "reporter_renewal": true,
+    "moderation_holds_preserved": true,
+    "production_test_reports_created": 0
+  }
 }

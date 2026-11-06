@@ -1,6 +1,6 @@
 # Notification delivery and pet freshness — November 5, 2026
 
-Implemented on the existing Next.js, Cloudflare and Supabase stack. Source deployment and browser acceptance are tracked below separately from implementation.
+Implemented on the existing Next.js, Cloudflare and Supabase stack. Source, native deployment, browser acceptance and the unresolved provider email quota are recorded separately below.
 
 ## Implemented and database applied
 
@@ -14,7 +14,7 @@ Implemented on the existing Next.js, Cloudflare and Supabase stack. Source deplo
 
 ## Validation
 
-67 local regression tests pass, including immediate expiry, reporter renewal, anonymous/unconfirmed denials, service-only dispatch, device ownership, opt-in baseline, generic encrypted push, email idempotency/unsubscribe, read/block/opt-out cancellation, leases, retries, endpoint retirement and cooldown. Root/Worker TypeScript and OpenNext build pass. New dependency pinned to `@block65/webcrypto-web-push@2.0.0`; dependency audit reports zero known vulnerabilities. Hosted security advisor: zero WARN/ERROR, 12 INFO for intentionally private tables with RLS and no browser policies. No real resident emails, OS push prompts, production messages or fake pet reports used for tests.
+67 local regression tests pass, including immediate expiry, reporter renewal, anonymous/unconfirmed denials, service-only dispatch, device ownership, opt-in baseline, generic encrypted push, email idempotency/unsubscribe, read/block/opt-out cancellation, leases, retries, endpoint retirement and cooldown. Root/Worker TypeScript and OpenNext build pass. New dependency pinned to `@block65/webcrypto-web-push@2.0.0`; dependency audit reports zero known vulnerabilities. Hosted security advisor: zero WARN/ERROR, 12 INFO for intentionally private tables with RLS and no browser policies. No resident DM notification emails, OS push prompts, production messages or fake pet reports used for tests. The separately identified operator-only setup test is below.
 
 ## Provider additions
 
@@ -22,9 +22,17 @@ Three deduplicated first-party website additions published with private audit sn
 
 ## Deployment and operational gate
 
-VAPID private key installed as an encrypted ingestion Worker secret; public counterpart committed in app/Worker configuration. Email readiness remains false until the MoHoLocal sender is verified and a send-only credential installed. Resend domain registration and DNS preparation are in progress; existing unrelated sender domains, incoming MX records and root SPF must be preserved. Runtime secret values are never copied into source, evidence or logs. No paid plan upgrade is authorized.
+VAPID private key installed as an encrypted ingestion Worker secret; public counterpart committed in app/Worker configuration. MoHoLocal sender is verified; a Sending-access credential restricted to moholocal.com is installed as an encrypted Worker secret. Resend-generated DKIM TXT and DNS-only rsend/send CNAME records were added; unrelated domains, incoming MX and root SPF were preserved. Email readiness and EMAIL_SENDER_ENABLED remain false because the shared Resend monthly sending quota is exhausted. Runtime secret values are never copied into source, evidence or logs. No paid plan upgrade is authorized.
 
-Native builds, live UI checks and actual delivery qualification: pending. Browser/system permission remains each resident’s choice. End-to-end delivery to a real opted-in test account has not been claimed.
+Native builds and live UI acceptance pass. Signed-in preferences load, push opt-in is available, email remains disabled, and management is account-scoped. At 320px/390px there is no overflow; email/push buttons are 44px. Preferences are collapsed by default to keep conversations in view. Inbox noindex and unsubscribe POST with a non-issued zero token pass. Browser viewport overrides were cleared. Actual OS push delivery remains unexercised; permission is each resident’s choice.
+
+One operator-only setup email (ID `01a1af31-6e12-7c7e-a9ba-d42bb7f46488`) returned HTTP 200, but the Resend UI explicitly reports **Failed — monthly sending quota exhausted**. No delivery success is claimed. An earlier transport request returned 403; explicit application User-Agent was added and acceptance then succeeded. The temporary sender-enable flag was returned to false after asynchronous failure was found; there were zero resident email opt-ins and zero notification jobs. MSG-04 requires restored sending availability, an actually delivered operator test and authenticated failure/bounce event handling before email activation. No paid upgrade, repeated test emails or unrelated workload change was made. Temporary plaintext credential transfer files and clipboard contents were removed after encrypted installation.
+
+Proof: `ux/away-notification-controls-mobile.png`, `ux/email-quota-blocker.png`, and the private account-control screenshot under ignored `security/screenshots/resend-moholocal-verified.png`. The push subscription count remains zero; no fake production pet, comment or DM was used to manufacture a delivery test.
+
+## Rollback note
+
+If reverting the ingestion Worker to code from before the exact notification-cron branch, remove the new five-minute cron first; the older hour-based router must never receive it. Prefer a version that retains the new router and disable email using EMAIL_SENDER_ENABLED=false. Preserve RLS, existing report rows and delivery history; do not drop security tables to roll back UI behavior.
 
 ## Technical references
 
