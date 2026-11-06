@@ -71,3 +71,7 @@ Additional targeted open-license/stock searches led to https://aroundus.com/p/55
 ## Legacy discovery / broader service-image pass — November 6
 
 An additional CC0/public-domain search returned https://commons.wikimedia.org/wiki/File:Mountain_house.jpg . The file was transferred in2013, gives no capture date, and is categorized under mountains of unidentified countries. A generic name/public-domain grant does not establish Mountain House California or a2026 capture. Excluded; nothing downloaded. Provider portfolio photographs on Choice One and Paramount pages remain rights-reserved leads, not reusable service assets. New all-four-city service/event-image procurement scope is recorded in ../service-event-image-backlog-2026-11-06.json. No messages, copied photographs or city-photo replacement.
+
+
+## Midday continuation, November6
+Targeted Commons/Flickr queries for exact Mountain House California2026/CreativeCommons surfaced no newly qualifying candidate. City project page remains renderings; local-media page retains prior date/rights gap; 2026 MLS publication date does not establish street-photo capture or external reuse. Sources https://www.mountainhouseca.gov/464/Citywide-Project-Renderings , https://mountainhouselive.com/places . No replacement or outreach. Existing cleared Tracy street derivative may appear as explicitly labeled city backdrop on Tracy cards with full credits; it is never labeled as a store, provider project or actual event image. Genuine media for all four cities remains open.

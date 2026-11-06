@@ -24,3 +24,12 @@ test('incompatible service URLs cannot keep an invisible service filter',()=>{
   assert.equal(params(directoryHref({...current,category:'Restaurants'})).get('service'),null)
   assert.equal(params(directoryHref({...current,service:'unknown'})).get('service'),null)
 })
+
+// These specialties must survive city changes; generic solar cleaning is not bird exclusion.
+test('specialty service filters survive city changes without broadening the job',()=>{
+  for(const service of ['solar-bird-exclusion','holiday-light-installation']) {
+    const p=params(directoryHref({...current,service},{city:'Manteca',query:null}))
+    assert.equal(p.get('service'),service)
+    assert.equal(p.get('city'),'Manteca')
+  }
+})

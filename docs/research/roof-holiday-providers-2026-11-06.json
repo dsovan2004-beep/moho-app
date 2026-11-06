@@ -1,0 +1,71 @@
+{
+  "checkedAt": "2026-11-06",
+  "method": "Individual primary website checks; normalized phone/domain/name dedup; no outreach; photos rights pending",
+  "providers": [
+    {
+      "name": "Clear Gutter",
+      "city": "Service area only",
+      "phone": "(408) 595-9874",
+      "website": "https://www.mycleargutter.com/",
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "tags": [
+        "solar bird exclusion",
+        "pigeon cleanup",
+        "solar panel cleaning",
+        "gutter cleaning"
+      ],
+      "description": "Advertises solar-panel bird exclusion, under-panel debris cleanup, solar cleaning and gutter services across Mountain House, Tracy, Lathrop and Manteca. Office location not established. Confirm roof access, cleanup scope, mesh attachment method, solar warranty compatibility and scheduling directly."
+    },
+    {
+      "name": "Eagle Home Solutions Inc.",
+      "city": "Service area only",
+      "phone": "(925) 339-1249",
+      "website": "https://www.ehsroofernearme.com/",
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "tags": [
+        "solar bird exclusion",
+        "solar panel cleaning",
+        "roof maintenance",
+        "gutter cleaning"
+      ],
+      "description": "Roof and gutter business advertising solar cleaning and bird proofing, with Mountain House, Tracy, Lathrop and Manteca among its service areas. Office location not established. Confirm the exact work, roof access, warranty compatibility, required credentials and availability directly."
+    },
+    {
+      "name": "K & T Lights",
+      "city": "Stockton",
+      "phone": "(209) 957-0829",
+      "website": "https://www.kandtlights.com/about-us",
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Manteca"
+      ],
+      "tags": [
+        "holiday light installation",
+        "holiday light removal",
+        "seasonal lighting"
+      ],
+      "description": "Stockton-based business advertising custom seasonal Christmas lighting, rental products, maintenance and end-of-season takedown for Mountain House, Tracy and Manteca. Confirm your address, installation dates, rental terms, removal schedule and written quote directly. Lathrop coverage not established on the checked page."
+    }
+  ],
+  "held": [
+    {
+      "name": "Exterior Prime",
+      "reason": "City cost pages conflict with other site pricing and contain templated quantities; no price/permit claims adopted; hold for editorial review."
+    },
+    {
+      "name": "Sampa\u2019s Services",
+      "reason": "Local service areas conflict with Los Angeles boilerplate; hold identity/base clarification."
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "events": [
+    {
+      "title": "Prime Time Seniors \u2014 Grinchmas Craft",
+      "city": "Mountain House",
+      "location": "TH-1 Room, 201 E Main Street, Mountain House",
+      "start": "2026-11-18T10:00:00-08:00",
+      "end": "2026-11-18T12:00:00-08:00",
+      "source": "https://www.mountainhouseca.gov/Calendar.aspx?EID=2556",
+      "description": "City-listed Prime Time Seniors crafting session to decorate a miniature holiday tree. November 18, 2026, 10 AM\u2013noon at the TH-1 Room, 201 E Main Street. The City lists $5 for senior members and $8 for non-members and links registration. Check eligibility, remaining space and current terms through the official listing before booking. Checked November 6, 2026; event imagery not reused."
+    },
+    {
+      "title": "Ornament Stroll",
+      "city": "Tracy",
+      "location": "Front Street Plaza, 50 East 6th Street, Tracy",
+      "start": "2026-11-14T12:00:00-08:00",
+      "end": "2026-11-14T21:00:00-08:00",
+      "source": "https://www.cityoftracy.org/I-Want-To/View/City-Calendar/2026/Events-Folder/Ornament-Stroll-TCCA",
+      "description": "Tracy City Center Association holiday stroll, listed by the City for November 14, 2026, noon\u20139 PM, at Front Street Plaza. Participating downtown businesses offer ornaments as part of the event. Confirm any ticket, participation or ornament-availability requirements with the organizer; the City page does not establish a ticket price. Checked November 6, 2026; no event photos reused."
+    },
+    {
+      "title": "Veterans Day \u2014 Honoring All Who Served",
+      "city": "Lathrop",
+      "location": "Lathrop Community Center, 15557 5th Street",
+      "start": "2026-11-11T11:00:00-08:00",
+      "end": null,
+      "source": "https://www.ci.lathrop.ca.us/parksrec/page/special-events-0",
+      "description": "The City Parks & Recreation 2026 special-events page advertises a Veterans Day gathering on Wednesday, November 11 at 11 AM at the Community Center. The City marks it as free. An end time is not established on that page; confirm program details before travel. Official event information checked November 6, 2026; no flyer or event photograph reused."
+    },
+    {
+      "title": "Dinovember Game Night",
+      "city": "Manteca",
+      "location": "Manteca Branch Library, 320 W. Center Street",
+      "start": "2026-11-17T15:30:00-08:00",
+      "end": "2026-11-17T16:30:00-08:00",
+      "source": "https://www.ssjcpl.org/events-services/events-calendar/manteca-branch/dinovember-game-night",
+      "description": "Manteca Library dinosaur-themed games and trivia for children ages 6\u201312. The library lists November 17, 2026, 3:30\u20134:30 PM, at 320 W. Center Street. Check the official library page for any participation updates before attending. Source checked November 6, 2026; no library artwork or event photos reused."
+    }
+  ],
+  "held": [
+    {
+      "title": "Mountain House Veterans Day Luncheon",
+      "reason": "Calendar EID2322 shows11AM\u20131PM Town Hall; current FormCenter search summary saysnoon and City announcement saysnoon\u20132. Hold exacttime until first-party reconciliation; no outreach."
+    }
+  ],
+  "photos": "No new reuse grants established; no flyers copied"
+}

@@ -12,6 +12,8 @@ const TASKS = [
   { name: 'Plumbing', term: 'plumbing', icon: '⌁', note: 'Leaks, drains and plumbing repairs' },
   { name: 'House cleaning', term: 'house-cleaning', icon: '✧', note: 'Regular cleaning and move-out help' },
   { name: 'Landscaping & yard care', term: 'landscaping', icon: '❋', note: 'Garden care, maintenance and outdoor projects' },
+  { name: 'Solar bird exclusion', term: 'solar-bird-exclusion', icon: '⌂', note: 'Find solar mesh and under-panel pigeon cleanup services' },
+  { name: 'Holiday light installation', term: 'holiday-light-installation', icon: '✦', note: 'Seasonal setup, maintenance and takedown options' },
 ]
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ city?: string }> }) {
@@ -25,8 +27,8 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
   }))
   const { data: seasonalData, error: seasonalError } = await client.from('events')
     .select('id,title,city,location,start_date,end_date,source_url,description')
-    .eq('status', 'approved').eq('source', 'editorial_seasonal_2026').order('start_date', { ascending: true }).limit(8)
-  const seasonal = (seasonalData ?? []).filter(event => isUpcomingEvent(event))
+    .eq('status', 'approved').eq('source', 'editorial_seasonal_2026').or(`start_date.gte.${new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()},end_date.gte.${new Date().toISOString()}`).order('start_date', { ascending: true }).limit(40)
+  const seasonal = (seasonalData ?? []).filter(event => isUpcomingEvent(event)).slice(0, 6)
   const photoCity = city === 'Mountain House' || city === 'Tracy' ? city : null
   return <div className="bg-[#faf9f6]">
     <section className="max-w-6xl mx-auto px-5 sm:px-8 pt-8 sm:pt-12 pb-12">
@@ -74,7 +76,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
     </section>
     <section className="max-w-6xl mx-auto px-5 sm:px-8 py-10 border-t border-slate-200">
       <div className="flex flex-wrap gap-4 justify-between items-end mb-6"><div><p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Start with a task</p><h2 className="text-2xl sm:text-3xl font-bold text-[#18324f]">What needs doing?</h2></div><Link href={`/directory?city=${encodeURIComponent(city)}`} className="text-sm font-semibold text-[#1e3a5f] underline underline-offset-4">Browse all categories →</Link></div>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">{TASKS.map(task => <Link key={task.term} href={`/directory?${new URLSearchParams({ city, category: 'Home Services', service: task.term })}`}
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">{TASKS.map(task => <Link key={task.term} href={`/directory?${new URLSearchParams({ city, category: 'Home Services', service: task.term })}`}
         className="group bg-white rounded-2xl border border-slate-200 p-6 hover:border-[#1e3a5f] hover:shadow-sm transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-700">
         <span aria-hidden="true" className="text-3xl text-[#59715d]">{task.icon}</span><h3 className="text-lg font-bold text-[#18324f] mt-5">{task.name}</h3><p className="text-sm text-slate-600 mt-2 leading-relaxed">{task.note}</p><span className="block mt-5 text-sm font-semibold text-[#1e3a5f]">Explore options →</span>
       </Link>)}</div>

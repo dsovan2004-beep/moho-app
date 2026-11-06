@@ -1,9 +1,9 @@
 {
   "date": "2026-11-06",
-  "status": "Open — no service/event photo newly cleared or published in this pass",
-  "scope": "All four cities; initially handyman, plumbing, house cleaning and landscaping; existing five seasonal events; broader categories follow source-checked inventory.",
+  "status": "Open \u2014 genuine service/event photos still held; existing cleared Tracy 2026 street image reused as explicitly labeled city backdrop, not a business or event image",
+  "scope": "All four cities; initial four services plus solar bird exclusion and seasonal lighting; nine seasonal events.",
   "requirements": [
-    "Correct city/service or actual event context; no implication a stock photo is a specific provider’s work",
+    "Correct city/service or actual event context; no implication a stock photo is a specific provider\u2019s work",
     "Source URL, creator/rights-holder, license or existing grant, capture date where relevant, modifications and credit text recorded before use",
     "Mountain House civic/street replacement must be exact-city real 2026 photography; existing restriction remains",
     "No outreach or permission-request messages; no copied provider portfolio, brand product photo or organizer flyer without a grant"
@@ -102,6 +102,14 @@
     {
       "source": "https://manteca.org/2026-manteca-christmas-in-the-park-parade/",
       "status": "Organizer visuals not licensed for reuse by page visibility alone; no event image copied"
+    },
+    {
+      "source": "https://www.mycleargutter.com/",
+      "status": "Bird exclusion photos visible; existing reuse grant not established; not copied"
+    },
+    {
+      "source": "https://www.kandtlights.com/about-us",
+      "status": "Holiday portfolios visible; existing reuse grant not established; not copied"
     }
   ]
 }

@@ -2,6 +2,7 @@ export const runtime = 'nodejs'
 
 import { getSupabaseClient, type Event } from '@/lib/supabase'
 import Link from 'next/link'
+import CardCityPhoto from '@/app/components/CardCityPhoto'
 import { RELAUNCH_CITY_NAMES } from '@/lib/cities'
 import { eventDateParts, eventBucket, isUpcomingEvent } from '@/lib/event-dates'
 
@@ -49,8 +50,9 @@ function EventCard({ event }: { event: Event }) {
   const cityColor = CITY_COLORS[event.city] ?? 'bg-gray-100 text-gray-700'
 
   return (
-    <Link href={`/events/${event.id}`} className="block group">
     <article className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all">
+      {!event.image_url && <CardCityPhoto city={event.city} />}
+      <Link href={`/events/${event.id}`} className="block group focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-700">
       {/* Flyer / screenshot image — shown when present */}
       {event.image_url && (
         <div className="w-full h-48 bg-gray-100 overflow-hidden">
@@ -113,8 +115,8 @@ function EventCard({ event }: { event: Event }) {
           })()}
         </div>
       </div>
-    </article>
     </Link>
+    </article>
   )
 }
 
