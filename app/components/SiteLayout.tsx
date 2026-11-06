@@ -6,7 +6,7 @@ import {MessageBadge,MessageAlertSummary} from './MessageAlerts'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { useState, useEffect, useRef, Suspense } from 'react'
 import { getSupabaseClient, signOut } from '@/lib/supabase'
-import { CITIES as CITY_CONFIG } from '@/lib/cities'
+import { CITIES as CITY_CONFIG, RELAUNCH_CITY_NAMES } from '@/lib/cities'
 import { OPERATOR_CONTACT } from '@/lib/site-policy'
 import type { User } from '@supabase/supabase-js'
 
@@ -680,32 +680,23 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
                 <p className="text-gray-400 text-sm leading-relaxed mb-5">
                   Find local businesses, connect with neighbors, and discover what&apos;s happening nearby.
                 </p>
-                <div className="flex flex-wrap gap-1.5">
-                  {[
-                    { label: 'Mountain House', slug: 'mountain-house', color: '#2563eb' },
-                    { label: 'Tracy',          slug: 'tracy',          color: '#16a34a' },
-                    { label: 'Lathrop',        slug: 'lathrop',        color: '#9333ea' },
-                    { label: 'Manteca',        slug: 'manteca',        color: '#ea580c' },
-                    { label: 'Brentwood',      slug: 'brentwood',      color: '#0d9488' },
-                    { label: 'San Jose',       slug: 'san-jose',       color: '#0369a1' },
-                    { label: 'Santa Clara',    slug: 'santa-clara',    color: '#b91c1c' },
-                    { label: 'Sunnyvale',      slug: 'sunnyvale',      color: '#d97706' },
-                  ].map(({ label, slug, color }) => (
+                <p className="text-xs font-semibold uppercase tracking-wider text-slate-300 mb-3">Our communities</p>
+                <nav aria-label="Footer communities" className="grid grid-cols-2 gap-2 max-w-xs">
+                  {CITY_CONFIG.filter(city => RELAUNCH_CITY_NAMES.some(name => name === city.name)).map(city => (
                     <Link
-                      key={label}
-                      href={`/${slug}`}
-                      className="text-xs font-semibold px-2.5 py-1 rounded-full transition hover:opacity-80"
-                      style={{ backgroundColor: `${color}22`, color, border: `1px solid ${color}44` }}
+                      key={city.slug}
+                      href={`/${city.slug}`}
+                      className="min-h-11 flex items-center rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-xs font-semibold text-slate-100 transition-colors hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300"
                     >
-                      {label}
+                      {city.name}
                     </Link>
                   ))}
-                </div>
+                </nav>
               </div>
 
               {/* Col 2 — Directory */}
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Directory</h3>
+                <h3 className="text-xs font-bold uppercase tracking-widest text-slate-300 mb-4">Directory</h3>
                 <ul className="space-y-2.5">
                   {[
                     { label: 'Home Services',    href: '/directory?category=Home+Services' },
@@ -725,7 +716,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
 
               {/* Col 3 — Community */}
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Community</h3>
+                <h3 className="text-xs font-bold uppercase tracking-widest text-slate-300 mb-4">Community</h3>
                 <ul className="space-y-2.5">
                   {[
                     { label: '✨ Ask MoHo',        href: '/ask' },
@@ -746,7 +737,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
 
               {/* Col 4 — Business Owners */}
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Business Owners</h3>
+                <h3 className="text-xs font-bold uppercase tracking-widest text-slate-300 mb-4">Business Owners</h3>
                 <ul className="space-y-2.5">
                   {[
                     { label: 'List Your Business', href: '/submit-business' },
@@ -777,8 +768,8 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           {/* ── Bottom utility row ── */}
           <div className="border-t border-gray-800">
             <div className="max-w-7xl mx-auto px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-              <p className="text-xs text-gray-600 text-center sm:text-left">
-                © {new Date().getFullYear()} MoHoLocal · Serving the 209 &amp; South Bay, CA
+              <p className="text-xs text-gray-400 text-center sm:text-left">
+                © {new Date().getFullYear()} MoHoLocal · Serving Mountain House, Tracy, Lathrop &amp; Manteca
               </p>
               <div className="flex items-center gap-4">
                 {[
@@ -786,7 +777,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
                   { label: 'Terms',   href: '/terms' },
                   { label: 'Contact', href: `mailto:${OPERATOR_CONTACT}?subject=MoHoLocal` },
                 ].map(({ label, href }) => (
-                  <Link key={label} href={href} className="text-xs text-gray-600 hover:text-gray-300 transition-colors">
+                  <Link key={label} href={href} className="text-xs text-gray-400 hover:text-white transition-colors">
                     {label}
                   </Link>
                 ))}

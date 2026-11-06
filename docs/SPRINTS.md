@@ -338,3 +338,5 @@ November 5 scope update: resident discussion threads on pet reports (PET-02) and
 Deployment evidence: source 2e24ec91834ee4122664782809470edceb2cf5eb; web version ecbc9980-0a39-4075-88c1-59e82eeea436; ingestion version b7284c08-ddee-4648-895e-70a324442bf1. Both native Cloudflare Builds report success. Screenshot: docs/ux/landscaping-mobile.png. No temporary viewport overrides left active.
 
 November 5 continuation in progress: unread notifications and linked-reporter status lifecycle implemented locally, 55 regressions and OpenNext/typechecks pass. Five additional primary-source providers prepared. Hosted migration, publication and browser/native-build acceptance pending. No messages, permission prompts or provider outreach sent.
+
+November 5 screenshot follow-up: footer cities simplified around the four relaunch communities, consistent readable styling and 44px targets; obsolete South Bay footer wording removed. Existing other-city URLs/data retained. Deployment QA pending.
