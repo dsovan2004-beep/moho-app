@@ -20,7 +20,7 @@ test('mail payload has a stable idempotency key, generic content and token unsub
   assert.equal((await deliverNotification(env,job)).decision,'retry');assert.equal(requests.length,0)
   assert.equal((await deliverNotification({...env,RESEND_API_KEY:'fixture-resend',EMAIL_SENDER_ENABLED:'true'},job)).decision,'sent')
   const request=requests[0];assert.equal(request.url,'https://api.resend.com/emails');assert.equal((request.init.headers as Record<string,string>)['Idempotency-Key'],'moho-dm-fixture-job')
-  const body=JSON.parse(request.init.body as string);assert.deepEqual(body.to,['alice@example.test']);assert.match(body.text,/notification-preferences\/unsubscribe\?token=fixture-token/);assert.equal(body.headers['List-Unsubscribe-Post'],'List-Unsubscribe=One-Click');assert.equal(request.init.redirect,'error')
+  const body=JSON.parse(request.init.body as string);assert.deepEqual(body.to,['alice@example.test']);assert.match(body.text,/notification-preferences\/unsubscribe\?token=fixture-token/);assert.equal(body.headers['List-Unsubscribe-Post'],'List-Unsubscribe=One-Click');assert.equal(request.init.redirect,'error');assert.equal((request.init.headers as Record<string,string>)['User-Agent'],'MoHoLocal-Notifications/1.0')
  }finally{globalThis.fetch=original}
 })
 test('Web Push produces an encrypted payload and VAPID authorization without sending message content',async()=>{
