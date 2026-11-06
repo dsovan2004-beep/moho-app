@@ -1,0 +1,109 @@
+{
+  "date": "2026-11-05",
+  "method": "Individually researched primary websites. Name/phone/website duplicates checked before insertion; no phone calls, owner confirmation, license/insurance verification or copied reviews/images.",
+  "providers": [
+    {
+      "name": "Tracy Handyman Services",
+      "city": "Service area only",
+      "address": "",
+      "phone": "(925) 321-3253",
+      "website": "https://www.tracyhandymanservices.com/",
+      "description": "Handyman and home improvement services advertised for Tracy and Mountain House. The operator explicitly states on the website that they are not a licensed contractor. Confirm that your job is suitable and whether it requires a licensed professional. Office location not listed.",
+      "tags": [
+        "handyman",
+        "small repairs"
+      ],
+      "areas": [
+        "Mountain House",
+        "Tracy"
+      ],
+      "note": "Official site explicitly says not a licensed contractor; preserved as an operator statement, not independently checked licensing. No credentials or suitability endorsement."
+    },
+    {
+      "name": "Knights Plumbing & Drain",
+      "city": "Lathrop",
+      "address": "17612 Murphy Pkwy, Lathrop, CA 95330",
+      "phone": "(209) 268-9300",
+      "website": "https://knightsplumbinganddrain.com/service-areas/mountain-house-ca/",
+      "description": "Plumbing, drain and sewer repairs and water heater services advertised for Mountain House and Tracy. The current site says Knights has joined the Tony\u2019s family and lists a Lathrop contact office. Confirm current booking details directly.",
+      "tags": [
+        "plumbing",
+        "drain cleaning",
+        "water heaters"
+      ],
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "note": "Current page contact/footer used rather than older project-post telephone numbers. Brand affiliation with Tony\u2019s recorded; no separate Tony\u2019s duplicate found. License/insurance claims not independently checked."
+    },
+    {
+      "name": "Merry Maids \u2014 Stockton serving Mountain House and Tracy",
+      "city": "Stockton",
+      "address": "",
+      "phone": "(888) 894-6174",
+      "website": "https://merrymaids.com/home-cleaners-stockton-ca",
+      "description": "Recurring, deep and move-in/move-out house cleaning advertised for Mountain House, Tracy and nearby cities by the Stockton service page. The phone shown is the website\u2019s quote/intake line; confirm local service availability directly. Office street address not established.",
+      "tags": [
+        "house cleaning",
+        "recurring cleaning",
+        "move-out cleaning",
+        "deep cleaning"
+      ],
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "note": "Phone is the official page intake number, not claimed as a direct local branch line. No ratings, product-safety, background-check, quality or availability endorsement."
+    },
+    {
+      "name": "The Cleaning Authority \u2014 Tracy-Manteca",
+      "city": "Manteca",
+      "address": "955 W Center St Suite 8, Manteca, CA 95336",
+      "phone": "(209) 800-8900",
+      "website": "https://www.thecleaningauthority.com/discovery-bay/",
+      "description": "Recurring and one-time house cleaning advertised for Tracy, Manteca and Lathrop. Official page lists a Manteca office. Mountain House is not named in the city list, so that service area is not assumed from a ZIP code alone.",
+      "tags": [
+        "house cleaning",
+        "recurring cleaning",
+        "deep cleaning"
+      ],
+      "areas": [
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "note": "Official page includes ZIP 95391 but no named Mountain House coverage; Mountain House deliberately excluded pending explicit confirmation."
+    },
+    {
+      "name": "Pristine Plumbing & Drain",
+      "city": "Stockton",
+      "address": "",
+      "phone": "(209) 707-7677",
+      "website": "https://pristineplumbinganddrain.com/",
+      "description": "Stockton-based plumbing business advertising Tracy service, including drain cleaning, leak repairs and water heater repair or installation. Mountain House is not named in the published service area list. Confirm your exact address and job directly.",
+      "tags": [
+        "plumbing",
+        "drain cleaning",
+        "water heaters"
+      ],
+      "areas": [
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "note": "Stockton base and named service areas from official site; no Mountain House inference. No license, insurance, quality or response-time endorsement."
+    }
+  ],
+  "deferred": [
+    {
+      "name": "Mountain House Handyman / Matt Disko",
+      "source": "https://www.mattdisko.com/",
+      "reason": "Search index showed current public contact and licensing disclaimer, but direct page extraction was unreadable. Not published in this pass."
+    }
+  ]
+}

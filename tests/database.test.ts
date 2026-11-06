@@ -297,3 +297,51 @@ test('browser roles have no direct pet message, block or conversation write gran
  const result=sql(`select count(*) from information_schema.table_privileges where table_schema='public' and table_name in('pet_comments','pet_conversations','pet_messages','pet_message_blocks') and grantee in('anon','authenticated') and privilege_type in('INSERT','UPDATE','DELETE','TRUNCATE','TRIGGER');`)
  assert.equal(result,'0')
 })
+
+const activity=(action:string,payload:Record<string,unknown>={})=>`public.pet_activity_action('${action}','${JSON.stringify(payload)}'::jsonb)`
+test('unread alerts are recipient-only and read cursors persist without leaking to admins',()=>{
+ const result=sql(`begin;${petFixture()}${as(bob)}select ${social('start_chat',{pet_id:pet,display_name:'Bob',body:'Private sighting'})}->>'conversation_id' as chat \\gset
+ select ${activity('alerts')}->>'total';${as(alice)}select ${activity('alerts')}->>'total';
+ select id as message from public.pet_messages limit 1 \\gset
+ select public.pet_activity_action('mark_read',jsonb_build_object('conversation_id',:'chat','last_message_id',:'message'));
+ select ${activity('alerts')}->>'total';${as(admin)}select ${activity('alerts')}->>'total';select count(*) from public.pet_read_receipts;rollback;`).split('\n')
+ assert.equal(result[0],'0');assert.equal(result[1],'1');assert.equal(result[3],'0');assert.equal(result[4],'0');assert.equal(result[5],'0')
+})
+test('read cursors cannot move backwards or mark another conversation and new delivery remains unread',()=>{
+ const result=sql(`begin;${petFixture()}${as(bob)}select ${social('start_chat',{pet_id:pet,display_name:'Bob',body:'First'})}->>'conversation_id' as chat \\gset
+ select id as first from public.pet_messages limit 1 \\gset
+ select public.pet_social_action('message',jsonb_build_object('conversation_id',:'chat','body','Second'));
+ select id as second from public.pet_messages order by delivery_seq desc limit 1 \\gset
+ ${as(alice)}select public.pet_activity_action('mark_read',jsonb_build_object('conversation_id',:'chat','last_message_id',:'second'));
+ select public.pet_activity_action('mark_read',jsonb_build_object('conversation_id',:'chat','last_message_id',:'first'));
+ select ${activity('alerts')}->>'total';${as(bob)}select public.pet_social_action('message',jsonb_build_object('conversation_id',:'chat','body','Third'));
+ ${as(alice)}select ${activity('alerts')}->>'total';rollback;`).split('\n')
+ assert.equal(result[3],'0');assert.equal(result.at(-1),'1')
+ assert.throws(()=>sql(`begin;${petFixture()}${as(bob)}select ${social('start_chat',{pet_id:pet,display_name:'Bob',body:'First'})}->>'conversation_id' as chat \\gset
+ select id as first from public.pet_messages limit 1 \\gset
+ ${as(admin)}select public.pet_activity_action('mark_read',jsonb_build_object('conversation_id',:'chat','last_message_id',:'first'));rollback;`),/Conversation unavailable/)
+})
+test('blocked conversations do not generate unread alerts',()=>{
+ const result=sql(`begin;${petFixture()}${as(bob)}select ${social('start_chat',{pet_id:pet,display_name:'Bob',body:'First'})}->>'conversation_id' as chat \\gset
+ ${as(alice)}select public.pet_social_action('block',jsonb_build_object('conversation_id',:'chat','blocked',true));select ${activity('alerts')}->>'total';rollback;`).split('\n')
+ assert.equal(result.at(-1),'0')
+})
+test('pet status requires the real reporter and preserves a revisioned private audit',()=>{
+ assert.throws(()=>sql(`begin;${petFixture()}${as(bob)}select ${activity('report_status',{pet_id:pet,status:'reunited',revision:0,reporter_id:bob})};rollback;`),/linked report/)
+ const result=sql(`begin;${petFixture()}${as(alice)}select ${activity('report_status',{pet_id:pet,status:'reunited',revision:0})};select status||':'||status_revision from public.lost_and_found where id='${pet}';reset role;select count(*) from directory_private.pet_status_history where pet_id='${pet}';rollback;`).split('\n')
+ assert.equal(result[1],'reunited:1');assert.equal(result[2],'1')
+ assert.throws(()=>sql(`begin;${petFixture()}${as(alice)}select ${activity('report_status',{pet_id:pet,status:'reunited',revision:0})};select ${activity('report_status',{pet_id:pet,status:'lost',revision:0})};rollback;`),/Report changed/)
+})
+test('owner archive is reversible but cannot override moderation or imported ownership',()=>{
+ const result=sql(`begin;${petFixture()}${as(alice)}select ${activity('report_status',{pet_id:pet,status:'archived',revision:0})};set local role anon;select count(id) from public.lost_and_found;${as(alice)}select jsonb_array_length(${activity('my_reports')});select ${activity('report_status',{pet_id:pet,status:'lost',revision:1})};set local role anon;select count(id) from public.lost_and_found;rollback;`).split('\n')
+ assert.equal(result[1],'0');assert.equal(result[2],'1');assert.equal(result.at(-1),'1')
+ assert.throws(()=>sql(`begin;${petFixture()}update public.lost_and_found set needs_review=true where id='${pet}';${as(alice)}select ${activity('report_status',{pet_id:pet,status:'reunited',revision:0})};rollback;`),/under review/)
+ assert.throws(()=>sql(`begin;${petFixture()}update public.lost_and_found set reporter_id=null where id='${pet}';${as(alice)}select ${activity('report_status',{pet_id:pet,status:'lost',revision:0})};rollback;`),/linked report/)
+})
+test('pet activity denies anonymous/unconfirmed calls, forged cursors and direct state writes',()=>{
+ assert.throws(()=>sql(`begin;set local role anon;select ${activity('alerts')};rollback;`),/permission denied/)
+ assert.throws(()=>sql(`begin;${as(unconfirmed)}select ${activity('alerts')};rollback;`),/Confirmed sign-in/)
+ assert.throws(()=>sql(`begin;${as(alice)}insert into public.pet_read_receipts(user_id,conversation_id,read_seq) values('${alice}','${pet}',9999999);rollback;`),/permission denied/)
+ assert.throws(()=>sql(`begin;${petFixture()}${as(alice)}select ${activity('report_status',{pet_id:pet,status:'approved',revision:0})};rollback;`),/valid pet status/)
+ assert.throws(()=>sql(`begin;${petFixture()}${as(alice)}select public.pet_activity_action('report_status',jsonb_build_object('pet_id','${pet}','status','lost','revision',n-1)) from generate_series(1,21)n;rollback;`),/Daily activity limit/)
+})

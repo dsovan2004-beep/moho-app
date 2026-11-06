@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import {MessageAlertProvider} from './components/MessageAlerts'
 import SiteLayout from './components/SiteLayout'
 import './globals.css'
 
@@ -11,6 +12,6 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return <html lang="en"><body className="bg-gray-50 text-gray-900 antialiased min-h-screen">
-    <SiteLayout>{children}</SiteLayout>
+    <MessageAlertProvider><SiteLayout>{children}</SiteLayout></MessageAlertProvider>
   </body></html>
 }

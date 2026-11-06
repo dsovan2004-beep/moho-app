@@ -71,9 +71,10 @@ async function getPets(city?: string, status?: string, includeOlder=false) {
   let req = supabase
     .from('lost_and_found')
     .select(PUBLIC_PET_COLUMNS)
+    .order('status_confirmed_at', { ascending: false, nullsFirst: false })
     .order('created_at', { ascending: false })
 
-  if (!includeOlder) req=req.gte('created_at',new Date(Date.now()-30*24*60*60*1000).toISOString())
+  if (!includeOlder) {const since=new Date(Date.now()-30*24*60*60*1000).toISOString();req=req.or(`created_at.gte.${since},status_confirmed_at.gte.${since}`)}
   if (city && city !== 'All Cities') req = req.eq('city', city)
   if (status && status !== 'All') req = req.eq('status', status)
 
@@ -136,7 +137,7 @@ function PetCard({ pet }: { pet: LostAndFound }) {
             <span>📍</span><span>{pet.location_detail}, {pet.city}</span>
           </div>
         )}
-        <p className="text-xs text-slate-500 mb-2">Reported: {pet.created_at && Number.isFinite(Date.parse(pet.created_at)) ? new Date(pet.created_at).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric',timeZone:'America/Los_Angeles'}) : 'date unavailable'}. Current status needs confirmation.</p>
+        <p className="text-xs text-slate-500 mb-2">Reported: {pet.created_at && Number.isFinite(Date.parse(pet.created_at)) ? new Date(pet.created_at).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric',timeZone:'America/Los_Angeles'}) : 'date unavailable'}. {pet.status_confirmed_at ? `Reporter confirmed status ${new Date(pet.status_confirmed_at).toLocaleDateString('en-US',{dateStyle:'medium',timeZone:'America/Los_Angeles'})}; not independently checked.` : 'Current status needs confirmation.'}</p>
         {pet.source_url && /^https?:\/\//i.test(pet.source_url) && <a href={pet.source_url} target="_blank" rel="noopener noreferrer" className="block text-xs font-semibold text-blue-700 underline mb-2">Original report / contact link ↗</a>}
         {pet.last_seen && (
           <div className="flex items-center gap-1.5 text-xs text-gray-600 mb-1.5">
@@ -224,13 +225,14 @@ export default async function LostAndFoundPage({ searchParams }: PageProps) {
   return (
     <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
+      <Link href="/my-pet-reports" className="inline-block underline font-semibold mb-4 min-h-11 py-2">Manage my pet reports →</Link>
       <div className="bg-blue-50 border border-blue-100 p-4 rounded-xl mb-5 text-sm text-slate-700">Reports are not live tracking. A report date does not confirm a pet is still missing. <Link className="font-semibold underline" href={`/lost-and-found?${new URLSearchParams({city,...(includeOlder ? {} : {history:'1'})})}`}>{includeOlder ? 'Show recent reports' : 'View older report history'}</Link></div>
       {/* ── Header ── */}
       <div className="flex items-start justify-between gap-4 flex-wrap mb-6">
         <div>
           <h1 className="text-2xl font-extrabold text-gray-900">🐾 Lost &amp; Found Pets</h1>
           <p className="text-gray-500 text-sm mt-1">
-            {includeOlder ? 'Report history; older reports may be out of date' : 'Reports added in the last 30 days'} · Confirm the date and current status before sharing.
+            {includeOlder ? 'Report history; older reports may be out of date' : 'Reports added or reporter-confirmed in the last 30 days'} · Confirm the date and current status before sharing.
           </p>
         </div>
         <Link

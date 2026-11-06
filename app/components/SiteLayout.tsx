@@ -2,6 +2,7 @@
 
 
 import Link from 'next/link'
+import {MessageBadge,MessageAlertSummary} from './MessageAlerts'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { useState, useEffect, useRef, Suspense } from 'react'
 import { getSupabaseClient, signOut } from '@/lib/supabase'
@@ -268,7 +269,7 @@ function NavContent() {
 
   // Active-state helpers — one tab active at a time
   const isDirectory = pathname === '/directory'
-    || /^\/[a-z-]+$/.test(pathname) && !['ask','discover','events','community','activity','lost-and-found','new-resident','submit-business','login','register','profile','admin','best','directory','messages','privacy','terms','my-requests'].includes(pathname.slice(1))
+    || /^\/[a-z-]+$/.test(pathname) && !['ask','discover','events','community','activity','lost-and-found','new-resident','submit-business','login','register','profile','admin','best','directory','messages','my-pet-reports','privacy','terms','my-requests'].includes(pathname.slice(1))
     || /^\/[a-z-]+\/[a-z-]+/.test(pathname) && !pathname.startsWith('/best') && !pathname.startsWith('/community')
   const isExplore   = pathname === '/discover' || pathname.startsWith('/best')
   const isEvents    = pathname === '/events'
@@ -597,7 +598,8 @@ function NavContent() {
                         </svg>
                         Profile
                       </Link>
-                      <Link href="/messages" onClick={() => setProfileOpen(false)} className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">Private messages</Link>
+                      <Link href="/messages" onClick={() => setProfileOpen(false)} className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">Private messages<MessageBadge/></Link>
+                      <Link href="/my-pet-reports" onClick={() => setProfileOpen(false)} className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">My pet reports</Link>
                       <Link href="/my-requests" onClick={() => setProfileOpen(false)} className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">My business requests</Link>
                       <button
                         onClick={handleSignOut}
@@ -638,10 +640,11 @@ function NavContent() {
             { href: `/lost-and-found?city=${encodeURIComponent(city)}`, label: 'Pets' },
             { href: `/community?city=${encodeURIComponent(city)}`, label: 'Community' },
             { href: user ? '/messages' : '/login', label: user ? 'Messages' : 'Sign in' },
-          ].map(item => <Link key={item.label} href={item.href} className="min-h-12 flex items-center justify-center text-xs font-semibold text-white hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-amber-300">{item.label}</Link>)}
+          ].map(item => <Link key={item.label} href={item.href} className="min-h-12 flex items-center justify-center text-xs font-semibold text-white hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-amber-300">{item.label}{item.href==='/messages'&&<MessageBadge/>}</Link>)}
         </div>
       </nav>
 
+      <MessageAlertSummary/>
       {/* City Banner */}
       <div
         className="py-2 px-4 text-center text-sm font-medium text-slate-700 border-b border-slate-200"
