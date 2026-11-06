@@ -1,0 +1,107 @@
+{
+  "date": "2026-11-06",
+  "status": "Open — no service/event photo newly cleared or published in this pass",
+  "scope": "All four cities; initially handyman, plumbing, house cleaning and landscaping; existing five seasonal events; broader categories follow source-checked inventory.",
+  "requirements": [
+    "Correct city/service or actual event context; no implication a stock photo is a specific provider’s work",
+    "Source URL, creator/rights-holder, license or existing grant, capture date where relevant, modifications and credit text recorded before use",
+    "Mountain House civic/street replacement must be exact-city real 2026 photography; existing restriction remains",
+    "No outreach or permission-request messages; no copied provider portfolio, brand product photo or organizer flyer without a grant"
+  ],
+  "service_scopes": [
+    {
+      "city": "Mountain House",
+      "service": "handyman",
+      "status": "Photo sourcing/rights open"
+    },
+    {
+      "city": "Mountain House",
+      "service": "plumbing",
+      "status": "Photo sourcing/rights open"
+    },
+    {
+      "city": "Mountain House",
+      "service": "house cleaning",
+      "status": "Photo sourcing/rights open"
+    },
+    {
+      "city": "Mountain House",
+      "service": "landscaping",
+      "status": "Photo sourcing/rights open"
+    },
+    {
+      "city": "Tracy",
+      "service": "handyman",
+      "status": "Photo sourcing/rights open"
+    },
+    {
+      "city": "Tracy",
+      "service": "plumbing",
+      "status": "Photo sourcing/rights open"
+    },
+    {
+      "city": "Tracy",
+      "service": "house cleaning",
+      "status": "Photo sourcing/rights open"
+    },
+    {
+      "city": "Tracy",
+      "service": "landscaping",
+      "status": "Photo sourcing/rights open"
+    },
+    {
+      "city": "Lathrop",
+      "service": "handyman",
+      "status": "Photo sourcing/rights open"
+    },
+    {
+      "city": "Lathrop",
+      "service": "plumbing",
+      "status": "Photo sourcing/rights open"
+    },
+    {
+      "city": "Lathrop",
+      "service": "house cleaning",
+      "status": "Photo sourcing/rights open"
+    },
+    {
+      "city": "Lathrop",
+      "service": "landscaping",
+      "status": "Photo sourcing/rights open"
+    },
+    {
+      "city": "Manteca",
+      "service": "handyman",
+      "status": "Photo sourcing/rights open"
+    },
+    {
+      "city": "Manteca",
+      "service": "plumbing",
+      "status": "Photo sourcing/rights open"
+    },
+    {
+      "city": "Manteca",
+      "service": "house cleaning",
+      "status": "Photo sourcing/rights open"
+    },
+    {
+      "city": "Manteca",
+      "service": "landscaping",
+      "status": "Photo sourcing/rights open"
+    }
+  ],
+  "current_leads": [
+    {
+      "source": "https://www.choiceonelandscaping.com/landscaping-mountain-house/",
+      "status": "Portfolio visible; site reserves rights; no reuse grant established, not copied"
+    },
+    {
+      "source": "https://paramountlandscapinginc.com/landscaping-tracy-ca",
+      "status": "Portfolio visible; site reserves rights; no reuse grant established, not copied"
+    },
+    {
+      "source": "https://manteca.org/2026-manteca-christmas-in-the-park-parade/",
+      "status": "Organizer visuals not licensed for reuse by page visibility alone; no event image copied"
+    }
+  ]
+}

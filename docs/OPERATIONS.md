@@ -2,6 +2,10 @@
 
 Updated November 6, 2026. This guide replaces the March 2026 operating model. The founder has authorized autonomous relaunch engineering, source-checked listing curation, release work and planning upkeep in the current session. User instructions take precedence over historical documentation.
 
+## Product direction: a living local directory
+
+Founder direction, November 6: MoHoLocal is a living directory for locals. Maintain useful services, places/openings, events, discussions and pet updates as connected local information, with clear dates and correction paths. More records should produce better city/service coverage and useful actions, rather than unsupported quality claims. Expansion now includes services and events across all four relaunch cities, with rights-checked service/event imagery. Prioritize gaps and freshness; measure successful contacts, useful replies, event-detail/calendar actions, corrections and resolved reports. Unattended research is now explicitly authorized through FRESH-01; messaging remains prohibited.
+
 ## Responsibilities
 
 | Role | Ownership |
@@ -14,7 +18,7 @@ Updated November 6, 2026. This guide replaces the March 2026 operating model. Th
 | Data and photo-rights editor | Preserve evidence and correction history; verify service areas separately from office locations; establish actual capture year, location, author and existing reuse rights before publishing photography |
 | Release and operations lead | Run relevant checks, verify native deployments and live behavior, maintain backlog, roadmap, sprint and release evidence |
 
-The new local openings and community editor responsibilities were explicitly requested November 6. They apply during autonomous work sessions; they do not establish a recurring background job or authorize messaging people.
+The new local openings and community editor responsibilities were explicitly requested November 6. A November6 request separately authorized FRESH-01, the active Tuesday/Friday9AM Pacific refresh in this chat. Messaging people remains prohibited.
 
 ## Editorial rules
 
@@ -41,4 +45,9 @@ The founder retains business pricing/spend decisions and approvals that specific
 
 [BACKLOG.md](BACKLOG.md) is the next-work queue; [ROADMAP.md](ROADMAP.md) holds acceptance/status; [SPRINTS.md](SPRINTS.md) records outcomes. Update all three when scope or acceptance changes. Separate implemented, tested, deployed and live-accepted states.
 
-Next deeper listing verification remains Mountain House and Tracy. Local updates may cover all four relaunch cities. Resident usability validation, owner confirmations, physical phone push testing, legacy discovery/SEO review and the Mountain House street-photo gap remain explicit until evidence closes them.
+Continue deeper Mountain House/Tracy verification and extend service/category and event coverage to Lathrop/Manteca, as requested November 6. Resident usability validation, owner confirmations, physical phone push testing, legacy discovery/SEO review and the Mountain House street-photo gap remain explicit until evidence closes them.
+
+
+## Twice-weekly freshness cycle
+
+FRESH-01 is active as `moholocal-twice-weekly-freshness-refresh`, Tuesdays and Fridays at9AM America/Los_Angeles, attached to this chat. Next scheduled run after setup is November10,2026. Each run reads current planning, researches current primary sources, checks stale event/opening details and useful service gaps, continues rights-cleared imagery sourcing, and publishes justified changes through existing evidence/release gates. Record the completed period in [REFRESH_LOG.md](REFRESH_LOG.md) to avoid duplicates. Stay quiet on unchanged non-actionable state; report meaningful updates, failures or precise owner-only blockers. No outreach, purchases or new access grants. This explicit instruction supersedes historical no-recurring-job notes.

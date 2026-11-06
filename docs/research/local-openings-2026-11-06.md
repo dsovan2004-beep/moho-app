@@ -18,3 +18,8 @@ Local-opening features have a monthly review window and leave the feature after 
 Jersey Mike’s Subs official location20449 lists an operating store with pickup, current hours and phone at1445 S Airport Way, Suite105, Manteca. The Chamber calendar lists June24,2026 grand opening/ribbon cutting. Added as Open, with official store details and Chamber record; no upcoming ceremony or expired promotion implied. Sources: https://www.jerseymikes.com/20449/manteca-ca ; https://manteca.org/calendar/ . Local-opening feature now has six updates covering all four relaunch cities, retaining December6Pacific editorial review/expiry.
 
 Lathrop Kung Fu Tea was a search lead from summer opening-soon coverage; no current operator confirmation established in this pass. Held rather than publishing a guessed operating status. Permit applications and old coming-soon pages are leads, not evidence that a shop has opened.
+
+
+## Lathrop extension — legacy discovery pass
+
+Cold Stone Creamery official store23929 lists dine-in/pickup/ordering at16722 Golden Valley Parkway, PadC, Lathrop. Added as Open with its current official location link. No exact grand-opening date established, no brand-history boilerplate treated as local-store age, and no product photo reused. Source: https://www.coldstonecreamery.com/stores/ice-cream-near-lathrop/23929 . Seven local-place updates now cover all four cities; monthly review/expiry unchanged. Kung Fu Tea remains held for current first-party location confirmation.
