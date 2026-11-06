@@ -8,13 +8,16 @@ import { eventDateParts, eventBucket, isUpcomingEvent } from '@/lib/event-dates'
 const CITIES = ['All Cities', ...RELAUNCH_CITY_NAMES]
 
 interface PageProps {
-  searchParams: Promise<{ city?: string }>
+  searchParams: Promise<{ city?: string; season?: string; month?: string }>
 }
 
-async function getEvents(city?: string) {
+async function getEvents(city?: string, seasonal = false, month?: string) {
   const supabase = getSupabaseClient()
   let req = supabase.from('events').select('*').eq('status', 'approved').order('start_date', { ascending: true })
 
+  if (seasonal) req = req.eq('source', 'editorial_seasonal_2026')
+  if (seasonal && month === '11') req = req.gte('start_date','2026-11-01T07:00:00Z').lt('start_date','2026-12-01T08:00:00Z')
+  if (seasonal && month === '12') req = req.gte('start_date','2026-12-01T08:00:00Z').lt('start_date','2027-01-01T08:00:00Z')
   if (city && city !== 'All Cities') {
     req = req.eq('city', city)
   }
@@ -117,7 +120,10 @@ function EventCard({ event }: { event: Event }) {
 export default async function EventsPage({ searchParams }: PageProps) {
   const params = await searchParams
   const city = params.city ?? 'All Cities'
-  const { events, unavailable } = await getEvents(city)
+  const seasonal = params.season === '2026'
+  const month = ['11','12'].includes(params.month ?? '') ? params.month : undefined
+  const { events, unavailable } = await getEvents(city, seasonal, month)
+  const cityHref = (name: string) => `/events?${new URLSearchParams({ city: name, ...(seasonal ? {season:'2026', ...(month ? {month} : {})} : {}) })}`
 
   // Group by upcoming vs past — use parseEventDate to avoid UTC offset bug
   const now = new Date()
@@ -137,16 +143,18 @@ export default async function EventsPage({ searchParams }: PageProps) {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-6">
-        <h1 className="text-3xl font-extrabold text-gray-900">Community Events</h1>
+        <h1 className="text-3xl font-extrabold text-gray-900">{seasonal ? 'Seasonal celebrations 2026' : 'Community Events'}</h1>
         <p className="text-gray-500 mt-1">Gatherings, celebrations and things to do close to home. Times shown in Pacific Time.</p>
       </div>
 
+      <nav aria-label="Event views" className="flex flex-wrap gap-3 mb-4"><Link className={`min-h-11 inline-flex items-center px-4 rounded-full border ${!seasonal ? 'bg-[#1e3a5f] text-white' : 'bg-white text-slate-700'}`} href={`/events?city=${encodeURIComponent(city)}`} aria-current={!seasonal ? 'page' : undefined}>All events</Link><Link className={`min-h-11 inline-flex items-center px-4 rounded-full border ${seasonal ? 'bg-[#1e3a5f] text-white' : 'bg-white text-slate-700'}`} href={`/events?city=${encodeURIComponent(city)}&season=2026`} aria-current={seasonal ? 'page' : undefined}>Thanksgiving & holidays 2026</Link></nav>
+      {seasonal && <div className="mb-5"><p className="text-sm text-slate-600 mb-2">Organizer details checked November 6. Registration, eligibility and costs vary; read the event before making plans.</p><nav aria-label="Seasonal month" className="flex flex-wrap gap-2">{[['','All season'],['11','November'],['12','December']].map(([value,label]) => <Link key={label} aria-current={(month ?? '') === value ? 'page' : undefined} className={`inline-flex items-center min-h-11 rounded-full px-4 border text-sm ${(month ?? '') === value ? 'bg-[#e9eee5] border-[#59715d] text-[#243d30]' : 'bg-white border-slate-200 text-slate-600'}`} href={`/events?${new URLSearchParams({city,season:'2026',...(value ? {month:value} : {})})}`}>{label}</Link>)}</nav></div>}
       {/* City Filter Tabs */}
       <div className="flex gap-2 flex-wrap mb-6">
         {CITIES.map((c) => (
           <Link
             key={c}
-            href={`/events?city=${encodeURIComponent(c)}`}
+            href={cityHref(c)}
             className={`text-sm font-semibold px-4 py-3 min-h-11 rounded-full transition-all ${
               city === c
                 ? 'bg-blue-700 text-white shadow-sm'

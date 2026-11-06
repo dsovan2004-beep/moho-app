@@ -10,7 +10,8 @@ export default function CityPhoto({ city, priority = false, className = '' }: { 
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
       <figcaption className="absolute bottom-0 inset-x-0 p-5 text-white">
         <p className="text-sm font-semibold">{photo.caption}</p>
-        <p className="text-xs mt-2 leading-relaxed"><a className="underline underline-offset-2" href={photo.source} target="_blank" rel="noopener noreferrer">{photo.author}</a> · <a className="underline underline-offset-2" href={photo.licenseUrl} target="_blank" rel="noopener noreferrer">{photo.license}</a> · Resized / display crop</p>
+        <p className="text-xs mt-2 leading-relaxed"><a className="underline underline-offset-2" href={photo.source} target="_blank" rel="noopener noreferrer">{photo.author}</a> · <a className="underline underline-offset-2" href={photo.licenseUrl} target="_blank" rel="noopener noreferrer">{photo.license}</a></p>
+        <p className="text-[11px] mt-1 leading-relaxed">{photo.notice} · Geographic crop / resized</p>
       </figcaption>
     </div>
   </figure>

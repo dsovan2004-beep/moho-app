@@ -2,7 +2,7 @@ export const runtime = 'nodejs'
 
 import { getSupabaseClient, type Event } from '@/lib/supabase'
 import Link from 'next/link'
-import { eventDateParts } from '@/lib/event-dates'
+import { eventDateParts, isUpcomingEvent } from '@/lib/event-dates'
 import { notFound } from 'next/navigation'
 
 interface PageProps {
@@ -62,6 +62,7 @@ export default async function EventDetailPage({ params }: PageProps) {
         </div>
       )}
 
+      {!isUpcomingEvent(event) && <p role="status" className="rounded-xl bg-amber-50 border border-amber-200 p-4 mb-5 text-sm text-amber-900">This event has ended. This page is an archive; check the events calendar for upcoming gatherings.</p>}
       {/* Header card */}
       <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm mb-5">
         {/* City color bar */}
@@ -119,6 +120,8 @@ export default async function EventDetailPage({ params }: PageProps) {
           )}
         </div>
       </div>
+
+      <div className="mb-5 flex flex-wrap gap-3 items-center"><a href={`/events/${event.id}/calendar`} className="inline-flex min-h-11 items-center rounded-xl bg-[#1e3a5f] text-white font-semibold px-5 py-3">Add to calendar ↓</a><span className="text-xs text-slate-500">Download an .ics file. Check the organizer for later changes.</span></div>
 
       {/* Description */}
       {event.description && (

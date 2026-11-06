@@ -1,0 +1,34 @@
+[
+  {
+    "file": "mountain-house-sentinel-20261104",
+    "bbox_wgs84": [
+      -121.575,
+      37.745,
+      -121.515,
+      37.795
+    ],
+    "native_pixels": [
+      537,
+      563
+    ],
+    "capture": "2026-11-04T19:04:06.870000Z",
+    "source": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/10/S/FG/2026/11/S2B_10SFG_20261104_0_L2A/TCI.tif",
+    "processing": "Geographic crop of provider true-color RGB asset. No synthetic pixels or new geographic details; display-sized resizing only."
+  },
+  {
+    "file": "tracy-sentinel-20261104",
+    "bbox_wgs84": [
+      -121.465,
+      37.7,
+      -121.395,
+      37.765
+    ],
+    "native_pixels": [
+      629,
+      732
+    ],
+    "capture": "2026-11-04T19:04:06.870000Z",
+    "source": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/10/S/FG/2026/11/S2B_10SFG_20261104_0_L2A/TCI.tif",
+    "processing": "Geographic crop of provider true-color RGB asset. No synthetic pixels or new geographic details; display-sized resizing only."
+  }
+]

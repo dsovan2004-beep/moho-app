@@ -37,3 +37,10 @@ Relevant event discovery, calendar saves, useful discussion replies, source corr
 The Mountain House detail and Special Events pages now both show the December 5 parade at 5 PM; Special Events lists tree lighting at 6 PM. The earlier conflict is resolved by this recheck. Published one MoHoHo event with unknown overall end/admission (not guessed). Published Tracy’s December 5 6–8:30 PM event with city-source free admission and downtown venue. Both use source `editorial_seasonal_2026`, approved status, source links and checked-date text. No event photograph borrowed; no Thanksgiving event invented. SQL: publish-seasonal-events-2026-11-06.sql.
 
 This supersedes the earlier candidate-only state for these two events. Full hubs, calendar actions, discussions and notifications remain unfinished scope. Homepage/native deployment acceptance pending.
+
+
+## Morning release increment
+
+Verified City of Mountain House calendar EID 2557 directly: Prime Time Seniors Friendsgiving Brunch, November 13, 2026, noon–2 PM, TH-1 Room, 201 E. Main Street; bring a dish free / without a dish $5; registration link and (209) 831-5623 organizer contact. Specific age cutoff and remaining space not established, and no claim of general-public eligibility made. Published under the same editorial source with duplicate protection. Tracy senior Thanksgiving dinner is only a candidate: the source list shows November 22 but this pass did not establish complete time/venue/participation details; not published.
+
+First seasonal browse release includes three events, November/December and city filters, source links, explicit Pacific time, ended/archive state, automatic removal from upcoming/home lists, and downloadable .ics calendar files. Downloads preserve real end times and omit unknown ones. Calendar files are one-time snapshots, not subscribed change alerts. Event discussions, resident RSVP/saves, seasonal notification opt-in and broader coverage remain separate unfinished increments.

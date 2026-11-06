@@ -26,7 +26,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
     .select('id,title,city,location,start_date,end_date,source_url,description')
     .eq('status', 'approved').eq('source', 'editorial_seasonal_2026').order('start_date', { ascending: true }).limit(8)
   const seasonal = (seasonalData ?? []).filter(event => isUpcomingEvent(event))
-  const photoCity = city === 'Tracy' ? 'Tracy' : 'Mountain House'
+  const photoCity = city === 'Mountain House' || city === 'Tracy' ? city : null
   return <div className="bg-[#faf9f6]">
     <section className="max-w-6xl mx-auto px-5 sm:px-8 pt-8 sm:pt-12 pb-12">
       <div className="flex flex-wrap items-center gap-2 mb-8" aria-label="Choose your city">
@@ -49,8 +49,8 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
           <p className="mt-3 text-xs text-slate-500">Free to browse · Contact businesses directly</p>
         </div>
         <div className="min-w-0 relative">
-          <CityPhoto city={photoCity} priority className="h-80 sm:h-[27rem] shadow-xl shadow-[#18324f]/10 lg:rounded-tr-[5rem]" />
-          <p className="mt-3 text-xs text-slate-500">Real places, properly credited. <Link href="/photo-credits" className="underline underline-offset-2">About our photographs →</Link></p>
+          {photoCity ? <CityPhoto city={photoCity} priority className="h-80 sm:h-[27rem] shadow-xl shadow-[#18324f]/10 lg:rounded-tr-[5rem]" /> : <aside className="rounded-3xl bg-[#e9eee5] p-8"><p className="text-xs font-bold uppercase tracking-widest text-[#59715d]">Around our communities</p><h2 className="text-2xl font-bold text-[#18324f] mt-4">Start close to home.</h2><p className="text-slate-600 mt-3 leading-relaxed">Find nearby help, check local pet reports and explore upcoming gatherings.</p><Link className="inline-flex min-h-11 items-center font-bold text-[#1e3a5f] underline mt-5" href={`/events?city=${encodeURIComponent(city)}`}>See {city} events →</Link></aside>}
+          <p className="mt-3 text-xs text-slate-500">2026 satellite views of our cities. <Link href="/photo-credits" className="underline underline-offset-2">Image dates & credits →</Link></p>
         </div>
       </div>
     </section>
@@ -58,7 +58,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
       <div className="max-w-6xl mx-auto px-5 sm:px-8 py-10 sm:py-12">
         <div className="flex flex-wrap justify-between items-end gap-4 mb-6">
           <div><p className="text-xs font-bold tracking-widest uppercase text-[#52654d] mb-2">Make a little time for local</p><h2 id="seasonal-heading" className="text-2xl sm:text-3xl font-bold text-[#18324f]">Gather here. Celebrate together.</h2></div>
-          <Link href="/events" className="inline-flex min-h-11 items-center text-sm font-semibold underline underline-offset-4 text-[#18324f]">Explore local events →</Link>
+          <Link href="/events?season=2026" className="inline-flex min-h-11 items-center text-sm font-semibold underline underline-offset-4 text-[#18324f]">Explore seasonal events →</Link>
         </div>
         {seasonalError ? <p className="text-slate-700">Seasonal events couldn’t load. <Link className="underline" href="/events">Try the events calendar →</Link></p> : seasonal.length ? <div className="grid md:grid-cols-2 gap-5">{seasonal.map(event => {
           const date = eventDateParts(event.start_date)
@@ -67,7 +67,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
             <div className="min-w-0"><p className="text-xs font-semibold text-[#59715d]">{event.city} · Holiday season 2026</p><h3 className="text-lg font-bold text-[#18324f] mt-1"><Link className="hover:underline focus-visible:outline focus-visible:outline-2" href={`/events/${event.id}`}>{event.title}</Link></h3><p className="text-sm text-slate-600 mt-2">{date.date} · {date.time} Pacific</p><p className="text-sm text-slate-600 mt-1">{event.location}</p><p className="text-xs text-slate-500 mt-3">City-source details checked November 6. Recheck the organizer before you go.</p><Link className="inline-flex min-h-11 items-center text-sm font-bold text-[#1e3a5f] underline underline-offset-4 mt-1" href={`/events/${event.id}`}>See details & organizer →</Link></div>
           </article>
         })}</div> : <p className="text-slate-700">We’re checking the next local celebrations. <Link className="underline" href="/events">Browse the events calendar →</Link></p>}
-        <p className="text-xs text-[#52654d] mt-4">Only sourced events appear here. Past dates leave this section automatically; no invented attendance or popularity counts.</p>
+        <p className="text-xs text-[#52654d] mt-4">Details can change. Check the organizer’s page for registration, costs and the latest schedule.</p>
       </div>
     </section>
     <section className="max-w-6xl mx-auto px-5 sm:px-8 py-10 border-t border-slate-200">
