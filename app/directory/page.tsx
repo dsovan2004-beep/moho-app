@@ -100,7 +100,7 @@ function BusinessCard({ biz, activeCategory }: { biz: Business; activeCategory: 
   return (
     <div className="group flex gap-4 bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md hover:-translate-y-0.5 transition-all">
       {/* Thumbnail — links to detail page */}
-      <Link href={`/business/${biz.id}`} className="shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-blue-50 flex items-center justify-center">
+      <Link href={`/business/${biz.id}`} className="hidden sm:flex shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-blue-50 items-center justify-center">
         {biz.image_url ? (
           <img src={biz.image_url} alt={biz.name} className="w-full h-full object-cover" loading="lazy" />
         ) : (
@@ -159,7 +159,7 @@ function BusinessCard({ biz, activeCategory }: { biz: Business; activeCategory: 
               <a
                 href={`tel:${biz.phone}`}
                 onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-800 hover:underline transition"
+                className="inline-flex min-h-11 items-center gap-1 rounded-lg bg-[#19352d] px-4 py-2 text-sm font-semibold text-white hover:bg-[#294b40] transition"
               >
                 📞 {biz.phone}
               </a>
@@ -170,9 +170,9 @@ function BusinessCard({ biz, activeCategory }: { biz: Business; activeCategory: 
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-800 hover:underline transition truncate max-w-[120px] sm:max-w-[180px]"
+                className="inline-flex min-h-11 items-center gap-1 rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition"
               >
-                🌐 {biz.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+                Visit website ↗
               </a>
             )}
           </div>
