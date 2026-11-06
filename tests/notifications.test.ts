@@ -34,7 +34,7 @@ test('Web Push produces an encrypted payload and VAPID authorization without sen
  globalThis.fetch=async(_url,init)=>{request=init;return new Response(null,{status:201})}
  try{
   const result=await deliverNotification({...env,VAPID_PUBLIC_KEY:server.getPublicKey().toString('base64url'),VAPID_PRIVATE_KEY:server.getPrivateKey().toString('base64url')},{id:'fixture-push',lease_id:'fixture-lease',channel:'push',recipient_email:'',unsubscribe_token:'',subscription:{endpoint:'https://fcm.googleapis.com/fcm/send/fixture',expirationTime:null,keys:{p256dh:recipient.getPublicKey().toString('base64url'),auth:Buffer.alloc(16,1).toString('base64url')}}})
-  assert.equal(result.decision,'sent');assert.equal(request?.redirect,'error');const headers=new Headers(request?.headers);assert.equal(headers.get('Content-Encoding'),'aes128gcm');assert.match(headers.get('Authorization')??'',/^vapid /);assert.equal(headers.get('TTL'),'300')
+  assert.equal(result.decision,'sent');assert.equal(request?.redirect,'manual');const headers=new Headers(request?.headers);assert.equal(headers.get('Content-Encoding'),'aes128gcm');assert.match(headers.get('Authorization')??'',/^vapid /);assert.equal(headers.get('TTL'),'300')
  }finally{globalThis.fetch=original}
 })
 test('dispatcher never acknowledges a provider network failure as sent and keeps modern secret out of JWT header',async()=>{

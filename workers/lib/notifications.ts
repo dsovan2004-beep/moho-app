@@ -36,7 +36,7 @@ export async function deliverNotification(env:Env,job:Job):Promise<Outcome>{
  if(!allowedPushEndpoint(job.subscription.endpoint))return {decision:'retire',code:'push_endpoint_rejected'}
  let payload:RequestInit
  try{payload=await buildPushPayload({data:{version:1,notification_id:job.id,kind:job.kind==='push_test'?'push_test':'message',receipt_token:job.kind==='push_test'?job.receipt_token??null:null},options:{ttl:300,urgency:'normal',topic:job.kind==='push_test'?'moholocal-push-test':'moholocal-dm'}},job.subscription,{subject:'mailto:dsovan2004@gmail.com',publicKey:env.VAPID_PUBLIC_KEY,privateKey:env.VAPID_PRIVATE_KEY})}catch{return {decision:'retire',code:'push_invalid_keys'}}
- const response=await fetch(job.subscription.endpoint,{...payload,redirect:'error',signal:AbortSignal.timeout(20000)})
+ const response=await fetch(job.subscription.endpoint,{...payload,redirect:'manual',signal:AbortSignal.timeout(20000)})
  return deliveryOutcome(response.status,'push',response.headers.get('Retry-After'))
 }
 export async function runNotificationDelivery(env:Env):Promise<void>{
