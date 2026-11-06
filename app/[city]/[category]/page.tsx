@@ -1,3 +1,5 @@
+import ListingEvidence from '@/app/components/ListingEvidence'
+import { CHECK_COLUMNS } from '@/lib/listing-evidence'
 import { serializeJsonLd } from '@/lib/json-ld'
 import { PUBLIC_BUSINESS_COLUMNS } from '@/lib/supabase'
 export const runtime = 'nodejs'
@@ -54,19 +56,6 @@ const CATEGORY_MAP: Record<string, string> = {
   'vets':                'Pet Services',
   'childcare':           'Education',
   'daycares':            'Education',
-}
-
-// Map DB category → Best Of page slug
-const BEST_OF_SLUG: Record<string, string> = {
-  'Restaurants':      'restaurants',
-  'Health & Wellness':'health-and-wellness',
-  'Beauty & Spa':     'beauty-and-spa',
-  'Retail':           'retail',
-  'Education':        'education',
-  'Automotive':       'automotive',
-  'Real Estate':      'real-estate',
-  'Home Services':    'home-services',
-  'Pet Services':     'pet-services',
 }
 
 // ── Discovery page links per city/category ────────────────────────────────────
@@ -193,7 +182,7 @@ function getCategoryEmoji(category: string): string {
 
 function getIntroCopy(category: string, city: string, cfg: { tagline: string }, county: string): string {
   const cat = category.toLowerCase()
-  return `Looking for ${cat} in ${city}, CA? ${cfg.tagline} — and MoHoLocal is your local guide to the best businesses here. Browse verified ${cat} listings below, call direct, or click through for directions and more details. All businesses are from ${county} and the surrounding area.`
+  return `Looking for ${cat} in ${city}, CA? Browse approved listings located in this city. Information checks vary by listing. Compare dates and sources, then confirm service area, availability and pricing directly.`
 }
 
 // ── SEO Metadata ──────────────────────────────────────────────────────────────
@@ -212,10 +201,10 @@ export async function generateMetadata({ params }: PageProps) {
 
   return {
     title: `${category} in ${city}, CA | MoHoLocal`,
-    description: `Find the best ${category.toLowerCase()} in ${city}, CA. Browse verified local listings, get phone numbers, addresses, and connect with trusted ${city} businesses on MoHoLocal.`,
+    description: `Browse ${category.toLowerCase()} listings located in ${city}, CA. Compare contact details and dated information checks. Confirm services directly.`,
     openGraph: {
       title: `Best ${category} in ${city}, CA | MoHoLocal`,
-      description: `Discover top-rated ${category.toLowerCase()} in ${city}, CA. Your local guide to ${county} businesses.`,
+      description: `Browse ${category.toLowerCase()} businesses in ${city}, CA. Information checks and sources are shown per listing.`,
       url: `https://www.moholocal.com/${citySlug}/${categorySlug}`,
       siteName: 'MoHoLocal',
     },
@@ -228,13 +217,13 @@ async function getBusinesses(city: string, category: string): Promise<Business[]
   const supabase = getSupabaseClient()
   const { data, error } = await supabase
     .from('businesses')
-    .select(`${PUBLIC_BUSINESS_COLUMNS}, business_images(image_url, position, verified, source)`)
+    .select(`${PUBLIC_BUSINESS_COLUMNS}, business_images(image_url, position, verified, source), listing_checks(${CHECK_COLUMNS})`)
     .eq('city', city)
     .eq('category', category)
     .eq('status', 'approved')
     .eq('verified', true)
-    .order('rating', { ascending: false })
-  if (error) return []
+    .order('name')
+  if (error) throw new Error('Category listings unavailable')
   return (data ?? []) as Business[]
 }
 
@@ -294,7 +283,7 @@ function BusinessCard({ biz, cityCfg, catEmoji }: {
         <div className="flex items-start justify-between gap-2 flex-wrap mb-2">
           <h3 className="text-base font-bold text-gray-900 leading-snug flex-1 min-w-0">{biz.name}</h3>
           {/* Rating — only if present AND > 0 (null/0 both hidden) */}
-          {biz.rating != null && biz.rating > 0 && (
+          {biz.rating != null && biz.rating > 0 && (biz.review_count ?? 0) > 0 && (
             <span className="text-xs font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full shrink-0 whitespace-nowrap">
               ★ {biz.rating.toFixed(1)}
             </span>
@@ -307,6 +296,7 @@ function BusinessCard({ biz, cityCfg, catEmoji }: {
           </p>
         )}
 
+        <ListingEvidence check={biz.listing_checks} />
         {/* Contact details */}
         <div className="flex flex-wrap gap-x-4 gap-y-1.5 mb-4">
           {biz.address && (
@@ -365,12 +355,12 @@ export default async function CityLandingPage({ params }: PageProps) {
 
   if (!city || !category) notFound()
 
-  const businesses    = await getBusinesses(city, category)
+  const result = await getBusinesses(city, category).catch(() => null)
+  const businesses = result ?? []
   const cfg           = CITY_CFG[city] ?? CITY_CFG['Mountain House']
   const catEmoji      = getCategoryEmoji(category)
   const county        = COUNTY_MAP[city] ?? 'San Joaquin County'
-  const bestOfSlug    = BEST_OF_SLUG[category]
-  const discoveryLinks = DISCOVERY_LINKS[`${citySlug}/${categorySlug}`] ?? []
+    const discoveryLinks = DISCOVERY_LINKS[`${citySlug}/${categorySlug}`] ?? []
 
   // Schema.org BreadcrumbList
   const breadcrumbSchema = {
@@ -421,33 +411,21 @@ export default async function CityLandingPage({ params }: PageProps) {
               <p className="text-white/80 text-sm">
                 {businesses.length > 0
                   ? `${businesses.length} local ${category.toLowerCase()} business${businesses.length === 1 ? '' : 'es'} in ${city}, CA`
-                  : `Be the first to list your ${category.toLowerCase()} business in ${city}`}
+                  : result ? `No approved ${category.toLowerCase()} listings located in ${city} yet` : 'Listing information temporarily unavailable'}
               </p>
             </div>
           </div>
         </div>
 
-        {/* ── Best Of CTA banner ── */}
-        {bestOfSlug && businesses.length > 0 && (
-          <Link
-            href={`/best/${bestOfSlug}/${citySlug}`}
-            className="flex items-center justify-between bg-amber-50 border border-amber-200 rounded-xl px-5 py-3.5 mb-6 hover:bg-amber-100 transition-all group"
-          >
-            <div>
-              <span className="text-sm font-bold text-amber-800">⭐ See our Best Of picks</span>
-              <span className="text-xs text-amber-600 ml-2">Top-rated {category.toLowerCase()} in {city}, ranked by the community</span>
-            </div>
-            <span className="text-amber-700 font-bold text-sm group-hover:translate-x-0.5 transition-transform shrink-0">→</span>
-          </Link>
-        )}
-
+        {category === 'Home Services' && <Link href={`/directory?city=${encodeURIComponent(city)}&category=Home+Services`} className="block bg-[#f6f3eb] border border-[#e8e3d7] rounded-xl p-5 mb-6 text-[#19352d] font-semibold">Find providers serving {city} — choose a specific job and see website-checked service areas →</Link>}
+        {!result && <p role="status" className="mb-6 p-4 rounded-xl bg-amber-50 border border-amber-300">Listings could not load. <Link href={`/${citySlug}/${categorySlug}`} className="underline">Try again</Link> or <Link href={`/directory?city=${encodeURIComponent(city)}`} className="underline">open the directory</Link>.</p>}
         {/* ── SEO intro paragraph ── */}
         <p className="text-gray-600 text-sm leading-relaxed mb-8">
           {getIntroCopy(category, city, cfg, county)}
         </p>
 
         {/* ── Business list or empty state ── */}
-        {businesses.length === 0 ? (
+        {!result ? null : businesses.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-2xl border border-gray-200">
             <div className="text-6xl mb-4">{catEmoji}</div>
             <h2 className="text-xl font-bold text-gray-900 mb-2">

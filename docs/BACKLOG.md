@@ -12,3 +12,5 @@ Completed **OPS-02 — delivery:** both Workers passed clean native Git builds f
 5. **PILOT-01 / METRIC-01 — validation:** meet the checked-provider coverage gate, observe real searches and contact outcomes, then decide expansion/monetization. No outreach is authorized yet.
 
 Shared regional experience: Mountain House, Tracy, Lathrop and Manteca. Initial deeper business verification remains Mountain House and Tracy. A Facebook research lead or an old approved flag is not independent verification.
+
+November 5 UX follow-up: mobile navigation now has visible 48px touch targets, Escape/focus handling and a skip link; city/category evidence and discovery count errors are corrected. TypeScript and local interactions pass; final navigation deployment is being verified. Design acceptance criteria: `docs/ux/design-standard.md`. No competitor-superiority or resident-validation claim is made.

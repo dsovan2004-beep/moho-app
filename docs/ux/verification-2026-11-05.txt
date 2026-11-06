@@ -20,8 +20,18 @@ page overflow) on homepage and exact-service results. Raw tab screenshots captur
 at actual emulated resolution after the higher-level viewport helper failed to
 resize the hidden browser. Emulation was cleared afterward.
 
-Artifacts: home-desktop.jpg, home-mobile.png, results-mobile.png.
-Remaining: resident usability/keyboard testing, deeper legacy-city-page redesign,
+Artifacts: home-desktop.jpg, home-mobile.png, results-mobile.png, city-mobile.png.
+
+Follow-up: city pages now use task search, checked service-area providers, dated
+evidence, direct calls and pet links. Search preserved the Mountain House city
+and Molly query. City layout width equals viewport width at 390px. Mobile
+navigation exposes four 48px-high targets. City picker Escape closes the menu
+and returns focus to its trigger. These were local interaction checks; native
+deployment verification follows the final navigation changes.
+
+Discovery pagination has stable ordering and rejects incomplete/error results.
+City/category pages no longer imply community ranking or universal verification.
+Remaining: resident usability and broader keyboard testing, legacy Best Of page review,
 checked-provider supply (especially landscaping), owner-supplied job fit and
 availability expiry, and pet owner-update/freshness lifecycle. Facebook research
 is sampled qualitative evidence, not a complete group audit or proof of demand.

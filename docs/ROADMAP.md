@@ -885,3 +885,5 @@ Before adding any feature to the roadmap, it must pass all six questions:
 ---
 
 *Last updated: March 2026*
+
+November 5 UX follow-up: mobile navigation now has visible 48px touch targets, Escape/focus handling and a skip link; city/category evidence and discovery count errors are corrected. TypeScript and local interactions pass; final navigation deployment is being verified. Design acceptance criteria: `docs/ux/design-standard.md`. No competitor-superiority or resident-validation claim is made.

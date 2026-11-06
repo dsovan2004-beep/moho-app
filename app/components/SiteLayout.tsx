@@ -5,14 +5,10 @@ import Link from 'next/link'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { useState, useEffect, useRef, Suspense } from 'react'
 import { getSupabaseClient, signOut } from '@/lib/supabase'
+import { CITIES as CITY_CONFIG } from '@/lib/cities'
 import type { User } from '@supabase/supabase-js'
 
-const CITIES = [
-  // 209 / San Joaquin County
-  'Mountain House', 'Tracy', 'Lathrop', 'Manteca', 'Brentwood',
-  // South Bay / Santa Clara County (FIFA World Cup 2026 expansion)
-  'San Jose', 'Santa Clara', 'Sunnyvale',
-]
+const CITIES = CITY_CONFIG.map(city => city.name)
 
 const SOUTH_BAY_CITIES = new Set(['San Jose', 'Santa Clara', 'Sunnyvale'])
 
@@ -113,10 +109,9 @@ function getCityFromPath(path: string): string | null {
 // Explore dropdown items (Best Of + Discover)
 const EXPLORE_LINKS = [
   { slug: 'restaurants', label: 'Restaurants', emoji: '🍽️' },
-  { slug: 'coffee',      label: 'Coffee',      emoji: '☕' },
-  { slug: 'dentists',    label: 'Dentists',    emoji: '🦷' },
-  { slug: 'gyms',        label: 'Gyms',        emoji: '🏋️' },
-  { slug: 'hair-salons', label: 'Hair Salons', emoji: '💈' },
+  { slug: 'health-wellness', label: 'Health & wellness', emoji: '🦷' },
+  { slug: 'home-services', label: 'Home services', emoji: '🔧' },
+  { slug: 'beauty-spa', label: 'Beauty & spa', emoji: '💈' },
 ]
 
 // Community dropdown items
@@ -174,6 +169,8 @@ function NavContent() {
     return 'Mountain House'
   })
   const theme = CITY_THEMES[city] ?? CITY_THEMES['Mountain House']
+  const requestedCity = getCityFromPath(pathname) ?? searchParams.get('city')
+  const explicitCity = requestedCity && CITIES.includes(requestedCity) ? requestedCity : null
 
   // Sync city state whenever the route changes
   useEffect(() => {
@@ -201,8 +198,6 @@ function NavContent() {
   const [communityOpen,  setCommunityOpen]  = useState(false)
 
   // Mobile dropdown states
-  const [exploreMobileOpen,   setExploreMobileOpen]   = useState(false)
-  const [communityMobileOpen, setCommunityMobileOpen] = useState(false)
 
   // Refs for click-outside
   const profileRef       = useRef<HTMLDivElement>(null)
@@ -210,8 +205,6 @@ function NavContent() {
   const directoryRef     = useRef<HTMLDivElement>(null)
   const exploreRef       = useRef<HTMLDivElement>(null)
   const communityRef     = useRef<HTMLDivElement>(null)
-  const exploreMobileRef   = useRef<HTMLDivElement>(null)
-  const communityMobileRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const supabase = getSupabaseClient()
@@ -230,12 +223,19 @@ function NavContent() {
       if (directoryRef.current     && !directoryRef.current.contains(t))     setDirectoryOpen(false)
       if (exploreRef.current       && !exploreRef.current.contains(t))       setExploreOpen(false)
       if (communityRef.current     && !communityRef.current.contains(t))     setCommunityOpen(false)
-      if (exploreMobileRef.current   && !exploreMobileRef.current.contains(t))   setExploreMobileOpen(false)
-      if (communityMobileRef.current && !communityMobileRef.current.contains(t)) setCommunityMobileOpen(false)
     }
+    function handleEscape(e: KeyboardEvent) {
+      if (e.key !== 'Escape') return
+      const refs = [profileRef, cityPickerRef, directoryRef, exploreRef, communityRef]
+      const focusedGroup = refs.find(ref => ref.current?.contains(document.activeElement))
+      setProfileOpen(false); setCityPickerOpen(false); setDirectoryOpen(false); setExploreOpen(false); setCommunityOpen(false)
+      focusedGroup?.current?.querySelector('button')?.focus()
+    }
+    document.addEventListener('keydown', handleEscape)
     document.addEventListener('mousedown', handleClickOutside)
     document.addEventListener('touchstart', handleClickOutside)
     return () => {
+      document.removeEventListener('keydown', handleEscape)
       document.removeEventListener('mousedown', handleClickOutside)
       document.removeEventListener('touchstart', handleClickOutside)
     }
@@ -292,10 +292,10 @@ function NavContent() {
 
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 shrink-0">
-              <span className="text-xs font-bold px-2 py-1 rounded" style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}>
+              <span className="hidden sm:inline text-xs font-bold px-2 py-1 rounded" style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}>
                 MH
               </span>
-              <span className="text-white font-extrabold text-lg tracking-tight hidden sm:block">
+              <span className="text-white font-extrabold text-sm sm:text-lg tracking-tight">
                 MoHo<span style={{ color: '#f59e0b' }}>Local</span>
               </span>
             </Link>
@@ -307,6 +307,7 @@ function NavContent() {
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-all"
                 style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: 'white' }}
                 aria-label="Select city"
+                aria-expanded={cityPickerOpen}
               >
                 <span>📍</span>
                 <span className="hidden sm:inline">{city}</span>
@@ -339,7 +340,7 @@ function NavContent() {
 
                   {/* South Bay Section */}
                   <div className="px-4 py-2 border-t border-b border-gray-100 bg-gray-50">
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">South Bay · ⚽ FIFA 2026</p>
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Other nearby cities</p>
                   </div>
                   {CITIES.filter(c => SOUTH_BAY_CITIES.has(c)).map((c) => (
                     <button
@@ -364,14 +365,15 @@ function NavContent() {
             {/* ── Desktop Nav Links ── */}
             <div className="hidden md:flex items-center gap-1 flex-1 justify-center">
 
-              {/* Directory 🔥 dropdown */}
+              {/* Directory dropdown */}
               <div className="relative" ref={directoryRef}>
                 <button
+                  aria-expanded={directoryOpen}
                   onClick={() => setDirectoryOpen((o) => !o)}
                   className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md transition-all font-medium whitespace-nowrap"
                   style={navStyle(isDirectory || directoryOpen)}
                 >
-                  Directory 🔥
+                  Directory
                   <Chevron open={directoryOpen} />
                 </button>
 
@@ -411,7 +413,7 @@ function NavContent() {
                           </Link>
                         ))}
                       </div>
-                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 pt-2 border-t border-gray-100">South Bay · ⚽ FIFA 2026</p>
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 pt-2 border-t border-gray-100">Other nearby cities</p>
                       <div className="space-y-0.5">
                         {CITIES.filter(c => SOUTH_BAY_CITIES.has(c)).map((c) => (
                           <Link
@@ -442,6 +444,7 @@ function NavContent() {
               {/* Explore dropdown */}
               <div className="relative" ref={exploreRef}>
                 <button
+                  aria-expanded={exploreOpen}
                   onClick={() => setExploreOpen((o) => !o)}
                   className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md transition-all font-medium whitespace-nowrap"
                   style={navStyle(isExplore || exploreOpen)}
@@ -463,17 +466,17 @@ function NavContent() {
 
                     {/* Best Of */}
                     <div className="px-4 py-2.5 border-b border-gray-100">
-                      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Best in {city}</p>
+                      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Explore {city}</p>
                     </div>
                     {EXPLORE_LINKS.map(({ slug, label, emoji }) => (
                       <Link
                         key={slug}
-                        href={`/best/${slug}/${city.toLowerCase().replace(/\s+/g, '-')}`}
+                        href={`/${CITY_SLUGS[city]}/${slug}`}
                         onClick={() => setExploreOpen(false)}
                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
                       >
                         <span>{emoji}</span>
-                        <span>Best {label}</span>
+                        <span>{label}</span>
                       </Link>
                     ))}
                     <div className="border-t border-gray-100 px-4 py-2.5">
@@ -501,6 +504,7 @@ function NavContent() {
               {/* Community dropdown */}
               <div className="relative" ref={communityRef}>
                 <button
+                  aria-expanded={communityOpen}
                   onClick={() => setCommunityOpen((o) => !o)}
                   className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md transition-all font-medium whitespace-nowrap"
                   style={navStyle(isCommunity || communityOpen)}
@@ -543,7 +547,8 @@ function NavContent() {
               {user ? (
                 <div className="relative" ref={profileRef}>
                   <button
-                    onClick={() => setProfileOpen((o) => !o)}
+                    aria-expanded={profileOpen}
+                  onClick={() => setProfileOpen((o) => !o)}
                     className="flex items-center gap-2 px-2 py-1 rounded-full transition-all"
                     style={{ backgroundColor: 'rgba(255,255,255,0.12)' }}
                   >
@@ -625,132 +630,22 @@ function NavContent() {
           </div>
         </div>
 
-        {/* ── Mobile Nav Row ── */}
-        <div className="md:hidden border-t border-white/10 flex items-stretch">
-
-          {/* Scrollable primary links */}
-          <div className="relative flex-1 min-w-0">
-            <div
-              className="flex gap-2 pl-3 pr-4 py-2 overflow-x-auto items-center"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-            >
-              {[
-                { href: '/directory',      label: 'Directory 🔥' },
-                { href: '/ask',            label: 'Ask MoHo ✨' },
-                { href: '/events',         label: 'Events' },
-                { href: '/submit-business',label: 'For Business' },
-              ].map(({ href, label }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className="text-xs whitespace-nowrap font-medium shrink-0"
-                  style={pathname === href ? { color: '#f59e0b' } : { color: 'rgba(255,255,255,0.75)' }}
-                >
-                  {label}
-                </Link>
-              ))}
-            </div>
-            <div
-              className="absolute right-0 top-0 bottom-0 w-6 pointer-events-none"
-              style={{ background: 'linear-gradient(to right, transparent, rgba(0,0,0,0.3))' }}
-            />
-          </div>
-
-          {/* Community pinned dropdown */}
-          <div className="relative shrink-0 border-l border-white/10" ref={communityMobileRef}>
-            <button
-              onClick={() => setCommunityMobileOpen((o) => !o)}
-              className="flex items-center gap-1 text-xs font-medium whitespace-nowrap h-full px-3"
-              style={{ color: communityMobileOpen ? '#f59e0b' : 'rgba(255,255,255,0.75)' }}
-            >
-              Community
-              <svg
-                className="w-2.5 h-2.5 opacity-70 transition-transform"
-                style={{ transform: communityMobileOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
-                fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-
-            {communityMobileOpen && (
-              <div className="absolute right-0 top-full mt-1 w-52 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50 animate-dropdown">
-                {COMMUNITY_LINKS.map(({ href, label, emoji }) => (
-                  <Link
-                    key={href}
-                    href={href}
-                    onClick={() => setCommunityMobileOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
-                  >
-                    <span>{emoji}</span>
-                    {label}
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Explore pinned dropdown */}
-          <div className="relative shrink-0 border-l border-white/10" ref={exploreMobileRef}>
-            <button
-              onClick={() => setExploreMobileOpen((o) => !o)}
-              className="flex items-center gap-1 text-xs font-medium whitespace-nowrap h-full px-3"
-              style={{ color: exploreMobileOpen ? '#f59e0b' : 'rgba(255,255,255,0.75)' }}
-            >
-              Explore
-              <svg
-                className="w-2.5 h-2.5 opacity-70 transition-transform"
-                style={{ transform: exploreMobileOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
-                fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-
-            {exploreMobileOpen && (
-              <div className="absolute right-0 top-full mt-1 w-52 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50 animate-dropdown">
-                <Link
-                  href="/discover"
-                  onClick={() => setExploreMobileOpen(false)}
-                  className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-800 font-semibold hover:bg-gray-50 transition border-b border-gray-100"
-                >
-                  <span>🗺️</span> Discover
-                </Link>
-                <div className="px-4 py-2 border-b border-gray-100">
-                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Best in {city}</p>
-                </div>
-                {EXPLORE_LINKS.map(({ slug, label, emoji }) => (
-                  <Link
-                    key={slug}
-                    href={`/best/${slug}/${city.toLowerCase().replace(/\s+/g, '-')}`}
-                    onClick={() => setExploreMobileOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
-                  >
-                    <span>{emoji}</span>
-                    <span>Best {label}</span>
-                  </Link>
-                ))}
-                <div className="border-t border-gray-100 px-4 py-2.5">
-                  <Link
-                    href="/directory"
-                    onClick={() => setExploreMobileOpen(false)}
-                    className="text-xs font-semibold text-blue-600 hover:underline"
-                  >
-                    Browse all categories →
-                  </Link>
-                </div>
-              </div>
-            )}
-          </div>
+        <div className="md:hidden grid grid-cols-4 border-t border-white/15" aria-label="Mobile navigation">
+          {[
+            { href: `/directory?city=${encodeURIComponent(city)}`, label: 'Find help' },
+            { href: `/lost-and-found?city=${encodeURIComponent(city)}`, label: 'Pets' },
+            { href: `/community?city=${encodeURIComponent(city)}`, label: 'Community' },
+            { href: user ? '/my-requests' : '/login', label: user ? 'My requests' : 'Sign in' },
+          ].map(item => <Link key={item.label} href={item.href} className="min-h-12 flex items-center justify-center text-xs font-semibold text-white hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-amber-300">{item.label}</Link>)}
         </div>
       </nav>
 
       {/* City Banner */}
       <div
-        className="py-2 px-4 text-center text-sm font-medium text-white/90"
-        style={{ backgroundColor: theme.accent }}
+        className="py-2 px-4 text-center text-sm font-medium text-slate-700 border-b border-slate-200"
+        style={{ backgroundColor: '#f6f3eb' }}
       >
-        📍 Showing results for <strong>{city}</strong> · {theme.county}
+        {explicitCity ? <>Browsing <strong>{explicitCity}</strong> · {theme.county}</> : 'Local help across Mountain House, Tracy, Lathrop & Manteca'}
       </div>
     </>
   )
@@ -762,7 +657,8 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         <Suspense fallback={null}>
           <NavContent />
         </Suspense>
-        <main>{children}</main>
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-white focus:p-3 focus:text-slate-900">Skip to content</a>
+        <main id="main-content">{children}</main>
         <footer className="bg-gray-900 text-gray-400 text-sm mt-16">
           {/* ── Main 4-column grid ── */}
           <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-14 pb-10">
@@ -771,7 +667,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
               {/* Col 1 — Brand */}
               <div>
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xs font-bold px-2 py-1 rounded" style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}>MH</span>
+                  <span className="hidden sm:inline text-xs font-bold px-2 py-1 rounded" style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}>MH</span>
                   <span className="text-white font-extrabold text-lg tracking-tight">
                     MoHo<span style={{ color: '#f59e0b' }}>Local</span>
                   </span>
@@ -849,8 +745,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
                 <ul className="space-y-2.5">
                   {[
                     { label: 'List Your Business', href: '/submit-business' },
-                    { label: 'Claim a Listing',    href: '/submit-business' },
-                    { label: 'Featured Listings',  href: '/submit-business' },
+                    { label: 'Find Your Listing to Claim', href: '/directory' },
                     { label: 'Contact Us',         href: '/submit-business' },
                   ].map(({ label, href }) => (
                     <li key={label}>

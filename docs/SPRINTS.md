@@ -319,3 +319,5 @@ Levi's Stadium games begin June 2026. Pages must be indexed and ranking by May 2
 
 MoHoLocal Sprints Reference v2
 March 2026
+
+November 5 UX follow-up: mobile navigation now has visible 48px touch targets, Escape/focus handling and a skip link; city/category evidence and discovery count errors are corrected. TypeScript and local interactions pass; final navigation deployment is being verified. Design acceptance criteria: `docs/ux/design-standard.md`. No competitor-superiority or resident-validation claim is made.
