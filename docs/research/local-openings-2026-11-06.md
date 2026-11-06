@@ -11,3 +11,10 @@ Founder requested local retail changes alongside service discovery, and explicit
 | Lathrop | Sam’s Club | Official club7684 says now open,16150 Golden Valley Parkway. September10 City announcement gives September24,2026 opening; developer’s update also reports opened September24. Publish Open with that date. Do not use obsolete hiring-ad Manthey Road address, fuel-station address, or expired September membership promotion. https://www.samsclub.com/club/7684-lathrop-ca ; https://nextdoor.com/agency-post/ca/lathrop/city-of-lathrop/big-news-lathrop-509894369/ ; https://stanfordcrossing.com/development-updates/ |
 
 Local-opening features have a monthly review window and leave the feature after December6Pacific unless refreshed (expiry December7,08:00UTC). There is no new scheduled monitoring job. These updates are not inserted as upcoming calendar events, owner-claimed listings or community posts. Existing seasonal events retain their own dates and expiry rules.
+
+
+## Manteca extension — regional discovery pass
+
+Jersey Mike’s Subs official location20449 lists an operating store with pickup, current hours and phone at1445 S Airport Way, Suite105, Manteca. The Chamber calendar lists June24,2026 grand opening/ribbon cutting. Added as Open, with official store details and Chamber record; no upcoming ceremony or expired promotion implied. Sources: https://www.jerseymikes.com/20449/manteca-ca ; https://manteca.org/calendar/ . Local-opening feature now has six updates covering all four relaunch cities, retaining December6Pacific editorial review/expiry.
+
+Lathrop Kung Fu Tea was a search lead from summer opening-soon coverage; no current operator confirmation established in this pass. Held rather than publishing a guessed operating status. Permit applications and old coming-soon pages are leads, not evidence that a shop has opened.

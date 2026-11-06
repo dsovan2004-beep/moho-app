@@ -61,3 +61,8 @@ Focused public searches for Mountain House California, 2026 capture, licensing/C
 - KNOWOL’s “Map of Mountain House, California in 2026” is a commercial aerial/map print, not a qualifying street photograph; a creation year is not a documented camera capture year, and no existing website image reuse grant was established. Excluded. Source: https://www.knowol.com/information/california/map-of-mountain-house-california/ .
 
 No new photo asset, outreach, purchase or satellite replacement. UX-03 remains open; this is a bounded source check, not a claim no suitable image exists.
+
+
+## Regional discovery continuation — November 6
+
+Additional targeted open-license/stock searches led to https://aroundus.com/p/5520771-mountain-house . It attributes a photograph to Tranistrider1979 under CC BY-SA3.0, but October8,2026 is labeled **Latest update**, not image capture date. No original2026 camera capture evidence was established; image held and not copied. Generic Unsplash/Pexels “mountain house” searches mix cabins, countries and older images and did not establish an exact-city2026 candidate. The City gallery https://www.mountainhouseca.gov/Gallery.aspx exposes older named albums; https://www.mountainhouseca.gov/464/Citywide-Project-Renderings includes planned November2026 projects but labels its visuals as renderings. Neither a current webpage year nor a rendering satisfies the real2026 street-photograph requirement, and the existing City copyright restriction was not waived. No assets downloaded or replaced, no outreach. UX-03 remains open.

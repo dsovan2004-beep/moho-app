@@ -1,0 +1,88 @@
+{
+  "date": "2026-11-06",
+  "method": "Individually checked primary websites, duplicate checks by normalized name/phone/domain, scoped public checks and private audit; no messages or photos reused.",
+  "providers": [
+    {
+      "name": "Golden Bay Plumbing",
+      "city": "Service area only",
+      "phone": "(925) 359-8934",
+      "website": "https://www.goldenbayplumbing.com/",
+      "description": "Plumbing business advertising leak repair, drain and sewer services, repiping and water heater repair or replacement. Its official service-area page names Mountain House, Tracy, Lathrop and Manteca. Contact the business to confirm the exact job, service address, pricing and scheduling. Office location not established.",
+      "tags": [
+        "plumbing",
+        "drain cleaning",
+        "water heaters",
+        "leak detection"
+      ],
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "note": "Primary homepage and service-area page corroborate identity, public phone, advertised work and exact service cities. No physical office established; no emergency response, credentials, insurance, price, review or quality endorsement.",
+      "sources": [
+        "https://www.goldenbayplumbing.com/",
+        "https://www.goldenbayplumbing.com/about-1-1"
+      ]
+    },
+    {
+      "name": "Mountain Cleaners",
+      "city": "Service area only",
+      "phone": "(209) 321-0006",
+      "website": "https://mountain-cleaners.com/",
+      "description": "Mountain House service advertising trash bin cleaning and solar panel cleaning. These are exterior maintenance services, not a routine indoor house-cleaning service. Contact the business directly for scope, pricing and scheduling. Office location not established.",
+      "tags": [
+        "trash bin cleaning",
+        "solar panel cleaning"
+      ],
+      "areas": [
+        "Mountain House"
+      ],
+      "note": "Primary website corroborates business name, public phone, Mountain House coverage and the two advertised exterior services. Do not label as routine indoor house cleaning or imply Tracy coverage. Office location, credentials, insurance, equipment safety, availability and claimed solar performance benefits not independently checked.",
+      "sources": [
+        "https://mountain-cleaners.com/"
+      ]
+    }
+  ],
+  "held": [
+    {
+      "name": "Kia’s Cleaning Service LLC",
+      "source": "https://www.bbb.org/us/ca/tracy/profile/house-cleaning/kias-cleaning-service-llc-1156-90096320",
+      "reason": "Listed primary website cleaningsvctracyca.com returned unrelated gambling content when followed. No publication or credential claims adopted; needs current operator-controlled site/contact corroboration."
+    },
+    {
+      "name": "Mountain House Cleaning",
+      "source": "https://www.mountainhousecleaning.com/",
+      "reason": "828 phone and Asheville-related identity; no service evidence for Mountain House California. Name alone is insufficient."
+    }
+  ],
+  "publication_status": "Published through saved SQL transaction; read-back passed. Approved/unclaimed, null ratings, scoped checks and private audit entries.",
+  "published": [
+    {
+      "name": "Golden Bay Plumbing",
+      "id": "5cce2d9a-1099-4aa2-a0bb-9962819c6a29"
+    },
+    {
+      "name": "Mountain Cleaners",
+      "id": "a598f456-4fe7-49b6-9f45-187ba1e33ccf"
+    }
+  ],
+  "totals": {
+    "checked_listings": 37,
+    "unique_launch_category_providers": 25,
+    "Mountain House": {
+      "landscaping": 6,
+      "handyman": 5,
+      "house cleaning": 4,
+      "plumbing": 6
+    },
+    "Tracy": {
+      "landscaping": 6,
+      "handyman": 5,
+      "house cleaning": 5,
+      "plumbing": 8
+    },
+    "note": "Mountain Cleaners is additional specialized exterior supply, excluded from four launch-category counts."
+  }
+}
