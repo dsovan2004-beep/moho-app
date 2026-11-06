@@ -344,3 +344,5 @@ November 5 screenshot follow-up: footer cities simplified around the four relaun
 Notifications/status acceptance: native build 409c27ae-15a0-490c-a261-3f865399d838 passed for bcadf70; web version 9c35d10a-ec9e-4b02-b888-ad1ef5218a63. Live signed-in caught-up status, optional browser-alert control, empty linked-report management and 320px/noindex checks pass. No permission was granted, no test DM/pet report was published, and no status on a real report was changed. Cross-account delivery/cursors/status transitions are covered by 55 isolated regressions; OS alert delivery was not exercised.
 
 Footer cleanup native build 4a54a1f8-1b2f-4c91-831e-d9eaea3223d6 passed; live version 8b5d2750-d6fe-4bf3-aaea-2db0b2253af4. Browser QA found an existing tablet header overflow at 888px (document width 1140px). Compact navigation now switches at xl; responsive verification/deployment in progress.
+
+Lifecycle UX follow-up: public-detail archive redirects to the private management page so the reporter can restore it; other status updates refresh the displayed report. This avoids a post-archive 404 dead end. Final deployment acceptance pending.

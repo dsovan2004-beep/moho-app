@@ -1,14 +1,15 @@
 'use client'
 import {useEffect,useState} from 'react'
 import Link from 'next/link'
+import {useRouter} from 'next/navigation'
 import {petActivity,socialDate} from '@/lib/pet-social'
 import {useRequestAccount} from './RequestAccount'
 export type OwnPetReport={id:string;title:string;pet_name:string;city:string;status:string;status_revision:number;status_confirmed_at:string|null;created_at:string;under_review:boolean}
-export function PetReportControls({report,onSaved}:{report:OwnPetReport;onSaved:()=>void}){
+export function PetReportControls({report,onSaved}:{report:OwnPetReport;onSaved:(status?:string)=>void}){
  const [status,setStatus]=useState(report.status),[busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState('')
  async function save(){
   if(busy)return;setBusy(true);setError('');setNotice('')
-  try{await petActivity('report_status',{pet_id:report.id,status,revision:report.status_revision});setNotice('Status saved. The public report will reflect your update.');onSaved()}
+  try{await petActivity('report_status',{pet_id:report.id,status,revision:report.status_revision});setNotice('Status saved. The public report will reflect your update.');onSaved(status)}
   catch(e){setError(e instanceof Error?e.message:'Status could not save.')}
   finally{setBusy(false)}
  }
@@ -20,15 +21,16 @@ export function PetReportControls({report,onSaved}:{report:OwnPetReport;onSaved:
    <label className="text-sm font-semibold">Current status<select value={status} onChange={e=>setStatus(e.target.value)} className="block border rounded-lg min-h-11 mt-1 px-3 bg-white">{!['lost','found','reunited','archived'].includes(status)&&<option value={status} disabled>Choose current status</option>}<option value="lost">Lost / still missing</option><option value="found">Found / seeking owner</option><option value="reunited">Reunited</option><option value="archived">Archived / hide report</option></select></label>
    <button disabled={busy||!['lost','found','reunited','archived'].includes(status)} className="min-h-11 rounded-lg bg-[#19352d] text-white px-4 py-2 font-semibold disabled:opacity-50">{busy?'Saving…':'Save and confirm status'}</button>
   </form>}
-  {error&&<p role="alert" className="text-red-800 text-sm mt-3">{error} <button className="underline" onClick={onSaved}>Refresh report</button></p>}
+  {error&&<p role="alert" className="text-red-800 text-sm mt-3">{error} <button className="underline" onClick={()=>onSaved()}>Refresh report</button></p>}
   {notice&&<p role="status" className="text-sm mt-3 text-green-800">{notice}</p>}
  </div>
 }
 export default function PetStatusControls({petId}:{petId:string}){
+ const router=useRouter()
  const {user}=useRequestAccount(),[own,setOwn]=useState<OwnPetReport|null>(null),[refresh,setRefresh]=useState(0)
  useEffect(()=>{setOwn(null);if(!user)return;let active=true
   petActivity('my_reports').then((rows:OwnPetReport[])=>{if(active)setOwn(rows.find(p=>p.id===petId)??null)}).catch(()=>{})
   return()=>{active=false}
  },[user?.id,petId,refresh])
- return own?<><PetReportControls key={`${own.id}:${own.status_revision}`} report={own} onSaved={()=>{setRefresh(n=>n+1);window.location.reload()}}/><Link className="inline-block underline text-sm mt-3" href="/my-pet-reports">Manage all your pet reports →</Link></>:null
+ return own?<><PetReportControls key={`${own.id}:${own.status_revision}`} report={own} onSaved={status=>{if(status==='archived')router.push('/my-pet-reports');else{setRefresh(n=>n+1);router.refresh()}}}/><Link className="inline-block underline text-sm mt-3" href="/my-pet-reports">Manage all your pet reports →</Link></>:null
 }
