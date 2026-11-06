@@ -2,10 +2,10 @@
   "date": "2026-11-05",
   "primary_url": "https://www.moholocal.com",
   "web_worker": "moho-web",
-  "web_version": "805e260a-a33d-44e7-bcc2-552763928142",
+  "web_version": "130ffd24-0ba9-4a51-bbd3-2b594b59f382",
   "web_route": "www.moholocal.com/*",
   "ingestion_worker": "moho-ingestion",
-  "ingestion_version": "b093345a-e324-45f0-bb95-e0e45d052ccd",
+  "ingestion_version": "32503498-15cb-4e3d-af9e-c0c1f1823351",
   "database_project": "ozjlfgipfzykzrjakwzb",
   "migrations": [
     "20261105100215_secure_directory_requests",
@@ -19,9 +19,11 @@
     "20261106043716_delivery_notifications_and_pet_expiry",
     "20261106052438",
     "20261106053247",
-    "20261106053915"
+    "20261106053915",
+    "20261106080659",
+    "20261106080820"
   ],
-  "regression_tests": 75,
+  "regression_tests": 90,
   "npm_audit": {
     "root": 0,
     "workers": 0,
@@ -37,7 +39,7 @@
   "legacy_credential_revoked": true,
   "legacy_credential_last_read_status": 401,
   "production_test_request_result": "rejected; no business published",
-  "public_business_rows": 1800,
+  "public_business_rows": 1803,
   "quarantined_business_rows": 45,
   "website_checked_existing_providers": 6,
   "unsupported_ratings_cleared": 168,
@@ -50,11 +52,11 @@
   },
   "post_retirement_real_account_access": "passed",
   "website_checked_existing_businesses": 11,
-  "website_checked_launch_category_providers": 19,
-  "final_web_source_commit": "ffcbedcbc28b48ea23dca98dd8493fe78e3e983c",
-  "ingestion_source_commit": "8c982b6b7517798a3ad580059f49629309d6e8bb",
+  "website_checked_launch_category_providers": 20,
+  "final_web_source_commit": "92eb39f78f336056e0f4487e0cda30ff654b14f9",
+  "ingestion_source_commit": "7fddc348d0fdd17491147835109e06b06202aac3",
   "final_web_build": {
-    "id": "2edbaa42-f3b6-4965-8768-f3d358025de6",
+    "id": "df1c4c32-f9f9-4de6-b30d-7ea04163ee32",
     "conclusion": "success"
   },
   "temporary_build_setup_permission_removed": true,
@@ -77,12 +79,12 @@
   },
   "temporary_plaintext_credential_copies_removed": true,
   "actual_deployment_and_server_key_tracked_file_matches": 0,
-  "total_business_rows": 1976,
-  "new_individually_curated_rows": 17,
-  "website_checked_total_businesses": 28,
+  "total_business_rows": 1979,
+  "new_individually_curated_rows": 20,
+  "website_checked_total_businesses": 31,
   "unresolved_identity_or_owner_confirmation": 36,
   "final_ingestion_build": {
-    "id": "b696ba3d-581b-481c-8e13-0fbd40668965",
+    "id": "49090e37-96df-479f-9846-5b0ea796102f",
     "conclusion": "success"
   },
   "completed_release_policy_routes": [
@@ -97,7 +99,7 @@
   "advisor_result": {
     "WARN": 0,
     "ERROR": 0,
-    "INFO": 13,
+    "INFO": 15,
     "note": "intentionally private RLS tables without browser policies"
   },
   "remaining_desk_recheck_passes": 0,
@@ -129,7 +131,7 @@
       "plumbing": 3
     },
     "Tracy": {
-      "landscaping": 5,
+      "landscaping": 6,
       "handyman": 4,
       "house cleaning": 4,
       "plumbing": 5
@@ -210,7 +212,9 @@
       "docs/push-device-validation-2026-11-05.md",
       "docs/ux/operator-email-delivered.png",
       "docs/ux/push-device-confirmed-mobile.png"
-    ]
+    ],
+    "date": "2026-11-05",
+    "superseded_by": "email_events_release"
   },
   "automatic_pet_expiry": {
     "window_days": 30,
@@ -272,5 +276,72 @@
         "docs/ux/email-quota-blocker.png"
       ]
     }
-  ]
+  ],
+  "email_events_release": {
+    "native_web_source": "92eb39f78f336056e0f4487e0cda30ff654b14f9",
+    "native_ingestion_source": "7fddc348d0fdd17491147835109e06b06202aac3",
+    "queue": "moho-email-events",
+    "queue_id": "b32bdd1df354453e8be13990078b22f5",
+    "consumer": "moho-ingestion",
+    "dead_letter_queue": "moho-email-events-dlq",
+    "subscription_id": "89656ac6fc6947e1943a4442f450b5d3",
+    "build_token_permissions_expanded": false,
+    "public_webhook_added": false,
+    "operator_probe": {
+      "job_id": "8785fc2b-8150-435d-aebf-bf081c601230",
+      "attempts": 1,
+      "mail_server_delivered_at": "2026-11-06T08:10:15.837Z",
+      "event_id": "01a1afe8-8bac-7c33-b0b1-5789c6f5b7ff",
+      "event_processed_at": "2026-11-06T08:10:21.404970Z",
+      "resident_email_optins": 0,
+      "live_bounce_induced": false
+    },
+    "failure_paths": "90 isolated regressions include duplicate/early/old-address/wrong-recipient events, suppression, role denial and batch starvation",
+    "phone_testing": {
+      "physical_device_available": false,
+      "real_phone_delivery_verified": false,
+      "reason": "no phone control surface; devicectl/adb/idevice tools unavailable; iPhone Mirroring unavailable",
+      "setup_scenarios": "iPhone/iPad Home Screen, iPad desktop identity, Android support, blocked/unsupported",
+      "browser_setup_simulation": "iPhone UA in Chrome; not a real iPhone test; simulated tab closed"
+    },
+    "regional_navigation": {
+      "choices": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "surfaces": [
+        "desktop Directory menu",
+        "shared city picker",
+        "directory filters",
+        "footer"
+      ],
+      "mobile_picker_320": {
+        "innerWidth": 320,
+        "clientWidth": 320,
+        "scrollWidth": 320
+      },
+      "legacy_explicit_city_urls_preserved": true
+    },
+    "evidence": [
+      "docs/email-events-release-2026-11-06.md",
+      "docs/ux/four-city-directory-menu.png",
+      "docs/ux/mobile-four-city-picker.png",
+      "docs/ux/automatic-email-delivery-status.png",
+      "docs/ux/phone-install-guidance-simulation.png"
+    ]
+  },
+  "seasonal_engagement": {
+    "status": "planned next sprint R4",
+    "first_seasons": [
+      "Thanksgiving 2026",
+      "Christmas/holiday season 2026"
+    ],
+    "following": "Halloween 2027 and cultural celebrations",
+    "researched_event_day": "2026-12-05",
+    "mountain_house_time_conflict": "hold timed publication until resolved",
+    "new_events_published": 0,
+    "plan": "docs/research/seasonal-pilot-2026-11-06.md"
+  }
 }

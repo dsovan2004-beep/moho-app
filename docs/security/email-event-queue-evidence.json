@@ -1,0 +1,91 @@
+{
+  "events": [
+    {
+      "wallTime": 238,
+      "cpuTime": 1,
+      "truncated": false,
+      "executionModel": "stateless",
+      "outcome": "ok",
+      "scriptVersion": {
+        "id": "32503498-15cb-4e3d-af9e-c0c1f1823351"
+      },
+      "scriptName": "moho-ingestion",
+      "diagnosticsChannelEvents": [],
+      "exceptions": [],
+      "logs": [],
+      "eventTimestamp": 1793952621178,
+      "event": {
+        "batchSize": 1,
+        "queue": "moho-email-events"
+      }
+    },
+    {
+      "wallTime": 1084,
+      "cpuTime": 0,
+      "truncated": false,
+      "executionModel": "stateless",
+      "outcome": "ok",
+      "tailAttributes": {
+        "cron": "*/5 * * * *",
+        "scheduledTime": 1793952911918
+      },
+      "scriptVersion": {
+        "id": "32503498-15cb-4e3d-af9e-c0c1f1823351"
+      },
+      "scriptName": "moho-ingestion",
+      "diagnosticsChannelEvents": [],
+      "exceptions": [],
+      "logs": [
+        {
+          "message": [
+            "[notifications] delivery pass complete",
+            {
+              "processed": 0
+            }
+          ],
+          "level": "info",
+          "timestamp": 1793952913648
+        }
+      ],
+      "eventTimestamp": 1793952912542,
+      "event": {
+        "cron": "*/5 * * * *",
+        "scheduledTime": 1793952911918
+      }
+    },
+    {
+      "wallTime": 1187,
+      "cpuTime": 1,
+      "truncated": false,
+      "executionModel": "stateless",
+      "outcome": "ok",
+      "tailAttributes": {
+        "cron": "*/5 * * * *",
+        "scheduledTime": 1793953211918
+      },
+      "scriptVersion": {
+        "id": "32503498-15cb-4e3d-af9e-c0c1f1823351"
+      },
+      "scriptName": "moho-ingestion",
+      "diagnosticsChannelEvents": [],
+      "exceptions": [],
+      "logs": [
+        {
+          "message": [
+            "[notifications] delivery pass complete",
+            {
+              "processed": 0
+            }
+          ],
+          "level": "info",
+          "timestamp": 1793953213721
+        }
+      ],
+      "eventTimestamp": 1793953212499,
+      "event": {
+        "cron": "*/5 * * * *",
+        "scheduledTime": 1793953211918
+      }
+    }
+  ]
+}
