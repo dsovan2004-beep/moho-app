@@ -9,7 +9,7 @@ type Outcome={decision:'sent'|'retry'|'failed'|'retire';code:string;retry_after?
 export async function dispatchRpc(env:Env,action:string,payload:Record<string,unknown>):Promise<unknown>{
  const key=env.SUPABASE_SERVICE_ROLE_KEY
  const response=await fetch(`${env.SUPABASE_URL}/rest/v1/rpc/notification_dispatch`,{method:'POST',headers:{apikey:key,...(key.startsWith('sb_secret_')?{}:{Authorization:`Bearer ${key}`}), 'Content-Type':'application/json'},body:JSON.stringify({action,payload}),signal:AbortSignal.timeout(15000)})
- if(!response.ok)throw new Error(`notification_database_${response.status}`)
+ if(!response.ok){const error=await response.json().catch(()=>({})) as {code?:string};throw new Error(`notification_database_${action}_${response.status}_${/^[A-Z0-9_]+$/.test(error.code??'')?error.code:'unknown'}`)}
  return response.json()
 }
 export function deliveryOutcome(status:number,channel:'email'|'push',retryAfter:string|null):Outcome{
