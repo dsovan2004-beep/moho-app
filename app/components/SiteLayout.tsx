@@ -262,9 +262,9 @@ function NavContent() {
 
   // Active-state helpers — one tab active at a time
   const isDirectory = pathname === '/directory'
-    || /^\/[a-z-]+$/.test(pathname) && !['ask','discover','events','community','activity','lost-and-found','new-resident','submit-business','login','register','profile','admin','best','directory','messages','my-pet-reports','privacy','terms','my-requests'].includes(pathname.slice(1))
+    || /^\/[a-z-]+$/.test(pathname) && !['ask','discover','classes','events','community','activity','lost-and-found','new-resident','submit-business','login','register','profile','admin','best','directory','messages','my-pet-reports','privacy','terms','my-requests'].includes(pathname.slice(1))
     || /^\/[a-z-]+\/[a-z-]+/.test(pathname) && !pathname.startsWith('/best') && !pathname.startsWith('/community')
-  const isExplore   = pathname === '/discover' || pathname.startsWith('/best')
+  const isExplore   = pathname === '/discover' || pathname === '/classes' || pathname.startsWith('/best')
   const isEvents    = pathname === '/events'
   const isCommunity = pathname === '/community' || pathname === '/activity'
     || pathname.startsWith('/lost-and-found') || pathname === '/messages' || pathname === '/new-resident'
