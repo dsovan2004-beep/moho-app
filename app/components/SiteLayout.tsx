@@ -318,7 +318,7 @@ function NavContent() {
               </button>
 
               {cityPickerOpen && (
-                <div className="absolute left-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
+                <div className="fixed left-3 right-3 top-[4.5rem] sm:absolute sm:left-0 sm:right-auto sm:top-auto sm:mt-2 sm:w-56 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
                   {/* 209 / San Joaquin Section */}
                   <div className="px-4 py-2 border-b border-gray-100">
                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Our communities</p>
