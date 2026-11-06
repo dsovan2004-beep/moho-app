@@ -4,16 +4,17 @@
 This document defines sprint governance standards and the canonical Definition of Done (DoD) for each sprint type. It supplements ROADMAP.md (which tracks sprint status) by capturing the rules that govern how sprints are structured and closed.
 
 
-## Current relaunch sprint — November 5, 2026
+## Current relaunch sprint — November 6, 2026
 
 This relaunch supersedes the historical March/April expansion and distribution plans below. `docs/ROADMAP.md` is the canonical backlog; `docs/BACKLOG.md` is the active execution queue. Update these three records with every material scope, test, deployment or blocker change. Completed code, deployed behavior, verified evidence and unresolved work must be recorded separately.
 
 | Sprint | Scope | Current state |
 |---|---|---|
 | R1 | Security, credentials, submissions and claims | Code/database fixes deployed; 55 automated tests and live Google/submission/rejection acceptance pass. Legacy apikey access is disabled and the previous HS256 verifier revoked; old-key REST/Auth/Storage checks return 401, while modern server and signed-in requester access pass. R1 complete: both clean push-triggered native builds passed and temporary setup permission was removed (configuration registry now returns 403). |
-| R2 | Regional discovery, listing evidence and mobile redesign | First pass deployed for shared Mountain House/Tracy/Lathrop/Manteca discovery. All 72 baseline candidates researched: 11 official-site corrections, 45 held including two duplicates, 16 already nonpublic/unresolved. Twenty individually curated additions bring website-checked listings to 31; Mountain House has landscaping 6, handyman 4, cleaning 3, plumbing 3; Tracy has 6/4/4/5 respectively. Owner confirmations and greater choice remain open. City-page redesign adds task search, service-area evidence and contacts; 320px/390px layout, search, skip-link focus, Escape dismissal and 44px contact targets verified on production; deployed. Discovery count failure handling and unsupported popularity labels corrected. |
+| R2 | Regional discovery, listing evidence and mobile redesign | Deployed four-city discovery and class guide;56 dated listing checks,19 approved event occurrences. Latest app10964bc/native16815f0e-7f62-4666-9534-b6d6c526c3df accepted;114 regressions and mobile/live checks passed in prior release. Owner confirmations, wider useful choice, resident validation and rights-cleared imagery remain open. |
 | R3 | Useful pilot and pet-report lifecycle | Discussions, private inbox, unread notifications and reporter status confirmation/archive deployed; privacy controls tested. Automatic expiry/renewal is deployed; real closed-tab Chrome push received/displayed confirmation passed and capped native email is available after operator Inbox delivery, with automatic email lifecycle reconciliation and recipient address pauses now live. Resident pilot remains open. Build sufficient independently checked choices before outreach; validate resident outcomes. Preserve existing pet filters/reunited states, with moderated reporting and recent/history separation. Reporter updates and freshness confirmation are deployed; wider editing and source audits remain open. |
-| R4 | Seasonal community engagement | Planned next: Thanksgiving and Christmas 2026 discovery, verified events, calendar actions, event-linked discussion boundaries and useful business connections. Primary organizer research begun; no feature published. Halloween 2027 and opt-in resident displays follow pilot outcomes. |
+| R4 | Seasonal community engagement |19 approved occurrences live (11 seasonal/8 community), city filters, calendars and expiry accepted. Further organizer checks, readable eligibility/venue details (SEASON-03), genuine event imagery, discussion boundaries and explicit seasonal consent remain open. |
+| R5 | Detailed resident research and prioritized improvements | FB-01 active: eight initial group batches/27 mixed-completeness records; full30-day review incomplete. Next PET-05, DATA-05, SEASON-03, DATA-06; official resources PET-06 researched alongside pet work. P2 family-care/offer features held. No outreach/imports. Acceptance in research/resident-priorities-2026-11-06.md. |
 
 
 ### November 5 continuation — interaction and useful AI
@@ -35,7 +36,7 @@ MSG-03/PET-04 deployed: notification-only service worker, resident push opt-in, 
 - Preserve business IDs and existing route entry points. Honest empty service shortlists are acceptable; no invented records or doorway pages.
 - Photo enrichment is conditional on useful verified information and image rights; no new bulk seeding is authorized for this relaunch.
 - Initial editorial checking prioritizes Mountain House/Tracy; regional UI reuse does not claim complete audits of Lathrop/Manteca.
-- No Facebook outreach, private-post republication or member-list export is authorized. Research remains qualitative and sampled.
+- No Facebook outreach, private-post republication or member-list export is authorized. Research remains qualitative; detailed sequential post/comment review is ongoing, with coverage and unreviewed material explicit. No representative prevalence claim.
 
 Acceptance evidence: `docs/security/continuation-2026-11-05.txt`, `docs/security/deployment-evidence.json`, `docs/research/home-services-triage-2026-11-05.json`, and `docs/ux/`.
 
@@ -463,3 +464,7 @@ November6 cultural/market continuation complete: added three individually checke
 November6 cultural-class guide accepted: application10964bc/native16815f0e-7f62-4666-9534-b6d6c526c3df successful (initial guide13bb657/native2aefacb6-72a5-4267-a226-4432e1f993d5).114regressions, TypeScript/OpenNext pass. /classes has city-preserving topic filters, dated public information checks, contact/source actions, honest empty states and Explore navigation. Live checked programs MH3/Tracy4/Lathrop2/Manteca3. Added TablaNiketan MH/Tracy, plus3official library occurrences: MHbabyNov12, Tracy preschoolNov12, MantecaCascadaNov13. Totals56dated checks/19approved occurrences;11seasonal+8community. All3newcalendar200times pass. FB-01 deep per-post review active; no exhaustive-review claim. Photo task remains open.
 
 FB-01 checkpoint:7accessiblegroup initial batches including all3joinedMHgroups; detailed body/flyer inspection and full18/15/4comment threads captured privately. No exhaustivehistory claim. CULT-02classguide accepted; PET-05progressclarity addedbacklog; further group/post traversal remainsactive.
+
+### November 6 early-afternoon research checkpoint
+
+Completed additional Tracy11/5/13-comment threads, MH7 observed text comments with image/video limits, Lathrop custom-scope reply and Manteca explicit empty wildlife discussion. Promotional childcare reply is a lead, not demand. Eight initial group batches and27 private mixed-completeness records; no exhaustive coverage claim. Planning order and acceptance updated in BACKLOG/ROADMAP and resident-priorities report. No app/database/provider/event publication or new test run; accepted114-test release unchanged. MH2026 street-photo rights task remains open.

@@ -1,6 +1,6 @@
 # Facebook resident-needs review — November 6, 2026
 
-Status: IN PROGRESS. First detailed batch across seven accessible groups; not every group or post reviewed. Initial target window October7–November6. No representative prevalence or demand ranking claimed. Facebook search, ranking, pinned posts, virtualized loading and inaccessible private groups limit coverage. Post dates still require normalization where Facebook obscures timestamps.
+Status: IN PROGRESS. Initial detailed batches across eight accessible groups; not every group or post reviewed. Initial target window October7–November6. No representative prevalence or demand ranking claimed. Facebook search, ranking, pinned posts, virtualized loading and inaccessible private groups limit coverage. Post dates still require normalization where Facebook obscures timestamps.
 
 ## Coverage and method
 
@@ -33,3 +33,9 @@ Dynamic Touch Cleaning LLC primary https://www.dynamictouchcleaningllc.com/ esta
 Finish incomplete pet/service/event comment threads; expand text and inspect relevant image-only posts; record exact date, permalink, city of need versus group, resident request versus promotion, reply completeness, outcome and proposed solution. Inventory other accessible groups and deduplicate crossposts before counting. Review all accessible posts in the chosen window sequentially; never mark a group complete from its first screen or keyword search. All three joined MH groups now have initial posts reviewed, with remaining feeds and additional city-specific groups still queued. Keep this task active in backlog/roadmap/sprint and twice-weekly operations.
 
 Additional detailed observations: youth-wrestling caption says all ages, but its flyer specifiesK–8; year/organizer verification remains held before publication. Soccer promotion namesStockton/surroundingareas and anAugust2026start, so it does not establish a currentMountainHouseclass. A pastOctoberfair appears in a later share; share date is not occurrence date. These support explicit eligibility, actual venue/service area and freshness checks. No youth details or flyer images copied.
+
+## Second detailed pass — November 6, early afternoon
+
+Added Manteca Local as the eighth initial group batch. Completed Tracy reunion11/11, found-dog5/5 and rooster13/13 comments including nested replies; Mountain House missing-cat7 observed text comments read, with image/video inspection limits retained privately. New sighting is unconfirmed, not an automatic match. Lathrop banister fabrication request had one available referral reply; provider capability remains unverified. Manteca wildlife dialog explicitly had no comments. Childcare promotion's one reply came from its provider, not a resident request. Other Manteca promotions, unavailable shared content and partial videos remain leads/holds.
+
+No feed comment count is not proof of an empty discussion. Full thirty-day traversal remains incomplete. The private ledger now has27 records including partial and excluded material. No copied images, resident identities, addresses or allegations published. Prioritized delivery and acceptance criteria are in [resident-priorities-2026-11-06.md](resident-priorities-2026-11-06.md).
