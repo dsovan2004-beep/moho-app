@@ -1,4 +1,15 @@
 # MoHoLocal — SPRINTS.md
+
+## New Resident Guide implementation — November 6 afternoon
+
+RES-01 core accuracy corrections and RES-02 checklist/layout implemented; release verification in progress. Guide now uses official utility and enrollment resources for exactly four relaunch cities. Removed hardcoded school ratings, unsupported endorsements, travel estimates and legacy business selections; directory discovery uses city-preserving links instead, so the guide no longer has a silent database-failure empty state. Existing duplicate/legacy catalog audit remains open under DATA-02.
+
+Interactive six-step checklist is page-local and explicitly not saved to an account. Tracy uses the existing rights-checked 2026 street photo; Mountain House uses the labeled 2026 satellite image. Lathrop/Manteca photos and Mountain House street photography remain open until location/capture/reuse evidence is available. Designed welcome panels fill unapproved photo slots. No substituted city imagery. TypeScript and 135 repository tests passed; native build/live acceptance pending. Pet matching work remains separate and unreleased.
+
+## November 6 afternoon — resident-guide audit
+
+Audit completed for screenshot, live hub/Mountain House route and all static city definitions. RES-01 P1 fixes queued for incorrect utilities, unsourced ratings and listing/error evidence; RES-02 P2 redesign queued for four-city task-first discovery. [Audit](research/new-resident-audit-2026-11-06.md). Implementation and full external-link checks remain open. Pet matching/contact work remains uncommitted and unreleased; local 133-test pass and hosted migration are not production UI acceptance.
+
 # Sprint Standards, Definitions of Done, and Historical Log
 
 This document defines sprint governance standards and the canonical Definition of Done (DoD) for each sprint type. It supplements ROADMAP.md (which tracks sprint status) by capturing the rules that govern how sprints are structured and closed.

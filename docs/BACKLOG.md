@@ -1,5 +1,15 @@
 # MoHoLocal active execution queue
 
+## New Resident Guide implementation — November 6 afternoon
+
+RES-01 core accuracy corrections and RES-02 checklist/layout implemented; release verification in progress. Guide now uses official utility and enrollment resources for exactly four relaunch cities. Removed hardcoded school ratings, unsupported endorsements, travel estimates and legacy business selections; directory discovery uses city-preserving links instead, so the guide no longer has a silent database-failure empty state. Existing duplicate/legacy catalog audit remains open under DATA-02.
+
+Interactive six-step checklist is page-local and explicitly not saved to an account. Tracy uses the existing rights-checked 2026 street photo; Mountain House uses the labeled 2026 satellite image. Lathrop/Manteca photos and Mountain House street photography remain open until location/capture/reuse evidence is available. Designed welcome panels fill unapproved photo slots. No substituted city imagery. TypeScript and 135 repository tests passed; native build/live acceptance pending. Pet matching work remains separate and unreleased.
+
+## New Resident Guide audit — November 6, afternoon
+
+**RES-01 P1**: correct essential providers, remove unsourced school scores, verify school identity/boundaries and listing evidence; distinguish data failures from empty results. **RES-02 P2**: four-city photo-led move-in checklist with dated sources, city-preserving events/classes and correction flow. Audit complete; implementation pending. [Evidence and acceptance](research/new-resident-audit-2026-11-06.md). Pet matching/contact implementation remains in progress, not yet deployed; do not confuse its hosted migration with frontend acceptance.
+
 ## Current research-driven execution order — November 6, early afternoon
 
 PET-05 first increment deployed and native/live checked (121 tests; real-reporter pilot open) → DATA-05 quote scope → SEASON-03 event/class eligibility and venue → DATA-06 pickup/delivery clarity. PET-06 official animal-resource checks accompany pet work; FAMILY-01 and COMM-04 remain P2. Acceptance and evidence: [resident priorities](research/resident-priorities-2026-11-06.md). Existing pet discussions, DMs, notification delivery, expiry and calendars are already live. Current increment includes pet progress implementation and continued research; see pet-progress-release-2026-11-06.md.

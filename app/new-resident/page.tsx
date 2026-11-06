@@ -1,117 +1,69 @@
-export const runtime = 'nodejs'
-
-import Link from 'next/link'
-
-const CITIES = [
-  {
-    name: 'Mountain House',
-    slug: 'mountain-house',
-    emoji: '🏘️',
-    gradient: 'linear-gradient(135deg,#1e3a5f 0%,#1e40af 100%)',
-    county: 'San Joaquin County',
-    desc: 'Planned community · Top-rated schools · Parks & trails',
-  },
-  {
-    name: 'Tracy',
-    slug: 'tracy',
-    emoji: '🌿',
-    gradient: 'linear-gradient(135deg,#14532d 0%,#15803d 100%)',
-    county: 'San Joaquin County',
-    desc: 'Great shopping · Diverse dining · Easy Bay Area access',
-  },
-  {
-    name: 'Lathrop',
-    slug: 'lathrop',
-    emoji: '🔮',
-    gradient: 'linear-gradient(135deg,#581c87 0%,#7e22ce 100%)',
-    county: 'San Joaquin County',
-    desc: 'Fast-growing · River Islands · ACE Train access',
-  },
-  {
-    name: 'Manteca',
-    slug: 'manteca',
-    emoji: '🍊',
-    gradient: 'linear-gradient(135deg,#7c2d12 0%,#c2410c 100%)',
-    county: 'San Joaquin County',
-    desc: 'Costco in town · Vibrant community · Big League Dreams',
-  },
-  {
-    name: 'Brentwood',
-    slug: 'brentwood',
-    emoji: '🌊',
-    gradient: 'linear-gradient(135deg,#134e4a 0%,#0d9488 100%)',
-    county: 'Contra Costa County',
-    desc: 'U-pick farms · Liberty Union schools · East Bay gem',
-  },
-]
-
+import Link from "next/link";
+import { RESIDENT_CITIES } from "@/lib/new-resident";
+import ResidentCityVisual from "@/app/components/ResidentCityVisual";
+export const metadata = {
+  title: "New Resident Guides | MoHoLocal",
+  description:
+    "Move-in checklists and official utility and school resources for Mountain House, Tracy, Lathrop and Manteca.",
+};
 export default function NewResidentPage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-
-      {/* Header */}
-      <div className="text-center mb-10">
-        <h1 className="text-3xl font-extrabold text-gray-900 mb-3">New Resident Guide</h1>
-        <p className="text-gray-500 text-base max-w-xl mx-auto">
-          Moving to the 209 area or East Bay? Pick your city for a personalized welcome guide —
-          utilities, schools, healthcare, and the local spots your neighbors love.
+    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
+      <header className="rounded-3xl bg-[#f1eee5] p-6 sm:p-10">
+        <p className="text-xs font-bold uppercase tracking-widest text-emerald-800">
+          A little local knowledge goes a long way
         </p>
-      </div>
-
-      {/* City Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-12">
-        {CITIES.map((city) => (
-          <Link
-            key={city.slug}
-            href={`/new-resident/${city.slug}`}
-            className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-xl hover:-translate-y-1 transition-all"
-          >
-            {/* Color band */}
-            <div
-              className="h-24 flex items-center justify-center"
-              style={{ background: city.gradient }}
+        <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-[#18324f] sm:text-5xl">
+          New home.
+          <br />
+          Your next steps, sorted.
+        </h1>
+        <p className="mt-5 max-w-2xl leading-relaxed text-slate-700">
+          Choose your city for official setup links, school enrollment resources
+          and a useful move-in checklist. Then find local help and ways to meet
+          your community.
+        </p>
+      </header>
+      <section aria-labelledby="choose-city" className="mt-9">
+        <h2 id="choose-city" className="mb-5 text-2xl font-bold text-[#18324f]">
+          Where are you settling in?
+        </h2>
+        <div className="grid gap-6 md:grid-cols-2">
+          {RESIDENT_CITIES.map((city) => (
+            <article
+              key={city.slug}
+              className="overflow-hidden rounded-3xl border border-slate-200 bg-white"
             >
-              <span className="text-5xl">{city.emoji}</span>
-            </div>
-            {/* Info */}
-            <div className="bg-white p-5">
-              <div className="flex items-start justify-between gap-2 mb-1">
-                <h2 className="font-extrabold text-gray-900 text-lg group-hover:text-blue-700 transition-colors">
+              <ResidentCityVisual city={city.name} />
+              <div className="p-6">
+                <p className="text-sm text-slate-600">{city.county}</p>
+                <h3 className="mt-1 text-2xl font-bold text-[#18324f]">
                   {city.name}
-                </h2>
-                <span className="text-[10px] font-semibold text-gray-400 mt-1 shrink-0">{city.county}</span>
+                </h3>
+                <p className="mt-3 text-slate-600">
+                  Utilities · School enrollment · Move-in checklist · Local
+                  connections
+                </p>
+                <Link
+                  href={`/new-resident/${city.slug}`}
+                  className="mt-5 inline-flex min-h-11 items-center rounded-xl bg-[#19352d] px-5 py-3 font-semibold text-white"
+                >
+                  Open {city.name} guide →
+                </Link>
               </div>
-              <p className="text-xs text-gray-500 mb-3">{city.desc}</p>
-              <div className="text-xs font-semibold text-blue-600 group-hover:underline">
-                View guide →
-              </div>
-            </div>
-          </Link>
-        ))}
-      </div>
-
-      {/* What's inside promo */}
-      <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
-        <h2 className="font-extrabold text-gray-900 text-base mb-4 text-center">What's inside each guide</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          {[
-            { icon: '⚡', label: 'Utilities Setup', desc: 'Water, gas, electric, trash & internet' },
-            { icon: '🏥', label: 'Healthcare',      desc: 'Local doctors, dentists & urgent care' },
-            { icon: '🍽️', label: 'Food & Dining',   desc: 'Top-rated restaurants from the directory' },
-            { icon: '🏫', label: 'Schools',         desc: 'District info and school ratings' },
-            { icon: '🔧', label: 'Local Services',  desc: 'Home services, auto, beauty & more' },
-            { icon: '💡', label: 'Neighbor Tips',   desc: 'Insider advice from locals who live there' },
-          ].map(({ icon, label, desc }) => (
-            <div key={label} className="flex items-start gap-3 bg-white rounded-xl p-3 border border-gray-100">
-              <span className="text-xl mt-0.5">{icon}</span>
-              <div>
-                <div className="text-xs font-bold text-gray-900">{label}</div>
-                <div className="text-xs text-gray-500 mt-0.5">{desc}</div>
-              </div>
-            </div>
+            </article>
           ))}
         </div>
-      </div>
+      </section>
+      <p className="mt-7 text-sm leading-relaxed text-slate-600">
+        Photos show their labeled location and capture date. Mountain House
+        currently uses a labeled 2026 satellite view; a street photo is still
+        being researched.{" "}
+        <Link href="/photo-credits" className="underline">
+          Photo credits and reuse details
+        </Link>
+        .
+      </p>
     </div>
-  )
+  );
 }

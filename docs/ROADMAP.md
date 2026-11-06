@@ -1,5 +1,15 @@
 # MoHoLocal Product Roadmap
 
+## New Resident Guide implementation — November 6 afternoon
+
+RES-01 core accuracy corrections and RES-02 checklist/layout implemented; release verification in progress. Guide now uses official utility and enrollment resources for exactly four relaunch cities. Removed hardcoded school ratings, unsupported endorsements, travel estimates and legacy business selections; directory discovery uses city-preserving links instead, so the guide no longer has a silent database-failure empty state. Existing duplicate/legacy catalog audit remains open under DATA-02.
+
+Interactive six-step checklist is page-local and explicitly not saved to an account. Tracy uses the existing rights-checked 2026 street photo; Mountain House uses the labeled 2026 satellite image. Lathrop/Manteca photos and Mountain House street photography remain open until location/capture/reuse evidence is available. Designed welcome panels fill unapproved photo slots. No substituted city imagery. TypeScript and 135 repository tests passed; native build/live acceptance pending. Pet matching work remains separate and unreleased.
+
+## New Resident Guide follow-up — November 6
+
+RES-01 (P1, queued): utility accuracy, unsupported school scores, listing evidence/duplicates and fetch-error handling. RES-02 (P2, queued): align four-city scope and redesign around practical move-in tasks, licensed photos, current events/classes and city context. [Audit and acceptance](research/new-resident-audit-2026-11-06.md). No redesign deployed by this audit.
+
 ## Relaunch backlog — updated November 6, 2026 (current priority)
 
 Regional direction (November 5 follow-up): one shared discovery experience for Mountain House, Tracy, Lathrop and Manteca; verify city coverage separately. Initial editorial verification remains Mountain House/Tracy.
