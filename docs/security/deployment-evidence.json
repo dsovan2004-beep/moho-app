@@ -2,7 +2,7 @@
   "date": "2026-11-05",
   "primary_url": "https://www.moholocal.com",
   "web_worker": "moho-web",
-  "web_version": "8b5d2750-d6fe-4bf3-aaea-2db0b2253af4",
+  "web_version": "a56e067e-0fcf-4e2a-9250-038a62d42030",
   "web_route": "www.moholocal.com/*",
   "ingestion_worker": "moho-ingestion",
   "ingestion_version": "b7284c08-ddee-4648-895e-70a324442bf1",
@@ -50,9 +50,9 @@
   "post_retirement_real_account_access": "passed",
   "website_checked_existing_businesses": 11,
   "website_checked_launch_category_providers": 15,
-  "final_web_source_commit": "264b896b8c595b7e485e66e12602ae93f096a5f0",
+  "final_web_source_commit": "f4d8081f290014a672b23d5ddea05c05155769fb",
   "ingestion_source_commit": "2e24ec91834ee4122664782809470edceb2cf5eb",
-  "final_web_build": "4a54a1f8-1b2f-4c91-831e-d9eaea3223d6",
+  "final_web_build": "7e5d1fc0-6aed-40b4-943e-c47ffe4fd844",
   "temporary_build_setup_permission_removed": true,
   "live_responsive_checks": {
     "viewport": 320,
@@ -126,5 +126,27 @@
       "house_cleaning": 4,
       "plumbing": 4
     }
-  }
+  },
+  "footer_cleanup": {
+    "cities": [
+      "Mountain House",
+      "Tracy",
+      "Lathrop",
+      "Manteca"
+    ],
+    "tap_target_height": 44,
+    "tablet_width": 888,
+    "tablet_document_width": 888,
+    "other_layout_checks": [
+      320,
+      390,
+      1024,
+      1280
+    ],
+    "screenshot": "docs/ux/footer-communities-desktop.png",
+    "existing_other_city_routes_preserved": true
+  },
+  "pet_archive_redirect": "Archived public-detail reports return to /my-pet-reports for restore rather than a public 404",
+  "preview_server": "stopped after switching deliverable to production",
+  "temporary_viewport_overrides": "cleared"
 }
