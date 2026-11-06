@@ -42,5 +42,5 @@
     "privacy": "Original provider blurring retained; no unblurring or reidentification."
   },
   "checked_at": "2026-11-06",
-  "status": "rights/date/location verified; implementation and local QA complete; deployment pending"
+  "status": "deployed and production accepted; native build 9c74bb7d-193c-47c8-8805-893024130a77; both asset hashes match; desktop and 320px mobile checked"
 }

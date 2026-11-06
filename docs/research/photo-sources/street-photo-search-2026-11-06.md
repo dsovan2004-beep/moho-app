@@ -25,4 +25,7 @@ City of Tracy Flickr Earth Day photo https://www.flickr.com/photos/cityoftracy/5
 
 ## Local acceptance
 
-96 regressions, root TypeScript and OpenNext build pass. Browser preview shows the actual street photograph with July 8, 2026, creator/source/license/adaptation credits, and no horizontal overflow at320px. The credits page accurately distinguishes the Tracy street photo from Mountain House satellite imagery, provides the licensed derivative download and leaves the Mountain House procurement gap explicit. Native deployment pending.
+96 regressions, root TypeScript and OpenNext build pass. Browser preview shows the actual street photograph with July 8, 2026, creator/source/license/adaptation credits, and no horizontal overflow at320px. The credits page accurately distinguishes the Tracy street photo from Mountain House satellite imagery, provides the licensed derivative download and leaves the Mountain House procurement gap explicit. Native deployment succeeded for source 3f63638128d0a907d52d4006712b3a8ccd48c77a, build 9c74bb7d-193c-47c8-8805-893024130a77. Live homepage and credits checked; both asset hashes match; 320px viewport/content widths equal 320. Screenshot: ../../ux/tracy-street-2026-live.png.
+
+
+Final Mountain House catalog check: Flickr search for `"Mountain House" California`, capture dates January 1–November 6, 2026, and “Commercial use & mods allowed” returned no matches. Evidence: mountain-house-flickr-2026-check.png. This documents that specific search, not proof that no suitable photo exists. Mountain House street-photo acquisition remains open pending a qualifying source or express permission with capture-date evidence.

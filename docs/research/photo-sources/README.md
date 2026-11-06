@@ -45,3 +45,5 @@ Source service: https://apps.geo.fpac.usda.gov/geo-imagery/rest/services/naip/co
 Both files converted to WebP at widths 800/1600 with Sharp, quality 82, for self-hosting under public/images/cities. No generative edits, geographic changes or building removal. Display uses object-cover crop. Tracy derivatives remain CC BY-SA 4.0, with source/license/modification notices in each caption and /photo-credits, including downloadable derivatives. No source endorsement claimed. No upcoming event photograph implied.
 
 The rejected generic generated concept remains only in docs/ux/concepts and has no app reference. It must not be published as city photography. Additional current street/park photos with reuse permission remain supply work.
+
+Production acceptance: Tracy street photograph deployed through native build 9c74bb7d-193c-47c8-8805-893024130a77; desktop/mobile, credits and both asset hashes verified. Mountain House street photograph remains open.
