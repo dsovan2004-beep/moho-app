@@ -10,13 +10,13 @@
     "sha256": "2a19ba15bb98471d2cdcdad0b05b483fbe97e4063c8aaaf2fecf03fd5d1ae7fd"
   },
   {
-    "path": "public/images/cities/tracy-sentinel-20261104-1600.webp",
-    "bytes": 504930,
-    "sha256": "7abbb69c49d6c2abb861675ea056c24a26edbb6014749c09c60ab1b0228f8f9a"
+    "path": "public/images/cities/tracy-ninth-street-20260708-1600.webp",
+    "bytes": 164084,
+    "sha256": "3411907ef18f77a9799d4cfe0838442eb4fd5fc13fe9e221a5f1c557ceea748c"
   },
   {
-    "path": "public/images/cities/tracy-sentinel-20261104-800.webp",
-    "bytes": 227784,
-    "sha256": "9fdbf7fb5824b19711a8bdbea01578095f040cc04be47c488caa9121465ad5da"
+    "path": "public/images/cities/tracy-ninth-street-20260708-800.webp",
+    "bytes": 74850,
+    "sha256": "22c45f916746d5e07e522311e4807d8dc7f4c3cc1af7efc719640adfb78979e4"
   }
 ]

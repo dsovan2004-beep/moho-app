@@ -50,7 +50,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
         </div>
         <div className="min-w-0 relative">
           {photoCity ? <CityPhoto city={photoCity} priority className="h-80 sm:h-[27rem] shadow-xl shadow-[#18324f]/10 lg:rounded-tr-[5rem]" /> : <aside className="rounded-3xl bg-[#e9eee5] p-8"><p className="text-xs font-bold uppercase tracking-widest text-[#59715d]">Around our communities</p><h2 className="text-2xl font-bold text-[#18324f] mt-4">Start close to home.</h2><p className="text-slate-600 mt-3 leading-relaxed">Find nearby help, check local pet reports and explore upcoming gatherings.</p><Link className="inline-flex min-h-11 items-center font-bold text-[#1e3a5f] underline mt-5" href={`/events?city=${encodeURIComponent(city)}`}>See {city} events →</Link></aside>}
-          <p className="mt-3 text-xs text-slate-500">2026 satellite views of our cities. <Link href="/photo-credits" className="underline underline-offset-2">Image dates & credits →</Link></p>
+          <p className="mt-3 text-xs text-slate-500">Local views, with capture dates and credits. <Link href="/photo-credits" className="underline underline-offset-2">Image dates & credits →</Link></p>
         </div>
       </div>
     </section>

@@ -1,3 +1,11 @@
+## Street-level sourcing update — November 6, 2026, later pass
+
+Tracy’s satellite view is being replaced with a rights/date/location-verified July 8,2026 Mapillary street photograph by marker_geo1. The 360° source is projected into a natural perspective view without generated scenery. Source image, license/capture screenshot, JSON provenance and search report are preserved alongside this file. Adapted files remain CC BY-SA 4.0 with creator/source/license/modification credits. Implementation/native acceptance pending.
+
+Mountain House retains its November 4,2026 satellite view. No qualifying 2026 street image was established through the open catalogs checked, and its city copyright notice reserves content rights. This half of UX-03 remains open pending a suitable reusable source or express permission plus capture-date evidence. A permission-request draft is saved but not sent. Full report: street-photo-search-2026-11-06.md.
+
+The preceding satellite-only release is historical; its Tracy satellite assets are moved out of public/ into docs/ux/replaced-satellite-views.
+
 # Current homepage imagery — verified November 6, 2026
 
 The previous May 2024 USDA and archival Tracy photographs were rejected by the user. They have been removed from public assets and app references; evidence remains below for history. Only confirmed 2026 captures qualify.

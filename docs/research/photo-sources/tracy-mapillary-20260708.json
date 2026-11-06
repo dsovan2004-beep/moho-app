@@ -1,0 +1,46 @@
+{
+  "city": "Tracy",
+  "location": "Ninth Street near East Street and the Tracy Community Center area",
+  "capture_date_as_displayed": "2026-07-08",
+  "capture_date_evidence": "Mapillary image-details panel: Captured on Jul 8, 2026; map viewer date label agrees. Not inferred from upload date.",
+  "creator": "marker_geo1",
+  "creator_profile": "https://www.mapillary.com/app/user/marker_geo1",
+  "image_id": "2915180395489942",
+  "source": "https://www.mapillary.com/app/?lat=37.73753898838463&lng=-121.42041054990091&z=18.050350122032366&pKey=2915180395489942",
+  "image_point": {
+    "latitude": 37.73753898838463,
+    "longitude": -121.42041054990091
+  },
+  "location_evidence": "Selected-image point displayed on Mapillary Ninth Street segment near East Street in Tracy; street view shows civic buildings and water tower. This point is not claimed to be an independently surveyed location.",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "license_evidence": "Visible image-details panel explicitly labels all images CC BY-SA with link to 4.0; Mapillary official help explains website reuse and attribution.",
+  "license_policy": "https://help.mapillary.com/hc/en-us/articles/115001770409-CC-BY-SA-license-for-open-data",
+  "credit": "Ninth Street, Tracy, by marker_geo1 / Mapillary, CC BY-SA 4.0. Perspective crop and resize.",
+  "download": "Mapillary image-details Download image control opened the original image tab; saved with browser downloadMedia. No API token extracted.",
+  "downloaded_dimensions": [
+    2048,
+    1024
+  ],
+  "provider_original_dimensions_as_displayed": [
+    7680,
+    3840
+  ],
+  "original_sha256": "ff92faf0d92292d007e1ff6325c058de2c14016df09adfded99096bdfa3d3d39",
+  "adaptation": {
+    "type": "deterministic rectilinear perspective projection from equirectangular source",
+    "yaw_degrees": 100,
+    "pitch_degrees": -2,
+    "horizontal_fov_degrees": 85,
+    "interpolation": "bilinear",
+    "output_dimensions": [
+      1200,
+      800
+    ],
+    "then": "resize/encode WebP for website; adaptations remain CC BY-SA 4.0",
+    "generative_changes": false,
+    "privacy": "Original provider blurring retained; no unblurring or reidentification."
+  },
+  "checked_at": "2026-11-06",
+  "status": "rights/date/location verified; implementation and local QA complete; deployment pending"
+}
