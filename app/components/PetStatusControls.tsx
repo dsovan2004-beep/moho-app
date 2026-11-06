@@ -3,13 +3,15 @@ import {useEffect,useState} from 'react'
 import Link from 'next/link'
 import {useRouter} from 'next/navigation'
 import {petActivity,socialDate} from '@/lib/pet-social'
+import {compatibleProgress,localObservationInput,observationInstant,type PetProgress} from '@/lib/pet-progress'
 import {useRequestAccount} from './RequestAccount'
-export type OwnPetReport={id:string;title:string;pet_name:string;city:string;status:string;status_revision:number;status_confirmed_at:string|null;created_at:string;under_review:boolean;expires_at:string;expired:boolean}
+export type OwnPetReport={progress?:PetProgress;progress_observed_at?:string|null;id:string;title:string;pet_name:string;city:string;status:string;status_revision:number;status_confirmed_at:string|null;created_at:string;under_review:boolean;expires_at:string;expired:boolean}
 export function PetReportControls({report,onSaved}:{report:OwnPetReport;onSaved:(status?:string)=>void}){
+ const [progress,setProgress]=useState<PetProgress>(compatibleProgress(report.status,report.progress??'unknown')),[observed,setObserved]=useState(localObservationInput(report.progress_observed_at))
  const [status,setStatus]=useState(report.status),[busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState('')
  async function save(){
   if(busy)return;setBusy(true);setError('');setNotice('')
-  try{await petActivity('report_status',{pet_id:report.id,status,revision:report.status_revision});setNotice(status==='archived'?'Report archived. Restore it here when needed.':'Status confirmed. Your report is renewed for 30 days.');onSaved(status)}
+  try{await petActivity('report_status',{pet_id:report.id,status,revision:report.status_revision,progress,observed_at:progress==='unknown'?null:observationInstant(observed)});setNotice(status==='archived'?'Report archived. Restore it here when needed.':'Status confirmed. Your report is renewed for 30 days.');onSaved(status)}
   catch(e){setError(e instanceof Error?e.message:'Status could not save.')}
   finally{setBusy(false)}
  }
@@ -18,8 +20,10 @@ export function PetReportControls({report,onSaved}:{report:OwnPetReport;onSaved:
   <p className="text-sm text-slate-600 mt-2">Public reports expire after 30 days without confirmation. Choose the current status to renew for another 30 days, mark a reunion, or archive it. Archiving hides the public report; you can restore it here unless it is under moderation review.</p>
   {report.expires_at&&<p className="text-sm mt-2 font-medium">{report.expired?'Expired — confirm the current status to publish again.':`Public until ${socialDate(report.expires_at)}`}</p>}
   {report.status_confirmed_at&&<p className="text-xs mt-2">Last confirmed by you: {socialDate(report.status_confirmed_at)}</p>}
-  {report.under_review?<p className="mt-3 text-sm">Under review. Status changes are paused until moderation is complete.</p>:<form className="flex flex-wrap gap-3 items-end mt-4" onSubmit={e=>{e.preventDefault();void save()}}>
-   <label className="text-sm font-semibold">Current status<select value={status} onChange={e=>setStatus(e.target.value)} className="block border rounded-lg min-h-11 mt-1 px-3 bg-white">{!['lost','found','reunited','archived'].includes(status)&&<option value={status} disabled>Choose current status</option>}<option value="lost">Lost / still missing</option><option value="found">Found / seeking owner</option><option value="reunited">Reunited</option><option value="archived">Archived / hide report</option></select></label>
+  {report.under_review?<p className="mt-3 text-sm">Under review. Status changes are paused until moderation is complete.</p>:<form className="flex flex-wrap gap-3 items-end mt-4 [&>label]:max-w-full [&_select]:max-w-full" onSubmit={e=>{e.preventDefault();void save()}}>
+   <label className="text-sm font-semibold">Current status<select value={status} onChange={e=>{setStatus(e.target.value);setProgress(p=>compatibleProgress(e.target.value,p))}} className="block border rounded-lg min-h-11 mt-1 px-3 bg-white">{!['lost','found','reunited','archived'].includes(status)&&<option value={status} disabled>Choose current status</option>}<option value="lost">Lost / still missing</option><option value="found">Found / seeking owner</option><option value="reunited">Reunited</option><option value="archived">Archived / hide report</option></select></label>
+   {['lost','found'].includes(status)&&<><label className="text-sm font-semibold">Animal progress<select value={progress} onChange={e=>setProgress(e.target.value as PetProgress)} className="block border rounded-lg min-h-11 mt-1 px-3 bg-white"><option value="unknown">Not confirmed</option><option value="sighted">Sighted / not secured</option>{status==='found'&&<option value="secured">Secured / seeking owner</option>}</select></label>
+   {progress!=='unknown'&&<label className="text-sm font-semibold">When you observed this<input type="datetime-local" required value={observed} onChange={e=>setObserved(e.target.value)} className="block w-full max-w-full border rounded-lg min-h-11 mt-1 px-3 bg-white"/><span className="block font-normal text-xs mt-1">Use your device’s local time. A sighting is not a confirmed match.</span></label>}</>}
    <button disabled={busy||!['lost','found','reunited','archived'].includes(status)} className="min-h-11 rounded-lg bg-[#19352d] text-white px-4 py-2 font-semibold disabled:opacity-50">{busy?'Saving…':'Confirm status and renew 30 days'}</button>
   </form>}
   {error&&<p role="alert" className="text-red-800 text-sm mt-3">{error} <button className="underline" onClick={()=>onSaved()}>Refresh report</button></p>}

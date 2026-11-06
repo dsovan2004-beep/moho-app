@@ -492,3 +492,31 @@ test('operator-only email probes use no fake DM and cannot target another reside
  insert into directory_private.notification_jobs(user_id,channel,target,ceiling_seq,recipient_email,kind) values('${alice}','email','operator-test',0,'alice@example.test','email_test');select public.notification_dispatch('claim','{}') is null;rollback;`).split('\n')
  assert.equal(other.at(-1),'t')
 })
+
+test('pet progress is reporter-only, revisioned and never inferred from legacy found',()=>{
+ assert.equal(sql(`begin;${petFixture()}set local role anon;select progress from public.lost_and_found where id='${pet}';rollback;`),'unknown')
+ assert.throws(()=>sql(`begin;${petFixture()}${as(bob)}select ${activity('report_status',{pet_id:pet,status:'found',progress:'secured',observed_at:'2026-11-06T18:00:00Z',revision:0})};rollback;`),/linked report/)
+ const r=sql(`begin;${petFixture()}${as(alice)}select ${activity('report_status',{pet_id:pet,status:'found',progress:'sighted',observed_at:'2026-11-06T18:00:00Z',revision:0})};select ${activity('report_status',{pet_id:pet,status:'found',progress:'secured',observed_at:'2026-11-06T19:00:00Z',revision:1})};set local role anon;select public.pet_progress_timeline('${pet}');rollback;`).split('\n')
+ const history=JSON.parse(r[2]);assert.equal(history.length,2);assert.equal(history[0].progress,'secured');assert.equal(history[1].progress,'sighted')
+ assert.deepEqual(Object.keys(history[0]).sort(),['confirmed_at','observed_at','progress','revision','status'])
+ assert.throws(()=>sql(`begin;${petFixture()}${as(alice)}select ${activity('report_status',{pet_id:pet,status:'found',progress:'secured',observed_at:'2026-11-06T19:00:00Z',revision:0})};select ${activity('report_status',{pet_id:pet,status:'found',progress:'sighted',observed_at:'2026-11-06T19:00:00Z',revision:0})};rollback;`),/Report changed/)
+})
+test('pet progress rejects missing/future/infinite observations and contradictory states',()=>{
+ for(const payload of [
+  {status:'found',progress:'secured'}, {status:'found',progress:'secured',observed_at:'infinity'},
+  {status:'lost',progress:'secured',observed_at:'2026-11-06T19:00:00Z'},
+  {status:'reunited',progress:'sighted',observed_at:'2026-11-06T19:00:00Z'},
+  {status:'found',progress:'invented'}, {status:'found',progress:'secured',observed_at:'2099-01-01T00:00:00Z'}
+ ])assert.throws(()=>sql(`begin;${petFixture()}${as(alice)}select ${activity('report_status',{pet_id:pet,revision:0,...payload})};rollback;`),/progress|Progress|observation time/)
+ assert.equal(sql(`begin;${petFixture()}${as(alice)}update public.lost_and_found set progress='secured' where id='${pet}';select progress from public.lost_and_found where id='${pet}';rollback;`),'unknown')
+})
+test('public pet timeline disappears with moderation, archival or expiry; private history remains denied',()=>{
+ for(const hide of ["needs_review=true","status='archived'","expires_at=now()-interval '1 second'","ingestion_status='pending'"]){
+  const r=sql(`begin;${petFixture()}${as(alice)}select ${activity('report_status',{pet_id:pet,status:'found',progress:'sighted',observed_at:'2026-11-06T18:00:00Z',revision:0})};reset role;update public.lost_and_found set ${hide} where id='${pet}';set local role anon;select public.pet_progress_timeline('${pet}');rollback;`).split('\n');assert.equal(r.at(-1),'[]')
+ }
+ assert.throws(()=>sql(`begin;set local role anon;select * from directory_private.pet_status_history;rollback;`),/permission denied/)
+})
+test('legacy status clients can renew and reset incompatible progress on classification change',()=>{
+ const r=sql(`begin;${petFixture()}${as(alice)}select ${activity('report_status',{pet_id:pet,status:'found',progress:'secured',observed_at:'2026-11-06T18:00:00Z',revision:0})};select ${activity('report_status',{pet_id:pet,status:'found',revision:1})};select progress from public.lost_and_found where id='${pet}';select ${activity('report_status',{pet_id:pet,status:'lost',revision:2})};select progress||':'||(progress_observed_at is null) from public.lost_and_found where id='${pet}';rollback;`).split('\n')
+ assert.equal(r[2],'secured');assert.equal(r[4],'unknown:true')
+})

@@ -2,9 +2,9 @@
 
 ## Current research-driven execution order — November 6, early afternoon
 
-PET-05 pet progress → DATA-05 quote scope → SEASON-03 event/class eligibility and venue → DATA-06 pickup/delivery clarity. PET-06 official animal-resource checks accompany pet work; FAMILY-01 and COMM-04 remain P2. Acceptance and evidence: [resident priorities](research/resident-priorities-2026-11-06.md). Existing pet discussions, DMs, notification delivery, expiry and calendars are already live. This increment is research/planning only.
+PET-05 first increment implemented (migration applied; native/live acceptance pending) → DATA-05 quote scope → SEASON-03 event/class eligibility and venue → DATA-06 pickup/delivery clarity. PET-06 official animal-resource checks accompany pet work; FAMILY-01 and COMM-04 remain P2. Acceptance and evidence: [resident priorities](research/resident-priorities-2026-11-06.md). Existing pet discussions, DMs, notification delivery, expiry and calendars are already live. Current increment includes pet progress implementation and continued research; see pet-progress-release-2026-11-06.md.
 
-FB-01 remains active: eight initial group batches,27 mixed-completeness records, full30-day traversal incomplete. Continue incomplete posts/comments and further accessible groups; no outreach or automatic FB imports. UX-03/IMG-01 real2026 Mountain House photos and reuse-rights checks remain open. Inventory unchanged56 dated checks/19 event occurrences.
+FB-01 remains active: eight initial group batches,28 mixed-completeness records, full30-day traversal incomplete. Continue incomplete posts/comments and further accessible groups; no outreach or automatic FB imports. UX-03/IMG-01 real2026 Mountain House photos and reuse-rights checks remain open. Inventory unchanged56 dated checks/19 event occurrences.
 
 
 Updated November 6, 2026. Acceptance criteria and task status live in [ROADMAP.md](ROADMAP.md); sprint outcomes live in [SPRINTS.md](SPRINTS.md). Keep all three aligned when work changes. This is the next-work queue, not a second source of truth.
