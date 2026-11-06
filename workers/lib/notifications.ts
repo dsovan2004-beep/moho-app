@@ -46,7 +46,7 @@ export async function runNotificationDelivery(env:Env):Promise<void>{
   const job=await dispatchRpc(env,'claim',{}) as Job|null
   if(!job)break
   let outcome:Outcome
-  try{outcome=await deliverNotification(env,job)}catch{outcome={decision:'retry',code:'provider_network_error'}}
+  try{outcome=await deliverNotification(env,job)}catch(error){console.error('[notifications] transport failure',{channel:job.channel,error:String(error).replace(/https?:\/\/[^\s]+/g,'[endpoint]').slice(0,180)});outcome={decision:'retry',code:'provider_network_error'}}
   await dispatchRpc(env,'finish',{id:job.id,lease_id:job.lease_id,...outcome});processed++
  }
  console.info('[notifications] delivery pass complete',{processed})
