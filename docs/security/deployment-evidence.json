@@ -2,10 +2,10 @@
   "date": "2026-11-05",
   "primary_url": "https://www.moholocal.com",
   "web_worker": "moho-web",
-  "web_version": "68da0d6a-66c1-4e26-b2b6-41925b569e42",
+  "web_version": "ecbc9980-0a39-4075-88c1-59e82eeea436",
   "web_route": "www.moholocal.com/*",
   "ingestion_worker": "moho-ingestion",
-  "ingestion_version": "1a58d313-f04d-4db8-9fad-094a14e86d68",
+  "ingestion_version": "b7284c08-ddee-4648-895e-70a324442bf1",
   "database_project": "ozjlfgipfzykzrjakwzb",
   "migrations": [
     "20261105100215_secure_directory_requests",
@@ -13,10 +13,11 @@
     "20261105220240_authenticated_reactions_and_extension_security",
     "20261105230100_listing_evidence_and_service_areas",
     "20261105232042_close_legacy_intake_paths",
-    "20261105232316_harden_published_contributions"
+    "20261105232316_harden_published_contributions",
+    "20261106012112_pet_discussions_and_private_messages"
   ],
   "regression_tests": {
-    "passed": 39,
+    "passed": 49,
     "failed": 0
   },
   "npm_audit": {
@@ -34,9 +35,9 @@
   "legacy_credential_revoked": true,
   "legacy_credential_last_read_status": 401,
   "production_test_request_result": "rejected; no business published",
-  "public_business_rows": 1803,
-  "quarantined_business_rows": 25,
-  "website_checked_existing_providers": 5,
+  "public_business_rows": 1790,
+  "quarantined_business_rows": 45,
+  "website_checked_existing_providers": 6,
   "unsupported_ratings_cleared": 168,
   "legacy_api_keys_disabled": true,
   "legacy_hs256_verifier_revoked": true,
@@ -46,12 +47,12 @@
     "storage": 401
   },
   "post_retirement_real_account_access": "passed",
-  "website_checked_existing_businesses": 8,
-  "website_checked_launch_category_providers": 3,
-  "unchecked_home_services_candidates": 39,
-  "final_web_source_commit": "0ab0f270962977f954f0372031ab41270a651c7e",
-  "ingestion_source_commit": "29c46a1af395ed05e8a882723819c18234bffea1",
-  "final_web_build": "512f62bf-d70b-48d8-aa46-6139ce57be4a",
+  "website_checked_existing_businesses": 11,
+  "website_checked_launch_category_providers": 10,
+  "unchecked_home_services_candidates": 0,
+  "final_web_source_commit": "2e24ec91834ee4122664782809470edceb2cf5eb",
+  "ingestion_source_commit": "2e24ec91834ee4122664782809470edceb2cf5eb",
+  "final_web_build": "0d43297b-4816-40c6-bdab-3be9e8858c87",
   "temporary_build_setup_permission_removed": true,
   "live_responsive_checks": {
     "viewport": 320,
@@ -62,10 +63,7 @@
   },
   "bare_domain_redirect": "browser confirmed www destination",
   "ingestion_health": "browser confirmed status ok",
-  "open_release_policy_routes": [
-    "/privacy",
-    "/terms"
-  ],
+  "open_release_policy_routes": [],
   "post_native_ci_requester_access": "passed: existing signed-in private rejected receipt visible",
   "mobile_contact_check": {
     "viewport": 390,
@@ -74,5 +72,30 @@
     "call_target_height": 44
   },
   "temporary_plaintext_credential_copies_removed": true,
-  "actual_deployment_and_server_key_tracked_file_matches": 0
+  "actual_deployment_and_server_key_tracked_file_matches": 0,
+  "total_business_rows": 1966,
+  "new_individually_curated_rows": 7,
+  "website_checked_total_businesses": 18,
+  "unresolved_identity_or_owner_confirmation": 36,
+  "final_ingestion_build": "6b414196-da6f-4017-931d-25652faba570",
+  "completed_release_policy_routes": [
+    "/privacy",
+    "/terms"
+  ],
+  "unsourced_pet_history_held": 11,
+  "pet_discussions_and_dm_deployed": true,
+  "private_inbox_noindex": "browser confirmed noindex, nofollow",
+  "production_social_test_messages_sent": 0,
+  "launch_supply_per_focus_city": {
+    "landscaping": 4,
+    "handyman": 2,
+    "house_cleaning": 2,
+    "plumbing": 2
+  },
+  "social_browser_acceptance": "Anonymous detail/sign-in gate, owner empty inbox, owner empty moderation queue; no real public messages posted. Two-user writes/blocks/privacy covered by isolated database tests.",
+  "advisor_result": {
+    "warnings": 0,
+    "errors": 0,
+    "info_intentional_private_no_policy": 7
+  }
 }

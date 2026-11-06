@@ -40,5 +40,15 @@
   "remaining_candidates_requiring_rechecks": 39,
   "launch_category_checked_choices": 3,
   "landscaping_checked_choices": 0,
-  "website_checked_businesses": 8
+  "website_checked_businesses": 8,
+  "snapshot_note": "Historical earlier pass. Superseded by remaining-39-rechecks-2026-11-05.json and curated-provider-additions-2026-11-05.json.",
+  "latest_summary": {
+    "rechecks_completed": 39,
+    "matched_existing": 3,
+    "remaining_owner_or_primary_confirmation": 36,
+    "new_public_holds": 20,
+    "new_curated_providers": 7,
+    "website_checked_businesses": 18,
+    "landscaping_checked_choices_per_focus_city": 4
+  }
 }

@@ -348,9 +348,9 @@
       "phone": "(209) 832-2090",
       "query": "Lowe's Tracy Tracy (209) 832-2090",
       "reviewed_on": "2026-11-05",
-      "outcome": "needs_owner_confirmation",
-      "source": null,
-      "finding": "Exact name, city and phone search did not establish an independent first-party match. Search absence is not evidence of nonexistence.",
+      "outcome": "store_identity_unconfirmed",
+      "source": "https://etrakit.cityoftracy.org/etrakit/viewAttachment.aspx?ActivityNo=COM21-0054&Group=PERMIT&key=ANGB%3A210310033512419",
+      "finding": "City permit concerns a MacArthur Drive distribution facility; does not validate the existing retail-store address/contact. No retail branch identity inferred.",
       "was_public": true
     },
     {
