@@ -11,6 +11,7 @@ import Link from 'next/link'
 import ListingEvidence from '@/app/components/ListingEvidence'
 import { CHECK_COLUMNS } from '@/lib/listing-evidence'
 import { SERVICE_CHOICES } from '@/lib/services'
+import { directoryHref } from '@/lib/directory-filters'
 import { businessHref } from '@/lib/business-discovery'
 import BusinessContactActions from '@/app/components/BusinessContactActions'
 
@@ -168,7 +169,7 @@ export default function DirectoryPage() {
   const requestedCity = searchParams.get('city') ?? 'All Cities'
   const city = requestedCity === 'All Cities' || CITY_LIST.some(c => c.name === requestedCity) ? requestedCity : 'All Cities'
   const category = searchParams.get('category') ?? 'All'
-  const service = SERVICE_CHOICES.find(item => item.key === searchParams.get('service'))
+  const service = ['All', 'Home Services'].includes(category) ? SERVICE_CHOICES.find(item => item.key === searchParams.get('service')) : undefined
   const query    = searchParams.get('q')        ?? ''
   const sortBy   = searchParams.get('sort')     ?? 'name'
 
@@ -299,25 +300,14 @@ export default function DirectoryPage() {
   }
 
   function filterUrl(newCity: string, newCat: string) {
-    const params = new URLSearchParams()
-    params.set('city', newCity)
-    params.set('category', newCat)
-    if (service && ['All','Home Services'].includes(newCat)) params.set('service',service.key)
-    if (query) params.set('q', query)
-    else       params.set('sort', sortBy)
-    return `/directory?${params.toString()}`
+    return directoryHref({city,category,service:service?.key,query,sort:sortBy}, {city:newCity,category:newCat})
   }
 
   function sortUrl(newSort: string) {
-    const params = new URLSearchParams()
-    params.set('city', city)
-    params.set('category', category)
-      if (service) params.set('service',service.key)
-    if (query) params.set('q', query)
-    params.set('sort', newSort)
-    return `/directory?${params.toString()}`
+    return directoryHref({city,category,service:service?.key,query,sort:sortBy}, {sort:newSort})
   }
 
+  const filters = { city, category, service: service?.key, query, sort: sortBy }
   const hasMore = businesses.length < total
 
   return (
@@ -327,9 +317,9 @@ export default function DirectoryPage() {
         <p className="text-gray-500 mt-1">Find local help in Mountain House, Tracy and nearby cities. Confirm the exact service area with each business.</p>
       </div>
 
-      {loadError && <p role="alert" className="mb-5 bg-amber-50 border border-amber-300 p-4 rounded-xl">We couldn't load these listings. <button onClick={() => fetchPage(0, true)} className="font-bold underline">Try again</button></p>}
-      <div className="flex flex-wrap gap-2 mb-5" aria-label="Home service shortcuts">{SERVICE_CHOICES.map(item => <Link key={item.key} aria-current={service?.key === item.key ? 'page' : undefined} className={`px-4 py-2 rounded-full text-sm border ${service?.key === item.key ? 'bg-[#1e3a5f] text-white border-[#1e3a5f]' : 'border-slate-300 bg-white text-slate-700 hover:border-blue-600'}`} href={`/directory?${new URLSearchParams({city,category:'Home Services',service:item.key})}`}>{item.label}</Link>)}</div>
-      {service && <div className="bg-[#f0f4ec] border border-[#dce5d5] p-4 rounded-xl mb-5"><p className="font-semibold">{service.label} · website-checked shortlist</p><p className="text-sm text-slate-600 mt-1">Only providers with dated source evidence for this service and city appear here. This is a contact shortlist, not a quality endorsement.</p><Link className="inline-block mt-2 text-sm underline" href={`/directory?${new URLSearchParams({city,category:'Home Services'})}`}>Browse all existing home-service listings →</Link></div>}
+      {loadError && <p role="alert" className="mb-5 bg-amber-50 border border-amber-300 p-4 rounded-xl">We couldn't load these listings. <button onClick={() => fetchPage(0, true)} className="inline-flex min-h-11 items-center font-bold underline">Try again</button></p>}
+      <div className="flex flex-wrap gap-2 mb-5" aria-label="Home service shortcuts">{SERVICE_CHOICES.map(item => <Link key={item.key} aria-current={service?.key === item.key ? 'page' : undefined} className={`inline-flex min-h-11 items-center px-4 py-2 rounded-full text-sm border ${service?.key === item.key ? 'bg-[#1e3a5f] text-white border-[#1e3a5f]' : 'border-slate-300 bg-white text-slate-700 hover:border-blue-600'}`} href={`/directory?${new URLSearchParams({city,category:'Home Services',service:item.key})}`}>{item.label}</Link>)}</div>
+      {service && <div className="bg-[#f0f4ec] border border-[#dce5d5] p-4 rounded-xl mb-5"><p className="font-semibold">{service.label} · website-checked shortlist</p><p className="text-sm text-slate-600 mt-1">Only providers with dated source evidence for this service and city appear here. This is a contact shortlist, not a quality endorsement.</p><Link className="inline-flex min-h-11 items-center mt-2 text-sm underline" href={`/directory?${new URLSearchParams({city,category:'Home Services'})}`}>Browse all existing home-service listings →</Link></div>}
 
       {/* ── Mobile: search + filter chips ── */}
       <div className="lg:hidden mb-4 space-y-3">
@@ -339,13 +329,14 @@ export default function DirectoryPage() {
             type="text"
             value={searchInput}
             onChange={(e) => handleSearchInput(e.target.value)}
+            aria-label="Search businesses"
             placeholder="Search by name, category, or city…"
-            className="w-full border border-gray-200 rounded-xl pl-4 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full border border-gray-200 rounded-xl pl-4 pr-14 min-h-11 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <button
             type="submit"
             aria-label="Search"
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-700 transition"
+            className="absolute right-0 top-1/2 min-h-11 min-w-11 inline-flex items-center justify-center -translate-y-1/2 text-gray-400 hover:text-blue-700 transition"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1 0 6.5 6.5a7.5 7.5 0 0 0 10.15 10.15z" />
@@ -361,7 +352,8 @@ export default function DirectoryPage() {
                 <Link
                   key={c}
                   href={filterUrl(c, category)}
-                  className={`text-xs font-semibold px-3 py-1.5 rounded-full border whitespace-nowrap transition ${
+                  aria-current={(city === c) ? 'page' : undefined}
+                  className={`inline-flex min-h-11 items-center text-xs font-semibold px-3 py-1.5 rounded-full border whitespace-nowrap transition ${
                     city === c
                       ? 'bg-blue-700 text-white border-blue-700'
                       : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300'
@@ -384,7 +376,8 @@ export default function DirectoryPage() {
                 <Link
                   key={key}
                   href={filterUrl(city, key)}
-                  className={`text-xs font-semibold px-3 py-1.5 rounded-full border whitespace-nowrap transition ${
+                  aria-current={category === key ? 'page' : undefined}
+                  className={`inline-flex min-h-11 items-center text-xs font-semibold px-3 py-1.5 rounded-full border whitespace-nowrap transition ${
                     category === key
                       ? 'bg-blue-700 text-white border-blue-700'
                       : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300'
@@ -415,13 +408,14 @@ export default function DirectoryPage() {
                 type="text"
                 value={searchInput}
                 onChange={(e) => handleSearchInput(e.target.value)}
+                aria-label="Search businesses"
                 placeholder="Search by name, category, or city…"
-                className="w-full border border-gray-200 rounded-lg pl-3 pr-9 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full border border-gray-200 rounded-lg pl-3 pr-14 min-h-11 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
               <button
                 type="submit"
                 aria-label="Search"
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-700 transition"
+                className="absolute right-0 top-1/2 min-h-11 min-w-11 inline-flex items-center justify-center -translate-y-1/2 text-gray-400 hover:text-blue-700 transition"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1 0 6.5 6.5a7.5 7.5 0 0 0 10.15 10.15z" />
@@ -439,7 +433,7 @@ export default function DirectoryPage() {
                   <Link
                     key={value}
                     href={sortUrl(value)}
-                    className={`text-sm px-3 py-1.5 rounded-lg transition font-medium ${
+                    className={`inline-flex min-h-11 items-center text-sm px-3 py-1.5 rounded-lg transition font-medium ${
                       sortBy === value
                         ? 'bg-blue-700 text-white'
                         : 'text-gray-600 hover:bg-gray-100'
@@ -460,7 +454,7 @@ export default function DirectoryPage() {
                 <Link
                   key={c}
                   href={filterUrl(c, category)}
-                  className={`text-sm px-3 py-1.5 rounded-lg transition font-medium ${
+                  className={`inline-flex min-h-11 items-center text-sm px-3 py-1.5 rounded-lg transition font-medium ${
                     city === c
                       ? 'bg-blue-700 text-white'
                       : 'text-gray-600 hover:bg-gray-100'
@@ -480,7 +474,7 @@ export default function DirectoryPage() {
                 <Link
                   key={key}
                   href={filterUrl(city, key)}
-                  className={`text-sm px-3 py-1.5 rounded-lg transition font-medium ${
+                  className={`inline-flex min-h-11 items-center text-sm px-3 py-1.5 rounded-lg transition font-medium ${
                     category === key
                       ? 'bg-blue-700 text-white'
                       : 'text-gray-600 hover:bg-gray-100'
@@ -497,35 +491,39 @@ export default function DirectoryPage() {
         <div className="flex-1 min-w-0">
 
           {/* Active filter chips */}
-          {(city !== 'All Cities' || category !== 'All' || query) && (
+          {(city !== 'All Cities' || category !== 'All' || service || query) && (
             <div className="flex flex-wrap gap-2 mb-3">
               {city !== 'All Cities' && (
                 <Link
+                  aria-label={`Remove city filter: ${city}`}
                   href={filterUrl('All Cities', category)}
-                  className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition"
+                  className="inline-flex min-h-11 items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition"
                 >
                   📍 {city} <span className="ml-0.5 opacity-60">✕</span>
                 </Link>
               )}
               {category !== 'All' && (
                 <Link
+                  aria-label={`Remove category filter: ${category}`}
                   href={filterUrl(city, 'All')}
-                  className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition"
+                  className="inline-flex min-h-11 items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition"
                 >
                   {CATEGORIES.find(c => c.key === category)?.emoji ?? '📂'} {category} <span className="ml-0.5 opacity-60">✕</span>
                 </Link>
               )}
+              {service && <Link href={directoryHref(filters, {service:null})} aria-label={`Remove service filter: ${service.label}`} className="inline-flex min-h-11 items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 hover:bg-emerald-200">{service.label}<span aria-hidden="true"> ✕</span></Link>}
               {query && (
                 <Link
-                  href={`/directory?${new URLSearchParams({city,category,sort:sortBy})}`}
-                  className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition"
+                  aria-label={`Remove search term: ${query}`}
+                  href={directoryHref(filters, {query:null})}
+                  className="inline-flex min-h-11 items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition"
                 >
                   🔍 &ldquo;{query}&rdquo; <span className="ml-0.5 opacity-60">✕</span>
                 </Link>
               )}
               <Link
                 href="/directory"
-                className="text-xs text-gray-400 hover:text-red-500 transition px-1 py-1"
+                className="inline-flex min-h-11 items-center text-xs text-slate-600 hover:text-red-700 transition px-2 py-1"
               >
                 Clear all
               </Link>
@@ -534,7 +532,7 @@ export default function DirectoryPage() {
 
           {/* Header row — stacks on mobile, side-by-side on sm+ */}
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mb-4">
-            <p className="text-sm text-gray-500">
+            <p role="status" aria-live="polite" className="text-sm text-gray-500">
               {loadError ? <span>Results unavailable</span> : loading ? (
                 <span className="text-gray-400">Loading…</span>
               ) : query ? (
@@ -594,12 +592,16 @@ export default function DirectoryPage() {
           ) : loadError ? null : businesses.length === 0 ? (
             <div className="text-center py-20 text-gray-400">
               <p className="text-4xl mb-3">🔍</p>
-              <p className="font-medium text-gray-700">{service ? `No website-checked ${service.label.toLowerCase()} providers in this shortlist yet` : 'No businesses found'}</p>
-              <p className="text-sm mt-1 mb-4">Try adjusting your filters or search term</p>
-              {(city !== 'All Cities' || category !== 'All' || query) && (
+              <p className="font-medium text-gray-700">{query ? 'No matches for your search' : service ? `No website-checked ${service.label.toLowerCase()} providers in this shortlist yet` : 'No businesses found'}</p>
+              <p className="text-sm mt-1 mb-4">{query ? 'Try another name or remove your search term.' : 'Broaden the service while keeping your city selected.'}</p>
+              <div className="flex flex-wrap justify-center gap-3">
+                {query && <Link href={directoryHref(filters,{query:null})} className="inline-flex min-h-11 items-center rounded-xl border border-slate-300 px-4 text-sm font-semibold text-[#19352d]">Remove search term</Link>}
+                {service && <Link href={directoryHref(filters,{service:null})} className="inline-flex min-h-11 items-center rounded-xl border border-slate-300 px-4 text-sm font-semibold text-[#19352d]">Browse more home services</Link>}
+              </div>
+              {(city !== 'All Cities' || category !== 'All' || service || query) && (
                 <Link
                   href="/directory"
-                  className="inline-block text-sm font-semibold text-blue-600 hover:underline"
+                  className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-600 hover:underline"
                 >
                   ✕ Clear all filters
                 </Link>

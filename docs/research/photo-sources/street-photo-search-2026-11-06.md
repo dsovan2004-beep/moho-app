@@ -50,3 +50,14 @@ Additional source checks:
 Panoramax documentation distinguishes capture datetime and upload date and requires the source instance’s actual image license; the software’s MIT license is not permission to use every picture. No generic license assumption was used. Primary references: https://docs.panoramax.fr/backend/dev/STAC_compatibility/ ; https://docs.panoramax.fr/backend/install/settings/ ; https://docs.panoramax.fr/how-to-contribute/use-panoramax/ . Flickr geographic-search guidance: https://blog.flickr.net/all/2025/07/23/flickr-fundamentals-improve-your-flickr-searches/ .
 
 Result: Mountain House UX-03 stays open for a verified 2026 street photograph with existing reuse rights. No new app asset/code/database change; no production deployment needed. Existing clearly labeled satellite remains; Tracy’s accepted street image remains live. Next eligible work is verification of a newly discovered open-licensed source, not unsolicited contact or using held social images. Last application validation remains 96 passing tests, TypeScript/OpenNext/native build and production mobile acceptance; those were not re-run for this documentation-only research pass.
+
+
+## Follow-up during local openings / filter UX pass — November 6
+
+Focused public searches for Mountain House California, 2026 capture, licensing/Creative Commons and Flickr yielded no newly qualifying street photograph. Three leads were inspected rather than adopting search-result years as capture dates:
+
+- Mountain House Live’s community page displays a Town Hall/Library image, but its about/standards pages credit historic place imagery to USDA/USGS NAIP and Tranistrider1979 (CC BY-SA 3.0), and retain rights in original footage. No documented 2026 capture date and applicable external reuse grant for that displayed image were established. Held; nothing copied. Sources: https://mountainhouselive.com/community ; https://mountainhouselive.com/about ; https://mountainhouselive.com/standards .
+- Wikimedia’s `Mountain House (4270113674).jpg` search result has a 2026 page-edit date, but its description depicts a house in Afghanistan, with old/conflicting 2007/2009 capture metadata. It is not the California city or a 2026 photograph. Excluded. Source: https://commons.wikimedia.org/wiki/File:Mountain_House_(4270113674).jpg .
+- KNOWOL’s “Map of Mountain House, California in 2026” is a commercial aerial/map print, not a qualifying street photograph; a creation year is not a documented camera capture year, and no existing website image reuse grant was established. Excluded. Source: https://www.knowol.com/information/california/map-of-mountain-house-california/ .
+
+No new photo asset, outreach, purchase or satellite replacement. UX-03 remains open; this is a bounded source check, not a claim no suitable image exists.

@@ -2,6 +2,9 @@ import { getSupabaseClient, PUBLIC_BUSINESS_COLUMNS, type Business } from '@/lib
 import { CITIES } from '@/lib/cities'
 import { SERVICE_CHOICES } from '@/lib/services'
 import { CHECK_COLUMNS, type ListingCheck } from '@/lib/listing-evidence'
+import LocalOpenings from '@/app/components/LocalOpenings'
+import BusinessContactActions from '@/app/components/BusinessContactActions'
+import { businessHref } from '@/lib/business-discovery'
 import ListingEvidence from '@/app/components/ListingEvidence'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -52,6 +55,8 @@ export default async function CityPage({ params }: PageProps) {
 
     {loadFailed && <p role="status" className="mt-6 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-950">Some listing information could not load. <Link href={`/${slug}`} className="underline font-semibold">Try this page again</Link> or <Link href={directoryUrl} className="underline font-semibold">open the directory</Link>.</p>}
 
+    <div className="mt-8"><LocalOpenings city={city.name} /></div>
+
     <section className="mt-10" aria-labelledby="service-heading">
       <h2 id="service-heading" className="text-2xl font-bold text-slate-900">What needs doing?</h2>
       <p className="mt-2 text-sm text-slate-600">These shortlists use website-checked service information. We are still building coverage.</p>
@@ -62,10 +67,10 @@ export default async function CityPage({ params }: PageProps) {
       <h2 id="checked-heading" className="text-2xl font-bold text-slate-900">Website-checked providers serving {city.name}</h2>
       <p className="mt-2 text-sm text-slate-600">An information check confirms the fields described below. Confirm pricing, availability and suitability directly with each provider.</p>
       {checked.length ? <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">{checked.map(biz => <article key={biz.id} className="rounded-2xl border border-slate-200 bg-white p-5 min-w-0">
-        <h3 className="font-bold text-lg"><Link href={`/business/${biz.id}`} className="text-[#19352d] underline underline-offset-4 break-words">{biz.name}</Link></h3>
+        <h3 className="font-bold text-lg"><Link href={businessHref(biz.id, city.name)} className="text-[#19352d] underline underline-offset-4 break-words">{biz.name}</Link></h3>
         <p className="mt-2 text-sm text-slate-600">{biz.city === 'Service area only' ? 'Office location not listed' : `Based in ${biz.city}`} </p>
         <ListingEvidence check={biz.listing_checks} />
-        {biz.phone && <a href={`tel:${biz.phone.replace(/[^+\d]/g, '')}`} className="inline-block mt-4 rounded-lg bg-[#19352d] px-4 py-2 text-white font-semibold text-sm">Call {biz.phone}</a>}
+        <div className="mt-4"><BusinessContactActions phone={biz.phone} website={biz.website} /></div>
       </article>)}</div> : <div className="mt-5 border border-dashed border-slate-300 rounded-2xl p-6 text-slate-700">{served.error ? 'Checked providers could not load right now.' : 'No website-checked providers are ready for this city yet.'} <Link href={directoryUrl} className="underline font-semibold">Browse existing listings</Link> and check details directly.</div>}
     </section>
 
@@ -79,7 +84,7 @@ export default async function CityPage({ params }: PageProps) {
       <h2 id="browse-heading" className="text-2xl font-bold text-slate-900">Browse the wider directory</h2>
       <p className="mt-2 text-sm text-slate-600">Older approved listings may still need a fresh information check.</p>
       <div className="flex flex-wrap gap-2 mt-4">{CATEGORIES.map(category => <Link key={category} href={`${directoryUrl}&category=${encodeURIComponent(category)}`} className="rounded-full px-4 py-2 border border-slate-300 bg-white text-sm text-slate-700 hover:border-[#19352d]">{category}</Link>)}</div>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-5">{((local.data ?? []) as CheckedBusiness[]).map(biz => <article key={biz.id} className="p-5 border border-slate-200 rounded-xl bg-white min-w-0"><h3 className="font-semibold break-words"><Link href={`/business/${biz.id}`} className="underline underline-offset-4">{biz.name}</Link></h3><p className="text-sm text-slate-600 mt-2">{biz.category} · {biz.city}</p><ListingEvidence check={biz.listing_checks} /></article>)}</div>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-5">{((local.data ?? []) as CheckedBusiness[]).map(biz => <article key={biz.id} className="p-5 border border-slate-200 rounded-xl bg-white min-w-0"><h3 className="font-semibold break-words"><Link href={businessHref(biz.id, city.name)} className="underline underline-offset-4">{biz.name}</Link></h3><p className="text-sm text-slate-600 mt-2">{biz.category} · {biz.city}</p><ListingEvidence check={biz.listing_checks} /></article>)}</div>
       <Link href={directoryUrl} className="inline-block mt-5 font-semibold text-[#19352d] underline underline-offset-4">Browse all {city.name} listings →</Link>
     </section>
     <footer className="mt-10 pt-6 border-t border-slate-200 text-sm text-slate-600"><Link href="/submit-business" className="underline">Suggest or add a business</Link><span className="mx-3">·</span><Link href="/discover" className="underline">Explore nearby cities</Link></footer>

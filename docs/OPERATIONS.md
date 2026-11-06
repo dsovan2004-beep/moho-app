@@ -1,196 +1,44 @@
 # MoHoLocal — Operations Guide
 
-> **Audience:** Founder and Claude coworker
-> **Last updated:** March 2026
+Updated November 6, 2026. This guide replaces the March 2026 operating model. The founder has authorized autonomous relaunch engineering, source-checked listing curation, release work and planning upkeep in the current session. User instructions take precedence over historical documentation.
 
----
+## Responsibilities
 
-## Overview
+| Role | Ownership |
+| --- | --- |
+| Product and technical lead | Prioritize resident needs, architecture, secure implementation and reviewable releases; keep Next.js, Supabase and Cloudflare |
+| UX/UI lead | Clear city/task discovery, mobile and keyboard access, honest loading/empty/error states, consistent contact choices |
+| Market and provider researcher | Compare local alternatives, find missing supply, deduplicate candidates, check primary sources and record limitations |
+| Local business openings researcher | Check openings, closures and significant retail/service changes across Mountain House, Tracy, Lathrop and Manteca |
+| Community updates editor | Turn verified local changes and seasonal events into concise dated updates with useful links; distinguish planned, opening and operating status |
+| Data and photo-rights editor | Preserve evidence and correction history; verify service areas separately from office locations; establish actual capture year, location, author and existing reuse rights before publishing photography |
+| Release and operations lead | Run relevant checks, verify native deployments and live behavior, maintain backlog, roadmap, sprint and release evidence |
 
-MoHoLocal operates with a two-role model: a **founder** who controls infrastructure, database, and business decisions, and a **Claude coworker** who handles autonomous engineering work at the application layer.
+The new local openings and community editor responsibilities were explicitly requested November 6. They apply during autonomous work sessions; they do not establish a recurring background job or authorize messaging people.
 
-This document defines what each role owns, what guardrails exist, and how day-to-day operations flow.
+## Editorial rules
 
----
+- Prefer current business/operator pages, City records and official organizer announcements. Keep source URLs and the check date.
+- A proposed tenant or hiring ad is not an operating store. Do not guess a grand-opening date. Past openings must not appear as future events.
+- Remove expired opening-weekend discounts and giveaways. Link to current hours instead of promising live availability.
+- Publish local updates under their actual city. A regional provider’s service area does not establish its office location.
+- A website information check does not verify credentials, insurance, workmanship, reviews, prices or availability. Keep that scope visible.
+- Review featured local-opening updates monthly; hide them after their review window if they have not been refreshed. Do not call every business permanently “new.”
+- No outreach or permission requests: the user has prohibited messages. Public social visibility alone is not permission to reuse photographs.
+- Mountain House’s real 2026 street-photo task remains open. Retain the dated satellite view until an exact-location image with capture-date and existing reuse-rights evidence qualifies. Tracy’s accepted licensed photo remains usable with its credits.
 
-## Founder Responsibilities
+## Engineering and release
 
-The founder retains exclusive control over:
+Use the existing Next.js / OpenNext Cloudflare Worker / Supabase stack. Current application runtime is `nodejs`; the old Pages edge-only rule is obsolete. Public business queries require both approved status and the existing public verification gate. Use the shared client inside functions; preserve private data boundaries and RLS.
 
-| Responsibility | Notes |
-|---------------|-------|
-| Database SQL execution | All schema changes and data migrations |
-| Supabase configuration | RLS policies, storage buckets, project settings |
-| Environment variables | All secrets stored in Cloudflare Pages dashboard |
-| Cloudflare configuration | Domain, deploy hooks, build settings |
-| CLAUDE.md modifications | Project operating rules — only founder may edit |
-| Business approvals | Review and approve/reject pending listings |
-| Content moderation | Community posts, reports, and flagged items |
-| Monetization decisions | Featured listings, pricing, billing setup |
+Read current files before edits. Run relevant regression tests, TypeScript and the OpenNext build for application changes. Push reviewed work to the configured Git remote, let native Cloudflare Builds deploy, then verify production behavior. Documentation-only changes are excluded from the native build watch paths. Never treat a push or queued build as successful deployment.
 
----
+Keep secrets out of files, logs and URLs. Use configured credential helpers and scoped connectors; never embed a token in a Git remote. Do not bulk-publish imported seed records. Individually curated additions require duplicate checks, primary-source evidence, scoped listing checks and private correction history, followed by read-back. Schema/security changes need their applicable migration and verification workflow.
 
-## Coworker Responsibilities
+The founder retains business pricing/spend decisions and approvals that specifically require owner action. Autonomous work does not authorize financial commitments, new access grants or unsolicited communications.
 
-The Claude coworker operates autonomously within the application layer:
+## Planning and acceptance
 
-| Responsibility | Notes |
-|---------------|-------|
-| Application code | Next.js pages, components, utilities |
-| Bug fixes | Identify root cause, apply fix, verify |
-| UI improvements | Mobile responsiveness, loading/error states |
-| Feature development | Following roadmap priorities |
-| QA audits | Full platform audit with bug reports |
-| Documentation | Keeping docs/ folder current |
-| Git commits | Committing with descriptive messages |
-| GitHub push | Pushing to main branch |
-| Cloudflare deploy | Triggering builds when necessary |
+[BACKLOG.md](BACKLOG.md) is the next-work queue; [ROADMAP.md](ROADMAP.md) holds acceptance/status; [SPRINTS.md](SPRINTS.md) records outcomes. Update all three when scope or acceptance changes. Separate implemented, tested, deployed and live-accepted states.
 
----
-
-## Guardrails
-
-### Hard Limits — Coworker Must Never
-
-- Modify `CLAUDE.md`
-- Modify environment variables or secrets
-- Execute SQL on the live database
-- Modify Supabase schema directly
-- Change Cloudflare build settings
-- Create or modify storage bucket policies
-- Store API keys or tokens in code or files
-- Run seed scripts against the live database
-
-### Required Rules — Always Enforced
-
-- All pages must export `export const runtime = 'edge'`
-- All public business queries must include `.eq('status', 'approved')`
-- Use `getSupabaseClient()` inside functions only — never at module scope
-- Only 9 canonical categories are valid (see DATA_MODEL.md)
-- Only 4 canonical cities are valid: Mountain House, Tracy, Lathrop, Manteca
-- SQL output must be provided as text for manual founder execution — never run directly
-
----
-
-## Release Process
-
-### Standard Release
-
-```
-1. Coworker writes or fixes code
-2. Coworker runs QA self-check (edge runtime, status filters, categories, mobile)
-3. Coworker commits with conventional commit message
-4. Coworker pushes to main branch
-5. Cloudflare auto-build triggers within ~30 seconds
-6. Live site updated within ~2 minutes of push
-```
-
-### Conventional Commit Format
-
-```
-<type>: <short description>
-
-Types:
-  feat     — new feature
-  fix      — bug fix
-  chore    — maintenance, deps
-  docs     — documentation
-  refactor — code restructure (no behavior change)
-  style    — formatting, CSS
-  perf     — performance improvement
-```
-
-### Manual Deployment Trigger
-
-If the GitHub push hook fails or a manual deploy is needed:
-
-```bash
-curl -d "" "<cloudflare-deploy-hook>"
-```
-
-The deploy hook URL is stored in the Cloudflare Pages dashboard (founder access only).
-
----
-
-## Database Operations
-
-All SQL must be written by the coworker and executed manually by the founder.
-
-The coworker provides SQL in the following format:
-
-```sql
--- Description of what this SQL does
--- Safe to run: yes/no and why
-
-SELECT ...
-UPDATE ...
-```
-
-Founder executes via the Supabase SQL Editor at:
-`https://supabase.com/dashboard/project/ozjlfgipfzykzrjakwzb/sql`
-
-### Approved Database Operations
-
-| Operation | Who |
-|-----------|-----|
-| Approve/reject business submissions | Founder via Supabase table editor |
-| Normalize legacy data (category/city fields) | Founder via SQL provided by coworker |
-| Add new columns | Founder — always use `ADD COLUMN IF NOT EXISTS` |
-| Create new tables | Founder |
-| Update RLS policies | Founder |
-| Seed new data | Founder runs seed scripts from local machine |
-
----
-
-## Content Moderation
-
-All user-submitted content enters the system as `status: 'pending'` and is invisible to the public until approved.
-
-**Review queues (Supabase table editor):**
-
-| Table | What to review |
-|-------|---------------|
-| `businesses` | Pending business submissions and suggestions |
-| `business_suggestions` | Suggested businesses from residents |
-| `listing_reports` | Reports against existing listings |
-| `community_posts` | Flagged or reported community posts |
-| `lost_and_found` | New lost & found posts |
-
-**Approval flow:**
-1. Open Supabase dashboard → Table Editor
-2. Filter by `status = 'pending'`
-3. Review content for quality and accuracy
-4. Set `status` to `'approved'` or `'rejected'`
-5. Approved businesses become immediately visible on the site
-
----
-
-## Monitoring & Alerts
-
-Current monitoring is manual. Recommended checks:
-
-| Check | Frequency |
-|-------|-----------|
-| Cloudflare Pages build status | After each push |
-| Supabase dashboard — pending queue | Daily |
-| Live site spot-check (homepage, directory) | After each deploy |
-| Lost & found — new posts | Daily |
-
-Automated monitoring (error tracking, uptime alerts) is a Phase 4 target.
-
----
-
-## Known Operational Gotchas
-
-| Issue | Workaround |
-|-------|-----------|
-| GitHub API blocked in cowork VM | Use `git push https://TOKEN@github.com/...` |
-| Supabase REST blocked in cowork VM | Provide SQL as text for manual execution |
-| `.git/index.lock` or `HEAD.lock` present | Use `GIT_INDEX_FILE=/tmp/...` + `git commit-tree` workaround |
-| Tailwind dynamic classes break builds | Use full class names only — no template string assembly |
-| PawBoost blocked by proxy | Skip — use other lost pet sources |
-
----
-
-*For deployment details, see [DEPLOYMENT.md](./DEPLOYMENT.md).*
-*For full project rules, see [CLAUDE.md](../CLAUDE.md).*
+Next deeper listing verification remains Mountain House and Tracy. Local updates may cover all four relaunch cities. Resident usability validation, owner confirmations, physical phone push testing, legacy discovery/SEO review and the Mountain House street-photo gap remain explicit until evidence closes them.

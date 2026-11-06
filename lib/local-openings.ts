@@ -1,0 +1,14 @@
+export const LOCAL_OPENINGS = [
+  { id:'mh-wingstop', city:'Mountain House', name:'Wingstop', status:'Open', description:'The Mountain House location is listed at 18047 Grant Line Road, Unit A. Check the official store page for current carryout and delivery hours.', source:'https://locations.wingstop.com/ca/mountain-house/wingstop-3218-mountain-house-ca-95391', sourceLabel:'Official store details', checkedAt:'2026-11-06' },
+  { id:'mh-dominos', city:'Mountain House', name:'Domino’s Pizza', status:'Open', description:'The Mountain House store is listed at 18095 W Grant Line Road. See the official location page for ordering, hours and delivery-area details.', source:'https://pizza.dominos.com/california/mountain-house/18095-w-grant-line-rd', sourceLabel:'Official store details', checkedAt:'2026-11-06' },
+  { id:'mh-arco', city:'Mountain House', name:'ARCO Gas & Convenience Store', status:'2026 opening', description:'The City’s February development update reports that the Mustang Square gas and convenience store opened in late January 2026. See the City report for the development update.', source:'https://pub-mountainhouse.escribemeetings.com/FileStream.ashx?DocumentId=1293', sourceLabel:'City development report', checkedAt:'2026-11-06' },
+  { id:'tracy-sprouts', city:'Tracy', name:'Sprouts Farmers Market', status:'Open', description:'Sprouts announced its September 4, 2026 opening at 2106 Ellis Town Drive. Visit the store page for current hours and shopping details.', source:'https://www.sprouts.com/press-release/sprouts-farmers-market-opens-new-store-in-tracy-california/', sourceLabel:'Official opening announcement', checkedAt:'2026-11-06', details:'https://www.sprouts.com/tracyellis', detailsLabel:'Official store page' },
+  { id:'lathrop-sams', city:'Lathrop', name:'Sam’s Club', status:'Open', description:'The membership warehouse opened September 24, 2026 at 16150 Golden Valley Parkway. Check the club’s current hours and membership details before visiting.', source:'https://www.samsclub.com/club/7684-lathrop-ca', sourceLabel:'Official club details', checkedAt:'2026-11-06', details:'https://nextdoor.com/agency-post/ca/lathrop/city-of-lathrop/big-news-lathrop-509894369/', detailsLabel:'City opening announcement' },
+] as const
+
+// These are dated editorial updates, not live opening-hours or future-event claims.
+// Remove from the feature after the monthly review window unless rechecked.
+export function localOpeningsFor(city: string, now = Date.now()) {
+  if (!Number.isFinite(now) || now >= Date.parse('2026-12-07T08:00:00Z')) return []
+  return LOCAL_OPENINGS.filter(item => item.city === city)
+}

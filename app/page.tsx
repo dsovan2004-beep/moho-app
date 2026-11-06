@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getSupabaseClient } from '@/lib/supabase'
 import { RELAUNCH_CITY_NAMES } from '@/lib/cities'
+import LocalOpenings from '@/app/components/LocalOpenings'
 import CityPhoto from '@/app/components/CityPhoto'
 import { eventDateParts, isUpcomingEvent } from '@/lib/event-dates'
 
@@ -54,6 +55,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
         </div>
       </div>
     </section>
+    <div className="max-w-6xl mx-auto px-5 sm:px-8 pb-10"><LocalOpenings city={city} /></div>
     <section className="bg-[#e9eee5] border-y border-[#dce3d6]" aria-labelledby="seasonal-heading">
       <div className="max-w-6xl mx-auto px-5 sm:px-8 py-10 sm:py-12">
         <div className="flex flex-wrap justify-between items-end gap-4 mb-6">

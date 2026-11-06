@@ -1,0 +1,87 @@
+{
+  "date": "2026-11-06",
+  "method": "Individually checked primary website identity, contact, advertised services and named cities; normalized name/phone/domain dedup before publication. No outreach, image reuse, ratings, credentials or availability validation.",
+  "providers": [
+    {
+      "name": "Simpson Plumbing",
+      "city": "Tracy",
+      "phone": "(209) 229-4749",
+      "website": "https://www.simpsonplumbingservices.com/service-area/mountain-house-ca",
+      "description": "Tracy-based plumbing business advertising repair, drain cleaning, water heater and leak detection services. Its Mountain House service page names Mountain House, Tracy and Lathrop. Call or use the official booking link to confirm scope, pricing and scheduling.",
+      "tags": [
+        "plumbing",
+        "drain cleaning",
+        "water heaters",
+        "leak detection"
+      ],
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop"
+      ],
+      "note": "Primary Mountain House service page confirms name, public phone, Tracy contact location, advertised tasks and named cities. Header and footer hours disagree, so hours omitted. Street address omitted; no walk-in-office claim. License/insurance, reviews, guarantees, availability and workmanship not independently checked.",
+      "sources": [
+        "https://www.simpsonplumbingservices.com/service-area/mountain-house-ca"
+      ]
+    },
+    {
+      "name": "A-1 Quality Plumbing",
+      "city": "Modesto",
+      "phone": "(209) 541-0172",
+      "website": "https://www.a1qualityplumbing.com/",
+      "description": "Modesto-area plumbing business advertising repairs, drain and sewer cleaning, water heater service and leak detection. Its official service-area text names Mountain House, Tracy, Lathrop and Manteca. Contact the business directly to confirm the exact job, service address, price and scheduling.",
+      "tags": [
+        "plumbing",
+        "drain cleaning",
+        "water heaters",
+        "leak detection"
+      ],
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "note": "Primary home/about pages identify services and named cities; contact page corroborates phone and Modesto contact location. Suite/# address omitted and not represented as a walk-in office. Advertised emergency availability, license/insurance, guarantees, prices, reviews and workmanship not independently checked.",
+      "sources": [
+        "https://www.a1qualityplumbing.com/",
+        "https://www.a1qualityplumbing.com/a1qualityplumbing-about-modesto-plumber",
+        "https://www.a1qualityplumbing.com/a1qualityplumbing-contact-modesto"
+      ]
+    }
+  ],
+  "held": [
+    {
+      "name": "Castle Care Water Heaters & Plumbing",
+      "source": "https://www.castlecareplumbing.com/",
+      "reason": "Operator identity/contact found, but service-area page names counties rather than exact launch cities; hold city-shortlist expansion for explicit service-city evidence. No license/insurance claim adopted."
+    }
+  ],
+  "publication_status": "Published through the saved SQL transaction and read back; both approved, unclaimed, null ratings and zero reviews, with scoped checks and private correction entries.",
+  "published": [
+    {
+      "name": "Simpson Plumbing",
+      "id": "7c2c8e74-328e-4c5a-961d-965c898200e8"
+    },
+    {
+      "name": "A-1 Quality Plumbing",
+      "id": "ecaa9efb-d870-4f7d-9fca-c23b5e72cffa"
+    }
+  ],
+  "totals": {
+    "checked_listings": 35,
+    "unique_launch_category_providers": 24,
+    "Mountain House": {
+      "landscaping": 6,
+      "handyman": 5,
+      "house cleaning": 4,
+      "plumbing": 5
+    },
+    "Tracy": {
+      "landscaping": 6,
+      "handyman": 5,
+      "house cleaning": 5,
+      "plumbing": 7
+    }
+  }
+}

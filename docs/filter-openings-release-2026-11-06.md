@@ -1,0 +1,15 @@
+# Filter recovery, local openings and provider release — November 6, 2026
+
+Directory filters now have independent removal actions. Removing text preserves city/category/service; removing a service broadens only that service; changing/removing a category clears its narrower service. Incompatible category/service URLs do not silently narrow results. Search fields have accessible names; search/filter/removal actions meet 44px. Empty text searches explain no matches and offer recovery that retains the city instead of implying the city has no checked providers. Result changes use a polite status region.
+
+City landing cards preserve resident geography and use the shared contact component, including exact-host request-first instructions. Business details identify the office location separately and category navigation retains discovery context.
+
+Five primary-source-linked local updates appear on the selected homepage and city page: Mountain House Wingstop, Domino’s and the City-reported ARCO opening; Tracy Sprouts Ellis; Lathrop Sam’s Club. Operating places are not represented as upcoming opening events. ARCO is explicitly a historical City report, not a live-hours claim. No opening day is invented for Wingstop/Domino’s. Expired promotions are omitted. Monthly expiry removes unrefreshed featured updates after December6Pacific. See research/local-openings-2026-11-06.md for source limitations and dates.
+
+The founder explicitly added local openings researcher and community updates editor responsibilities. OPERATIONS.md now records these roles and the current authorized engineering/editorial/release workflow, replacing obsolete March edge-runtime and manual-only database guidance. No recurring monitor was created; no outreach sent.
+
+Simpson Plumbing and A-1 Quality Plumbing were individually checked, deduplicated, published with scoped checks/private audit records, then read back. Both remain unclaimed with no ratings/reviews. Conflicting hours, uncertain street-office presentation and unverified credential/availability claims were omitted. Total35 checked listings,24 distinct launch-category providers. Mountain House landscaping/handyman/cleaning/plumbing6/5/4/5; Tracy6/5/5/7. Evidence and executed SQL: research/provider-filter-pass-2026-11-06.json and apply-provider-filter-pass-2026-11-06.sql.
+
+106 regression tests pass, including independent filter transitions and city/expiry scoping. Final TypeScript and OpenNext build pass. Local browser acceptance confirms real city-area providers, independent filter clicks, 44px actions and no horizontal overflow at320px/390px. Native deployment and production acceptance pending.
+
+Mountain House photo sourcing remains open: additional local-media, Commons and commercial-map leads did not establish a qualifying actual2026 street photo with existing reuse rights. Existing labeled satellite retained. Resident usability, owner confirmations, physical-device push and legacy discovery/SEO surfaces remain separate open work.

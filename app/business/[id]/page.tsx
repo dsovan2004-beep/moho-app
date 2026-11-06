@@ -508,15 +508,14 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
             )}
             <InfoRow
               icon="🏙️"
-              label="City"
+              label="Office location"
               value={`${city.emoji} ${biz.city === 'Service area only' ? 'Office location not listed' : `${biz.city}, CA`}`}
-              internalHref={(CITY_TO_SLUG[biz.city] ? `/${CITY_TO_SLUG[biz.city]}` : `/directory?q=${encodeURIComponent(biz.name)}`)}
             />
             <InfoRow
               icon="📂"
               label="Category"
               value={`${catEmoji} ${biz.category}`}
-              internalHref={(CITY_TO_SLUG[biz.city] ? `/${CITY_TO_SLUG[biz.city]}/${CAT_TO_SLUG[biz.category] ?? biz.category.toLowerCase().replace(/\s+/g, '-')}` : `/directory?q=${encodeURIComponent(biz.name)}`)}
+              internalHref={`/directory?${returnQuery}`}
             />
 
             {/* No contact info fallback */}
