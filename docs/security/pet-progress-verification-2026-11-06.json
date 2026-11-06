@@ -1,0 +1,52 @@
+{
+  "source": "9e2c6b4ea615a2f9ede93e9b79ea10bf3c9a04cf",
+  "native_build": "a39cde72-f4e2-4986-bb62-e6b11116e666",
+  "worker_version": "a3f9c9b8-e5e6-49ff-b0e8-0609251075e0",
+  "deployed_utc": "2026-11-06T21:43:35.979Z",
+  "migration": "20261106213111_pet_progress_observation_timeline",
+  "tests": {
+    "passed": 121,
+    "failed": 0,
+    "scope": "isolated local database, utilities and existing regressions"
+  },
+  "typescript": "pass",
+  "opennext": "pass",
+  "hosted_api": {
+    "new_columns_readable": true,
+    "visible_public_rows_at_check": 0,
+    "missing_parent_history": [],
+    "existing_records_unknown_progress": 60,
+    "rls_enabled": true,
+    "security_advisor": "15 informational intentionally private RLS/no-policy findings only"
+  },
+  "http": {
+    "four_city_boards": 200,
+    "missing_report": 404,
+    "removed_local_qa_route": 404
+  },
+  "browser": {
+    "local_fixture_widths": [
+      320,
+      390
+    ],
+    "live_board_widths": [
+      320,
+      390,
+      1024
+    ],
+    "overflow": false,
+    "local_fields_min_height": 44,
+    "found_secured_to_lost": "resets to unknown",
+    "city_navigation": "Tracy to Lathrop, city preserved in status/history links",
+    "no_extra_city_chip": true
+  },
+  "limits": [
+    "Real reporter save and resident usability pilot remain open",
+    "No fabricated production report or notification created",
+    "Possible-match confirmation, owner-contact/scan milestones and disputes remain follow-ups"
+  ],
+  "screenshots": [
+    "docs/ux/pet-progress-local-390.png",
+    "docs/ux/pet-progress-live.png"
+  ]
+}

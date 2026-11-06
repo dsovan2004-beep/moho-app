@@ -33,3 +33,5 @@ Continue remaining Mountain House feeds and city-specific groups, then incomplet
 ## Release and ongoing holds
 
 This increment changes research/planning only; no application, database, event or provider publication. Accepted app remains `10964bc` with 114 prior passing regressions and native/live acceptance. Inventory remains 56 dated listing checks and 19 approved event occurrences; neither count means blanket verification of legacy rows. Real 2026 Mountain House street photography with existing reuse rights remains open; no Facebook image copied or permission message sent. Twice-weekly refresh remains active. See [detailed findings](facebook-needs-review-2026-11-06.md).
+
+Implementation follow-up: PET-05 first progress/timeline increment is deployed with121 passing regressions, applied additive migration and local/live phone QA; see [release status](../pet-progress-release-2026-11-06.md) for native/live acceptance. Later research checkpoint covers nine initial groups/30 mixed-completeness records. Full traversal remains open.

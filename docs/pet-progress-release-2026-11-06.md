@@ -11,3 +11,11 @@ Native Git deployment and live acceptance pending at source push; record final r
 Rollback: revert application source first; retain the additive database columns/function and audit. Do not erase reporter history or restore an older database function after new progress records exist. Existing clients remain compatible with optional progress fields; classification changes reset incompatible progress.
 
 Final trust-label adjustment: legacy reunited records say recorded status; only timeline entries backed by authenticated reporter writes have a reporter-confirmation time. Native build616ba415-2474-4206-af69-a4eb2b8188c3 for7fdf751 superseded/cancelled before deployment; corrected final source acceptance pending. Nine groups/29mixed-completeness research records; no demographic inference or media reuse.
+
+## Final acceptance
+
+Final source `9e2c6b4ea615a2f9ede93e9b79ea10bf3c9a04cf` passed native build `a39cde72-f4e2-4986-bb62-e6b11116e666` and deployed version `a3f9c9b8-e5e6-49ff-b0e8-0609251075e0` at21:43:35UTC November6. Pet board city controls and combined queries now use the canonical four relaunch cities. All four city URLs return200 with progress guidance and no extra-city chip; missing pet and removed local QA route return404. Live320/390px overflow checks pass; Tracy→Lathrop navigation preserves city in status/history links;1024px screenshot captured. Hosted anonymous projection and missing-parent history checks pass. Final121tests, TypeScript and OpenNext pass. Evidence: security/pet-progress-verification-2026-11-06.json and ux/pet-progress-live.png.
+
+Current public inventory contains no eligible pet rows; no fake report was introduced for screenshots. Real reporter save/resident acceptance remains open; the authenticated write paths, privacy and transitions were verified in the isolated database and local fixture. No blanket claim of real-resident workflow validation.
+
+Follow-up found during review: the pre-existing board fetch error path can present failed queries as empty results. DATA-03 tracks a distinct retry/error state with suppressed zero-count/empty claims under failure. This was not introduced or fixed by PET-05; direct hosted query succeeded during these checks.
