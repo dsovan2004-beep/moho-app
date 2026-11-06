@@ -5,7 +5,7 @@ export function allowedPushEndpoint(endpoint:string):boolean{
  try{const u=new URL(endpoint);return u.protocol==='https:'&&!u.username&&!u.password&&!u.port&&!u.hash&&endpoint.length<=1800&&u.pathname!=='/'&&(/^(fcm\.googleapis\.com|updates\.push\.services\.mozilla\.com|web\.push\.apple\.com)$/.test(u.hostname)||/^[a-z0-9-]+\.notify\.windows\.com$/.test(u.hostname))}catch{return false}
 }
 type Job={kind?:'message'|'push_test';receipt_token?:string;id:string;lease_id:string;channel:'email'|'push';recipient_email:string;unsubscribe_token:string;subscription:PushSubscription}
-type Outcome={decision:'sent'|'retry'|'failed'|'retire';code:string;retry_after?:number}
+type Outcome={decision:'sent'|'retry'|'failed'|'retire';code:string;retry_after?:number;provider_id?:string}
 export async function dispatchRpc(env:Env,action:string,payload:Record<string,unknown>):Promise<unknown>{
  const key=env.SUPABASE_SERVICE_ROLE_KEY
  const response=await fetch(`${env.SUPABASE_URL}/rest/v1/rpc/notification_dispatch`,{method:'POST',headers:{apikey:key,...(key.startsWith('sb_secret_')?{}:{Authorization:`Bearer ${key}`}), 'Content-Type':'application/json'},body:JSON.stringify({action,payload}),signal:AbortSignal.timeout(15000)})
@@ -20,16 +20,17 @@ export function deliveryOutcome(status:number,channel:'email'|'push',retryAfter:
 }
 export async function deliverNotification(env:Env,job:Job):Promise<Outcome>{
  if(job.channel==='email'){
-  if(!env.RESEND_API_KEY||env.EMAIL_SENDER_ENABLED!=='true')return {decision:'retry',code:'email_not_configured'}
-  // Recipient comes only from the leased database job, never a public HTTP request.
+  if(!env.EMAIL||env.EMAIL_SENDER_ENABLED!=='true')return {decision:'retry',code:'email_not_configured'}
+  // Recipient is the confirmed, opted-in account address from the leased DB job.
   const unsub=`https://www.moholocal.com/notification-preferences/unsubscribe?token=${job.unsubscribe_token}`
-  const response=await fetch('https://api.resend.com/emails',{method:'POST',redirect:'error',headers:{Authorization:`Bearer ${env.RESEND_API_KEY}`,'Content-Type':'application/json','Idempotency-Key':`moho-dm-${job.id}`,'User-Agent':'MoHoLocal-Notifications/1.0'},body:JSON.stringify({from:'MoHoLocal <hello@moholocal.com>',reply_to:'dsovan2004@gmail.com',to:[job.recipient_email],subject:'You have a new MoHoLocal message',text:`A new private message is waiting in your MoHoLocal inbox.\n\nRead it: https://www.moholocal.com/messages\n\nManage alerts: https://www.moholocal.com/messages\nTurn off message emails: ${unsub}\n\nThis alert contains no sender name or message text.`,headers:{'List-Unsubscribe':`<${unsub}>`,'List-Unsubscribe-Post':'List-Unsubscribe=One-Click'}}),signal:AbortSignal.timeout(20000)})
-  const outcome=deliveryOutcome(response.status,'email',response.headers.get('Retry-After'))
-  if(outcome.decision==='sent'){
-   const body=await response.json() as {id?:string}
-   if(!body.id)return {decision:'retry',code:'email_missing_acceptance'}
+  try{
+   const result=await env.EMAIL.send({from:{email:'hello@moholocal.com',name:'MoHoLocal'},replyTo:'dsovan2004@gmail.com',to:job.recipient_email,subject:'You have a new MoHoLocal message',text:`A new private message is waiting in your MoHoLocal inbox.\n\nRead it: https://www.moholocal.com/messages\n\nManage alerts: https://www.moholocal.com/messages\nTurn off message emails: ${unsub}\n\nThis alert contains no sender name or message text.`,headers:{'List-Unsubscribe':`<${unsub}>`,'List-Unsubscribe-Post':'List-Unsubscribe=One-Click'}})
+   return result.messageId?{decision:'sent',code:'provider_accepted',provider_id:result.messageId}:{decision:'retry',code:'email_missing_acceptance'}
+  }catch(error){
+   const code=(error as {code?:string}).code??'E_NETWORK'
+   if(['E_RECIPIENT_SUPPRESSED','E_INVALID_RECIPIENT','E_INVALID_SENDER','E_SENDER_NOT_VERIFIED'].includes(code))return {decision:'failed',code}
+   return {decision:'retry',code:/^E_[A-Z_]+$/.test(code)?code:'email_provider_error',retry_after:300}
   }
-  return outcome
  }
  if(!env.VAPID_PRIVATE_KEY||!env.VAPID_PUBLIC_KEY)return {decision:'retry',code:'push_not_configured'}
  if(!allowedPushEndpoint(job.subscription.endpoint))return {decision:'retire',code:'push_endpoint_rejected'}
@@ -39,7 +40,7 @@ export async function deliverNotification(env:Env,job:Job):Promise<Outcome>{
  return deliveryOutcome(response.status,'push',response.headers.get('Retry-After'))
 }
 export async function runNotificationDelivery(env:Env):Promise<void>{
- await dispatchRpc(env,'prepare',{email_ready:Boolean(env.RESEND_API_KEY&&env.EMAIL_SENDER_ENABLED==='true'),push_ready:Boolean(env.VAPID_PRIVATE_KEY&&env.VAPID_PUBLIC_KEY)})
+ await dispatchRpc(env,'prepare',{email_ready:Boolean(env.EMAIL&&env.EMAIL_SENDER_ENABLED==='true'),push_ready:Boolean(env.VAPID_PRIVATE_KEY&&env.VAPID_PUBLIC_KEY)})
  let processed=0
  for(let i=0;i<10;i++){
   const job=await dispatchRpc(env,'claim',{}) as Job|null

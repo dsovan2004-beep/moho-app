@@ -424,3 +424,17 @@ test('push receipts need a private capability, are idempotent and cannot alter n
  set local role anon;select public.confirm_push_test(:'token','displayed');select public.confirm_push_test(:'token','displayed');reset role;select (received_at is not null and displayed_at is not null and opened_at is null) from directory_private.notification_jobs;${as(alice)}select ${notify('settings')}->'tests'->0 ? 'receipt_token';rollback;`).split('\n')
  assert.equal(r[4],'t');assert.equal(r.at(-2),'t');assert.equal(r.at(-1),'f')
 })
+
+test('email pilot budget counts retries and defers sends at 500 attempts without exposing budget data',()=>{
+ const r=sql(`begin;${petFixture()}${prepare}${optIn}${incoming}${prepare}
+ select public.notification_dispatch('claim','{}') as j \\gset
+ select count(*) from directory_private.email_delivery_attempts;
+ select public.notification_dispatch('finish',jsonb_build_object('id',(:'j'::jsonb)->>'id','lease_id',(:'j'::jsonb)->>'lease_id','decision','retry'));
+ update directory_private.notification_jobs set available_at=now()-interval '1 second';
+ insert into directory_private.email_delivery_attempts(job_id) select (:'j'::jsonb->>'id')::uuid from generate_series(1,499);
+ select public.notification_dispatch('claim','{}') is null;
+ select attempts||':'||error_code from directory_private.notification_jobs;
+ rollback;`).split('\n')
+ assert.equal(r.at(-4),'1');assert.equal(r.at(-2),'t');assert.equal(r.at(-1),'1:pilot_email_budget_exhausted')
+ assert.throws(()=>sql(`begin;${as(admin)}select * from directory_private.email_delivery_attempts;rollback;`),/permission denied/)
+})

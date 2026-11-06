@@ -2,7 +2,7 @@
 
 // ── Env bindings (Cloudflare Worker env) ─────────────────────────────────────
 export interface Env {
-  RESEND_API_KEY?: string
+  EMAIL?: {send(message:{from:string|{email:string;name?:string};to:string;replyTo?:string;subject:string;text:string;headers?:Record<string,string>}):Promise<{messageId:string}>}
   EMAIL_SENDER_ENABLED?: string
   VAPID_PUBLIC_KEY?: string
   VAPID_PRIVATE_KEY?: string

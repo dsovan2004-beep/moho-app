@@ -12,16 +12,21 @@ test('push delivery rejects private hosts, userinfo, lookalike domains and redir
  assert.equal(deliveryOutcome(429,'email','50000').retry_after,3600)
  assert.equal(deliveryOutcome(503,'email',null).decision,'retry')
 })
-test('mail payload has a stable idempotency key, generic content and token unsubscribe; no unconfigured send',async()=>{
- const original=globalThis.fetch;const requests:{url:string;init:RequestInit}[]=[]
- globalThis.fetch=async(url,init)=>{requests.push({url:String(url),init:init!});return Response.json({id:'fixture-provider-id'})}
+test('native mail uses only the leased recipient, generic text and one-click unsubscribe',async()=>{
+ const sent:any[]=[];const mail={send:async(message:any)=>{sent.push(message);return {messageId:'fixture-provider-id'}}}
  const job={id:'fixture-job',lease_id:'fixture-lease',channel:'email' as const,recipient_email:'alice@example.test',unsubscribe_token:'fixture-token',subscription:null!}
- try{
-  assert.equal((await deliverNotification(env,job)).decision,'retry');assert.equal(requests.length,0)
-  assert.equal((await deliverNotification({...env,RESEND_API_KEY:'fixture-resend',EMAIL_SENDER_ENABLED:'true'},job)).decision,'sent')
-  const request=requests[0];assert.equal(request.url,'https://api.resend.com/emails');assert.equal((request.init.headers as Record<string,string>)['Idempotency-Key'],'moho-dm-fixture-job')
-  const body=JSON.parse(request.init.body as string);assert.deepEqual(body.to,['alice@example.test']);assert.match(body.text,/notification-preferences\/unsubscribe\?token=fixture-token/);assert.equal(body.headers['List-Unsubscribe-Post'],'List-Unsubscribe=One-Click');assert.equal(request.init.redirect,'error');assert.equal((request.init.headers as Record<string,string>)['User-Agent'],'MoHoLocal-Notifications/1.0')
- }finally{globalThis.fetch=original}
+ assert.equal((await deliverNotification(env,job)).decision,'retry');assert.equal(sent.length,0)
+ const result=await deliverNotification({...env,EMAIL:mail,EMAIL_SENDER_ENABLED:'true'},job)
+ assert.equal(result.decision,'sent');assert.equal(result.provider_id,'fixture-provider-id')
+ assert.equal(sent[0].to,'alice@example.test');assert.match(sent[0].text,/notification-preferences\/unsubscribe\?token=fixture-token/)
+ assert.equal(sent[0].headers['List-Unsubscribe-Post'],'List-Unsubscribe=One-Click')
+})
+test('native email distinguishes suppression from retryable setup and quota errors',async()=>{
+ const job={id:'fixture-job',lease_id:'fixture-lease',channel:'email' as const,recipient_email:'alice@example.test',unsubscribe_token:'fixture-token',subscription:null!}
+ for(const [code,decision] of [['E_RECIPIENT_SUPPRESSED','failed'],['E_RATE_LIMIT_EXCEEDED','retry'],['E_EMAIL_SENDING_NOT_READY','retry']]){
+  const result=await deliverNotification({...env,EMAIL:{send:async()=>{throw Object.assign(new Error('fixture'),{code})}},EMAIL_SENDER_ENABLED:'true'},job)
+  assert.equal(result.decision,decision);assert.equal(result.code,code)
+ }
 })
 test('Web Push produces an encrypted payload and VAPID authorization without sending message content',async()=>{
  const recipient=createECDH('prime256v1');recipient.generateKeys();const server=createECDH('prime256v1');server.generateKeys()
@@ -41,5 +46,5 @@ test('dispatcher never acknowledges a provider network failure as sent and keeps
   if(call.action==='claim'&&!claimed){claimed=true;return Response.json({id:'fixture-job',lease_id:'fixture-lease',channel:'email',recipient_email:'alice@example.test',unsubscribe_token:'fixture-token'})}
   return Response.json(call.action==='claim'?null:{saved:true})
  }
- try{await runNotificationDelivery({...env,RESEND_API_KEY:'fixture',EMAIL_SENDER_ENABLED:'true'});assert.equal(calls.find(c=>c.action==='finish')?.payload.decision,'retry')}finally{globalThis.fetch=original}
+ try{await runNotificationDelivery({...env,EMAIL:{send:async()=>{throw Error('Fixture provider outage')}},EMAIL_SENDER_ENABLED:'true'});assert.equal(calls.find(c=>c.action==='finish')?.payload.decision,'retry')}finally{globalThis.fetch=original}
 })

@@ -61,3 +61,8 @@ VAPID_PUBLIC_KEY = "BIJ4QK9ivQ_uYG55rE1Zq8WJbXOSKHMfccA0RgiZmqdqDGNCumeA3UEIj8E8
 # Then POST:           curl "http://localhost:8787/__scheduled?cron=0+3+*+*+1"
 
 # Public VAPID key; private counterpart lives in Worker secrets.
+
+# Existing Workers Paid plan includes outbound email. Restricted sender; no API key.
+[[send_email]]
+name = "EMAIL"
+allowed_sender_addresses = ["hello@moholocal.com"]
