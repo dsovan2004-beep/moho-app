@@ -1,10 +1,10 @@
 import {test} from 'node:test'
 import assert from 'node:assert/strict'
 import {compatibleProgress,localObservationInput,observationInstant,petProgressLabel} from '../lib/pet-progress'
-test('legacy found reports do not imply secured; reunion is reporter-confirmed',()=>{
+test('legacy found reports do not imply secured or independently confirmed reunion',()=>{
  assert.equal(petProgressLabel(undefined,'found'),'Sighting / secured status not confirmed')
  assert.equal(petProgressLabel('sighted','found'),'Sighted — not secured')
- assert.equal(petProgressLabel('unknown','reunited'),'Reunited — reporter confirmed')
+ assert.equal(petProgressLabel('unknown','reunited'),'Reunited — recorded status')
 })
 test('changing report classification cannot retain contradictory possession',()=>{
  assert.equal(compatibleProgress('lost','secured'),'unknown')

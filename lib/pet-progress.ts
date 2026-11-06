@@ -1,6 +1,6 @@
 export type PetProgress = 'unknown' | 'sighted' | 'secured'
 export function petProgressLabel(progress?:string|null,status?:string){
- if(status==='reunited')return 'Reunited — reporter confirmed'
+ if(status==='reunited')return 'Reunited — recorded status'
  if(progress==='sighted')return 'Sighted — not secured'
  if(progress==='secured')return 'Secured — seeking owner'
  return 'Sighting / secured status not confirmed'
