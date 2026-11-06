@@ -30,3 +30,10 @@ These are researched candidates, not new production event inserts. The same-nigh
 ## Acceptance measures
 
 Relevant event discovery, calendar saves, useful discussion replies, source corrections, local business contacts and repeat visits. Prefer a small useful pilot to an unmaintained calendar. Each published event needs organizer/source, city, date/timezone or an explicit unknown, venue, current participation link/cost if established, last check, expiry and moderation controls. Verify responsive, keyboard, empty, cancelled and expired states before launch.
+
+
+## November 6 source recheck and first publication
+
+The Mountain House detail and Special Events pages now both show the December 5 parade at 5 PM; Special Events lists tree lighting at 6 PM. The earlier conflict is resolved by this recheck. Published one MoHoHo event with unknown overall end/admission (not guessed). Published Tracy’s December 5 6–8:30 PM event with city-source free admission and downtown venue. Both use source `editorial_seasonal_2026`, approved status, source links and checked-date text. No event photograph borrowed; no Thanksgiving event invented. SQL: publish-seasonal-events-2026-11-06.sql.
+
+This supersedes the earlier candidate-only state for these two events. Full hubs, calendar actions, discussions and notifications remain unfinished scope. Homepage/native deployment acceptance pending.

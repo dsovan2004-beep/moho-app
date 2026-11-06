@@ -2,8 +2,10 @@ export const runtime = 'nodejs'
 
 import { getSupabaseClient, type Event } from '@/lib/supabase'
 import Link from 'next/link'
+import { RELAUNCH_CITY_NAMES } from '@/lib/cities'
+import { eventDateParts, eventBucket, isUpcomingEvent } from '@/lib/event-dates'
 
-const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca', 'Brentwood']
+const CITIES = ['All Cities', ...RELAUNCH_CITY_NAMES]
 
 interface PageProps {
   searchParams: Promise<{ city?: string }>
@@ -11,45 +13,14 @@ interface PageProps {
 
 async function getEvents(city?: string) {
   const supabase = getSupabaseClient()
-  let req = supabase.from('events').select('*').order('start_date', { ascending: true })
+  let req = supabase.from('events').select('*').eq('status', 'approved').order('start_date', { ascending: true })
 
   if (city && city !== 'All Cities') {
     req = req.eq('city', city)
   }
 
   const { data, error } = await req
-  if (error) console.error(error)
-  return (data ?? []) as Event[]
-}
-
-// Parse event dates safely — date-only strings (YYYY-MM-DD) must be treated
-// as local midnight, NOT UTC midnight. new Date('2026-03-15') parses as UTC
-// which shifts the day back one in PST (UTC-8), showing March 14 instead of 15.
-function parseEventDate(dateStr: string): Date {
-  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
-    const [y, m, d] = dateStr.split('-').map(Number)
-    return new Date(y, m - 1, d) // local midnight — no UTC offset shift
-  }
-  return new Date(dateStr) // datetime strings with T already carry offset info
-}
-
-// Bucket an upcoming event into a time label
-function getEventBucket(dateStr: string): 'today' | 'tomorrow' | 'this-weekend' | 'this-week' | 'upcoming' {
-  const now   = new Date()
-  const event = parseEventDate(dateStr)
-
-  const todayStart  = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-  const todayEnd    = new Date(todayStart.getTime() + 24 * 60 * 60 * 1000)
-  const tomorrowEnd = new Date(todayStart.getTime() + 2 * 24 * 60 * 60 * 1000)
-  const thisWeekEnd = new Date(todayStart.getTime() + 7 * 24 * 60 * 60 * 1000)
-
-  if (event >= todayStart && event < todayEnd)    return 'today'
-  if (event >= todayEnd   && event < tomorrowEnd) return 'tomorrow'
-  // Weekend = Saturday (6) or Sunday (0) within the next 7 days
-  const eventDay = event.getDay()
-  if (event >= tomorrowEnd && event < thisWeekEnd && (eventDay === 6 || eventDay === 0)) return 'this-weekend'
-  if (event >= tomorrowEnd && event < thisWeekEnd) return 'this-week'
-  return 'upcoming'
+  return { events: (data ?? []) as Event[], unavailable: Boolean(error) }
 }
 
 const BUCKET_META: Record<string, { label: string; emoji: string; desc: string }> = {
@@ -62,15 +33,6 @@ const BUCKET_META: Record<string, { label: string; emoji: string; desc: string }
 
 const BUCKET_ORDER = ['today', 'tomorrow', 'this-weekend', 'this-week', 'upcoming'] as const
 
-function formatDate(dateStr: string) {
-  const d = parseEventDate(dateStr)
-  return {
-    month: d.toLocaleString('en-US', { month: 'short' }).toUpperCase(),
-    day: d.getDate(),
-    full: d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
-  }
-}
-
 const CITY_COLORS: Record<string, string> = {
   'Mountain House': 'bg-blue-100 text-blue-800',
   Tracy: 'bg-green-100 text-green-800',
@@ -80,7 +42,7 @@ const CITY_COLORS: Record<string, string> = {
 }
 
 function EventCard({ event }: { event: Event }) {
-  const { month, day, full } = formatDate(event.start_date)
+  const { month, day, date: full, time } = eventDateParts(event.start_date)
   const cityColor = CITY_COLORS[event.city] ?? 'bg-gray-100 text-gray-700'
 
   return (
@@ -128,13 +90,13 @@ function EventCard({ event }: { event: Event }) {
           <div className="flex items-center gap-4 mt-2 text-xs text-gray-400">
             <span>📅 {full}</span>
             {event.start_date.includes('T') && (
-              <span>🕐 {new Date(event.start_date).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</span>
+              <span>🕐 {time}</span>
             )}
             {event.location && <span>📍 {event.location}</span>}
           </div>
           {/* Bucket label chip on each card — immediate visual context */}
           {(() => {
-            const bucket = getEventBucket(event.start_date)
+            const bucket = eventBucket(event.start_date)
             if (bucket === 'upcoming') return null
             const meta = BUCKET_META[bucket]
             return (
@@ -155,12 +117,12 @@ function EventCard({ event }: { event: Event }) {
 export default async function EventsPage({ searchParams }: PageProps) {
   const params = await searchParams
   const city = params.city ?? 'All Cities'
-  const events = await getEvents(city)
+  const { events, unavailable } = await getEvents(city)
 
   // Group by upcoming vs past — use parseEventDate to avoid UTC offset bug
   const now = new Date()
-  const upcoming = events.filter((e) => parseEventDate(e.start_date) >= now)
-  const past     = events.filter((e) => parseEventDate(e.start_date) < now)
+  const upcoming = events.filter((e) => isUpcomingEvent(e, now))
+  const past     = events.filter((e) => !isUpcomingEvent(e, now))
 
   // Sub-bucket upcoming events for time labels
   const buckets = BUCKET_ORDER.reduce<Record<string, typeof upcoming>>((acc, key) => {
@@ -168,7 +130,7 @@ export default async function EventsPage({ searchParams }: PageProps) {
     return acc
   }, {})
   for (const event of upcoming) {
-    const bucket = getEventBucket(event.start_date)
+    const bucket = eventBucket(event.start_date)
     buckets[bucket].push(event)
   }
 
@@ -176,7 +138,7 @@ export default async function EventsPage({ searchParams }: PageProps) {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-6">
         <h1 className="text-3xl font-extrabold text-gray-900">Community Events</h1>
-        <p className="text-gray-500 mt-1">What's happening in San Joaquin County</p>
+        <p className="text-gray-500 mt-1">Gatherings, celebrations and things to do close to home. Times shown in Pacific Time.</p>
       </div>
 
       {/* City Filter Tabs */}
@@ -185,7 +147,7 @@ export default async function EventsPage({ searchParams }: PageProps) {
           <Link
             key={c}
             href={`/events?city=${encodeURIComponent(c)}`}
-            className={`text-sm font-semibold px-4 py-1.5 rounded-full transition-all ${
+            className={`text-sm font-semibold px-4 py-3 min-h-11 rounded-full transition-all ${
               city === c
                 ? 'bg-blue-700 text-white shadow-sm'
                 : 'bg-white border border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-700'
@@ -196,7 +158,7 @@ export default async function EventsPage({ searchParams }: PageProps) {
         ))}
       </div>
 
-      {events.length === 0 ? (
+      {unavailable ? <div role="status" className="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-slate-700"><h2 className="font-bold">Events are temporarily unavailable</h2><p className="mt-2">We couldn’t load the calendar. Please try again shortly.</p><Link href={`/events?city=${encodeURIComponent(city)}`} className="inline-flex min-h-11 items-center underline mt-2">Try again →</Link></div> : events.length === 0 ? (
         <div className="text-center py-20 text-gray-400">
           <p className="text-4xl mb-3">📅</p>
           <p className="font-medium">No events found</p>

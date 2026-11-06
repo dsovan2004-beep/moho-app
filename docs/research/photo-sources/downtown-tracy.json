@@ -1,0 +1,80 @@
+{
+  "url": "https://upload.wikimedia.org/wikipedia/commons/d/d7/Downtown_Tracy.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "descriptionurl": "https://commons.wikimedia.org/wiki/File:Downtown_Tracy.jpeg",
+  "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=44750198",
+  "extmetadata": {
+    "DateTime": {
+      "value": "2015-11-03 17:04:26",
+      "source": "mediawiki-metadata",
+      "hidden": ""
+    },
+    "ObjectName": {
+      "value": "Downtown Tracy",
+      "source": "mediawiki-metadata"
+    },
+    "CommonsMetadataExtension": {
+      "value": 1.2,
+      "source": "extension",
+      "hidden": ""
+    },
+    "Categories": {
+      "value": "Self-published work|Night in San Joaquin County, California|Trees in San Joaquin County, California|Nature of Tracy, California|Buildings in Tracy, California|Streets in Tracy, California",
+      "source": "commons-categories",
+      "hidden": ""
+    },
+    "Assessments": {
+      "value": "",
+      "source": "commons-categories",
+      "hidden": ""
+    },
+    "ImageDescription": {
+      "value": "Downtown Tracy",
+      "source": "commons-desc-page"
+    },
+    "DateTimeOriginal": {
+      "value": "2015-11-03",
+      "source": "commons-desc-page"
+    },
+    "Credit": {
+      "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=Template:City_of_Tracy_CA&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"Template:City of Tracy CA (page does not exist)\">Template:City of Tracy CA</a>",
+      "source": "commons-desc-page"
+    },
+    "Artist": {
+      "value": "Mark E. Robertson",
+      "source": "commons-desc-page"
+    },
+    "LicenseShortName": {
+      "value": "CC BY-SA 4.0",
+      "source": "commons-desc-page",
+      "hidden": ""
+    },
+    "UsageTerms": {
+      "value": "Creative Commons Attribution-Share Alike 4.0",
+      "source": "commons-desc-page"
+    },
+    "AttributionRequired": {
+      "value": "true",
+      "source": "commons-desc-page",
+      "hidden": ""
+    },
+    "LicenseUrl": {
+      "value": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "commons-desc-page"
+    },
+    "Copyrighted": {
+      "value": "True",
+      "source": "commons-desc-page",
+      "hidden": ""
+    },
+    "Restrictions": {
+      "value": "",
+      "source": "commons-desc-page",
+      "hidden": ""
+    },
+    "License": {
+      "value": "cc-by-sa-4.0",
+      "source": "commons-templates",
+      "hidden": ""
+    }
+  }
+}

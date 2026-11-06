@@ -2,6 +2,7 @@ export const runtime = 'nodejs'
 
 import { getSupabaseClient, type Event } from '@/lib/supabase'
 import Link from 'next/link'
+import { eventDateParts } from '@/lib/event-dates'
 import { notFound } from 'next/navigation'
 
 interface PageProps {
@@ -14,33 +15,10 @@ async function getEvent(id: string): Promise<Event | null> {
     .from('events')
     .select('*')
     .eq('id', id)
+    .eq('status', 'approved')
     .single()
   if (error || !data) return null
   return data as Event
-}
-
-// Parse event dates safely — date-only strings (YYYY-MM-DD) must be treated
-// as local midnight, NOT UTC midnight. new Date('2026-03-15') parses as UTC
-// which shifts the day back one in PST (UTC-8), showing March 14 instead of 15.
-function parseEventDate(dateStr: string): Date {
-  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
-    const [y, m, d] = dateStr.split('-').map(Number)
-    return new Date(y, m - 1, d) // local midnight — no UTC offset shift
-  }
-  return new Date(dateStr) // datetime strings with T already carry offset info
-}
-
-function formatFullDate(dateStr: string) {
-  const d = parseEventDate(dateStr)
-  return {
-    weekday: d.toLocaleDateString('en-US', { weekday: 'long' }),
-    date:    d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
-    time:    dateStr.includes('T')
-      ? d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
-      : null,
-    month:   d.toLocaleString('en-US', { month: 'short' }).toUpperCase(),
-    day:     d.getDate(),
-  }
 }
 
 const CITY_THEMES: Record<string, { bg: string; badge: string }> = {
@@ -56,7 +34,7 @@ export default async function EventDetailPage({ params }: PageProps) {
   const event = await getEvent(id)
   if (!event) notFound()
 
-  const { weekday, date, time, month, day } = formatFullDate(event.start_date)
+  const { weekday, date, time, month, day } = eventDateParts(event.start_date)
   const theme = CITY_THEMES[event.city] ?? CITY_THEMES['Mountain House']
 
   return (
@@ -123,10 +101,10 @@ export default async function EventDetailPage({ params }: PageProps) {
             </div>
             <div>
               <p className="font-semibold text-gray-900">{weekday}, {date}</p>
-              {time && <p className="text-sm text-gray-500 mt-0.5">🕐 {time}</p>}
+              {time && <p className="text-sm text-gray-500 mt-0.5">🕐 {time} Pacific Time</p>}
               {event.end_date && (
                 <p className="text-sm text-gray-500 mt-0.5">
-                  Until {parseEventDate(event.end_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
+                  Until {eventDateParts(event.end_date).date} · {eventDateParts(event.end_date).time} Pacific Time
                 </p>
               )}
             </div>

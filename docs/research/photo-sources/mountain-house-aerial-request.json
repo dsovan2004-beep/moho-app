@@ -1,0 +1,14 @@
+{
+  "url": "https://apps.geo.fpac.usda.gov/geo-imagery/rest/services/naip/conus_naip/ImageServer/exportImage?f=image&bbox=-121.557%2C37.769%2C-121.535%2C37.780&bboxSR=4326&imageSR=3857&size=1600%2C1000&format=jpg&bandIds=0%2C1%2C2&mosaicRule=%7B%22mosaicMethod%22%3A+%22esriMosaicLockRaster%22%2C+%22lockRasterIds%22%3A+%5B20291%5D%7D&interpolation=RSP_BilinearInterpolation",
+  "parameters": {
+    "f": "image",
+    "bbox": "-121.557,37.769,-121.535,37.780",
+    "bboxSR": 4326,
+    "imageSR": 3857,
+    "size": "1600,1000",
+    "format": "jpg",
+    "bandIds": "0,1,2",
+    "mosaicRule": "{\"mosaicMethod\": \"esriMosaicLockRaster\", \"lockRasterIds\": [20291]}",
+    "interpolation": "RSP_BilinearInterpolation"
+  }
+}
