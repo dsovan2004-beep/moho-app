@@ -654,11 +654,11 @@ function NavContent() {
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-white focus:p-3 focus:text-slate-900">Skip to content</a>
         <Suspense fallback={null}>
           <NavContent />
         </Suspense>
-        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-white focus:p-3 focus:text-slate-900">Skip to content</a>
-        <main id="main-content">{children}</main>
+        <main id="main-content" tabIndex={-1}>{children}</main>
         <footer className="bg-gray-900 text-gray-400 text-sm mt-16">
           {/* ── Main 4-column grid ── */}
           <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-14 pb-10">
