@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-05",
+  "official_corrections": [
+    {
+      "id": "c0d491e5-8ee1-4966-b90f-2e2fda3c61c9",
+      "source": "https://www.homedepot.com/l/Tracy/CA/Tracy/95304/1020",
+      "finding": "Official store address and phone differ from existing record; corrected category to Retail."
+    },
+    {
+      "id": "203ec58d-0738-4ca4-a31d-1a5bb2749ba6",
+      "source": "https://twomenandatruck.com/movers/ca/tracy",
+      "finding": "Official Tracy service page lists Stockton office, correct phone and Mountain House service coverage; corrected physical location while preserving ID."
+    }
+  ],
+  "duplicate_held": "0424631c-a91c-4b81-9a94-013e58b8e6e1",
+  "unresolved_research": [
+    "Mountain House Landscaping: conflicting public directory contacts and inaccessible official website; requires first-party confirmation.",
+    "Green Thumb Landscaping Tracy, Desert Rose Landscaping, SJV Landscaping & Sprinklers: no independently matched local first-party source obtained in this search pass.",
+    "Tracy Rooter & Plumbing, Tracy Plumbing & Drain, Clean Pro Window Cleaning, All Access Garage Door Service: exact local searches did not establish an independent first-party match."
+  ],
+  "interpretation": "Search failure is not proof a business does not exist. These records received no fresh verification or new service tags. No outreach performed.",
+  "remaining_candidates_requiring_rechecks": 43,
+  "launch_category_checked_choices": 3,
+  "landscaping_checked_choices": 0
+}

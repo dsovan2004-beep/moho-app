@@ -30,7 +30,7 @@ export default async function CityPage({ params }: PageProps) {
   const [count, local, served] = await Promise.all([
     db.from('businesses').select('id', { count: 'exact', head: true }).eq('city', city.name).eq('status', 'approved').eq('verified', true),
     db.from('businesses').select(`${PUBLIC_BUSINESS_COLUMNS},listing_checks(${CHECK_COLUMNS})`).eq('city', city.name).eq('status', 'approved').eq('verified', true).order('name').limit(6),
-    db.from('businesses').select(`${PUBLIC_BUSINESS_COLUMNS},listing_checks!inner(${CHECK_COLUMNS})`).contains('listing_checks.service_areas', [city.name]).eq('status', 'approved').eq('verified', true).order('name').limit(12),
+    db.from('businesses').select(`${PUBLIC_BUSINESS_COLUMNS},listing_checks!inner(${CHECK_COLUMNS})`).contains('listing_checks.service_areas', [city.name]).eq('category', 'Home Services').eq('status', 'approved').eq('verified', true).order('name').limit(12),
   ])
   const checked = (served.data ?? []) as CheckedBusiness[]
   const directoryUrl = `/directory?city=${encodeURIComponent(city.name)}`

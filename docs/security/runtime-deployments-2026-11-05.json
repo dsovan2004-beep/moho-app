@@ -1,0 +1,34 @@
+{
+  "moho-web": {
+    "id": "a644d170-1341-4428-984b-874ef9589ca1",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "dsovan2004@gmail.com",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "f22bee59-1f52-4f0c-9881-9d53f5b4c7d1",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-11-06T00:17:41.039556Z"
+  },
+  "moho-ingestion": {
+    "id": "80b8ebef-a57d-4fa9-974c-99b8fd364c92",
+    "source": "wrangler",
+    "strategy": "percentage",
+    "author_email": "dsovan2004@gmail.com",
+    "annotations": {
+      "workers/triggered_by": "deployment"
+    },
+    "versions": [
+      {
+        "version_id": "1a58d313-f04d-4db8-9fad-094a14e86d68",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-11-06T00:16:43.567284Z"
+  }
+}

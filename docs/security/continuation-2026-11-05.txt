@@ -4,8 +4,8 @@ November 5, 2026
 STATUS
 Security and workflow code/database changes are deployed. The revised discovery
 experience is live at https://www.moholocal.com. This is not a completed relaunch:
-legacy credentials are now retired and rejected. Native source builds are being
-connected; checked-provider supply and resident validation gates remain open.
+legacy credentials are now retired and rejected. Both Workers passed clean native Git builds after temporary setup access was
+removed; checked-provider supply and resident validation gates remain open.
 
 SECURITY CHANGES
 - Confirmed-account reactions derive identity server-side; durable 60/hour quota.
@@ -71,11 +71,11 @@ DATA / UX
 72 focus-city Home Services candidates were triaged; 56 were initially public.
 23 records were quarantined reversibly: 22 exact name/city/phone/address matches to
 disabled fabricated seed batches, plus one official website identity/geography
-mismatch (Maryland/Delaware). Five existing business records were corrected from
-official sites, preserving IDs; 43 candidates still need independent rechecks.
-The two additional corrections are moving and hardware retail; only three records
-cover launch categories. A duplicate hardware-store listing is held reversibly
-with its canonical ID recorded; total held records are now 24.
+mismatch (Maryland/Delaware). Eight existing business records were corrected from
+official sites, preserving IDs; 39 candidates still need independent rechecks.
+Additional corrections include moving, window treatments and hardware retail; only three records
+cover launch categories. Two duplicate hardware-store listings are held reversibly
+with its canonical ID recorded; total held records are now 25.
 168 focus-city positive ratings without positive review counts were cleared with
 private audit records (includes unpublished rows). No matching public mismatch remains.
 All 1,959 business rows were retained; 1,805 retain public flags after quarantine.
@@ -97,5 +97,5 @@ BACKLOG DISCIPLINE
 ROADMAP.md is canonical. BACKLOG.md records the next-work queue; SPRINTS.md records
 R1/R2/R3 acceptance and unresolved gates. Historical seeding/distribution plans do
 not authorize new fabricated listings or Facebook outreach. Preserve protected
-CLAUDE.md and BIBLE.md. Do not mark the relaunch complete while native build verification or supply/
-pilot gates remain open.
+CLAUDE.md and BIBLE.md. Do not mark the relaunch complete while checked supply and resident pilot gates
+remain open. Native deployment setup is complete.

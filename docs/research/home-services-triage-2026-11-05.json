@@ -356,16 +356,16 @@
       "original_name": "Ace Hardware",
       "original_city": "Tracy",
       "was_public": true,
-      "outcome": "not_independently_rechecked",
-      "evidence": null
+      "outcome": "corrected_official_website_retail_not_launch_service",
+      "evidence": "https://www.acehardware.com/store-details/17414"
     },
     {
       "id": "1a20d6fd-74dc-4f4d-8e8a-6daa6c514bf6",
       "original_name": "Ace Hardware Tracy",
       "original_city": "Tracy",
       "was_public": true,
-      "outcome": "not_independently_rechecked",
-      "evidence": null
+      "outcome": "quarantined_duplicate_of_corrected_store",
+      "evidence": "https://www.acehardware.com/store-details/17414"
     },
     {
       "id": "d7a0922c-2454-4f43-a260-31796b728ff8",
@@ -388,8 +388,8 @@
       "original_name": "Budget Blinds Tracy",
       "original_city": "Tracy",
       "was_public": true,
-      "outcome": "not_independently_rechecked",
-      "evidence": null
+      "outcome": "corrected_official_website_window_treatments_not_launch_category",
+      "evidence": "https://www.budgetblinds.com/livermore/who-we-are/"
     },
     {
       "id": "3aca29af-5016-4110-961d-f6f7f4887a75",
@@ -474,8 +474,8 @@
       "original_name": "Harbor Freight Tools",
       "original_city": "Tracy",
       "was_public": true,
-      "outcome": "not_independently_rechecked",
-      "evidence": null
+      "outcome": "corrected_official_website_retail_not_launch_service",
+      "evidence": "https://www.harborfreight.com/storelocator/3021-n-tracy-blvd-tracy-95376?number=516"
     },
     {
       "id": "c0d491e5-8ee1-4966-b90f-2e2fda3c61c9",
@@ -736,12 +736,13 @@
   ],
   "summary": {
     "quarantined_exact_disabled_seed_match": 22,
-    "not_independently_rechecked": 43,
+    "not_independently_rechecked": 39,
     "quarantined_official_website_geographic_identity_mismatch": 1,
-    "corrected_official_website_retail_not_launch_service": 1,
+    "corrected_official_website_retail_not_launch_service": 3,
+    "quarantined_duplicate_of_corrected_store": 2,
+    "corrected_official_website_window_treatments_not_launch_category": 1,
     "existing_listing_corrected_from_official_website": 3,
-    "quarantined_duplicate_of_corrected_store": 1,
     "corrected_official_website_moving_not_launch_category": 1
   },
-  "additional_check_scope": "Two additional corrected records are moving and hardware retail; they do not increase the three launch-category checked choices. One duplicate held; business IDs preserved."
+  "additional_check_scope": "Eight corrected existing records: three launch-category providers, moving, window treatments and three hardware retailers. Two duplicates held in addition to 23 provenance/identity holds; 39 candidates still require rechecks. IDs preserved."
 }

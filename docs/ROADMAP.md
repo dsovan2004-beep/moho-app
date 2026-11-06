@@ -17,7 +17,7 @@ Founder direction: retain Next.js, Cloudflare and Supabase; relaunch Mountain Ho
 | FLOW-01 | P1 · Submission | Save a pending request and receipt; explain sign-in if required; canonical cities; no self-publication; moderator can approve/reject with evidence | Implemented and deployed |
 | FLOW-02 | P1 · Claims | Durable requester-bound claim; no early claimed flag; admin checks ownership evidence; atomic owner assignment; duplicate/racing claims handled | Implemented and deployed |
 | FLOW-03 | P1 · Moderation | Unified pending/needs-review handling; approval distinct from information checks; affected-row confirmation; audit trail and accurate errors | Implemented and deployed |
-| DATA-01 | P1 · Editorial | Audit 72 focus-city Home Services candidates (56 initially public); inspect seed provenance/duplicates; check public contacts, exact services, service areas and sources | 72 candidates triaged: 24 held (23 provenance/identity issues + 1 duplicate), 5 existing records corrected from official sites, 43 still require independent rechecks; only 3 corrected records cover the launch categories; no new seed rows |
+| DATA-01 | P1 · Editorial | Audit 72 focus-city Home Services candidates (56 initially public); inspect seed provenance/duplicates; check public contacts, exact services, service areas and sources | 72 candidates triaged: 25 held (23 provenance/identity issues + 2 duplicates), 8 existing records corrected from official sites, 39 still require independent rechecks; only 3 corrected records cover the launch categories; no new seed rows |
 | DATA-02 | P1 · Trust | Hide unsupported stars; dated scoped checks; private contact/evidence separation; image source/rights review; correction and recheck cadence | 168 unsupported focus-city ratings cleared with audit trail; dated website-check scope and owner-claim labels deployed; image-rights and recheck operations remain open |
 | DATA-03 | P1 · Accuracy | Correct aggregate counts, Supabase error handling, city-scoped modules and stale event/community presentation | Homepage counts use exact city queries; false trending removed; results show retry errors; pet board has recent/history views; legacy catalog/SEO surfaces still need review |
 | UX-01 | P2 · Product/design | Mobile prototypes: city/task homepage, results, business detail, submission and claims; test states, contrast, keyboard/touch access | Homepage/results/detail deployed; city pages redesigned with task search, checked service areas, contacts, pet links and honest wider-directory labels; 390px city layout/search verified locally, deployment underway; resident testing remains open |
@@ -42,7 +42,7 @@ Launch categories: handyman/small repairs (including painting), plumbing, house 
 
 Pilot decision gates (proposed internal experiment, not industry benchmarks): at least 15/20 residents find two plausible providers within two minutes; at least 8 contact one; at least 80% of contacted providers reply within two business days (report denominator). Every public trust claim needs dated evidence and every pilot listing needs a working contact. Contact clicks do not establish completed jobs.
 
-Evidence baseline: read-only audit at 8bf92e2; 430 focus-city records pass existing public flags, only 17 business records have dated verification, 65 focus public records lack phone and website, and 123 have positive stars without positive review counts. These are candidate records, not independently checked businesses. Competitor/Facebook research supports task fit, service geography, contact clarity and documented freshness; it does not establish product-market fit. No outreach authorized by this backlog.
+Evidence baseline: read-only audit at 8bf92e2; 390 focus-city records pass existing public flags, only 17 business records have dated verification, 65 focus public records lack phone and website, and 123 have positive stars without positive review counts. These are candidate records, not independently checked businesses. Competitor/Facebook research supports task fit, service geography, contact clarity and documented freshness; it does not establish product-market fit. No outreach authorized by this backlog.
 
 Execution order: P0 access controls → saved submission/claim/moderation flows → checked data and redesigned discovery → pilot → expansion/revenue. Product, security, engineering, editorial and validation responsibilities remain explicit in each work item.
 
@@ -150,7 +150,7 @@ Open items from this sprint carrying into the next:
 - ARCO — no verified Mountain House 95391 address found; Safeway Express fuel (non-ARCO) exists separately
 
 **SQL committed:** `sql/sprint2_mh_cleanup.sql` (commit `777d8e2`)
-**Data fixes committed:** `7cfa438` (trustedListings helper), `8905d8c` (doc fixes)
+**Data fixes committed:** `7cfa398` (trustedListings helper), `8905d8c` (doc fixes)
 
 **Integrity rule enforced:** `status='approved'` AND `verified=true` on all public queries — dual trust gate confirmed clean across all 10 restaurant records.
 
