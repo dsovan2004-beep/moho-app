@@ -1,5 +1,7 @@
 import { serializeJsonLd } from '@/lib/json-ld'
 import ListingEvidence from '@/app/components/ListingEvidence'
+import BusinessContactActions from '@/app/components/BusinessContactActions'
+import { businessHref, discoveryContext } from '@/lib/business-discovery'
 import { CHECK_COLUMNS } from '@/lib/listing-evidence'
 import { PUBLIC_BUSINESS_COLUMNS } from '@/lib/supabase'
 export const runtime = 'nodejs'
@@ -15,6 +17,7 @@ import type { Metadata } from 'next'
 
 interface PageProps {
   params: Promise<{ id: string }>
+  searchParams: Promise<{ city?: string; service?: string }>
 }
 
 // ── JSON-LD builder ──────────────────────────────────────────────────────────
@@ -190,19 +193,15 @@ async function getBusiness(id: string) {
   return data as Business
 }
 
-async function getRelated(city: string, category: string, excludeId: string) {
+async function getRelated(city: string, category: string, excludeId: string, tags: string[]) {
   const supabase = getSupabaseClient()
-  const { data } = await supabase
-    .from('businesses')
-    .select(PUBLIC_BUSINESS_COLUMNS)
-    .eq('city', city)
-    .eq('category', category)
-    .eq('status', 'approved')
-    .eq('verified', true)
-    .neq('id', excludeId)
-    .order('rating', { ascending: false })
-    .limit(4)
-  return (data ?? []) as Business[]
+  let query = supabase.from('businesses')
+    .select(`${PUBLIC_BUSINESS_COLUMNS},listing_checks!inner(${CHECK_COLUMNS})`)
+    .eq('category', category).eq('status', 'approved').eq('verified', true)
+    .contains('listing_checks.service_areas', [city]).neq('id', excludeId)
+  if (tags.length) query = query.overlaps('listing_checks.service_tags', tags)
+  const { data, error } = await query.order('name').limit(4)
+  return { businesses: (data ?? []) as unknown as Business[], failed: !!error }
 }
 
 async function getBusinessImages(businessId: string) {
@@ -253,12 +252,12 @@ function InfoRow({
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-blue-600 hover:underline break-all"
+            className="inline-flex min-h-11 items-center text-sm text-blue-600 hover:underline break-all"
           >
             {value}
           </a>
         ) : internalHref ? (
-          <Link href={internalHref} className="text-sm text-blue-600 hover:underline break-all">
+          <Link href={internalHref} className="inline-flex min-h-11 items-center text-sm text-blue-600 hover:underline break-all">
             {value}
           </Link>
         ) : (
@@ -270,15 +269,20 @@ function InfoRow({
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
-export default async function BusinessDetailPage({ params }: PageProps) {
+export default async function BusinessDetailPage({ params, searchParams }: PageProps) {
   const { id } = await params
   const biz = await getBusiness(id)
   if (!biz) notFound()
 
-  const [related, images] = await Promise.all([
-    getRelated(biz.city, biz.category, biz.id),
+  const search = await searchParams
+  const context = discoveryContext(biz, search.city, search.service)
+  const [relatedResult, images] = await Promise.all([
+    getRelated(context.city, biz.category, biz.id, context.tags),
     getBusinessImages(biz.id),
   ])
+  const related = relatedResult.businesses
+  const returnQuery = new URLSearchParams({city: context.city, category: biz.category})
+  if (context.service) returnQuery.set('service', context.service.key)
   const city = CITY_CFG[biz.city] ?? CITY_CFG['Mountain House']
   const catEmoji = getCategoryEmoji(biz.category)
   const hasContact = !!(biz.phone || biz.website || biz.contact_email)
@@ -384,24 +388,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
 
           {/* Action buttons — full width on mobile, auto-width on sm+ */}
           <div className="flex flex-col gap-2 shrink-0 w-full sm:w-auto">
-            {biz.phone && (
-              <a
-                href={`tel:${biz.phone}`}
-                className="bg-amber-400 text-[#1e3a5f] font-bold text-sm px-5 py-2.5 rounded-xl text-center hover:bg-amber-300 transition"
-              >
-                📞 Call Now
-              </a>
-            )}
-            {biz.website && (
-              <a
-                href={biz.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white/15 border border-white/30 text-white font-semibold text-sm px-5 py-2.5 rounded-xl text-center hover:bg-white/25 transition"
-              >
-                🌐 Visit Website
-              </a>
-            )}
+            <BusinessContactActions phone={biz.phone} website={biz.website} tone="dark" />
             {biz.address && (
               <a
                 href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(biz.address + ', ' + biz.city + ', CA')}`}
@@ -543,26 +530,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
               </div>
             )}
 
-            {/* Primary CTA */}
-            {biz.phone && (
-              <a
-                href={`tel:${biz.phone}`}
-                className="mt-5 block w-full text-center text-sm font-bold py-3 rounded-xl text-white transition hover:opacity-90"
-                style={{ background: city.gradient }}
-              >
-                📞 Call {biz.name}
-              </a>
-            )}
-            {biz.website && (
-              <a
-                href={biz.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-2 block w-full text-center text-sm font-semibold py-3 rounded-xl border border-gray-200 text-gray-700 hover:border-blue-400 hover:text-blue-700 transition"
-              >
-                Visit Website →
-              </a>
-            )}
+            <BusinessContactActions phone={biz.phone} website={biz.website} />
             {biz.contact_email && !biz.phone && (
               <a
                 href={`mailto:${biz.contact_email}`}
@@ -638,7 +606,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
           {/* Best Of link */}
           {CAT_TO_BEST_SLUG[biz.category] && (
             <Link
-              href={`/best/${CAT_TO_BEST_SLUG[biz.category]}/${CITY_TO_SLUG[biz.city] ?? biz.city.toLowerCase().replace(/\s+/g, '-')}`}
+              href={`/directory?${returnQuery}`}
               className="block w-full text-center text-xs font-semibold py-2.5 rounded-xl border border-gray-200 text-gray-600 hover:border-blue-400 hover:text-blue-700 transition"
             >
               Browse {biz.category}
@@ -663,37 +631,23 @@ export default async function BusinessDetailPage({ params }: PageProps) {
         </aside>
       </div>
 
+      <Link href={`/directory?${returnQuery}`} className="mt-8 inline-flex min-h-11 items-center font-semibold text-[#19352d] underline">← Back to {context.city} results</Link>
       {/* ── Related Businesses ── */}
       {related.length > 0 && (
         <section className="mt-12">
           <h2 className="text-lg font-bold text-gray-900 mb-4">
-            More {biz.category} in {biz.city}
+            More options serving {context.city}
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {related.map((r) => (
-              <Link
-                key={r.id}
-                href={`/business/${r.id}`}
-                className="group bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md hover:-translate-y-0.5 transition-all"
-              >
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center text-xl mb-2 shadow-sm"
-                  style={{ background: city.gradient }}
-                >
-                  <span>{getCategoryEmoji(r.category)}</span>
-                </div>
-                <h3 className="font-bold text-gray-900 group-hover:text-blue-700 transition text-xs line-clamp-2 leading-snug">
-                  {r.name}
-                </h3>
-                {(r.rating ?? 0) > 0 && (r.review_count ?? 0) > 0 && (
-                  <span className="text-xs text-amber-500 font-medium mt-1 block">
-                    ★ {r.rating?.toFixed(1)}
-                  </span>
-                )}
-                {!r.rating && (
-                  <span className="text-[10px] text-gray-400 mt-1 block">No reviews yet</span>
-                )}
-              </Link>
+              <article key={r.id} className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                <Link href={businessHref(r.id, context.city, context.service?.key)} className="inline-flex min-h-11 items-center text-base font-bold text-[#19352d] underline-offset-4 hover:underline">
+                  {r.name} →
+                </Link>
+                <p className="mt-1 text-xs text-slate-500">{r.city === 'Service area only' ? 'Office location not listed' : `Based in ${r.city}`}</p>
+                <ListingEvidence check={r.listing_checks} />
+                <BusinessContactActions phone={r.phone} website={r.website} />
+              </article>
             ))}
           </div>
         </section>
@@ -703,13 +657,13 @@ export default async function BusinessDetailPage({ params }: PageProps) {
       {related.length === 0 && (
         <section className="mt-12 text-center py-8 bg-gray-50 rounded-2xl border border-gray-100">
           <p className="text-gray-500 text-sm mb-3">
-            No other {biz.category} listings in {biz.city} yet.
+            {relatedResult.failed ? 'Related providers could not be loaded. Please try again.' : `No other website-checked options with matching services for ${context.city} in this shortlist yet.`}
           </p>
           <Link
-            href={`/directory?category=${encodeURIComponent(biz.category)}`}
+            href={`/directory?${returnQuery}`}
             className="text-sm font-semibold text-blue-600 hover:underline"
           >
-            Browse all {biz.category} across the 209 →
+            Back to {context.city} results →
           </Link>
         </section>
       )}

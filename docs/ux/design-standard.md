@@ -23,3 +23,5 @@ Seasonal cards require approved event rows, official source, explicit Pacific ti
 
 
 Street-photo increment, November 6: Tracy uses a verified July 8, 2026 street photograph by marker_geo1 via Mapillary (CC BY-SA 4.0). A deterministic perspective view of the licensed panorama preserves actual scenery and source blurring; attribution, source link, license, adaptation notice and downloadable derivative are visible. Mountain House still uses its correctly labeled November 4 satellite view pending a qualifying street photo. Do not treat a recent upload, public city page or renderer output as proof of capture date and reuse rights.
+
+Discovery/contact follow-up: retain city and service when moving from directory to detail, related providers and back. Related choices must have checked coverage for the resident city and matching service evidence, with office geography labeled separately. Put a required provider request form first when primary-source instructions establish it, keep follow-up phone available, and do not submit on a resident’s behalf. Distinguish unavailable related data from an empty shortlist.

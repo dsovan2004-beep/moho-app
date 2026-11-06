@@ -1,0 +1,81 @@
+{
+  "date": "2026-11-06",
+  "method": "Individually inspected primary websites; exact name/normalized-phone/website dedup before publish; no outreach, image reuse or customer reviews. Website checks do not establish credentials, workmanship or availability.",
+  "providers": [
+    {
+      "name": "Valley Pro Handyman",
+      "city": "Tracy",
+      "address": "",
+      "phone": "(209) 600-1073",
+      "website": "https://valleyprohandyman.net/",
+      "description": "Tracy-based handyman business advertising small repairs, cabinet and door work, drywall repair, furniture assembly and property maintenance. Its service-area page includes Mountain House, Tracy, Lathrop and Manteca. The operator states it does not have a general contractor license. Confirm job scope and availability directly; an estimate request is available on its website.",
+      "tags": [
+        "handyman",
+        "small repairs",
+        "assembly",
+        "home maintenance"
+      ],
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "note": "Primary homepage and estimate page confirm identity, Tracy base, public phone, advertised tasks and named service areas. Operator disclaimer retained; no independent license/insurance check, quality endorsement or availability claim. Residential address omitted. Sources https://valleyprohandyman.net/ and https://valleyprohandyman.net/estimate/."
+    },
+    {
+      "name": "Lara\u2019s Cleaning",
+      "city": "Service area only",
+      "address": "",
+      "phone": "(650) 391-7438",
+      "website": "https://www.larascleaning.us/",
+      "description": "Residential cleaning service advertising basic, deep, recurring and move-out cleaning, plus commercial cleaning. Its website names Mountain House, Tracy, Lathrop and Manteca in its service area. Call or use the website contact form to confirm the scope, price and scheduling for your property. An office location was not established.",
+      "tags": [
+        "house cleaning",
+        "recurring cleaning",
+        "deep cleaning",
+        "move-out cleaning"
+      ],
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "note": "Primary homepage, services page and contact-booking page confirm advertised cleaning types, phone and named service cities. No office address established. Weekend-hours wording differs between pages, so hours are not adopted. No review/photo reuse, chemical-safety claims, credentials, guarantee or availability endorsement. Sources https://www.larascleaning.us/, /services.html and /contact---booking.html."
+    }
+  ],
+  "deferred": [
+    {
+      "name": "Sampa\u2019s Services",
+      "source": "https://sampaservices.com/",
+      "reason": "Live browser inspection shows inconsistent Los Angeles versus Mountain House/Bay Area positioning, template-like founder/testimonial claims and malformed footer phone link. Hold for operator/location corroboration."
+    },
+    {
+      "name": "Next Day Fix",
+      "source": "https://ndfix.com/locations/tracy.html",
+      "reason": "Regional landing-page candidate held for stronger operator identity/credential corroboration; not added during this pass."
+    }
+  ],
+  "publication_status": "Two additions published and read back through Supabase; approved, unclaimed, no ratings, scoped listing checks present.",
+  "published_ids": {
+    "Valley Pro Handyman": "3de90c38-eb5a-4d1a-9388-9077dbe80b0d",
+    "Lara\u2019s Cleaning": "4a784a92-7942-47a9-b6c5-d1f6b686fde9"
+  },
+  "totals": {
+    "checked_listings": 33,
+    "unique_launch_category_providers": 22,
+    "Mountain House": {
+      "landscaping": 6,
+      "handyman": 5,
+      "house cleaning": 4,
+      "plumbing": 3
+    },
+    "Tracy": {
+      "landscaping": 6,
+      "handyman": 5,
+      "house cleaning": 5,
+      "plumbing": 5
+    }
+  }
+}

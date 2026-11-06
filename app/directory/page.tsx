@@ -11,6 +11,8 @@ import Link from 'next/link'
 import ListingEvidence from '@/app/components/ListingEvidence'
 import { CHECK_COLUMNS } from '@/lib/listing-evidence'
 import { SERVICE_CHOICES } from '@/lib/services'
+import { businessHref } from '@/lib/business-discovery'
+import BusinessContactActions from '@/app/components/BusinessContactActions'
 
 const PAGE_SIZE = 20
 
@@ -91,7 +93,7 @@ function StarRating({ rating }: { rating?: number | null }) {
 }
 
 // ── Business card ─────────────────────────────────────────────────────────────
-function BusinessCard({ biz, activeCategory }: { biz: Business; activeCategory: string }) {
+function BusinessCard({ biz, activeCategory, city, service }: { biz: Business; activeCategory: string; city: string; service?: string }) {
   // Category chip: amber highlight when the active filter matches this business's category
   const catChip = activeCategory !== 'All' && biz.category === activeCategory
     ? 'bg-amber-50 text-amber-800 border border-amber-200'
@@ -100,7 +102,7 @@ function BusinessCard({ biz, activeCategory }: { biz: Business; activeCategory: 
   return (
     <div className="group flex gap-4 bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md hover:-translate-y-0.5 transition-all">
       {/* Thumbnail — links to detail page */}
-      <Link href={`/business/${biz.id}`} className="hidden sm:flex shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-blue-50 items-center justify-center">
+      <Link href={businessHref(biz.id, city, service)} className="hidden sm:flex shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-blue-50 items-center justify-center">
         {biz.image_url ? (
           <img src={biz.image_url} alt={biz.name} className="w-full h-full object-cover" loading="lazy" />
         ) : (
@@ -111,7 +113,7 @@ function BusinessCard({ biz, activeCategory }: { biz: Business; activeCategory: 
       <div className="flex-1 min-w-0">
         {/* Name + badges — claim badge stays visible; category chip hidden on mobile (redundant when filtered) */}
         <div className="flex items-start justify-between gap-2">
-          <Link href={`/business/${biz.id}`} className="min-w-0 flex-1">
+          <Link href={businessHref(biz.id, city, service)} className="min-w-0 flex-1">
             <h3 className="font-bold text-gray-900 group-hover:text-blue-700 transition leading-snug">
               {biz.name}
             </h3>
@@ -122,7 +124,7 @@ function BusinessCard({ biz, activeCategory }: { biz: Business; activeCategory: 
               <Link
                 href={`/claim-listing/${biz.id}`}
                 onClick={(e) => e.stopPropagation()}
-                className="text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-300 bg-amber-50 text-amber-700 hover:bg-amber-100 transition whitespace-nowrap"
+                className="inline-flex min-h-11 items-center text-xs font-bold px-3 py-2 rounded-xl border border-amber-300 bg-amber-50 text-amber-700 hover:bg-amber-100 transition whitespace-nowrap"
               >
                 📌 Claim
               </Link>
@@ -152,31 +154,7 @@ function BusinessCard({ biz, activeCategory }: { biz: Business; activeCategory: 
 
         <ListingEvidence check={biz.listing_checks} />
 
-        {/* Phone + website on separate row — visible without clicking through */}
-        {(biz.phone || biz.website) && (
-          <div className="flex items-center gap-3 mt-1.5 flex-wrap">
-            {biz.phone && (
-              <a
-                href={`tel:${biz.phone}`}
-                onClick={(e) => e.stopPropagation()}
-                className="inline-flex min-h-11 items-center gap-1 rounded-lg bg-[#19352d] px-4 py-2 text-sm font-semibold text-white hover:bg-[#294b40] transition"
-              >
-                📞 {biz.phone}
-              </a>
-            )}
-            {biz.website && (
-              <a
-                href={biz.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="inline-flex min-h-11 items-center gap-1 rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition"
-              >
-                Visit website ↗
-              </a>
-            )}
-          </div>
-        )}
+        <BusinessContactActions phone={biz.phone} website={biz.website} />
       </div>
     </div>
   )
@@ -631,7 +609,7 @@ export default function DirectoryPage() {
             <>
               <div className="space-y-3">
                 {businesses.map((biz) => (
-                  <BusinessCard key={biz.id} biz={biz} activeCategory={category} />
+                  <BusinessCard key={biz.id} biz={biz} activeCategory={category} city={city} service={service?.key} />
                 ))}
               </div>
 
