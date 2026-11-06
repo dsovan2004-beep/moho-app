@@ -403,3 +403,24 @@ test('push re-registration preserves cursor; retry lease is delayed; gone subscr
  select public.notification_dispatch('finish',jsonb_build_object('id',(:'retry'::jsonb)->>'id','lease_id',(:'retry'::jsonb)->>'lease_id','decision','retire'));reset role;select active from directory_private.push_subscriptions;rollback;`).split('\n')
  assert.equal(r[5],'t');assert.equal(r[7],'t');assert.equal(r.at(-1),'f')
 })
+test('push self-tests require a confirmed owner device, stay private and are durably rate limited',()=>{
+ assert.throws(()=>sql(`begin;${prepare}${as(unconfirmed)}select ${notify('test_push',{id:pet})};rollback;`),/Confirmed sign-in/)
+ assert.throws(()=>sql(`begin;${prepare}${as(alice)}select ${notify('subscribe',devicePayload)};reset role;select id as d from directory_private.push_subscriptions limit 1 \\gset
+ ${as(bob)}select public.notification_settings_action('test_push',jsonb_build_object('id',:'d'));rollback;`),/registered device/)
+ assert.throws(()=>sql(`begin;${prepare}${as(alice)}select ${notify('subscribe',devicePayload)};reset role;select id as d from directory_private.push_subscriptions limit 1 \\gset
+ ${as(alice)}select public.notification_settings_action('test_push',jsonb_build_object('id',:'d'));select public.notification_settings_action('test_push',jsonb_build_object('id',:'d'));rollback;`),/Wait 15 minutes/)
+})
+test('test push can be delivered without fake messages and never advances a message cursor',()=>{
+ const r=sql(`begin;${prepare}${as(alice)}select ${notify('subscribe',devicePayload)};reset role;select id as d from directory_private.push_subscriptions limit 1 \\gset
+ ${as(alice)}select public.notification_settings_action('test_push',jsonb_build_object('id',:'d'));${as(bob)}select jsonb_array_length(${notify('settings')}->'tests');reset role;
+ select public.notification_dispatch('claim','{}') as j \\gset
+ select (:'j'::jsonb)->>'kind';select public.notification_dispatch('finish',jsonb_build_object('id',(:'j'::jsonb)->>'id','lease_id',(:'j'::jsonb)->>'lease_id','decision','sent'));select last_push_at is null from directory_private.push_subscriptions;select count(*) from public.pet_messages;rollback;`).split('\n')
+ assert.equal(r[3],'0');assert.equal(r[4],'push_test');assert.equal(r.at(-2),'t');assert.equal(r.at(-1),'0')
+})
+test('push receipts need a private capability, are idempotent and cannot alter normal message jobs',()=>{
+ const r=sql(`begin;${prepare}${as(alice)}select ${notify('subscribe',devicePayload)};reset role;select id as d from directory_private.push_subscriptions limit 1 \\gset
+ ${as(alice)}select public.notification_settings_action('test_push',jsonb_build_object('id',:'d'));reset role;select receipt_token as token from directory_private.notification_jobs limit 1 \\gset
+ set local role anon;select public.confirm_push_test(gen_random_uuid(),'displayed');reset role;select displayed_at is null from directory_private.notification_jobs;
+ set local role anon;select public.confirm_push_test(:'token','displayed');select public.confirm_push_test(:'token','displayed');reset role;select (received_at is not null and displayed_at is not null and opened_at is null) from directory_private.notification_jobs;${as(alice)}select ${notify('settings')}->'tests'->0 ? 'receipt_token';rollback;`).split('\n')
+ assert.equal(r[4],'t');assert.equal(r.at(-2),'t');assert.equal(r.at(-1),'f')
+})
