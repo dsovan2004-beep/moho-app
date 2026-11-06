@@ -4,6 +4,6 @@ Schedule: Tuesday and Friday,9AM America/Los_Angeles. Active chat-attached autom
 
 | Period | Type | Decision/evidence | Release state |
 | --- | --- | --- | --- |
-| 2026-11-06/manual baseline | Setup + manual research/release | Living-directory charter; four-city services/events/photo scope;39 website checks,27 launch providers; five sourced seasonal events; seven local-place updates. Latest primary-source records in provider-legacy-pass-2026-11-06.json, local-openings-2026-11-06.md and publish-four-city-events-2026-11-06.sql | Legacy route application changes locally tested; native/live acceptance pending |
+| 2026-11-06/manual baseline | Setup + manual research/release | Living-directory charter; four-city services/events/photo scope;39 website checks,27 launch providers; five sourced seasonal events; seven local-place updates. Latest primary-source records in provider-legacy-pass-2026-11-06.json, local-openings-2026-11-06.md and publish-four-city-events-2026-11-06.sql | Final source a2f71ad, native build3aa69afe-6a1b-420e-9355-7531892e55dd successful;110 regressions, final TypeScript/OpenNext and production308/404/calendar/phone acceptance pass. Service/event images remain rights-held; no outreach |
 
 For each completed scheduled period record date, sources/rechecks, additions/corrections/holds, verified coverage, expiry decisions, tests/deployment/live evidence when applicable, unresolved image rights and next priorities. A no-addition decision is valid when evidence does not qualify. Do not mark a period completed merely because the schedule fired.

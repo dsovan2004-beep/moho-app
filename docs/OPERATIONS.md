@@ -10,15 +10,25 @@ Founder direction, November 6: MoHoLocal is a living directory for locals. Maint
 
 | Role | Ownership |
 | --- | --- |
-| Product and technical lead | Prioritize resident needs, architecture, secure implementation and reviewable releases; keep Next.js, Supabase and Cloudflare |
-| UX/UI lead | Clear city/task discovery, mobile and keyboard access, honest loading/empty/error states, consistent contact choices |
-| Market and provider researcher | Compare local alternatives, find missing supply, deduplicate candidates, check primary sources and record limitations |
-| Local business openings researcher | Check openings, closures and significant retail/service changes across Mountain House, Tracy, Lathrop and Manteca |
-| Community updates editor | Turn verified local changes and seasonal events into concise dated updates with useful links; distinguish planned, opening and operating status |
-| Data and photo-rights editor | Preserve evidence and correction history; verify service areas separately from office locations; establish actual capture year, location, author and existing reuse rights before publishing photography |
-| Release and operations lead | Run relevant checks, verify native deployments and live behavior, maintain backlog, roadmap, sprint and release evidence |
+| Product lead | Living-directory vision, resident needs, priorities and useful local actions |
+| CTO / architect | Maintain Next.js, Cloudflare and Supabase; sound architecture, reliability and proportionate complexity |
+| Full-stack engineer | Application code, database integrations and implementation |
+| UX/UI lead | Visual design, mobile usability, accessibility, clear navigation and contact flows |
+| Market researcher | Local problems, competitor gaps and Facebook-group research with source limitations |
+| Provider researcher | Check business identity, public contacts, exact services, service areas and primary sources |
+| Local openings researcher | Track openings, closures and significant business changes; distinguish planned from operating |
+| Events editor | Check organizer, dates, venues, eligibility, changing details and expiry |
+| Photo / visual editor | Relevant imagery, exact-location/capture context where required, existing reuse rights and credits |
+| Community experience lead | Useful discussions, private messaging, pet updates, notifications and moderation workflows |
+| Growth / SEO lead | Local discovery, search visibility and return visits; no outreach without authorization |
+| Data quality editor | Duplicates, stale records, corrections, provenance and city/category coverage gaps |
+| Security / privacy lead | Access controls, private-data boundaries and safe submission/claim/community workflows |
+| QA / release lead | Meaningful tests, builds, deployment verification and real live checks |
+| Delivery / operations lead | Backlog, roadmap, sprint, recurring freshness workflow, refresh ledger and release evidence |
+| Analytics / business strategy lead | Useful contacts, replies, event/calendar actions, corrections, resolved reports and sustainable growth |
 
-The new local openings and community editor responsibilities were explicitly requested November 6. A November6 request separately authorized FRESH-01, the active Tuesday/Friday9AM Pacific refresh in this chat. Messaging people remains prohibited.
+
+The new local openings and community editor responsibilities were explicitly requested November 6. A November 6 request separately authorized FRESH-01, the active Tuesday/Friday 9 AM Pacific refresh in this chat. Messaging people remains prohibited.
 
 ## Editorial rules
 
@@ -50,4 +60,4 @@ Continue deeper Mountain House/Tracy verification and extend service/category an
 
 ## Twice-weekly freshness cycle
 
-FRESH-01 is active as `moholocal-twice-weekly-freshness-refresh`, Tuesdays and Fridays at9AM America/Los_Angeles, attached to this chat. Next scheduled run after setup is November10,2026. Each run reads current planning, researches current primary sources, checks stale event/opening details and useful service gaps, continues rights-cleared imagery sourcing, and publishes justified changes through existing evidence/release gates. Record the completed period in [REFRESH_LOG.md](REFRESH_LOG.md) to avoid duplicates. Stay quiet on unchanged non-actionable state; report meaningful updates, failures or precise owner-only blockers. No outreach, purchases or new access grants. This explicit instruction supersedes historical no-recurring-job notes.
+FRESH-01 is active as `moholocal-twice-weekly-freshness-refresh`, Tuesdays and Fridays at 9 AM America/Los_Angeles, attached to this chat. Next scheduled run after setup is November 10, 2026. Each run reads current planning, researches current primary sources, checks stale event/opening details and useful service gaps, continues rights-cleared imagery sourcing, and publishes justified changes through existing evidence/release gates. Record the completed period in [REFRESH_LOG.md](REFRESH_LOG.md) to avoid duplicates. Stay quiet on unchanged non-actionable state; report meaningful updates, failures or precise owner-only blockers. No outreach, purchases or new access grants. This explicit instruction supersedes historical no-recurring-job notes.
