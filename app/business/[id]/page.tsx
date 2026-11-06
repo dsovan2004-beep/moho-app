@@ -307,14 +307,14 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
         <Link href="/" className="hover:text-blue-600 transition">Home</Link>
         <span>›</span>
         <Link
-          href={(CITY_TO_SLUG[biz.city] ? `/${CITY_TO_SLUG[biz.city]}` : `/directory?q=${encodeURIComponent(biz.name)}`)}
+          href={`/directory?${returnQuery}`}
           className="hover:text-blue-600 transition"
         >
-          {city.emoji} {biz.city}
+          {CITY_CFG[context.city]?.emoji ?? '📍'} {context.city}
         </Link>
         <span>›</span>
         <Link
-          href={(CITY_TO_SLUG[biz.city] ? `/${CITY_TO_SLUG[biz.city]}/${CAT_TO_SLUG[biz.category] ?? biz.category.toLowerCase().replace(/\s+/g, '-')}` : `/directory?q=${encodeURIComponent(biz.name)}`)}
+          href={`/directory?${returnQuery}`}
           className="hover:text-blue-600 transition"
         >
           {biz.category}
@@ -446,16 +446,16 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
             )}
             <div className="flex flex-wrap gap-2 mt-4">
               <Link
-                href={(CITY_TO_SLUG[biz.city] ? `/${CITY_TO_SLUG[biz.city]}/${CAT_TO_SLUG[biz.category] ?? biz.category.toLowerCase().replace(/\s+/g, '-')}` : `/directory?q=${encodeURIComponent(biz.name)}`)}
+                href={`/directory?${returnQuery}`}
                 className={`text-xs font-semibold px-3 py-1 rounded-full hover:opacity-80 transition ${city.chip}`}
               >
                 {catEmoji} {biz.category}
               </Link>
               <Link
-                href={(CITY_TO_SLUG[biz.city] ? `/${CITY_TO_SLUG[biz.city]}` : `/directory?q=${encodeURIComponent(biz.name)}`)}
+                href={`/directory?${returnQuery}`}
                 className={`text-xs font-semibold px-3 py-1 rounded-full hover:opacity-80 transition ${city.chip}`}
               >
-                {city.emoji} {biz.city}
+                {CITY_CFG[context.city]?.emoji ?? '📍'} {context.city}
               </Link>
             </div>
           </div>
@@ -623,10 +623,10 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
 
           {/* Back to city link */}
           <Link
-            href={(CITY_TO_SLUG[biz.city] ? `/${CITY_TO_SLUG[biz.city]}` : `/directory?q=${encodeURIComponent(biz.name)}`)}
+            href={`/directory?${returnQuery}`}
             className="block text-center text-sm text-gray-400 hover:text-blue-600 transition py-2"
           >
-            ← Back to {biz.city}
+            ← Back to {context.city} results
           </Link>
         </aside>
       </div>
