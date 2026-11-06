@@ -22,7 +22,7 @@ crons = [
 [vars]
 SUPABASE_URL = "https://ozjlfgipfzykzrjakwzb.supabase.co"
 APP_ENV      = "production"
-EMAIL_SENDER_ENABLED = "true"
+EMAIL_SENDER_ENABLED = "false"
 VAPID_PUBLIC_KEY = "BIJ4QK9ivQ_uYG55rE1Zq8WJbXOSKHMfccA0RgiZmqdqDGNCumeA3UEIj8E8ctyVjZ9vlndyd_LTCpaqFp-Og0E"
 # Optional: set to a public HTTPS URL returning a JSON array of business records
 # (e.g. a GitHub raw file or Cloudflare R2 object).
