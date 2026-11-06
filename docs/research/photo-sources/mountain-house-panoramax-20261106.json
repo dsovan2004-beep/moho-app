@@ -1,0 +1,8 @@
+{
+  "checked_on": "2026-11-06",
+  "request": "https://api.panoramax.xyz/api/search?bbox=-121.575%2C37.745%2C-121.515%2C37.795&datetime=2026-01-01T00%3A00%3A00Z%2F2026-11-07T00%3A00%3A00Z&limit=20",
+  "response": {
+    "features": [],
+    "links": []
+  }
+}

@@ -22,7 +22,7 @@ Private candidate URLs, poster identities, screenshots and specific permission-r
 
 ## Next acceptance gate
 
-Obtain one street-level image whose rights holder explicitly confirms actual 2026 capture date, exact Mountain House public location, ownership and permission for MoHoLocal website/commercial-directory use with responsive crop/resize/WebP and required credit. Record scope, restrictions and any expiry. Review the original file and visual geography; then replace the satellite, update credits, build and verify live desktop/mobile. Photographer confirmation is an outstanding dependency, not completed verification.
+Current constraint: existing reuse rights only; no messages or photographer requests. Obtain one street-level image with published evidence of actual 2026 capture date, exact Mountain House public location, creator and an existing applicable license for MoHoLocal website/commercial-directory use with responsive crop/resize/WebP and required credit. Record scope, restrictions and any expiry. Review the original file and visual geography; then replace the satellite, update credits, build and verify live desktop/mobile. The held social candidates are not cleared and must not trigger outreach. Earlier unsent permission drafts are inactive following the user’s cancellation.
 
 ## Correction to earlier research lead
 

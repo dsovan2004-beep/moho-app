@@ -1,0 +1,409 @@
+{
+  "checked_on": "2026-11-06",
+  "source": "Wikimedia Commons public API",
+  "request": "https://commons.wikimedia.org/w/api.php?action=query&format=json&generator=geosearch&ggscoord=37.7719%7C-121.542&ggsradius=3500&ggsnamespace=6&ggslimit=100&prop=imageinfo&iiprop=url%7Cextmetadata&iilimit=1",
+  "response": {
+    "batchcomplete": "",
+    "query": {
+      "pages": {
+        "129365253": {
+          "pageid": 129365253,
+          "ns": 6,
+          "title": "File:Holi2023.jpg",
+          "index": -1,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/8/88/Holi2023.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:Holi2023.jpg",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=129365253",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2023-03-07 19:51:43",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "Holi2023",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Self-published work|Files with coordinates missing SDC location of creation|Holi 2023",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "GPSLatitude": {
+                  "value": "37.780872",
+                  "source": "commons-desc-page"
+                },
+                "GPSLongitude": {
+                  "value": "-121.541486",
+                  "source": "commons-desc-page"
+                },
+                "GPSMapDatum": {
+                  "value": "WGS-84",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "Holi 2023 celebration @Mountain House.",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2023-03-05",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Sisodiabhumca&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:Sisodiabhumca (page does not exist)\">Sisodiabhumca</a>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC BY-SA 4.0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Attribution-Share Alike 4.0",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "true",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "https://creativecommons.org/licenses/by-sa/4.0",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc-by-sa-4.0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "179536843": {
+          "pageid": 179536843,
+          "ns": 6,
+          "title": "File:M 3712112 se 10 060 20220518.tif",
+          "index": 0,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/7/74/M_3712112_se_10_060_20220518.tif?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:M_3712112_se_10_060_20220518.tif",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=179536843",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2025-12-07 03:31:31",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "M 3712112 se 10 060 20220518",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Uploaded with OpenRefine|PD USDA|PD US NOAA|Files with coordinates missing SDC location of creation|PD-USGov missing SDC copyright status|Files uploaded by PantheraLeo1359531|Images from NOAA uploaded by PantheraLeo1359531|Files from USDA uploaded by PantheraLeo1359531|Files uploaded with OpenRefine by PantheraLeo1359531|2022 USDA NAIP 4-Band 8 Bit Imagery: California|Orthophotos of San Joaquin County, California",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "GPSLatitude": {
+                  "value": "37.781250",
+                  "source": "commons-desc-page"
+                },
+                "GPSLongitude": {
+                  "value": "-121.531250",
+                  "source": "commons-desc-page"
+                },
+                "GPSMapDatum": {
+                  "value": "WGS-84",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "Luftaufnahmen von Kalifornien 2022 \u00fcber das NAIP der USDA.",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "Published on\u00a016 August 2023",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<ul><li><a rel=\"nofollow\" class=\"external free\" href=\"https://coastalimagery.blob.core.windows.net/digitalcoast/CA_NAIP_2022_9868/index.html\">https://coastalimagery.blob.core.windows.net/digitalcoast/CA_NAIP_2022_9868/index.html</a></li>\n<li><a rel=\"nofollow\" class=\"external free\" href=\"https://www.fisheries.noaa.gov/inport/item/70527\">https://www.fisheries.noaa.gov/inport/item/70527</a></li>\n<li>see also: <a rel=\"nofollow\" class=\"external free\" href=\"https://catalog.data.gov/dataset/national-agriculture-imagery-program-naip-imagery\">https://catalog.data.gov/dataset/national-agriculture-imagery-program-naip-imagery</a></li></ul>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "NOAA Office for Coastal Management / The USDA-FSA Aerial Photography Field office (crediting while reuse is desired as Courtesy Attribution)",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "Public domain",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Public domain",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "false",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Copyrighted": {
+                  "value": "False",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "pd",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "190109895": {
+          "pageid": 190109895,
+          "ns": 6,
+          "title": "File:M 3712112 se 10 060 20180725.tif",
+          "index": 1,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/4/4a/M_3712112_se_10_060_20180725.tif?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:M_3712112_se_10_060_20180725.tif",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=190109895",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2026-04-23 11:01:00",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "M 3712112 se 10 060 20180725",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Uploaded with OpenRefine|PD USDA|PD US NOAA|Files with coordinates missing SDC location of creation|PD-USGov missing SDC copyright status|Files uploaded by PantheraLeo1359531|Images from NOAA uploaded by PantheraLeo1359531|Files from USDA uploaded by PantheraLeo1359531|Files uploaded with OpenRefine by PantheraLeo1359531|Orthophotos of San Joaquin County, California|Orthophotos uploaded by PantheraLeo1359531|2018 USDA NAIP 4-Band 8 Bit Imagery: California",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "GPSLatitude": {
+                  "value": "37.781250",
+                  "source": "commons-desc-page"
+                },
+                "GPSLongitude": {
+                  "value": "-121.531250",
+                  "source": "commons-desc-page"
+                },
+                "GPSMapDatum": {
+                  "value": "WGS-84",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "Luftaufnahmen von Kalifornien 2018/2019 \u00fcber das NAIP des USDA.",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "Published on\u00a022 July 2020",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<ul><li><a rel=\"nofollow\" class=\"external free\" href=\"https://coastalimagery.blob.core.windows.net/digitalcoast/CA_NAIP_2018_9159/index.html\">https://coastalimagery.blob.core.windows.net/digitalcoast/CA_NAIP_2018_9159/index.html</a></li>\n<li><a rel=\"nofollow\" class=\"external free\" href=\"https://www.fisheries.noaa.gov/inport/item/60705\">https://www.fisheries.noaa.gov/inport/item/60705</a></li>\n<li>see also: <a rel=\"nofollow\" class=\"external free\" href=\"https://catalog.data.gov/dataset/national-agriculture-imagery-program-naip-imagery\">https://catalog.data.gov/dataset/national-agriculture-imagery-program-naip-imagery</a></li></ul>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "NOAA Office for Coastal Management / The USDA-FSA Aerial Photography Field office (crediting while reuse is desired as Courtesy Attribution)",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "Public domain",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Public domain",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "false",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Copyrighted": {
+                  "value": "False",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "pd",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "192243214": {
+          "pageid": 192243214,
+          "ns": 6,
+          "title": "File:M 3712112 se 10 060 20200527.tif",
+          "index": 2,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/c/c9/M_3712112_se_10_060_20200527.tif?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:M_3712112_se_10_060_20200527.tif",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=192243214",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2026-05-17 22:52:57",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "M 3712112 se 10 060 20200527",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Uploaded with OpenRefine|PD USDA|PD US NOAA|Files with coordinates missing SDC location of creation|PD-USGov missing SDC copyright status|Files uploaded by PantheraLeo1359531|Images from NOAA uploaded by PantheraLeo1359531|Files from USDA uploaded by PantheraLeo1359531|Files uploaded with OpenRefine by PantheraLeo1359531|Orthophotos of San Joaquin County, California|Orthophotos uploaded by PantheraLeo1359531|2020 USDA NAIP 4-Band 8 Bit Imagery: California",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "GPSLatitude": {
+                  "value": "37.781250",
+                  "source": "commons-desc-page"
+                },
+                "GPSLongitude": {
+                  "value": "-121.531250",
+                  "source": "commons-desc-page"
+                },
+                "GPSMapDatum": {
+                  "value": "WGS-84",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "Luftaufnahmen von Kalifornien 2020 \u00fcber das NAIP des USDA.",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "Published on\u00a025 October 2022",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<ul><li><a rel=\"nofollow\" class=\"external free\" href=\"https://coastalimagery.blob.core.windows.net/digitalcoast/CA_NAIP_2020_9503/index.html\">https://coastalimagery.blob.core.windows.net/digitalcoast/CA_NAIP_2020_9503/index.html</a></li>\n<li><a rel=\"nofollow\" class=\"external free\" href=\"https://www.fisheries.noaa.gov/inport/item/68159\">https://www.fisheries.noaa.gov/inport/item/68159</a></li>\n<li>see also: <a rel=\"nofollow\" class=\"external free\" href=\"https://catalog.data.gov/dataset/national-agriculture-imagery-program-naip-imagery\">https://catalog.data.gov/dataset/national-agriculture-imagery-program-naip-imagery</a></li></ul>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "NOAA Office for Coastal Management / The USDA-FSA Aerial Photography Field office (crediting while reuse is desired as Courtesy Attribution)",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "Public domain",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Public domain",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "false",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Copyrighted": {
+                  "value": "False",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "pd",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "interpretation": "Geographic catalog check, not exhaustive proof of absence; geotags/date metadata are uploader assertions and require source review before use."
+}

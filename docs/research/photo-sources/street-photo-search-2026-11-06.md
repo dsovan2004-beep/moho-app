@@ -32,3 +32,21 @@ Final Mountain House catalog check: Flickr search for `"Mountain House" Californ
 
 
 Facebook continuation: three joined Mountain House groups were reviewed in the signed-in browser. Two leads are held for missing capture/location/rights evidence, including one dated aerial that fails street-level scope; no photo published. See facebook-photo-review-2026-11-06.md for sanitized findings.
+
+
+## Existing-rights-only continuation — November 6, 2026
+
+User explicitly prohibited messages and requested sources with already established reuse rights. This supersedes photographer-outreach drafts: no requests were sent, no follow-up should be sent, and no scheduled outreach exists. Held Facebook leads cannot be used without an already applicable grant; group visibility alone does not clear rights.
+
+Additional source checks:
+
+| Source | Search and result | Decision |
+| --- | --- | --- |
+| Wikimedia Commons geographic API | 3,500 m radius around 37.7719,-121.542, file namespace, public image metadata: four records, no continuation. Holi2023.jpg states March 5, 2023; three NAIP TIFF names identify 2018/2020/2022 imagery. Metadata publication years were not treated as capture years. | No qualifying 2026 street candidate. Full request/response retained in mountain-house-commons-geosearch-20261106.json. This geographic catalog query does not cover untagged photographs. |
+| Panoramax federated catalog | Public STAC /api/search, bbox -121.575,37.745,-121.515,37.795, capture interval January 1–November 6, 2026: zero features and no next link. | No candidate from that queried extent/time. Response retained in mountain-house-panoramax-20261106.json. Do not generalize to absence everywhere. |
+| Flickr World Map | Official map page opened, but map/search controls did not render; only header/footer visible. | Unavailable check, not zero results. Earlier keyword/date/license results remain the established evidence. |
+| Openverse API | Earlier unauthenticated image query returned HTTP 401. | Unavailable check, not proof of no matching media. No registration, credential expansion or payment performed. |
+
+Panoramax documentation distinguishes capture datetime and upload date and requires the source instance’s actual image license; the software’s MIT license is not permission to use every picture. No generic license assumption was used. Primary references: https://docs.panoramax.fr/backend/dev/STAC_compatibility/ ; https://docs.panoramax.fr/backend/install/settings/ ; https://docs.panoramax.fr/how-to-contribute/use-panoramax/ . Flickr geographic-search guidance: https://blog.flickr.net/all/2025/07/23/flickr-fundamentals-improve-your-flickr-searches/ .
+
+Result: Mountain House UX-03 stays open for a verified 2026 street photograph with existing reuse rights. No new app asset/code/database change; no production deployment needed. Existing clearly labeled satellite remains; Tracy’s accepted street image remains live. Next eligible work is verification of a newly discovered open-licensed source, not unsolicited contact or using held social images. Last application validation remains 96 passing tests, TypeScript/OpenNext/native build and production mobile acceptance; those were not re-run for this documentation-only research pass.
