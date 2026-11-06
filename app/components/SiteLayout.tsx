@@ -13,8 +13,6 @@ import type { User } from '@supabase/supabase-js'
 
 const CITIES = CITY_CONFIG.map(city => city.name)
 
-const SOUTH_BAY_CITIES = new Set(['San Jose', 'Santa Clara', 'Sunnyvale'])
-
 const CITY_THEMES: Record<string, { bg: string; accent: string; light: string; county: string }> = {
   'Mountain House': {
     bg: '#1e3a5f',
@@ -323,13 +321,13 @@ function NavContent() {
                 <div className="absolute left-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
                   {/* 209 / San Joaquin Section */}
                   <div className="px-4 py-2 border-b border-gray-100">
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">209 · San Joaquin</p>
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Our communities</p>
                   </div>
-                  {CITIES.filter(c => !SOUTH_BAY_CITIES.has(c)).map((c) => (
+                  {RELAUNCH_CITY_NAMES.map((c) => (
                     <button
                       key={c}
                       onClick={() => handleCitySelect(c)}
-                      className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left transition-colors hover:bg-gray-50"
+                      className="min-h-11 w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left transition-colors hover:bg-gray-50"
                       style={{ color: city === c ? CITY_DOT[c] : '#374151', fontWeight: city === c ? 700 : 400 }}
                     >
                       <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: CITY_DOT[c] }} />
@@ -342,26 +340,7 @@ function NavContent() {
                     </button>
                   ))}
 
-                  {/* South Bay Section */}
-                  <div className="px-4 py-2 border-t border-b border-gray-100 bg-gray-50">
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Other nearby cities</p>
-                  </div>
-                  {CITIES.filter(c => SOUTH_BAY_CITIES.has(c)).map((c) => (
-                    <button
-                      key={c}
-                      onClick={() => handleCitySelect(c)}
-                      className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left transition-colors hover:bg-gray-50"
-                      style={{ color: city === c ? CITY_DOT[c] : '#374151', fontWeight: city === c ? 700 : 400 }}
-                    >
-                      <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: CITY_DOT[c] }} />
-                      {c}
-                      {city === c && (
-                        <svg className="ml-auto w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                      )}
-                    </button>
-                  ))}
+
                 </div>
               )}
             </div>
@@ -403,34 +382,21 @@ function NavContent() {
 
                     {/* Browse by City */}
                     <div className="px-4 py-2">
-                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">209 · San Joaquin</p>
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Our communities</p>
                       <div className="space-y-0.5 mb-2">
-                        {CITIES.filter(c => !SOUTH_BAY_CITIES.has(c)).map((c) => (
+                        {RELAUNCH_CITY_NAMES.map((c) => (
                           <Link
                             key={c}
                             href={`/${CITY_SLUGS[c]}`}
                             onClick={() => setDirectoryOpen(false)}
-                            className="flex items-center gap-2.5 py-1.5 text-sm text-gray-700 hover:text-gray-900 transition-colors"
+                            className="min-h-11 flex items-center gap-2.5 py-1.5 text-sm text-gray-700 hover:text-gray-900 transition-colors"
                           >
                             <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: CITY_DOT[c] }} />
                             {c}
                           </Link>
                         ))}
                       </div>
-                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 pt-2 border-t border-gray-100">Other nearby cities</p>
-                      <div className="space-y-0.5">
-                        {CITIES.filter(c => SOUTH_BAY_CITIES.has(c)).map((c) => (
-                          <Link
-                            key={c}
-                            href={`/${CITY_SLUGS[c]}`}
-                            onClick={() => setDirectoryOpen(false)}
-                            className="flex items-center gap-2.5 py-1.5 text-sm text-gray-700 hover:text-gray-900 transition-colors"
-                          >
-                            <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: CITY_DOT[c] }} />
-                            {c}
-                          </Link>
-                        ))}
-                      </div>
+
                     </div>
                   </div>
                 )}

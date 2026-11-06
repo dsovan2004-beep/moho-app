@@ -6,7 +6,7 @@ export const runtime = 'nodejs'
 import { useState, useEffect, useRef } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { getSupabaseClient, type Business } from '@/lib/supabase'
-import { CITIES as CITY_LIST, CITY_BY_NAME } from '@/lib/cities'
+import { CITIES as CITY_LIST, CITY_BY_NAME, RELAUNCH_CITY_NAMES } from '@/lib/cities'
 import Link from 'next/link'
 import ListingEvidence from '@/app/components/ListingEvidence'
 import { CHECK_COLUMNS } from '@/lib/listing-evidence'
@@ -44,8 +44,8 @@ function getCategoryEmoji(cat: string): string {
   return '🏢'
 }
 
-// City filter list — "All Cities" sentinel + all cities from canonical source
-const CITIES = ['All Cities', ...CITY_LIST.map(c => c.name)]
+// Relaunch choices; legacy explicit city URLs remain readable.
+const CITIES = ['All Cities', ...RELAUNCH_CITY_NAMES]
 
 // Sort options (only visible when no search query — relevance is automatic when searching)
 const SORT_OPTIONS = [
@@ -188,7 +188,7 @@ export default function DirectoryPage() {
   const router = useRouter()
 
   const requestedCity = searchParams.get('city') ?? 'All Cities'
-  const city = CITIES.includes(requestedCity) ? requestedCity : 'All Cities'
+  const city = requestedCity === 'All Cities' || CITY_LIST.some(c => c.name === requestedCity) ? requestedCity : 'All Cities'
   const category = searchParams.get('category') ?? 'All'
   const service = SERVICE_CHOICES.find(item => item.key === searchParams.get('service'))
   const query    = searchParams.get('q')        ?? ''
