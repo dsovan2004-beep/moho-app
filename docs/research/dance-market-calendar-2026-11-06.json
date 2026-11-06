@@ -1,0 +1,26 @@
+[
+  {
+    "id": "47f6af7f-f43f-4a88-bfb4-d33dcece40c3",
+    "status": 200,
+    "times": [
+      "DTSTART:20261107T160000Z",
+      "DTEND:20261107T210000Z"
+    ]
+  },
+  {
+    "id": "dc6dcc46-aff1-4ce3-8594-dd74021ed671",
+    "status": 200,
+    "times": [
+      "DTSTART:20261114T160000Z",
+      "DTEND:20261114T210000Z"
+    ]
+  },
+  {
+    "id": "44ff3679-4fa4-4b4a-92a7-f693f09ebdf5",
+    "status": 200,
+    "times": [
+      "DTSTART:20261121T160000Z",
+      "DTEND:20261121T210000Z"
+    ]
+  }
+]

@@ -1,0 +1,74 @@
+{
+  "checked": "2026-11-06",
+  "businesses": [
+    {
+      "name": "Dance Destination",
+      "city": "Tracy",
+      "phone": "(201) 699-6938",
+      "website": "https://www.dance-destination.com/",
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop"
+      ],
+      "tags": [
+        "dance classes",
+        "Kathak",
+        "Bollywood",
+        "children classes",
+        "adult dance"
+      ],
+      "description": "Tracy Hills dance program advertising Kathak, Bollywood, children\u2019s classes and private lessons, serving Tracy, Mountain House and Lathrop. Exact classroom address is provided by the school upon enrollment; no public street address established. Confirm current age groups, fees, schedule and available places directly.",
+      "note": "Primary website names Tracy Hills and serving Mountain House/Tracy/Lathrop; exact address intentionally not public. Published phone and programs checked; no Manteca scope inferred."
+    },
+    {
+      "name": "Natya Arts \u2014 Natyakshethra",
+      "city": "Service area only",
+      "phone": "(510) 996-0472",
+      "website": "https://natya-arts.com/",
+      "areas": [
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "tags": [
+        "dance classes",
+        "Bharatanatyam",
+        "Bollywood",
+        "folk dance",
+        "cultural education"
+      ],
+      "description": "Indian dance program advertising Bharatanatyam, semi-classical, folk and Bollywood forms. Its official About page lists Tracy, Lathrop and Manteca in the Central Valley service area. Confirm the nearest classroom, current age groups, fees and timetable directly; no local studio street address or Mountain House class established.",
+      "note": "About page explicitly names Tracy/Lathrop/Manteca; contact page publishes shared phone. Bay Area/Texas regional footer is not evidence of a local classroom address. Sources: https://natya-arts.com/about and https://natya-arts.com/contact"
+    },
+    {
+      "name": "The Bhangra Institute",
+      "city": "Service area only",
+      "phone": "(209) 485-7012",
+      "website": "https://bhangrainstitute.com/",
+      "areas": [
+        "Tracy",
+        "Manteca"
+      ],
+      "tags": [
+        "dance classes",
+        "Bhangra",
+        "event choreography",
+        "cultural education"
+      ],
+      "description": "Advertises Bhangra group classes, private sessions and event choreography. Its current location cards list Tracy weekend classes and Manteca classes. Confirm classroom address, current schedule, age group and fees directly. A separate FAQ mentions Mountain House but the current location cards do not; Mountain House coverage is not established here.",
+      "note": "Tracy/Manteca current location cards and shared phone checked. FAQ lists a conflicting number of locations and mentions Mountain House absent from current location cards; Mountain House held pending clarification. No Lathrop scope inferred."
+    }
+  ],
+  "market_dates": [
+    "2026-11-07",
+    "2026-11-14",
+    "2026-11-21"
+  ],
+  "market_source": "https://tracycitycenter.com/",
+  "photo_hold": "March2026 city existing-conditions PDF is a new lead only. Publication date does not establish capture date or reuse license. Reader exceeded size limit; no image copied.",
+  "event_holds": [
+    "Aarohi Nov7 fundraiser lacks public venue/time/admission evidence; do not publish event from fundraising date alone.",
+    "TracyREACH Oct31 and DiwaliDhamaka Oct24 are past despite active forms/ticket labels."
+  ]
+}
