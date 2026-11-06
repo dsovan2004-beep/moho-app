@@ -1,0 +1,57 @@
+{
+  "checked": "2026-11-06",
+  "provider": {
+    "name": "Tabla Niketan",
+    "category": "Education",
+    "city": "Mountain House",
+    "address": "19370 W Grant Line Road, Mountain House, CA 95391",
+    "phone": "",
+    "website": "https://www.tablaniketan.com/classes-certification/",
+    "description": "Advertises tabla group and one-to-one lessons for Mountain House and Tracy, plus virtual lessons. Its contact page lists a Mountain House address at 19370 W Grant Line Road. Confirm current classroom, age/skill placement, fees and timetable through the official website; a public phone was not established in this check.",
+    "areas": [
+      "Mountain House",
+      "Tracy"
+    ],
+    "tags": [
+      "music lessons",
+      "tabla lessons",
+      "cultural education"
+    ]
+  },
+  "events": [
+    {
+      "title": "All About Baby Story Time (0\u20132 years)",
+      "city": "Mountain House",
+      "venue": "Mountain House Library Community Room, 201 E Main Street",
+      "day": "12",
+      "start": "10:00",
+      "end": "10:30",
+      "source": "https://www.ssjcpl.org/events-services/events-calendar/mountain-house/all-about-baby-story-time-0-2yrs2?id=1794506400-232130",
+      "scope": "Library-led stories, songs and rhymes for babies ages 0\u20132 and their caretakers."
+    },
+    {
+      "title": "Preschool Storytime",
+      "city": "Tracy",
+      "venue": "Tracy Branch Library \u2014 confirm room with library",
+      "day": "12",
+      "start": "10:30",
+      "end": "11:30",
+      "source": "https://www.ssjcpl.org/events-services/events-calendar/tracy/august-2026/preschool-storytime?id=1794508200-238536",
+      "scope": "Library-led preschool stories, rhymes and music for children ages 2\u20135. The page URL contains an older month but the occurrence date explicitly says November 12, 2026."
+    },
+    {
+      "title": "Cascada de Flores \u2014 La Ofrenda Musical",
+      "city": "Manteca",
+      "venue": "Manteca Branch Library, 320 W Center Street",
+      "day": "13",
+      "start": "15:30",
+      "end": "16:30",
+      "source": "https://www.ssjcpl.org/events-services/events-calendar/manteca-branch/cascada-de-flores?id=1794612600-245741",
+      "scope": "All-ages bilingual participatory music and dance performance exploring D\u00eda de Muertos traditions from Mexico and Central America."
+    }
+  ],
+  "holds": [
+    "Lathrop upcoming library detail not yet established; do not infer occurrence from older search-cache results.",
+    "Manteca Lego Nov10 explicitly canceled in latest official listing; replacement reptile program must be checked separately."
+  ]
+}

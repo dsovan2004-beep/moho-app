@@ -7,7 +7,7 @@ test('Explore intents retain each selected city and lead to current discovery ro
     for(const link of exploreLinks(city)) {
       const url=new URL(link.href,'https://www.moholocal.com')
       assert.equal(url.searchParams.get('city'),city)
-      assert.ok(['/directory','/events'].includes(url.pathname))
+      assert.ok(['/directory','/events','/classes'].includes(url.pathname))
     }
   }
 })
@@ -18,6 +18,6 @@ test('Explore service shortcuts stay exact while cultural searches disclose thei
   assert.equal(get('lights').get('service'),'holiday-light-installation')
   assert.equal(get('groceries').get('category'),'Retail')
   assert.equal(get('groceries').get('q'),'Indian')
-  assert.equal(get('classes').get('q'),'Marathi')
-  assert.match(links.find(link=>link.key==='classes')!.label,/Marathi/)
+  assert.equal(get('classes').get('q'),null)
+  assert.match(links.find(link=>link.key==='classes')!.label,/Language, dance & music/)
 })
