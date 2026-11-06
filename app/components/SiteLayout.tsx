@@ -287,8 +287,8 @@ function NavContent() {
     <>
       {/* ── Sticky Nav ── */}
       <nav className="sticky top-0 z-50 shadow-md" style={{ backgroundColor: theme.bg }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 gap-3">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 gap-2">
 
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 shrink-0">
@@ -304,14 +304,14 @@ function NavContent() {
             <div className="relative shrink-0" ref={cityPickerRef}>
               <button
                 onClick={() => setCityPickerOpen((o) => !o)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-all"
+                className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-all"
                 style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: 'white' }}
                 aria-label="Select city"
                 aria-expanded={cityPickerOpen}
               >
-                <span>📍</span>
+                <span className="hidden sm:inline">📍</span>
                 <span className="hidden sm:inline">{city}</span>
-                <span className="sm:hidden">{city.replace('Mountain House', 'MH')}</span>
+                <span className="sm:hidden max-w-[64px] truncate">{city.replace('Mountain House', 'MH')}</span>
                 <Chevron open={cityPickerOpen} />
               </button>
 

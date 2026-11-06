@@ -10,16 +10,35 @@
       "id": "203ec58d-0738-4ca4-a31d-1a5bb2749ba6",
       "source": "https://twomenandatruck.com/movers/ca/tracy",
       "finding": "Official Tracy service page lists Stockton office, correct phone and Mountain House service coverage; corrected physical location while preserving ID."
+    },
+    {
+      "id": "4507a087-e7f0-4ed3-aaf8-0be89cc977d3",
+      "source": "https://www.acehardware.com/store-details/17414",
+      "finding": "Store phone/address matched; corrected identity to Vans Ace Hardware, category Retail, added official website and dated evidence."
+    },
+    {
+      "id": "38eadae0-d02e-4f79-9911-95ea2c40f132",
+      "source": "https://www.harborfreight.com/storelocator/3021-n-tracy-blvd-tracy-95376?number=516",
+      "finding": "Store phone/address/website matched; corrected Retail category and added dated information check."
+    },
+    {
+      "id": "851964f2-ef0d-4765-a431-26581188f2a2",
+      "source": "https://www.budgetblinds.com/livermore/who-we-are/",
+      "finding": "Official franchise lists Livermore office and Tracy service; corrected phone and physical city, removed unsupported Tracy storefront address."
     }
   ],
-  "duplicate_held": "0424631c-a91c-4b81-9a94-013e58b8e6e1",
+  "duplicate_held": [
+    "0424631c-a91c-4b81-9a94-013e58b8e6e1",
+    "1a20d6fd-74dc-4f4d-8e8a-6daa6c514bf6"
+  ],
   "unresolved_research": [
     "Mountain House Landscaping: conflicting public directory contacts and inaccessible official website; requires first-party confirmation.",
     "Green Thumb Landscaping Tracy, Desert Rose Landscaping, SJV Landscaping & Sprinklers: no independently matched local first-party source obtained in this search pass.",
     "Tracy Rooter & Plumbing, Tracy Plumbing & Drain, Clean Pro Window Cleaning, All Access Garage Door Service: exact local searches did not establish an independent first-party match."
   ],
   "interpretation": "Search failure is not proof a business does not exist. These records received no fresh verification or new service tags. No outreach performed.",
-  "remaining_candidates_requiring_rechecks": 43,
+  "remaining_candidates_requiring_rechecks": 39,
   "launch_category_checked_choices": 3,
-  "landscaping_checked_choices": 0
+  "landscaping_checked_choices": 0,
+  "website_checked_businesses": 8
 }

@@ -35,3 +35,9 @@ Remaining: resident usability and broader keyboard testing, legacy Best Of page 
 checked-provider supply (especially landscaping), owner-supplied job fit and
 availability expiry, and pet owner-update/freshness lifecycle. Facebook research
 is sampled qualitative evidence, not a complete group audit or proof of demand.
+
+Narrow-phone follow-up: the 320px Lathrop check found header clipping; header
+spacing and the mobile city-label bounds were corrected. Lathrop and Santa Clara
+now report viewport/document width 320 with the city selector and join action
+inside the viewport. Skip to content is the first link and pressing Enter focuses
+main-content. All temporary browser device overrides were cleared.
