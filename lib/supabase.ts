@@ -194,6 +194,8 @@ export interface CommunityPost {
   image_url?: string
 }
 
+export const PUBLIC_PET_COLUMNS = 'id,type,pet_name,pet_type,description,city,location_last_seen,contact_name,contact_phone,status,image_url,created_at,breed,age,gender,last_seen,location_detail,coat_description,reward,title,source,source_url,last_ingested_at,confidence_score,needs_review,image_source,ingestion_status'
+
 export interface LostAndFound {
   id: string
   title: string

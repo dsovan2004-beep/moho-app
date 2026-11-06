@@ -31,7 +31,7 @@ function buildJsonLd(biz: Business) {
     address: {
       '@type': 'PostalAddress',
       ...(biz.address && { streetAddress: biz.address }),
-      addressLocality: biz.city,
+      ...(biz.city !== 'Service area only' && {addressLocality: biz.city}),
       addressRegion: 'CA',
       addressCountry: 'US',
     },
@@ -57,10 +57,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const biz = await getBusiness(id)
   if (!biz) return { title: 'Business Not Found | MoHo Local' }
 
-  const title = `${biz.name} — ${biz.category} in ${biz.city}, CA | MoHo Local`
+  const title = `${biz.name} — ${biz.category} ${biz.city === 'Service area only' ? 'serving local cities' : `in ${biz.city}, CA`} | MoHo Local`
   const description = biz.description
     ? biz.description.slice(0, 160)
-    : `Find ${biz.name} in ${biz.city}, CA. Browse ${biz.category.toLowerCase()} listings on MoHo Local — your hyperlocal community directory for the 209.`
+    : `Find ${biz.name} ${biz.city === 'Service area only' ? 'serving local cities' : `in ${biz.city}, CA`}. Browse ${biz.category.toLowerCase()} listings on MoHo Local — your hyperlocal community directory for the 209.`
 
   return {
     title,
@@ -368,7 +368,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
                   {catEmoji} {biz.category}
                 </span>
                 <span className="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                  📍 {biz.city}, CA
+                  📍 {biz.city === 'Service area only' ? 'Office location not listed' : `${biz.city}, CA`}
                 </span>
                 {(biz.rating ?? 0) > 0 && (biz.review_count ?? 0) > 0 && (
                   <span className="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full">
@@ -522,7 +522,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
             <InfoRow
               icon="🏙️"
               label="City"
-              value={`${city.emoji} ${biz.city}, CA`}
+              value={`${city.emoji} ${biz.city === 'Service area only' ? 'Office location not listed' : `${biz.city}, CA`}`}
               internalHref={(CITY_TO_SLUG[biz.city] ? `/${CITY_TO_SLUG[biz.city]}` : `/directory?q=${encodeURIComponent(biz.name)}`)}
             />
             <InfoRow
@@ -641,7 +641,7 @@ export default async function BusinessDetailPage({ params }: PageProps) {
               href={`/best/${CAT_TO_BEST_SLUG[biz.category]}/${CITY_TO_SLUG[biz.city] ?? biz.city.toLowerCase().replace(/\s+/g, '-')}`}
               className="block w-full text-center text-xs font-semibold py-2.5 rounded-xl border border-gray-200 text-gray-600 hover:border-blue-400 hover:text-blue-700 transition"
             >
-              ⭐ Best {biz.category} in {biz.city}
+              Browse {biz.category}
             </Link>
           )}
 

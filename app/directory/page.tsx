@@ -143,7 +143,7 @@ function BusinessCard({ biz, activeCategory }: { biz: Business; activeCategory: 
         {/* Contact row — phone + website clickable directly from list */}
         <div className="flex items-center gap-3 mt-2 flex-wrap">
           <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${CITY_BY_NAME[biz.city]?.chip ?? 'bg-gray-100 text-gray-600'}`}>
-            📍 Located in {biz.city}
+            📍 {biz.city === 'Service area only' ? 'Office location not listed' : `Located in ${biz.city}`}
           </span>
           {biz.address && (
             <span className="text-xs text-gray-400 truncate max-w-[160px]">{biz.address}</span>

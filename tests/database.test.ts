@@ -230,3 +230,70 @@ test('direct account contributions use a persistent server-timestamped quota', (
  ${as(bob)} insert into public.community_posts(user_id,title,content,city,category,status) values('${bob}','Fixture post','Fixture content','Tracy','General','pending'); rollback;`),/Daily contribution limit reached/)
  assert.throws(()=>sql(`begin; ${as(alice)} select * from directory_private.contribution_events; rollback;`),/permission denied/)
 })
+
+const pet='00000000-0000-4000-8000-000000000060'
+const social=(action:string,payload:Record<string,unknown>)=>`public.pet_social_action('${action}','${JSON.stringify(payload)}'::jsonb)`
+const petFixture=()=>`insert into public.lost_and_found(id,type,title,description,city,status,reporter_id) values('${pet}','pet','Fixture pet','Local test only','Tracy','lost','${alice}');`
+test('pet report identity/email are private, comments stay on published parents and cannot forge authors',()=>{
+ assert.throws(()=>sql(`begin;set local role anon;select reporter_id from public.lost_and_found;rollback;`),/permission denied/)
+ assert.throws(()=>sql(`begin;set local role anon;select contact_email from public.lost_and_found;rollback;`),/permission denied/)
+ assert.throws(()=>sql(`begin;set local role anon;select ${social('comment',{pet_id:pet,body:'A sighting',display_name:'Neighbor'})};rollback;`),/permission denied/)
+ assert.throws(()=>sql(`begin;${petFixture()}${as(unconfirmed)}select ${social('comment',{pet_id:pet,body:'A sighting',display_name:'Neighbor'})};rollback;`),/Confirmed sign-in/)
+ const result=sql(`begin;${petFixture()}${as(bob)}select ${social('comment',{pet_id:pet,body:'A sighting',display_name:'Neighbor',user_id:alice})};reset role;select user_id from public.pet_comments where pet_id='${pet}';set local role anon;select count(id) from public.pet_comments;reset role;update public.lost_and_found set needs_review=true where id='${pet}';set local role anon;select count(id) from public.pet_comments;rollback;`).split('\n')
+ assert.equal(result[1],bob);assert.equal(result[2],'1');assert.equal(result[3],'0')
+ assert.throws(()=>sql(`begin;${as(bob)}insert into public.pet_comments(pet_id,user_id,display_name,body) values('${pet}','${alice}','Fake','Forged');rollback;`),/permission denied/)
+})
+test('private messages are participant-only, including administrator isolation and cross-account denial',()=>{
+ const result=sql(`begin;${petFixture()}${as(bob)}select ${social('start_chat',{pet_id:pet,display_name:'Bob',body:'Private sighting'})}->>'conversation_id' as chat \\gset
+ select count(*) from public.pet_messages;${as(alice)}select count(*) from public.pet_messages;${as(admin)}select count(*) from public.pet_messages;select count(*) from public.pet_conversations;rollback;`).split('\n')
+ assert.deepEqual(result,['1','1','0','0'])
+ assert.throws(()=>sql(`begin;${petFixture()}${as(bob)}select ${social('start_chat',{pet_id:pet,display_name:'Bob',body:'Private sighting'})}->>'conversation_id' as chat \\gset
+ ${as(admin)}select public.pet_social_action('message',jsonb_build_object('conversation_id',:'chat','body','Intrusion'));rollback;`),/Conversation unavailable/)
+})
+test('recipient blocks prevent delivery in both directions and only blocker can remove their block',()=>{
+ assert.throws(()=>sql(`begin;${petFixture()}${as(bob)}select ${social('start_chat',{pet_id:pet,display_name:'Bob',body:'Private sighting'})}->>'conversation_id' as chat \\gset
+ ${as(alice)}select public.pet_social_action('block',jsonb_build_object('conversation_id',:'chat','blocked',true));${as(bob)}select public.pet_social_action('block',jsonb_build_object('conversation_id',:'chat','blocked',false));select public.pet_social_action('message',jsonb_build_object('conversation_id',:'chat','body','Blocked delivery'));rollback;`),/Messaging unavailable/)
+})
+test('DM recipients are resolved from the report/comment, not an arbitrary supplied account',()=>{
+ assert.throws(()=>sql(`begin;${petFixture()}${as(alice)}select ${social('start_chat',{pet_id:pet,display_name:'Alice',body:'Self message',recipient_id:bob})};rollback;`),/Recipient unavailable/)
+ const result=sql(`begin;${petFixture()}${as(bob)}select ${social('comment',{pet_id:pet,body:'Found near park',display_name:'Bob'})}->>'id' as comment \\gset
+ ${as(alice)}select public.pet_social_action('start_chat',jsonb_build_object('pet_id','${pet}','comment_id',:'comment','display_name','Alice','body','Thanks for the sighting'));select count(*) from public.pet_messages;rollback;`).split('\n')
+ assert.equal(result.at(-1),'1')
+})
+test('reported DM content reaches moderators without exposing the rest of the conversation',()=>{
+ const result=sql(`begin;${petFixture()}${as(bob)}select ${social('start_chat',{pet_id:pet,display_name:'Bob',body:'Reported message'})};select id as message from public.pet_messages limit 1 \\gset
+ ${as(alice)}select public.pet_social_action('report_message',jsonb_build_object('id',:'message','reason','Unwanted message'));
+ ${as(admin)}select public.pet_social_action('moderation_queue','{}')->0->>'evidence';select count(*) from public.pet_messages;rollback;`).split('\n')
+ assert.equal(result.at(-2),'Reported message');assert.equal(result.at(-1),'0')
+ assert.throws(()=>sql(`begin;${as(bob)}select ${social('moderation_queue',{})};rollback;`),/Administrator required/)
+})
+test('pet comments enforce a durable daily quota and owner hiding does not delete audit context',()=>{
+ assert.throws(()=>sql(`begin;${petFixture()}${as(bob)}select public.pet_social_action('comment',jsonb_build_object('pet_id','${pet}','display_name','Bob','body','Sighting '||n)) from generate_series(1,21)n;rollback;`),/Daily activity limit/)
+ const result=sql(`begin;${petFixture()}${as(bob)}select ${social('comment',{pet_id:pet,display_name:'Bob',body:'Old sighting'})}->>'id' as comment \\gset
+ select public.pet_social_action('hide_own_comment',jsonb_build_object('id',:'comment'));set local role anon;select count(id) from public.pet_comments;reset role;select count(*) from public.pet_comments where hidden;rollback;`).split('\n')
+ assert.equal(result.at(-2),'0');assert.equal(result.at(-1),'1')
+})
+test('DM message and new-conversation budgets persist across calls',()=>{
+ assert.throws(()=>sql(`begin;${petFixture()}${as(bob)}select ${social('start_chat',{pet_id:pet,display_name:'Bob',body:'First message'})}->>'conversation_id' as chat \\gset
+ select public.pet_social_action('message',jsonb_build_object('conversation_id',:'chat','body','Message '||n)) from generate_series(1,60)n;rollback;`),/Daily activity limit/)
+ assert.throws(()=>sql(`begin;insert into public.lost_and_found(type,title,description,city,status,reporter_id) select 'pet','Fixture '||n,'Local test only','Tracy','lost','${alice}'::uuid from generate_series(1,6)n;${as(bob)}select public.pet_social_action('start_chat',jsonb_build_object('pet_id',id,'display_name','Bob','body','Useful sighting')) from public.lost_and_found;rollback;`),/Daily activity limit/)
+})
+test('hidden or pending reports cannot start public comments or new DMs',()=>{
+ assert.throws(()=>sql(`begin;${petFixture()}update public.lost_and_found set needs_review=true where id='${pet}';${as(bob)}select ${social('start_chat',{pet_id:pet,display_name:'Bob',body:'Private sighting'})};rollback;`),/Report unavailable/)
+ assert.throws(()=>sql(`begin;${petFixture()}update public.lost_and_found set ingestion_status='archived' where id='${pet}';${as(bob)}select ${social('comment',{pet_id:pet,display_name:'Bob',body:'A sighting'})};rollback;`),/Report unavailable/)
+})
+
+
+test('pet moderation hides only reported public comments and context returns only caller ownership',()=>{
+ const result=sql(`begin;${petFixture()}${as(bob)}select ${social('comment',{pet_id:pet,display_name:'Bob',body:'Reported public comment'})}->>'id' as comment \\gset
+ select jsonb_array_length(public.pet_social_action('context',jsonb_build_object('pet_id','${pet}'))->'own_comment_ids');
+ ${as(alice)}select jsonb_array_length(public.pet_social_action('context',jsonb_build_object('pet_id','${pet}'))->'own_comment_ids');
+ select public.pet_social_action('report_comment',jsonb_build_object('id',:'comment','reason','Inappropriate public comment'));
+ ${as(admin)}select public.pet_social_action('moderation_queue','{}')->0->>'id' as report \\gset
+ select public.pet_social_action('review_report',jsonb_build_object('id',:'report','decision','hide'));set local role anon;select count(id) from public.pet_comments;rollback;`).split('\n')
+ assert.equal(result[0],'1');assert.equal(result[1],'0');assert.equal(result.at(-1),'0')
+})
+test('browser roles have no direct pet message, block or conversation write grants',()=>{
+ const result=sql(`select count(*) from information_schema.table_privileges where table_schema='public' and table_name in('pet_comments','pet_conversations','pet_messages','pet_message_blocks') and grantee in('anon','authenticated') and privilege_type in('INSERT','UPDATE','DELETE','TRUNCATE','TRIGGER');`)
+ assert.equal(result,'0')
+})

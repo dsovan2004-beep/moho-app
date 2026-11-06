@@ -1,3 +1,4 @@
+import { PUBLIC_PET_COLUMNS } from '@/lib/supabase'
 export const runtime = 'nodejs'
 
 import { getSupabaseClient, type LostAndFound } from '@/lib/supabase'
@@ -69,7 +70,7 @@ async function getPets(city?: string, status?: string, includeOlder=false) {
   const supabase = getSupabaseClient()
   let req = supabase
     .from('lost_and_found')
-    .select('*')
+    .select(PUBLIC_PET_COLUMNS)
     .order('created_at', { ascending: false })
 
   if (!includeOlder) req=req.gte('created_at',new Date(Date.now()-30*24*60*60*1000).toISOString())
@@ -115,6 +116,7 @@ function PetCard({ pet }: { pet: LostAndFound }) {
         </span>
       </div>
 
+      <Link href={`/lost-and-found/${pet.id}`} className="block px-4 pt-4 font-semibold text-[#19352d] underline">View report & discussion →</Link>
       {/* Body */}
       <div className="p-4">
         {pet.pet_name && (

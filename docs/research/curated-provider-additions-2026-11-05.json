@@ -1,0 +1,139 @@
+{
+  "date": "2026-11-05",
+  "scope": "First-party public contact, services and named service areas only; no copied images/reviews, no owner/license/insurance/quality verification.",
+  "providers": [
+    {
+      "name": "Lotus Landscaping Services",
+      "city": "Service area only",
+      "address": "",
+      "phone": "(209) 640-2906",
+      "website": "https://www.lotuslandscapingservices.com/",
+      "category": "Home Services",
+      "description": "Landscape construction and irrigation repair/installation advertised for Tracy and Mountain House. Office location not listed.",
+      "tags": [
+        "landscaping",
+        "irrigation",
+        "landscape construction"
+      ],
+      "areas": [
+        "Mountain House",
+        "Tracy"
+      ]
+    },
+    {
+      "name": "Lawn & Yard Solutions",
+      "city": "Service area only",
+      "address": "",
+      "phone": "(209) 442-3567",
+      "website": "https://lawnandyardsolutions.com/",
+      "category": "Home Services",
+      "description": "Lawn mowing, edging, yard cleanup and sprinkler repairs advertised for Tracy and Mountain House. Contact details checked on the linked site contact page; office location not listed.",
+      "tags": [
+        "landscaping",
+        "lawn care",
+        "irrigation"
+      ],
+      "areas": [
+        "Mountain House",
+        "Tracy"
+      ]
+    },
+    {
+      "name": "Jesus & Sons LLC",
+      "city": "Tracy",
+      "address": "",
+      "phone": "(510) 825-7371",
+      "website": "https://www.jesusandsonsllc.com/contact",
+      "category": "Home Services",
+      "description": "Tracy-based landscaping and hardscape business advertising service in Mountain House and Ellis. No public office street address included.",
+      "tags": [
+        "landscaping",
+        "landscape construction",
+        "irrigation"
+      ],
+      "areas": [
+        "Mountain House",
+        "Tracy"
+      ]
+    },
+    {
+      "name": "Villanueva Landscaping",
+      "city": "Tracy",
+      "address": "",
+      "phone": "(800) 510-4962",
+      "website": "https://www.villanueva-landscaping.com/",
+      "category": "Home Services",
+      "description": "Tracy-based landscaping business advertising turf, pavers, concrete, retaining walls and landscape maintenance in Mountain House and nearby cities. Contact directly about scope and availability.",
+      "tags": [
+        "landscaping",
+        "landscape construction",
+        "lawn care"
+      ],
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ]
+    },
+    {
+      "name": "Acosta Handyman",
+      "city": "Service area only",
+      "address": "",
+      "phone": "(209) 315-5393",
+      "website": "https://www.acostahandyman.com/",
+      "category": "Home Services",
+      "description": "Home repairs, door hardware and wall patching advertised for Tracy, Mountain House and nearby cities. Office location not listed. Confirm project scope, any required licensing and availability directly.",
+      "tags": [
+        "handyman",
+        "small repairs"
+      ],
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ]
+    },
+    {
+      "name": "Del Sol House Cleaning",
+      "city": "Service area only",
+      "address": "",
+      "phone": "(209) 647-9881",
+      "website": "https://www.delsolclean.com/",
+      "category": "Home Services",
+      "description": "House cleaning with recurring monthly and move-out services advertised for Tracy, Mountain House and nearby cities. Office location not listed.",
+      "tags": [
+        "house cleaning",
+        "recurring cleaning",
+        "move-out cleaning"
+      ],
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ]
+    },
+    {
+      "name": "Mr. Rooter Plumbing \u2014 Tracy",
+      "city": "Service area only",
+      "address": "",
+      "phone": "(209) 833-3841",
+      "website": "https://www.mrrooterservice.com/about-us",
+      "category": "Home Services",
+      "description": "Plumbing repair, drain cleaning and water heater services advertised for Tracy, Mountain House and San Joaquin County. Office street address not established in this check.",
+      "tags": [
+        "plumbing",
+        "drain cleaning",
+        "water heaters"
+      ],
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ]
+    }
+  ]
+}

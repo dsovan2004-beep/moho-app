@@ -1,0 +1,34 @@
+import Link from 'next/link'
+import { OPERATOR_CONTACT, POLICY_UPDATED } from '@/lib/site-policy'
+export const runtime = 'nodejs'
+export const metadata = { title: 'Privacy Policy | MoHoLocal', alternates: { canonical: 'https://www.moholocal.com/privacy' } }
+export default function PrivacyPage() {
+  return <article className="max-w-3xl mx-auto px-4 py-10 text-slate-700 leading-relaxed">
+    <p className="text-sm mb-3"><Link href="/" className="underline">Home</Link> / Privacy</p>
+    <h1 className="text-3xl font-bold text-[#19352d]">Privacy Policy</h1>
+    <p className="mt-3 text-sm">Effective and last updated: {POLICY_UPDATED}</p>
+    <p className="mt-6">MoHoLocal is a local business directory and community service. This policy explains information handled through moholocal.com, including accounts, business requests, pet discussions and private messages.</p>
+    <h2 className="text-xl font-bold mt-8 mb-3">Information we receive</h2>
+    <ul className="list-disc pl-6 space-y-2">
+      <li>Account details such as your email, account identifier and profile/display name. If you choose Google sign-in, Google supplies basic account information such as your name, email and profile image.</li>
+      <li>Information you submit: business names, service areas, contact details, ownership evidence, corrections, posts, replies, pet reports, messages and moderation reports.</li>
+      <li>Public business information and public report sources that we use to maintain the directory. An imported report is not proof that its reported situation is still current.</li>
+      <li>Technical information needed to serve and secure the site, including IP address, browser/request information, timestamps and operational logs. Search terms in page URLs may appear in browser history and hosting logs.</li>
+    </ul>
+    <h2 className="text-xl font-bold mt-8 mb-3">What is public and what is private</h2>
+    <p>Approved business details, published pet reports, community posts and discussion replies can be read publicly and may be indexed by search engines. Use a display name you are comfortable publishing. Keep private phone numbers, home addresses and sensitive identifying details out of public posts.</p>
+    <p className="mt-3">Business submission and claim receipts, account email and ownership evidence are used for review and account operation rather than published as part of the directory. Private messages are available to their conversation participants. If a participant reports a message, that message and the report reason become available to authorized moderators. Messages are stored by the service; they are not end-to-end encrypted. A recipient can copy or share information you send them.</p>
+    <h2 className="text-xl font-bold mt-8 mb-3">How information is used and shared</h2>
+    <p>We use information to operate accounts, show local listings, review submissions and ownership claims, deliver discussions and messages, investigate abuse, apply activity limits and maintain service reliability. Public content is shared with visitors. Private account/request information is available to authorized operators when needed for these purposes.</p>
+    <p className="mt-3">Service providers process information to run the site: Cloudflare provides hosting and request/security processing; Supabase provides authentication, database and storage services; Google processes Google sign-in when selected. Account-related emails may be handled by authentication/email providers. External maps, images, business websites and original-report links have their own practices and may receive request information when loaded or opened.</p>
+    <p className="mt-3">The current directory does not include personal-information sales or cross-site advertising features. We may also disclose information where required by law or to address fraud, abuse or threats to people or the service.</p>
+    <h2 className="text-xl font-bold mt-8 mb-3">Browser storage and tracking choices</h2>
+    <p>Authentication uses browser storage to keep your sign-in session and complete sign-in securely. Clearing storage or signing out may remove access to account features until you sign in again. The application does not currently change its operation in response to browser Do Not Track signals. External services you visit or load may apply their own tracking policies and settings.</p>
+    <h2 className="text-xl font-bold mt-8 mb-3">Retention, corrections and deletion requests</h2>
+    <p>Directory records and public contributions remain available until corrected, removed or otherwise reviewed. Account data, requests, messages and moderation records are retained as needed to operate the service and handle abuse, disputes and legal obligations; automatic expiry is not available for every record type. Removing content from the live service does not instantly remove prior search-engine caches, recipient copies or provider backups.</p>
+    <p className="mt-3">You may request access to, correction of, or deletion of information associated with you by contacting <a className="underline break-all" href={`mailto:${OPERATOR_CONTACT}?subject=MoHoLocal%20privacy%20request`}>{OPERATOR_CONTACT}</a>. Include the relevant page or request reference and a description of your request. Do not send passwords or sensitive identity documents. We may need to verify that you are the account holder or authorized representative before acting. Some information may need to be retained for legal, security or moderation reasons; we will explain applicable limits when responding.</p>
+    <h2 className="text-xl font-bold mt-8 mb-3">Children and policy changes</h2>
+    <p>The account and community features are intended for adults. If you believe a child has supplied personal information, contact us so we can investigate and address it. We will post changes on this page and update the effective date. Material changes to how existing private information is used will receive additional notice where appropriate.</p>
+    <p className="mt-8 border-t pt-5">Questions: <a className="underline break-all" href={`mailto:${OPERATOR_CONTACT}?subject=MoHoLocal%20privacy`}>{OPERATOR_CONTACT}</a>. Also see our <Link href="/terms" className="underline">Terms and community rules</Link>.</p>
+  </article>
+}

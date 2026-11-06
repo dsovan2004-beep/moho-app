@@ -323,3 +323,14 @@ March 2026
 November 5 UX follow-up: mobile navigation now has visible 48px touch targets, Escape/focus handling and a skip link; city/category evidence and discovery count errors are corrected. TypeScript, clean native build and live interactions pass; revised navigation and mobile results are deployed. Design acceptance criteria: `docs/ux/design-standard.md`. No competitor-superiority or resident-validation claim is made.
 
 Release-hygiene finding: live /privacy and /terms show the app 404 page. PRIV-01 is an open gate before the broader public pilot; the bare-domain browser navigation successfully redirects to www.
+
+November 5 scope update: resident discussion threads on pet reports (PET-02) and private report-linked DMs (MSG-01) are authorized. Both require confirmed-account identity, durable spam limits, reporting/moderation; DMs additionally require participant-only access and blocking. Not live yet; current listing/policy work continues first.
+
+
+## November 5 relaunch — supply, policies and resident interactions
+
+- DATA-01/02: completed 39 remaining desk rechecks; 3 existing identities corrected, 36 unresolved/mismatched, including 20 newly held public records. Search failure is not nonexistence. Seven individually sourced additions include four landscapers. 18 website-checked listings total; both focus cities have 4 landscaping, 2 handyman, 2 house-cleaning and 2 plumbing choices.
+- PRIV-01: Privacy/Terms deployed; accurate provider/account/message/retention disclosures and existing operator contact; no legal review claimed.
+- PET-02/MSG-01: first release deployed with public report replies and private inbox. Confirmed identities, participant RLS, no administrator-wide DM read, blocking, abuse-report snapshots, moderation and durable daily budgets. Imported reporters are not guessed; new moderated resident reports retain their submitter linkage. No push/email notifications yet.
+- Validation: 49 local regressions, main and ingestion TypeScript, OpenNext build pass. Hosted migration 20261106012112; advisors zero WARN/ERROR, seven intentional private no-policy INFO findings. Final browser/native-build QA in progress.
+- Newly found during pet-history QA: 11 old manual reunion stories have no source URL/account linkage; two have 555 contacts. Hold these reversibly for provenance review rather than treating them as proven reunion outcomes. No new public test posts or DMs sent.

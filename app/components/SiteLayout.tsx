@@ -6,6 +6,7 @@ import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { useState, useEffect, useRef, Suspense } from 'react'
 import { getSupabaseClient, signOut } from '@/lib/supabase'
 import { CITIES as CITY_CONFIG } from '@/lib/cities'
+import { OPERATOR_CONTACT } from '@/lib/site-policy'
 import type { User } from '@supabase/supabase-js'
 
 const CITIES = CITY_CONFIG.map(city => city.name)
@@ -267,12 +268,12 @@ function NavContent() {
 
   // Active-state helpers — one tab active at a time
   const isDirectory = pathname === '/directory'
-    || /^\/[a-z-]+$/.test(pathname) && !['ask','discover','events','community','activity','lost-and-found','new-resident','submit-business','login','register','profile','admin','best','directory'].includes(pathname.slice(1))
+    || /^\/[a-z-]+$/.test(pathname) && !['ask','discover','events','community','activity','lost-and-found','new-resident','submit-business','login','register','profile','admin','best','directory','messages','privacy','terms','my-requests'].includes(pathname.slice(1))
     || /^\/[a-z-]+\/[a-z-]+/.test(pathname) && !pathname.startsWith('/best') && !pathname.startsWith('/community')
   const isExplore   = pathname === '/discover' || pathname.startsWith('/best')
   const isEvents    = pathname === '/events'
   const isCommunity = pathname === '/community' || pathname === '/activity'
-    || pathname === '/lost-and-found' || pathname === '/new-resident'
+    || pathname.startsWith('/lost-and-found') || pathname === '/messages' || pathname === '/new-resident'
   const isForBiz    = pathname === '/submit-business'
   const isAsk       = pathname === '/ask'
 
@@ -596,6 +597,7 @@ function NavContent() {
                         </svg>
                         Profile
                       </Link>
+                      <Link href="/messages" onClick={() => setProfileOpen(false)} className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">Private messages</Link>
                       <Link href="/my-requests" onClick={() => setProfileOpen(false)} className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">My business requests</Link>
                       <button
                         onClick={handleSignOut}
@@ -635,7 +637,7 @@ function NavContent() {
             { href: `/directory?city=${encodeURIComponent(city)}`, label: 'Find help' },
             { href: `/lost-and-found?city=${encodeURIComponent(city)}`, label: 'Pets' },
             { href: `/community?city=${encodeURIComponent(city)}`, label: 'Community' },
-            { href: user ? '/my-requests' : '/login', label: user ? 'My requests' : 'Sign in' },
+            { href: user ? '/messages' : '/login', label: user ? 'Messages' : 'Sign in' },
           ].map(item => <Link key={item.label} href={item.href} className="min-h-12 flex items-center justify-center text-xs font-semibold text-white hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-amber-300">{item.label}</Link>)}
         </div>
       </nav>
@@ -746,7 +748,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
                   {[
                     { label: 'List Your Business', href: '/submit-business' },
                     { label: 'Find Your Listing to Claim', href: '/directory' },
-                    { label: 'Contact Us',         href: '/submit-business' },
+                    { label: 'Contact Us',         href: `mailto:${OPERATOR_CONTACT}?subject=MoHoLocal` },
                   ].map(({ label, href }) => (
                     <li key={label}>
                       <Link href={href} className="text-gray-400 hover:text-white transition-colors">
@@ -779,7 +781,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
                 {[
                   { label: 'Privacy', href: '/privacy' },
                   { label: 'Terms',   href: '/terms' },
-                  { label: 'Contact', href: '/submit-business' },
+                  { label: 'Contact', href: `mailto:${OPERATOR_CONTACT}?subject=MoHoLocal` },
                 ].map(({ label, href }) => (
                   <Link key={label} href={href} className="text-xs text-gray-600 hover:text-gray-300 transition-colors">
                     {label}

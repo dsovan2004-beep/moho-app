@@ -1,0 +1,3 @@
+-- Previously needs_review=false, ingestion_status=active. Only review flag changes.
+-- Preserves all content/status/IDs; reversible after provenance evidence.
+update public.lost_and_found set needs_review=true where source='manual' and source_url is null and reporter_id is null and id in('b67cc373-fb6c-45d9-bc1d-7549085bc97b','d02cd9da-eb66-4454-9b26-e136f9552132','1773d98d-3779-45b4-bf1c-f3c47e69dcbf','66ad84ca-20d3-47a2-9fa6-e89b82df5f02','70936336-0aec-4807-829b-6d80906fad1a','24f44602-d1e5-4017-948a-0202d9423f9b','074faa21-baf4-422a-800d-970de343e9e2','d17b670a-c2ed-4f2e-b702-619df78ccb5f','a2b3a63a-245f-4db8-a365-9346294cd706','4835e00c-4ca7-41e7-89d7-dbddf905db77','279d762a-00f5-45c8-ac9a-0d965eea17bf') returning id;

@@ -63,7 +63,7 @@ export default async function CityPage({ params }: PageProps) {
       <p className="mt-2 text-sm text-slate-600">An information check confirms the fields described below. Confirm pricing, availability and suitability directly with each provider.</p>
       {checked.length ? <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">{checked.map(biz => <article key={biz.id} className="rounded-2xl border border-slate-200 bg-white p-5 min-w-0">
         <h3 className="font-bold text-lg"><Link href={`/business/${biz.id}`} className="text-[#19352d] underline underline-offset-4 break-words">{biz.name}</Link></h3>
-        <p className="mt-2 text-sm text-slate-600">Based in {biz.city}</p>
+        <p className="mt-2 text-sm text-slate-600">{biz.city === 'Service area only' ? 'Office location not listed' : `Based in ${biz.city}`} </p>
         <ListingEvidence check={biz.listing_checks} />
         {biz.phone && <a href={`tel:${biz.phone.replace(/[^+\d]/g, '')}`} className="inline-block mt-4 rounded-lg bg-[#19352d] px-4 py-2 text-white font-semibold text-sm">Call {biz.phone}</a>}
       </article>)}</div> : <div className="mt-5 border border-dashed border-slate-300 rounded-2xl p-6 text-slate-700">{served.error ? 'Checked providers could not load right now.' : 'No website-checked providers are ready for this city yet.'} <Link href={directoryUrl} className="underline font-semibold">Browse existing listings</Link> and check details directly.</div>}

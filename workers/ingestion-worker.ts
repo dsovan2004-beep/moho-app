@@ -415,6 +415,7 @@ async function handlePromoteSubmission(req: Request, env: Env): Promise<Response
       type:         'pet',
       status:       sub.pet_status ?? 'lost',
       contact_name: 'Community Submission',
+      reporter_id: sub.submitted_by ?? null,
       source_url: sub.contact_url ?? null,
       image_url:    sub.image_url ?? null,
       source:       'community',
