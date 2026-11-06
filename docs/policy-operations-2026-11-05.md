@@ -11,3 +11,5 @@ References consulted:
 - https://www.ftc.gov/policy/advocacy-research/tech-at-ftc/2024/01/ai-companies-uphold-your-privacy-confidentiality-commitments
 
 Follow-up: establish a documented handling/retention routine before a broad resident rollout, test deletion/correction handling, and reassess policies when notifications, ads, analytics or messaging capabilities change. No claim that MoHoLocal is subject to or exempt from any particular statute is made.
+
+November 5 notifications/status follow-up: Privacy now covers account read state, device browser-alert preferences/duplicate suppression, and reporter confirmations/private status history. Optional generic browser alerts require resident permission and work while the app is visible; no email/closed-app push delivery is claimed.

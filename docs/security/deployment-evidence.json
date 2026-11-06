@@ -2,7 +2,7 @@
   "date": "2026-11-05",
   "primary_url": "https://www.moholocal.com",
   "web_worker": "moho-web",
-  "web_version": "ecbc9980-0a39-4075-88c1-59e82eeea436",
+  "web_version": "8b5d2750-d6fe-4bf3-aaea-2db0b2253af4",
   "web_route": "www.moholocal.com/*",
   "ingestion_worker": "moho-ingestion",
   "ingestion_version": "b7284c08-ddee-4648-895e-70a324442bf1",
@@ -14,10 +14,11 @@
     "20261105230100_listing_evidence_and_service_areas",
     "20261105232042_close_legacy_intake_paths",
     "20261105232316_harden_published_contributions",
-    "20261106012112_pet_discussions_and_private_messages"
+    "20261106012112_pet_discussions_and_private_messages",
+    "20261106014512_pet_activity_notifications_and_status"
   ],
   "regression_tests": {
-    "passed": 49,
+    "passed": 55,
     "failed": 0
   },
   "npm_audit": {
@@ -35,7 +36,7 @@
   "legacy_credential_revoked": true,
   "legacy_credential_last_read_status": 401,
   "production_test_request_result": "rejected; no business published",
-  "public_business_rows": 1790,
+  "public_business_rows": 1795,
   "quarantined_business_rows": 45,
   "website_checked_existing_providers": 6,
   "unsupported_ratings_cleared": 168,
@@ -48,11 +49,10 @@
   },
   "post_retirement_real_account_access": "passed",
   "website_checked_existing_businesses": 11,
-  "website_checked_launch_category_providers": 10,
-  "unchecked_home_services_candidates": 0,
-  "final_web_source_commit": "2e24ec91834ee4122664782809470edceb2cf5eb",
+  "website_checked_launch_category_providers": 15,
+  "final_web_source_commit": "264b896b8c595b7e485e66e12602ae93f096a5f0",
   "ingestion_source_commit": "2e24ec91834ee4122664782809470edceb2cf5eb",
-  "final_web_build": "0d43297b-4816-40c6-bdab-3be9e8858c87",
+  "final_web_build": "4a54a1f8-1b2f-4c91-831e-d9eaea3223d6",
   "temporary_build_setup_permission_removed": true,
   "live_responsive_checks": {
     "viewport": 320,
@@ -73,9 +73,9 @@
   },
   "temporary_plaintext_credential_copies_removed": true,
   "actual_deployment_and_server_key_tracked_file_matches": 0,
-  "total_business_rows": 1966,
-  "new_individually_curated_rows": 7,
-  "website_checked_total_businesses": 18,
+  "total_business_rows": 1971,
+  "new_individually_curated_rows": 12,
+  "website_checked_total_businesses": 23,
   "unresolved_identity_or_owner_confirmation": 36,
   "final_ingestion_build": "6b414196-da6f-4017-931d-25652faba570",
   "completed_release_policy_routes": [
@@ -86,16 +86,45 @@
   "pet_discussions_and_dm_deployed": true,
   "private_inbox_noindex": "browser confirmed noindex, nofollow",
   "production_social_test_messages_sent": 0,
-  "launch_supply_per_focus_city": {
-    "landscaping": 4,
-    "handyman": 2,
-    "house_cleaning": 2,
-    "plumbing": 2
-  },
   "social_browser_acceptance": "Anonymous detail/sign-in gate, owner empty inbox, owner empty moderation queue; no real public messages posted. Two-user writes/blocks/privacy covered by isolated database tests.",
   "advisor_result": {
     "warnings": 0,
     "errors": 0,
-    "info_intentional_private_no_policy": 7
+    "info_intentional_private_no_policy": 8
+  },
+  "remaining_desk_recheck_passes": 0,
+  "notification_status_release": {
+    "source": "bcadf70",
+    "build": "409c27ae-15a0-490c-a261-3f865399d838",
+    "web_version": "9c35d10a-ec9e-4b02-b888-ad1ef5218a63",
+    "native_build": "success",
+    "live_acceptance": [
+      "signed-in unread status",
+      "optional browser-alert button without granting permission",
+      "account-scoped empty report management",
+      "320px layout",
+      "private-page noindex"
+    ],
+    "not_exercised": [
+      "OS alert delivery",
+      "production status mutation",
+      "production test messages"
+    ],
+    "notifications": "Persistent unread counts plus opt-in browser alerts while app is open and visible; no closed-app push or email",
+    "pet_status": "Reporter only; revision guard, moderation holds, private audit and reversible archive"
+  },
+  "launch_supply_by_city": {
+    "Mountain House": {
+      "landscaping": 4,
+      "handyman": 3,
+      "house_cleaning": 3,
+      "plumbing": 3
+    },
+    "Tracy": {
+      "landscaping": 4,
+      "handyman": 3,
+      "house_cleaning": 4,
+      "plumbing": 4
+    }
   }
 }

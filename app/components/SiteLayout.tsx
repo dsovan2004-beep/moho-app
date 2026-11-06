@@ -365,7 +365,7 @@ function NavContent() {
             </div>
 
             {/* ── Desktop Nav Links ── */}
-            <div className="hidden md:flex items-center gap-1 flex-1 justify-center">
+            <div className="hidden xl:flex items-center gap-1 flex-1 justify-center">
 
               {/* Directory dropdown */}
               <div className="relative" ref={directoryRef}>
@@ -634,7 +634,7 @@ function NavContent() {
           </div>
         </div>
 
-        <div className="md:hidden grid grid-cols-4 border-t border-white/15" aria-label="Mobile navigation">
+        <div className="xl:hidden grid grid-cols-4 border-t border-white/15" aria-label="Mobile navigation">
           {[
             { href: `/directory?city=${encodeURIComponent(city)}`, label: 'Find help' },
             { href: `/lost-and-found?city=${encodeURIComponent(city)}`, label: 'Pets' },
