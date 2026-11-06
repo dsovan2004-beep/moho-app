@@ -4,7 +4,7 @@ export const runtime = 'nodejs'
 
 import { getSupabaseClient, type LostAndFound } from '@/lib/supabase'
 import Link from 'next/link'
-import { CITY_NAMES } from '@/lib/cities'
+import { RELAUNCH_CITY_NAMES } from '@/lib/cities'
 
 // ── Pet emoji map (matches index.html exactly) ───────────────────────────────
 function getPetEmoji(pet: LostAndFound): string {
@@ -72,6 +72,7 @@ async function getPets(city?: string, status?: string, includeOlder=false) {
   let req = supabase
     .from('lost_and_found')
     .select(PUBLIC_PET_COLUMNS)
+    .in('city',[...RELAUNCH_CITY_NAMES])
     .order('status_confirmed_at', { ascending: false, nullsFirst: false })
     .order('created_at', { ascending: false })
 
@@ -195,7 +196,7 @@ interface PageProps {
   searchParams: Promise<{ city?: string; status?: string; history?: string }>
 }
 
-const CITIES = ['All Cities', 'Mountain House', 'Tracy', 'Lathrop', 'Manteca', 'Brentwood']
+const CITIES = ['All Cities', ...RELAUNCH_CITY_NAMES]
 const STATUSES = [
   { key: 'All', label: 'All' },
   { key: 'lost', label: '🚨 Lost' },
@@ -205,7 +206,7 @@ const STATUSES = [
 
 export default async function LostAndFoundPage({ searchParams }: PageProps) {
   const params = await searchParams
-  const city = CITY_NAMES.includes(params.city ?? '') ? params.city! : 'All Cities'
+  const city = (RELAUNCH_CITY_NAMES as readonly string[]).includes(params.city ?? '') ? params.city! : 'All Cities'
   const includeOlder=params.history==='1'
   const status = params.status ?? 'All'
 
