@@ -52,7 +52,7 @@ export function MessageNotificationSettings(){
   <p className="font-semibold" role="status">{failed?'Unread status could not refresh':!loaded?'Checking unread messages…':total?`${total} unread message${total===1?'':'s'}`:'You’re caught up'}</p>
   {failed&&<button className="underline text-sm min-h-11" onClick={refreshMessageAlerts}>Retry unread status</button>}
   <p className="text-sm text-slate-600 mt-2">Unread badges update while MoHoLocal is visible. Read status is saved to your account.</p>
-  <DeliveryNotificationSettings key={user?.id??'guest'}/>
+  <details className="mt-3"><summary className="min-h-11 cursor-pointer py-3 font-semibold text-sm">Notification preferences</summary><DeliveryNotificationSettings key={user?.id??'guest'}/></details>
  </section>
 }
 export function MessageAlertSummary(){
