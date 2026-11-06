@@ -1,0 +1,72 @@
+{
+  "events": [
+    {
+      "wallTime": 3233,
+      "cpuTime": 5,
+      "truncated": false,
+      "executionModel": "stateless",
+      "outcome": "ok",
+      "tailAttributes": {
+        "cron": "*/5 * * * *",
+        "scheduledTime": 1793943911918
+      },
+      "scriptVersion": {
+        "id": "b093345a-e324-45f0-bb95-e0e45d052ccd"
+      },
+      "scriptName": "moho-ingestion",
+      "diagnosticsChannelEvents": [],
+      "exceptions": [],
+      "logs": [
+        {
+          "message": [
+            "[notifications] delivery pass complete",
+            {
+              "processed": 1
+            }
+          ],
+          "level": "info",
+          "timestamp": 1793943916446
+        }
+      ],
+      "eventTimestamp": 1793943913130,
+      "event": {
+        "cron": "*/5 * * * *",
+        "scheduledTime": 1793943911918
+      }
+    },
+    {
+      "wallTime": 321,
+      "cpuTime": 1,
+      "truncated": false,
+      "executionModel": "stateless",
+      "outcome": "ok",
+      "tailAttributes": {
+        "cron": "*/5 * * * *",
+        "scheduledTime": 1793944211918
+      },
+      "scriptVersion": {
+        "id": "b093345a-e324-45f0-bb95-e0e45d052ccd"
+      },
+      "scriptName": "moho-ingestion",
+      "diagnosticsChannelEvents": [],
+      "exceptions": [],
+      "logs": [
+        {
+          "message": [
+            "[notifications] delivery pass complete",
+            {
+              "processed": 0
+            }
+          ],
+          "level": "info",
+          "timestamp": 1793944213045
+        }
+      ],
+      "eventTimestamp": 1793944212597,
+      "event": {
+        "cron": "*/5 * * * *",
+        "scheduledTime": 1793944211918
+      }
+    }
+  ]
+}

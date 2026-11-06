@@ -2,10 +2,10 @@
   "date": "2026-11-05",
   "primary_url": "https://www.moholocal.com",
   "web_worker": "moho-web",
-  "web_version": "460f5eb3-bf11-45b1-b7e1-4b6f5ca86692",
+  "web_version": "805e260a-a33d-44e7-bcc2-552763928142",
   "web_route": "www.moholocal.com/*",
   "ingestion_worker": "moho-ingestion",
-  "ingestion_version": "82027f12-3291-49de-936a-be32e3422b03",
+  "ingestion_version": "b093345a-e324-45f0-bb95-e0e45d052ccd",
   "database_project": "ozjlfgipfzykzrjakwzb",
   "migrations": [
     "20261105100215_secure_directory_requests",
@@ -16,12 +16,12 @@
     "20261105232316_harden_published_contributions",
     "20261106012112_pet_discussions_and_private_messages",
     "20261106014512_pet_activity_notifications_and_status",
-    "20261106043716_delivery_notifications_and_pet_expiry"
+    "20261106043716_delivery_notifications_and_pet_expiry",
+    "20261106052438",
+    "20261106053247",
+    "20261106053915"
   ],
-  "regression_tests": {
-    "passed": 67,
-    "failed": 0
-  },
+  "regression_tests": 75,
   "npm_audit": {
     "root": 0,
     "workers": 0,
@@ -37,7 +37,7 @@
   "legacy_credential_revoked": true,
   "legacy_credential_last_read_status": 401,
   "production_test_request_result": "rejected; no business published",
-  "public_business_rows": 1798,
+  "public_business_rows": 1800,
   "quarantined_business_rows": 45,
   "website_checked_existing_providers": 6,
   "unsupported_ratings_cleared": 168,
@@ -50,10 +50,13 @@
   },
   "post_retirement_real_account_access": "passed",
   "website_checked_existing_businesses": 11,
-  "website_checked_launch_category_providers": 18,
-  "final_web_source_commit": "14618b42afe1719f98a4618d8cbeca46770fa39c",
-  "ingestion_source_commit": "e6b7e602821fbffa3916924dddb19d3d371ba09a",
-  "final_web_build": "02101758-f1ae-4b1c-adcd-b52feb5ffa42",
+  "website_checked_launch_category_providers": 19,
+  "final_web_source_commit": "ffcbedcbc28b48ea23dca98dd8493fe78e3e983c",
+  "ingestion_source_commit": "8c982b6b7517798a3ad580059f49629309d6e8bb",
+  "final_web_build": {
+    "id": "2edbaa42-f3b6-4965-8768-f3d358025de6",
+    "conclusion": "success"
+  },
   "temporary_build_setup_permission_removed": true,
   "live_responsive_checks": {
     "viewport": 320,
@@ -74,11 +77,14 @@
   },
   "temporary_plaintext_credential_copies_removed": true,
   "actual_deployment_and_server_key_tracked_file_matches": 0,
-  "total_business_rows": 1974,
-  "new_individually_curated_rows": 15,
-  "website_checked_total_businesses": 26,
+  "total_business_rows": 1976,
+  "new_individually_curated_rows": 17,
+  "website_checked_total_businesses": 28,
   "unresolved_identity_or_owner_confirmation": 36,
-  "final_ingestion_build": "f3a207b6-518d-47af-96c7-820eeab26edc",
+  "final_ingestion_build": {
+    "id": "b696ba3d-581b-481c-8e13-0fbd40668965",
+    "conclusion": "success"
+  },
   "completed_release_policy_routes": [
     "/privacy",
     "/terms"
@@ -89,9 +95,10 @@
   "production_social_test_messages_sent": 0,
   "social_browser_acceptance": "Anonymous detail/sign-in gate, owner empty inbox, owner empty moderation queue; no real public messages posted. Two-user writes/blocks/privacy covered by isolated database tests.",
   "advisor_result": {
-    "warnings": 0,
-    "errors": 0,
-    "info_intentional_private_no_policy": 12
+    "WARN": 0,
+    "ERROR": 0,
+    "INFO": 13,
+    "note": "intentionally private RLS tables without browser policies"
   },
   "remaining_desk_recheck_passes": 0,
   "notification_status_release": {
@@ -117,14 +124,14 @@
   "launch_supply_by_city": {
     "Mountain House": {
       "landscaping": 6,
-      "handyman": 3,
-      "house_cleaning": 3,
+      "handyman": 4,
+      "house cleaning": 3,
       "plumbing": 3
     },
     "Tracy": {
       "landscaping": 5,
-      "handyman": 3,
-      "house_cleaning": 4,
+      "handyman": 4,
+      "house cleaning": 4,
       "plumbing": 5
     }
   },
@@ -153,51 +160,56 @@
   "away_notification_release": {
     "native_builds": {
       "web": {
-        "source": "14618b42afe1719f98a4618d8cbeca46770fa39c",
-        "status": "completed",
-        "conclusion": "success",
-        "build": "02101758-f1ae-4b1c-adcd-b52feb5ffa42"
+        "source": "ffcbedcbc28b48ea23dca98dd8493fe78e3e983c",
+        "build": "2edbaa42-f3b6-4965-8768-f3d358025de6",
+        "conclusion": "success"
       },
       "ingestion": {
-        "source": "e6b7e602821fbffa3916924dddb19d3d371ba09a",
-        "status": "completed",
-        "conclusion": "success",
-        "build": "f3a207b6-518d-47af-96c7-820eeab26edc"
+        "source": "8c982b6b7517798a3ad580059f49629309d6e8bb",
+        "build": "b696ba3d-581b-481c-8e13-0fbd40668965",
+        "conclusion": "success"
       }
     },
-    "push": "deployed, resident opt-in available; OS delivery not exercised",
-    "private_message_contents_in_alerts": false,
-    "active_device_subscriptions": 0,
-    "email": "configured but disabled: operator setup email accepted, then failed asynchronously due to shared account monthly quota",
-    "email_sender_domain": "moholocal.com verified",
-    "email_key_scope": "Sending access restricted to moholocal.com; encrypted ingestion Worker secret",
-    "email_sender_enabled": false,
-    "operator_test": {
-      "provider_id": "01a1af31-6e12-7c7e-a9ba-d42bb7f46488",
-      "http_status": 200,
-      "delivery_status": "failed",
-      "reason": "monthly sending quota exhausted",
-      "new_resident_optins": 0,
-      "notification_jobs": 0,
-      "paid_plan_changes": false
+    "push": {
+      "device": "real desktop Chrome on operator Mac",
+      "device_count": 1,
+      "test_job": "27e2c35e-575a-4521-8603-4958ee108a0b",
+      "status": "sent",
+      "attempts": 2,
+      "test_tab_closed": true,
+      "browser_running": true,
+      "other_user_tabs_closed": false,
+      "received_at": "2026-11-06T05:45:15.885771Z",
+      "displayed_at": "2026-11-06T05:45:15.902575Z",
+      "opened_at": null,
+      "native_os_banner_observed": false,
+      "phone_and_fully_quit_browser_tests": "remaining"
     },
-    "cron": "*/5 * * * * confirmed alongside unchanged ingestion schedules",
-    "cron_bootstrap": "prepare executed once after verified Worker deployment; no notification jobs created",
-    "browser_acceptance": [
-      "signed-in notification settings",
-      "push enable button available without granting permission",
-      "email disabled",
-      "account-scoped empty report management",
-      "non-issued-token unsubscribe GET and POST",
-      "inbox noindex",
-      "320px/390px no horizontal overflow",
-      "44px buttons; compact preferences; viewport cleared"
+    "email": {
+      "transport": "Cloudflare native EMAIL binding",
+      "sender": "hello@moholocal.com",
+      "domain_status": "Enabled / DNS Configured",
+      "existing_workers_paid_plan": true,
+      "plan_upgrade": false,
+      "readiness": true,
+      "resident_optins": 0,
+      "operator_test": "found in Gmail Inbox at 9:32 PM November 5",
+      "operator_test_message_id": "<v2TJNXaF90C04ndKRuINucgdCnrnfPbeAce3@moholocal.com>",
+      "runtime_credentials": "native sender-restricted binding; no management token",
+      "hard_budget": "500 actual email claim attempts per 31 days, including retries",
+      "async_failure_reconciliation": "open; manual provider activity/suppression review during limited pilot",
+      "resend": "unused; shared Free quota 3600/3000"
+    },
+    "runtime_fixes": [
+      "explicit singleton WHERE for hosted safeupdate",
+      "manual redirect mode supported by Workers; redirect responses remain rejected"
     ],
-    "next_email_gate": "MSG-04: sending availability, actual delivered operator test and authenticated failure/bounce handling",
+    "private_message_contents_in_alerts": false,
+    "production_social_test_messages_sent": 0,
     "evidence": [
-      "docs/notification-expiry-release-2026-11-05.md",
-      "docs/ux/away-notification-controls-mobile.png",
-      "docs/ux/email-quota-blocker.png"
+      "docs/push-device-validation-2026-11-05.md",
+      "docs/ux/operator-email-delivered.png",
+      "docs/ux/push-device-confirmed-mobile.png"
     ]
   },
   "automatic_pet_expiry": {
@@ -208,5 +220,57 @@
     "reporter_renewal": true,
     "moderation_holds_preserved": true,
     "production_test_reports_created": 0
-  }
+  },
+  "historical_away_notification_releases": [
+    {
+      "native_builds": {
+        "web": {
+          "source": "14618b42afe1719f98a4618d8cbeca46770fa39c",
+          "status": "completed",
+          "conclusion": "success",
+          "build": "02101758-f1ae-4b1c-adcd-b52feb5ffa42"
+        },
+        "ingestion": {
+          "source": "e6b7e602821fbffa3916924dddb19d3d371ba09a",
+          "status": "completed",
+          "conclusion": "success",
+          "build": "f3a207b6-518d-47af-96c7-820eeab26edc"
+        }
+      },
+      "push": "deployed, resident opt-in available; OS delivery not exercised",
+      "private_message_contents_in_alerts": false,
+      "active_device_subscriptions": 0,
+      "email": "configured but disabled: operator setup email accepted, then failed asynchronously due to shared account monthly quota",
+      "email_sender_domain": "moholocal.com verified",
+      "email_key_scope": "Sending access restricted to moholocal.com; encrypted ingestion Worker secret",
+      "email_sender_enabled": false,
+      "operator_test": {
+        "provider_id": "01a1af31-6e12-7c7e-a9ba-d42bb7f46488",
+        "http_status": 200,
+        "delivery_status": "failed",
+        "reason": "monthly sending quota exhausted",
+        "new_resident_optins": 0,
+        "notification_jobs": 0,
+        "paid_plan_changes": false
+      },
+      "cron": "*/5 * * * * confirmed alongside unchanged ingestion schedules",
+      "cron_bootstrap": "prepare executed once after verified Worker deployment; no notification jobs created",
+      "browser_acceptance": [
+        "signed-in notification settings",
+        "push enable button available without granting permission",
+        "email disabled",
+        "account-scoped empty report management",
+        "non-issued-token unsubscribe GET and POST",
+        "inbox noindex",
+        "320px/390px no horizontal overflow",
+        "44px buttons; compact preferences; viewport cleared"
+      ],
+      "next_email_gate": "MSG-04: sending availability, actual delivered operator test and authenticated failure/bounce handling",
+      "evidence": [
+        "docs/notification-expiry-release-2026-11-05.md",
+        "docs/ux/away-notification-controls-mobile.png",
+        "docs/ux/email-quota-blocker.png"
+      ]
+    }
+  ]
 }
