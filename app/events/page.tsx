@@ -76,8 +76,8 @@ function EventCard({ event }: { event: Event }) {
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-start gap-2 flex-wrap">
-            <h3 className="font-bold text-gray-900 group-hover:text-blue-700 transition flex-1">
+          <div className="flex flex-col items-start gap-2 sm:flex-row sm:flex-wrap">
+            <h3 className="font-bold text-gray-900 group-hover:text-blue-700 transition min-w-0 sm:flex-1">
               {event.title}
             </h3>
             <span className={`text-xs font-medium px-2 py-0.5 rounded-full shrink-0 ${cityColor}`}>
@@ -90,13 +90,14 @@ function EventCard({ event }: { event: Event }) {
             </span>
           )}
           <p className="text-sm text-gray-500 mt-1.5 line-clamp-2">{event.description}</p>
-          <div className="flex items-center gap-4 mt-2 text-xs text-gray-400">
+          <div className="flex flex-col items-start gap-1.5 sm:flex-row sm:flex-wrap sm:gap-x-4 mt-2 text-xs text-slate-600">
             <span>📅 {full}</span>
             {event.start_date.includes('T') && (
               <span>🕐 {time}</span>
             )}
             {event.location && <span>📍 {event.location}</span>}
           </div>
+          <span className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-blue-700">View event details →</span>
           {/* Bucket label chip on each card — immediate visual context */}
           {(() => {
             const bucket = eventBucket(event.start_date)

@@ -11,3 +11,6 @@ Founder scope now includes broader services, service photos and events across al
 The living-directory charter is saved in OPERATIONS.md. Requested Tuesday/Friday9AM America/Los_Angeles freshness automation is ACTIVE and was viewed after creation, attached to this chat. Automation ID: moholocal-twice-weekly-freshness-refresh. First future scheduled run November10. Scope covers primary-source services/events/openings/stale information/rights and focused UX, with planning and refresh-ledger upkeep. No new account access, messages or paid services. REFRESH_LOG.md prevents duplicate completed periods.
 
 110 tests, TypeScript/OpenNext and local308/404 acceptance pass. Native rollout and production/browser acceptance pending. Images remain unresolved work, not a shipped photo library. Remaining city/category metadata, rating provenance, resident usability, owner confirmations and physical-phone push acceptance remain open.
+
+
+Final phone visual follow-up separates long event titles from city badges, stacks date/time/venue metadata with stronger contrast and adds an explicit44px detail cue. Final TypeScript/OpenNext pass after this CSS/markup change;110 logic regressions passed before it. Photo-led business/service/event headers and contained logos are queued as UX-04 pending asset provenance; provided storefront/logo references were not published.
