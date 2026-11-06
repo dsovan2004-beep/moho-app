@@ -66,3 +66,7 @@ VAPID_PUBLIC_KEY = "BIJ4QK9ivQ_uYG55rE1Zq8WJbXOSKHMfccA0RgiZmqdqDGNCumeA3UEIj8E8
 [[send_email]]
 name = "EMAIL"
 allowed_sender_addresses = ["hello@moholocal.com"]
+
+# moho-email-events consumer is configured once with the operator's existing CLI
+# access. Keep its configuration in docs/email-events-release-2026-11-06.md.
+# Native Builds keeps its narrow Workers deployment token; no Queues edit added.

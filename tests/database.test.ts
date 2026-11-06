@@ -438,3 +438,57 @@ test('email pilot budget counts retries and defers sends at 500 attempts without
  assert.equal(r.at(-4),'1');assert.equal(r.at(-2),'t');assert.equal(r.at(-1),'1:pilot_email_budget_exhausted')
  assert.throws(()=>sql(`begin;${as(admin)}select * from directory_private.email_delivery_attempts;rollback;`),/permission denied/)
 })
+
+const mailEvent=(kind:string,id='00000000-0000-4000-8000-000000000555',recipient='alice@example.test')=>`select public.notification_dispatch('email_event',jsonb_build_object('event_id','${id}','provider_id','fixture-email-id','recipient_email','${recipient}','event_type','${kind}','occurred_at',now(),'recipient_rejection',true));`
+const sentEmail=`${petFixture()}${prepare}${optIn}${incoming}${prepare}select public.notification_dispatch('claim','{}') as ej \\gset
+select public.notification_dispatch('finish',jsonb_build_object('id',(:'ej'::jsonb)->>'id','lease_id',(:'ej'::jsonb)->>'lease_id','decision','sent','provider_id','<fixture-email-id>'));`
+test('delivery events are service-only and private even to app administrators',()=>{
+ for(const uid of [alice,admin]){
+  assert.throws(()=>sql(`begin;${as(uid)}${mailEvent('delivered')}rollback;`),/permission denied/)
+  assert.throws(()=>sql(`begin;${as(uid)}select * from directory_private.email_delivery_events;rollback;`),/permission denied/)
+  assert.throws(()=>sql(`begin;${as(uid)}select * from directory_private.email_suppressions;rollback;`),/permission denied/)
+ }
+})
+test('duplicate and out-of-order delivery events do not erase failure or cause resends',()=>{
+ const r=sql(`begin;${sentEmail}${mailEvent('delivered')}${mailEvent('delivered')}${mailEvent('complained','00000000-0000-4000-8000-000000000556')}${mailEvent('delivered','00000000-0000-4000-8000-000000000557')}select count(*) from directory_private.email_delivery_events;select delivery_status from directory_private.notification_jobs where channel='email';select email_enabled from directory_private.notification_preferences;${prepare}select count(*) from directory_private.notification_jobs;rollback;`).split('\n')
+ assert.equal(r.at(-5),'3');assert.equal(r.at(-4),'complained');assert.equal(r.at(-3),'f');assert.equal(r.at(-1),'1')
+})
+test('bounce pauses the matching address, cancels queued mail and prevents self re-enable',()=>{
+ const r=sql(`begin;${sentEmail}${mailEvent('bounced')}select count(*) from directory_private.email_suppressions;${as(alice)}select (${notify('settings')}->>'email_paused')::boolean;rollback;`).split('\n')
+ assert.equal(r.at(-2),'1');assert.equal(r.at(-1),'t')
+ assert.throws(()=>sql(`begin;${sentEmail}${mailEvent('bounced')}${as(alice)}select ${notify('email',{enabled:true})};rollback;`),/paused for this address/)
+})
+test('events arriving before acceptance are reconciled after finish; wrong recipients never suppress another user',()=>{
+ const r=sql(`begin;${petFixture()}${prepare}${optIn}${incoming}${prepare}select public.notification_dispatch('claim','{}') as ej \\gset
+ ${mailEvent('bounced','00000000-0000-4000-8000-000000000555','bob@example.test')}${mailEvent('delivered','00000000-0000-4000-8000-000000000556')}
+ select count(*) from directory_private.email_suppressions;
+ select public.notification_dispatch('finish',jsonb_build_object('id',(:'ej'::jsonb)->>'id','lease_id',(:'ej'::jsonb)->>'lease_id','decision','sent','provider_id','fixture-email-id'));
+ select delivery_status from directory_private.notification_jobs;select email_enabled from directory_private.notification_preferences;rollback;`).split('\n')
+ assert.equal(r.at(-4),'0');assert.equal(r.at(-2),'delivered');assert.equal(r.at(-1),'t')
+})
+test('deferred mail is left to the provider; stale address events do not disable a newly confirmed address',()=>{
+ const r=sql(`begin;${sentEmail}${mailEvent('deferred')}select email_enabled from directory_private.notification_preferences;update auth.users set email='new-alice@example.test' where id='${alice}';${mailEvent('bounced','00000000-0000-4000-8000-000000000556')}select email_enabled from directory_private.notification_preferences;${as(alice)}select (${notify('settings')}->>'email_paused')::boolean;rollback;`).split('\n')
+ assert.equal(r.at(-4),'t');assert.equal(r.at(-2),'t');assert.equal(r.at(-1),'f')
+})
+test('synchronous recipient suppression immediately pauses future email',()=>{
+ const r=sql(`begin;${petFixture()}${prepare}${optIn}${incoming}${prepare}select public.notification_dispatch('claim','{}') as ej \\gset
+ select public.notification_dispatch('finish',jsonb_build_object('id',(:'ej'::jsonb)->>'id','lease_id',(:'ej'::jsonb)->>'lease_id','decision','failed','code','E_RECIPIENT_SUPPRESSED'));
+ select email_enabled from directory_private.notification_preferences;select count(*) from directory_private.email_suppressions;rollback;`).split('\n')
+ assert.equal(r.at(-2),'f');assert.equal(r.at(-1),'1')
+})
+
+test('unmatched early events cannot starve delivery reconciliation',()=>{
+ const r=sql(`begin;${sentEmail}
+ insert into directory_private.email_delivery_events(event_id,provider_id,recipient_email,event_type,occurred_at) select gen_random_uuid(),'unmatched-'||g,'unknown@example.test','delivered',now()-interval '1 hour' from generate_series(1,101) g;
+ ${mailEvent('delivered')}select delivery_status from directory_private.notification_jobs where channel='email';rollback;`).split('\n')
+ assert.equal(r.at(-1),'delivered')
+})
+test('operator-only email probes use no fake DM and cannot target another resident',()=>{
+ const r=sql(`begin;${prepare}${as(admin)}select ${notify('settings')};reset role;
+ insert into directory_private.notification_jobs(user_id,channel,target,ceiling_seq,recipient_email,kind) values('${admin}','email','operator-test',0,'dsovan2004@gmail.com','email_test');
+ select public.notification_dispatch('claim','{}')->>'kind';select email_enabled from directory_private.notification_preferences;select count(*) from public.pet_messages;rollback;`).split('\n')
+ assert.equal(r.at(-3),'email_test');assert.equal(r.at(-2),'f');assert.equal(r.at(-1),'0')
+ const other=sql(`begin;${prepare}${as(alice)}select ${notify('settings')};reset role;
+ insert into directory_private.notification_jobs(user_id,channel,target,ceiling_seq,recipient_email,kind) values('${alice}','email','operator-test',0,'alice@example.test','email_test');select public.notification_dispatch('claim','{}') is null;rollback;`).split('\n')
+ assert.equal(other.at(-1),'t')
+})

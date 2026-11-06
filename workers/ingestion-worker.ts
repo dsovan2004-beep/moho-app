@@ -1,3 +1,4 @@
+import {consumeEmailEvents,type EmailEventBatch} from './lib/email-events'
 import {NOTIFICATION_CRON,runNotificationDelivery} from './lib/notifications'
 // ── MoHoLocal Ingestion Worker ────────────────────────────────────────────────
 // Cloudflare Worker with cron triggers + manual run/validate HTTP routes.
@@ -103,6 +104,7 @@ const ALL_SOURCES = [
 ]
 
 export default {
+  async queue(batch: EmailEventBatch, env: Env): Promise<void> { await consumeEmailEvents(batch,env) },
   // ── Cron handler ────────────────────────────────────────────────────────────
   async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext): Promise<void> {
     ctx.waitUntil(handleScheduled(event, env))

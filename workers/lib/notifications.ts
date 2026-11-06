@@ -4,7 +4,7 @@ export const NOTIFICATION_CRON='*/5 * * * *'
 export function allowedPushEndpoint(endpoint:string):boolean{
  try{const u=new URL(endpoint);return u.protocol==='https:'&&!u.username&&!u.password&&!u.port&&!u.hash&&endpoint.length<=1800&&u.pathname!=='/'&&(/^(fcm\.googleapis\.com|updates\.push\.services\.mozilla\.com|web\.push\.apple\.com)$/.test(u.hostname)||/^[a-z0-9-]+\.notify\.windows\.com$/.test(u.hostname))}catch{return false}
 }
-type Job={kind?:'message'|'push_test';receipt_token?:string;id:string;lease_id:string;channel:'email'|'push';recipient_email:string;unsubscribe_token:string;subscription:PushSubscription}
+type Job={kind?:'message'|'push_test'|'email_test';receipt_token?:string;id:string;lease_id:string;channel:'email'|'push';recipient_email:string;unsubscribe_token:string;subscription:PushSubscription}
 type Outcome={decision:'sent'|'retry'|'failed'|'retire';code:string;retry_after?:number;provider_id?:string}
 export async function dispatchRpc(env:Env,action:string,payload:Record<string,unknown>):Promise<unknown>{
  const key=env.SUPABASE_SERVICE_ROLE_KEY
@@ -24,7 +24,7 @@ export async function deliverNotification(env:Env,job:Job):Promise<Outcome>{
   // Recipient is the confirmed, opted-in account address from the leased DB job.
   const unsub=`https://www.moholocal.com/notification-preferences/unsubscribe?token=${job.unsubscribe_token}`
   try{
-   const result=await env.EMAIL.send({from:{email:'hello@moholocal.com',name:'MoHoLocal'},replyTo:'dsovan2004@gmail.com',to:job.recipient_email,subject:'You have a new MoHoLocal message',text:`A new private message is waiting in your MoHoLocal inbox.\n\nRead it: https://www.moholocal.com/messages\n\nManage alerts: https://www.moholocal.com/messages\nTurn off message emails: ${unsub}\n\nThis alert contains no sender name or message text.`,headers:{'List-Unsubscribe':`<${unsub}>`,'List-Unsubscribe-Post':'List-Unsubscribe=One-Click'}})
+   const result=await env.EMAIL.send({from:{email:'hello@moholocal.com',name:'MoHoLocal'},replyTo:'dsovan2004@gmail.com',to:job.recipient_email,subject:job.kind==='email_test'?'MoHoLocal email delivery test':'You have a new MoHoLocal message',text:job.kind==='email_test'?'Operator-only MoHoLocal email delivery test. No private message or resident data is included.':`A new private message is waiting in your MoHoLocal inbox.\n\nRead it: https://www.moholocal.com/messages\n\nManage alerts: https://www.moholocal.com/messages\nTurn off message emails: ${unsub}\n\nThis alert contains no sender name or message text.`,headers:{'List-Unsubscribe':`<${unsub}>`,'List-Unsubscribe-Post':'List-Unsubscribe=One-Click'}})
    return result.messageId?{decision:'sent',code:'provider_accepted',provider_id:result.messageId}:{decision:'retry',code:'email_missing_acceptance'}
   }catch(error){
    const code=(error as {code?:string}).code??'E_NETWORK'
