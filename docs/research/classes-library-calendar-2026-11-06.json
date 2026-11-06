@@ -1,0 +1,26 @@
+[
+  {
+    "id": "cc1b6f0f-384d-4d04-bdb5-0b8e80124365",
+    "status": 200,
+    "times": [
+      "DTSTART:20261112T180000Z",
+      "DTEND:20261112T183000Z"
+    ]
+  },
+  {
+    "id": "0b796c67-b7fc-4c02-85a9-a7e317a1a15e",
+    "status": 200,
+    "times": [
+      "DTSTART:20261112T183000Z",
+      "DTEND:20261112T193000Z"
+    ]
+  },
+  {
+    "id": "db9c2dcb-3df6-4d5d-b952-9cb37a4355c4",
+    "status": 200,
+    "times": [
+      "DTSTART:20261113T233000Z",
+      "DTEND:20261114T003000Z"
+    ]
+  }
+]

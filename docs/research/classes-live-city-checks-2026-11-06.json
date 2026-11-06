@@ -1,0 +1,47 @@
+[
+  {
+    "city": "Tracy",
+    "url": "https://www.moholocal.com/classes?city=Tracy",
+    "programs": [
+      "Language, dance& music nearby.",
+      "Programs serving Tracy",
+      "Tabla Niketan",
+      "Dance Destination",
+      "Natya Arts — Natyakshethra",
+      "The Bhangra Institute",
+      "Have a program to suggest?",
+      "Directory",
+      "Community",
+      "Business Owners"
+    ]
+  },
+  {
+    "city": "Lathrop",
+    "url": "https://www.moholocal.com/classes?city=Lathrop",
+    "programs": [
+      "Language, dance& music nearby.",
+      "Programs serving Lathrop",
+      "Dance Destination",
+      "Natya Arts — Natyakshethra",
+      "Have a program to suggest?",
+      "Directory",
+      "Community",
+      "Business Owners"
+    ]
+  },
+  {
+    "city": "Manteca",
+    "url": "https://www.moholocal.com/classes?city=Manteca",
+    "programs": [
+      "Language, dance& music nearby.",
+      "Programs serving Manteca",
+      "Natya Arts — Natyakshethra",
+      "The Bhangra Institute",
+      "Aapli Marathi Shala & Community",
+      "Have a program to suggest?",
+      "Directory",
+      "Community",
+      "Business Owners"
+    ]
+  }
+]
