@@ -1,5 +1,11 @@
 # MoHoLocal Product Roadmap
 
+## Resident guide release accepted — November 6, 2026
+
+Application deac43c deployed through native Cloudflare build 43db9bfa-e9b4-4c24-9e7d-282fafbc7986 (Ready; version fad66bdf). Live hub and all four city guides checked; Mountain House checklist increments, switching to Tracy resets its page-local progress, 320/390px document widths match viewport. Brentwood guide displays 404. Exact committed release passes 123 tests; full workspace including pending pet work passes 135. TypeScript/OpenNext pass.
+
+RES-01 guide accuracy corrections complete: official utilities/enrollment links replace unsupported scores, estimates and legacy provider selections. Catalog duplicate cleanup remains DATA-02. RES-02 core layout/checklist complete; photo completion remains open for Lathrop/Manteca and a real2026 Mountain House street view. Existing image credits preserved. No new providers/events imported by this release. Pet matching remains separate and unreleased. See [release evidence](new-resident-release-2026-11-06.md).
+
 ## New Resident Guide implementation — November 6 afternoon
 
 RES-01 core accuracy corrections and RES-02 checklist/layout implemented; release verification in progress. Guide now uses official utility and enrollment resources for exactly four relaunch cities. Removed hardcoded school ratings, unsupported endorsements, travel estimates and legacy business selections; directory discovery uses city-preserving links instead, so the guide no longer has a silent database-failure empty state. Existing duplicate/legacy catalog audit remains open under DATA-02.
