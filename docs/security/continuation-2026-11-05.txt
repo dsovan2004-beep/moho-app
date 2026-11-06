@@ -41,11 +41,13 @@ CREDENTIAL / DEPLOYMENT CONTROL
   Workers Scripts Edit + Account Settings Read on the account, and Workers Routes
   Edit + Zone Read only for moholocal.com; expiry November 5, 2027.
 - Temporary Workers Builds Configuration Edit was separately approved for setup;
-  remove it after the native repository connections are verified.
+  removed after both clean native Git builds passed. Build-token registry access
+  now returns 403; deployment retains the original four approved permissions.
 - Legacy Pages production and preview automatic builds are disabled to prevent its
   incompatible build configuration from competing with the OpenNext Worker route.
-- Existing ingestion cron schedules are unchanged: Tuesday 03/04/05 UTC and Friday
-  04 UTC. Comments were corrected to match the actual configured weekdays.
+- Existing ingestion cron expressions are unchanged. Cloudflare displays Monday
+  03/04/05 UTC and Thursday 04 UTC; its day-of-week numbering differs from standard
+  cron. The runtime configuration and comments agree; no schedule was changed.
 
 LIVE ACCEPTANCE
 Google sign-in exposed an automatic + explicit PKCE code-exchange race. The SDK's
@@ -69,8 +71,11 @@ DATA / UX
 72 focus-city Home Services candidates were triaged; 56 were initially public.
 23 records were quarantined reversibly: 22 exact name/city/phone/address matches to
 disabled fabricated seed batches, plus one official website identity/geography
-mismatch (Maryland/Delaware). Three existing provider records were corrected from
-official sites, preserving IDs; 46 candidates still need independent rechecks.
+mismatch (Maryland/Delaware). Five existing business records were corrected from
+official sites, preserving IDs; 43 candidates still need independent rechecks.
+The two additional corrections are moving and hardware retail; only three records
+cover launch categories. A duplicate hardware-store listing is held reversibly
+with its canonical ID recorded; total held records are now 24.
 168 focus-city positive ratings without positive review counts were cleared with
 private audit records (includes unpublished rows). No matching public mismatch remains.
 All 1,959 business rows were retained; 1,805 retain public flags after quarantine.

@@ -47,13 +47,15 @@ async function getBusinessCounts(): Promise<{
   const all: Array<{ city: string; category: string }> = []
 
   while (true) {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('businesses')
       .select('city, category')
       .eq('status', 'approved')
       .eq('verified', true)
+      .order('id')
       .range(from, from + PAGE - 1)
 
+    if (error) throw new Error('Directory counts unavailable')
     if (!data || data.length === 0) break
     all.push(...data)
     if (data.length < PAGE) break
@@ -75,7 +77,9 @@ async function getBusinessCounts(): Promise<{
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default async function DiscoverPage() {
-  const { matrix, totals } = await getBusinessCounts()
+  const counts = await getBusinessCounts().catch(() => null)
+  const matrix = counts?.matrix ?? {}
+  const totals = counts?.totals ?? {}
 
   // Schema.org SiteLinksSearchBox / ItemList for SEO
   const cityListSchema = {
@@ -106,6 +110,7 @@ export default async function DiscoverPage() {
           <span className="text-gray-700 font-medium">Discover</span>
         </nav>
 
+        {!counts && <p role="status" className="mb-6 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-950">Listing counts could not load. <Link href="/discover" className="underline font-semibold">Try again</Link> or choose a city below.</p>}
         {/* ── Hero ── */}
         <div className="rounded-2xl px-6 sm:px-10 py-10 mb-10 text-white"
           style={{ background: 'linear-gradient(135deg,#1e3a5f 0%,#1e40af 60%,#1e3a5f 100%)' }}>
@@ -128,6 +133,7 @@ export default async function DiscoverPage() {
             <input
               type="text"
               name="q"
+              aria-label="Search local businesses"
               placeholder="Search restaurants, tacos, dentist, plumber…"
               autoComplete="off"
               className="flex-1 min-w-0 px-4 py-3 rounded-xl text-gray-900 text-sm outline-none border-0 focus:ring-2 focus:ring-amber-300 placeholder:text-gray-400"
@@ -248,7 +254,7 @@ export default async function DiscoverPage() {
                       const count = matrix[city.name]?.[cat.name] ?? 0
                       return (
                         <td key={city.slug} className="text-center">
-                          {count > 0 ? (
+                          {!counts ? <span className="text-xs text-slate-500">Unavailable</span> : count > 0 ? (
                             <Link
                               href={`/${city.slug}/${cat.slug}`}
                               className={`inline-flex flex-col items-center justify-center w-full min-h-[52px] rounded-xl border text-xs font-semibold transition-all ${city.chip} hover:shadow-sm hover:-translate-y-0.5`}
@@ -277,7 +283,7 @@ export default async function DiscoverPage() {
               </tbody>
             </table>
             <p className="text-[11px] text-gray-400 mt-3 text-right">
-              Numbers show verified listings · Click any tile to browse
+              Numbers show approved listings; information checks vary · Click any tile to browse
             </p>
           </div>
 
@@ -307,7 +313,7 @@ export default async function DiscoverPage() {
                       >
                         <span>{city.emoji}</span>
                         <span>{city.name}</span>
-                        {count > 0 && <span className="opacity-60">({count})</span>}
+                        {!counts ? <span className="text-slate-500">(count unavailable)</span> : count > 0 && <span className="opacity-60">({count})</span>}
                       </Link>
                     )
                   })}
@@ -319,7 +325,7 @@ export default async function DiscoverPage() {
 
         {/* ── Quick picks — highest count tiles across the board ── */}
         <section className="mb-12">
-          <h2 className="text-lg font-bold text-gray-900 mb-1">Popular Right Now</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-1">Browse larger categories</h2>
           <p className="text-sm text-gray-500 mb-4">The most-listed categories across all cities.</p>
           <div className="flex flex-wrap gap-3">
             {CITIES.flatMap((city) =>

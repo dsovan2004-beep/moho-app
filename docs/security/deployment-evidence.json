@@ -28,15 +28,15 @@
   "production_test_requests_created": 1,
   "production_test_owners_created": 0,
   "real_account_acceptance_test": "Google PKCE sign-in, saved pending receipt, admin rejection, requester rejected status passed",
-  "automatic_worker_git_deployment": "setup in progress OPS-02",
+  "automatic_worker_git_deployment": "verified: both main push builds succeeded; temporary configuration permission removed",
   "modern_web_publishable_key": true,
   "modern_ingestion_secret_key": true,
   "legacy_credential_revoked": true,
   "legacy_credential_last_read_status": 401,
   "production_test_request_result": "rejected; no business published",
-  "public_business_rows": 1805,
-  "quarantined_business_rows": 23,
-  "website_checked_existing_providers": 3,
+  "public_business_rows": 1804,
+  "quarantined_business_rows": 24,
+  "website_checked_existing_providers": 4,
   "unsupported_ratings_cleared": 168,
   "legacy_api_keys_disabled": true,
   "legacy_hs256_verifier_revoked": true,
@@ -45,5 +45,8 @@
     "auth_admin": 401,
     "storage": 401
   },
-  "post_retirement_real_account_access": "passed"
+  "post_retirement_real_account_access": "passed",
+  "website_checked_existing_businesses": 5,
+  "website_checked_launch_category_providers": 3,
+  "unchecked_home_services_candidates": 43
 }

@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-05",
+  "temporary_builds_configuration_edit_removed": true,
+  "build_token_registry_access_status": 403,
+  "retained_permissions": [
+    "Account Workers Scripts Edit",
+    "Account Settings Read",
+    "moholocal.com Zone Read",
+    "moholocal.com Workers Routes Edit"
+  ],
+  "expires": "2027-11-05"
+}

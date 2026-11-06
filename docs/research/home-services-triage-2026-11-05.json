@@ -149,7 +149,8 @@
       "original_city": "Mountain House",
       "was_public": true,
       "outcome": "not_independently_rechecked",
-      "evidence": null
+      "evidence": null,
+      "follow_up": "November 5 search found differing directory phone numbers; official website unavailable to research fetch. No fresh check awarded; requires first-party confirmation."
     },
     {
       "id": "41e848dd-40ac-4842-94df-0510301c0a47",
@@ -481,8 +482,8 @@
       "original_name": "Home Depot Tracy",
       "original_city": "Tracy",
       "was_public": true,
-      "outcome": "not_independently_rechecked",
-      "evidence": null
+      "outcome": "corrected_official_website_retail_not_launch_service",
+      "evidence": "https://www.homedepot.com/l/Tracy/CA/Tracy/95304/1020"
     },
     {
       "id": "165d113b-00f4-4a66-99f0-bbdf0c8339e2",
@@ -590,8 +591,8 @@
       "original_name": "The Home Depot",
       "original_city": "Tracy",
       "was_public": true,
-      "outcome": "not_independently_rechecked",
-      "evidence": null
+      "outcome": "quarantined_duplicate_of_corrected_store",
+      "evidence": "https://www.homedepot.com/l/Tracy/CA/Tracy/95304/1020"
     },
     {
       "id": "2b06ae31-af8d-4fcd-8df1-1ba31ca24bfa",
@@ -729,8 +730,18 @@
       "original_name": "Two Men and a Truck Tracy",
       "original_city": "Tracy",
       "was_public": true,
-      "outcome": "not_independently_rechecked",
-      "evidence": null
+      "outcome": "corrected_official_website_moving_not_launch_category",
+      "evidence": "https://twomenandatruck.com/movers/ca/tracy"
     }
-  ]
+  ],
+  "summary": {
+    "quarantined_exact_disabled_seed_match": 22,
+    "not_independently_rechecked": 43,
+    "quarantined_official_website_geographic_identity_mismatch": 1,
+    "corrected_official_website_retail_not_launch_service": 1,
+    "existing_listing_corrected_from_official_website": 3,
+    "quarantined_duplicate_of_corrected_store": 1,
+    "corrected_official_website_moving_not_launch_category": 1
+  },
+  "additional_check_scope": "Two additional corrected records are moving and hardware retail; they do not increase the three launch-category checked choices. One duplicate held; business IDs preserved."
 }

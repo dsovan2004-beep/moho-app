@@ -30,6 +30,7 @@ APP_ENV      = "production"
 #
 # REQUIRED (worker will not run without this):
 #   npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY
+# Use the modern sb_secret runtime key. Keep it out of build variables and source control.
 #
 # DEFAULT SOURCES run without any secrets — they use public RSS feeds from:
 #   - Official city websites (Tracy, Manteca, Lathrop, Brentwood, Mountain House)

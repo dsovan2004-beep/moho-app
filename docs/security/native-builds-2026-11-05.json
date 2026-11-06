@@ -1,0 +1,18 @@
+{
+  "web": {
+    "build_uuid": "b2020f1b-6cea-4dd1-8633-26c30a419bbc",
+    "status": "stopped",
+    "build_outcome": "success",
+    "created_on": "2026-11-06T00:09:38.635Z",
+    "stopped_on": "2026-11-06T00:11:26.050Z",
+    "commit": "f8dd19579da538f1d5e56e7e48031cbecd5869dc"
+  },
+  "ingestion": {
+    "build_uuid": "a367b8ea-969d-4bf1-b425-d531f88f5bb2",
+    "status": "stopped",
+    "build_outcome": "success",
+    "created_on": "2026-11-06T00:09:38.574Z",
+    "stopped_on": "2026-11-06T00:11:36.162Z",
+    "commit": "f8dd19579da538f1d5e56e7e48031cbecd5869dc"
+  }
+}
