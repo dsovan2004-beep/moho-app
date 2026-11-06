@@ -1,0 +1,27 @@
+{
+  "checked_on": "2026-11-06",
+  "city": "Lathrop",
+  "status": "approved for publication; deployment pending",
+  "capture_date": "2026-03-23",
+  "author": "Anthrico",
+  "license": "CC BY-SA 4.0",
+  "source": "https://panoramax.openstreetmap.fr/api/collections/d52761bf-120f-4010-b869-6ce6937d5fbd/items/8bcd4554-6401-4965-a9f4-f7ca121d24fa",
+  "location_evidence": "Source GPS -121.292583564,37.81918679; visually inspected Harlan Road-area streetscape and Holiday Inn Express facade; official IHG identifies hotel at15688 S Harlan Road, Lathrop. Roadside viewpoint, not a civic panorama or endorsement.",
+  "landmark_source": "https://www.ihg.com/holidayinnexpress/hotels/us/en/lathrop/lthhr/hoteldetail",
+  "capture_evidence": "Original publisher datetime2026-03-23T23:18:57.473600+00:00 and EXIF DateTimeOriginal2026:03:23 16:18:57; date is capture, not upload.",
+  "reuse_evidence": "Original publisher properties.license CC-BY-SA-4.0 and explicit license link; author Anthrico in providers producer role. Metadata saved separately.",
+  "adaptation": "cwebp quality85 resize to800/1600px; no generated edits; adaptations CC BY-SA4.0; attribution/license/source links in CityPhoto and photo credits.",
+  "original_rendition_sha256": "2af378c1bf187d64c5c66585bec68c032a08e7bc70fbdf67c831c30d468c2623",
+  "assets": [
+    {
+      "path": "public/images/cities/lathrop-harlan-road-20260323-800.webp",
+      "bytes": 67740,
+      "sha256": "3b69a64384129c0beee96ef82e22634ce1f375463a744c82385152daa8f29337"
+    },
+    {
+      "path": "public/images/cities/lathrop-harlan-road-20260323-1600.webp",
+      "bytes": 218540,
+      "sha256": "1d44fbe5dfb74c6bfb542d9cf421ef40b7dae7da50ff952336f4e1b3e45949e9"
+    }
+  ]
+}

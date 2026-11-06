@@ -10,15 +10,21 @@ test('published city views satisfy the required 2026 acquisition and geographic 
       assert.match(photo.source,/S2B_10SFG_20261104_0_L2A$/)
       assert.match(photo.notice,/Contains modified Copernicus Sentinel data 2026/)
     } else {
-      assert.match(photo.caption,/Ninth Street, Tracy · July 8, 2026/)
-      assert.match(photo.source,/pKey=2915180395489942$/)
+      if (city === 'Tracy') {
+        assert.match(photo.caption,/Ninth Street, Tracy · July 8, 2026/)
+        assert.match(photo.source,/pKey=2915180395489942$/)
+      } else {
+        assert.equal(city, 'Lathrop')
+        assert.match(photo.caption,/Harlan Road area, Lathrop · March 23, 2026/)
+        assert.match(photo.source,/8bcd4554-6401-4965-a9f4-f7ca121d24fa$/)
+      }
       assert.equal(photo.license,'CC BY-SA 4.0')
       assert.ok(photo.imagePoint.latitude>photo.bbox[1] && photo.imagePoint.latitude<photo.bbox[3])
       assert.ok(photo.imagePoint.longitude>photo.bbox[0] && photo.imagePoint.longitude<photo.bbox[2])
     }
     for(const width of [800,1600])assert.ok(existsSync(`public/images/cities/${photo.file}-${width}.webp`))
-    const lon=city==='Mountain House' ? -121.54417 : -121.4252
-    const lat=city==='Mountain House' ? 37.77389 : 37.7397
+    const lon=city==='Mountain House' ? -121.54417 : city==='Lathrop' ? -121.29258 : -121.4252
+    const lat=city==='Mountain House' ? 37.77389 : city==='Lathrop' ? 37.81918 : 37.7397
     assert.ok(photo.bbox[0]<lon&&photo.bbox[2]>lon&&photo.bbox[1]<lat&&photo.bbox[3]>lat)
   }
 })

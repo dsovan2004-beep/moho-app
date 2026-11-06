@@ -1,6 +1,6 @@
 import CityPhoto from "./CityPhoto";
 export default function ResidentCityVisual({ city }: { city: string }) {
-  if (city === "Mountain House" || city === "Tracy")
+  if (city === "Mountain House" || city === "Tracy" || city === "Lathrop")
     return <CityPhoto city={city} className="h-72 rounded-none" />;
   return (
     <div className="flex h-72 flex-col justify-end bg-[#e7eee5] p-7 text-[#19352d]">

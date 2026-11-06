@@ -1,5 +1,9 @@
 # MoHoLocal active execution queue
 
+## 2026 photo follow-up — November 6 afternoon
+
+Lathrop qualifying March23,2026 Anthrico/Panoramax street photo found: original publisher GPS/capture/CC BY-SA4.0 verified, landmark cross-checked with official IHG. Guide/hub welcome panel replaced locally; deployment pending. Mountain House street photo and Manteca photo remain open. Rejected2016 imagery, Colorado namesake and2026 Flickr photo with all-rights-reserved license. No messages sent. [Evidence](research/city-photos-2026-afternoon-followup.md).
+
 ## Resident guide release accepted — November 6, 2026
 
 Application deac43c deployed through native Cloudflare build 43db9bfa-e9b4-4c24-9e7d-282fafbc7986 (Ready; version fad66bdf). Live hub and all four city guides checked; Mountain House checklist increments, switching to Tracy resets its page-local progress, 320/390px document widths match viewport. Brentwood guide displays 404. Exact committed release passes 123 tests; full workspace including pending pet work passes 135. TypeScript/OpenNext pass.

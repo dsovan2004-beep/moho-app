@@ -1,0 +1,204 @@
+{
+  "assets": {
+    "hd": {
+      "description": "Highest resolution available of this picture",
+      "href": "https://panoramax.openstreetmap.fr/images/8b/cd/45/54/6401-4965-a9f4-f7ca121d24fa.jpg",
+      "roles": [
+        "data"
+      ],
+      "title": "HD picture",
+      "type": "image/jpeg"
+    },
+    "sd": {
+      "description": "Picture in standard definition (fixed width of 2048px)",
+      "href": "https://panoramax.openstreetmap.fr/derivates/8b/cd/45/54/6401-4965-a9f4-f7ca121d24fa/sd.jpg",
+      "roles": [
+        "visual"
+      ],
+      "title": "SD picture",
+      "type": "image/jpeg"
+    },
+    "thumb": {
+      "description": "Picture in low definition (fixed width of 500px)",
+      "href": "https://panoramax.openstreetmap.fr/derivates/8b/cd/45/54/6401-4965-a9f4-f7ca121d24fa/thumb.jpg",
+      "roles": [
+        "thumbnail"
+      ],
+      "title": "Thumbnail",
+      "type": "image/jpeg"
+    }
+  },
+  "bbox": [
+    -121.292583564,
+    37.81918679,
+    -121.292583564,
+    37.81918679
+  ],
+  "collection": "d52761bf-120f-4010-b869-6ce6937d5fbd",
+  "geometry": {
+    "coordinates": [
+      -121.292583564,
+      37.81918679
+    ],
+    "type": "Point"
+  },
+  "id": "8bcd4554-6401-4965-a9f4-f7ca121d24fa",
+  "links": [
+    {
+      "href": "https://panoramax.openstreetmap.fr/api/",
+      "rel": "root",
+      "title": "Instance catalog",
+      "type": "application/json"
+    },
+    {
+      "href": "https://panoramax.openstreetmap.fr/api/collections/d52761bf-120f-4010-b869-6ce6937d5fbd",
+      "rel": "parent",
+      "type": "application/json"
+    },
+    {
+      "href": "https://panoramax.openstreetmap.fr/api/collections/d52761bf-120f-4010-b869-6ce6937d5fbd/items/8bcd4554-6401-4965-a9f4-f7ca121d24fa",
+      "rel": "self",
+      "type": "application/geo+json"
+    },
+    {
+      "href": "https://panoramax.openstreetmap.fr/api/collections/d52761bf-120f-4010-b869-6ce6937d5fbd",
+      "rel": "collection",
+      "type": "application/json"
+    },
+    {
+      "href": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "rel": "license",
+      "title": "License for this object (CC-BY-SA-4.0)"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -121.292566469,
+          37.819227686
+        ],
+        "type": "Point"
+      },
+      "href": "https://panoramax.openstreetmap.fr/api/collections/d52761bf-120f-4010-b869-6ce6937d5fbd/items/9fdc6edf-17fe-4ba8-9ff1-0c58285c0d53",
+      "id": "9fdc6edf-17fe-4ba8-9ff1-0c58285c0d53",
+      "rel": "next",
+      "type": "application/geo+json"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -121.294400431,
+          37.81470935
+        ],
+        "type": "Point"
+      },
+      "href": "https://panoramax.openstreetmap.fr/api/collections/d52761bf-120f-4010-b869-6ce6937d5fbd/items/b581d36b-b3dd-4b47-a1bd-17d1fe562df9",
+      "id": "b581d36b-b3dd-4b47-a1bd-17d1fe562df9",
+      "rel": "prev",
+      "type": "application/geo+json"
+    }
+  ],
+  "properties": {
+    "annotations": [],
+    "collection": {
+      "semantics": []
+    },
+    "created": "2026-03-24T00:27:04.617653+00:00",
+    "datetime": "2026-03-23T23:18:57.473600+00:00",
+    "datetimetz": "2026-03-23T16:18:57.473600-07:00",
+    "exif": {
+      "Exif.GPSInfo.GPSAltitude": "175992/10000",
+      "Exif.GPSInfo.GPSAltitudeRef": "1",
+      "Exif.GPSInfo.GPSImgDirection": "8934/100",
+      "Exif.GPSInfo.GPSLatitude": "37/1 49/1 90724435/10000000",
+      "Exif.GPSInfo.GPSLatitudeRef": "N",
+      "Exif.GPSInfo.GPSLongitude": "121/1 17/1 333008298/10000000",
+      "Exif.GPSInfo.GPSLongitudeRef": "W",
+      "Exif.Image.DateTime": "2026:03:23 16:18:57",
+      "Exif.Image.ExifTag": "245",
+      "Exif.Image.GPSTag": "798",
+      "Exif.Image.ImageLength": "2160",
+      "Exif.Image.ImageWidth": "3840",
+      "Exif.Image.Make": "Google",
+      "Exif.Image.Model": "Pixel 6a",
+      "Exif.Image.Orientation": "3",
+      "Exif.Image.ResolutionUnit": "0",
+      "Exif.Image.Software": "Panoramax App 1.7.2-63",
+      "Exif.Image.XResolution": "0/0",
+      "Exif.Image.YCbCrPositioning": "0",
+      "Exif.Image.YResolution": "0/0",
+      "Exif.Iop.InteroperabilityIndex": "R98",
+      "Exif.Photo.ApertureValue": "0/0",
+      "Exif.Photo.BrightnessValue": "0/0",
+      "Exif.Photo.ColorSpace": "0",
+      "Exif.Photo.ComponentsConfiguration": "1 2 3 0",
+      "Exif.Photo.Contrast": "0",
+      "Exif.Photo.CustomRendered": "0",
+      "Exif.Photo.DateTimeDigitized": "2026:03:23 16:18:57",
+      "Exif.Photo.DateTimeOriginal": "2026:03:23 16:18:57",
+      "Exif.Photo.DigitalZoomRatio": "0/0",
+      "Exif.Photo.ExifVersion": "",
+      "Exif.Photo.ExposureBiasValue": "0/0",
+      "Exif.Photo.ExposureMode": "0",
+      "Exif.Photo.ExposureProgram": "0",
+      "Exif.Photo.ExposureTime": "1463696/1000000000",
+      "Exif.Photo.FNumber": "17300/10000",
+      "Exif.Photo.Flash": "0",
+      "Exif.Photo.FlashpixVersion": "48 49 48 48",
+      "Exif.Photo.FocalLength": "43800/10000",
+      "Exif.Photo.FocalLengthIn35mmFilm": "0",
+      "Exif.Photo.ISOSpeedRatings": "57",
+      "Exif.Photo.InteroperabilityTag": "952",
+      "Exif.Photo.LightSource": "0",
+      "Exif.Photo.MaxApertureValue": "0/0",
+      "Exif.Photo.MeteringMode": "0",
+      "Exif.Photo.PixelXDimension": "3840",
+      "Exif.Photo.PixelYDimension": "2160",
+      "Exif.Photo.Saturation": "0",
+      "Exif.Photo.SceneCaptureType": "0",
+      "Exif.Photo.SceneType": "1 0 0 0",
+      "Exif.Photo.Sharpness": "0",
+      "Exif.Photo.ShutterSpeedValue": "0/0",
+      "Exif.Photo.SubSecTime": "4736",
+      "Exif.Photo.SubSecTimeDigitized": "4736",
+      "Exif.Photo.SubSecTimeOriginal": "4736",
+      "Exif.Photo.WhiteBalance": "0"
+    },
+    "geovisio:image": "https://panoramax.openstreetmap.fr/images/8b/cd/45/54/6401-4965-a9f4-f7ca121d24fa.jpg",
+    "geovisio:producer": "Anthrico",
+    "geovisio:rank_in_collection": 19,
+    "geovisio:status": "ready",
+    "geovisio:thumbnail": "https://panoramax.openstreetmap.fr/derivates/8b/cd/45/54/6401-4965-a9f4-f7ca121d24fa/thumb.jpg",
+    "geovisio:visibility": "anyone",
+    "license": "CC-BY-SA-4.0",
+    "original_file:name": "PX_20260323_161857494.jpg",
+    "original_file:size": 2305088,
+    "pers:interior_orientation": {
+      "camera_manufacturer": "Google",
+      "camera_model": "Pixel 6a",
+      "focal_length": 4.38,
+      "sensor_array_dimensions": [
+        3840,
+        2160
+      ]
+    },
+    "quality:horizontal_accuracy": 5.0,
+    "semantics": [],
+    "updated": "2026-03-24T00:27:04.617653+00:00",
+    "view:azimuth": 89
+  },
+  "providers": [
+    {
+      "id": "4b65fcb6-cb7c-4adf-9ef2-8db40832eed7",
+      "name": "Anthrico",
+      "roles": [
+        "producer"
+      ]
+    }
+  ],
+  "stac_extensions": [
+    "https://stac-extensions.github.io/view/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/perspective-imagery/v1.0.0/schema.json"
+  ],
+  "stac_version": "1.0.0",
+  "type": "Feature"
+}
