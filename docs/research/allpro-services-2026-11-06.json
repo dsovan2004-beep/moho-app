@@ -1,0 +1,33 @@
+{
+  "name": "All Pro Cleaning Services \u2014 Bird Cleanup & Holiday Lighting",
+  "category": "Home Services",
+  "city": "Service area only",
+  "address": "",
+  "phone": "(209) 836-1500",
+  "website": "https://allprowindowcleaning.com/bird-control.html",
+  "areas": [
+    "Mountain House",
+    "Tracy",
+    "Lathrop",
+    "Manteca"
+  ],
+  "tags": [
+    "pigeon cleanup",
+    "roof bird cleanup",
+    "holiday light installation",
+    "holiday light removal"
+  ],
+  "description": "Advertises pigeon-waste and nest cleanup on roofs, gutters and other surfaces, plus a separate seasonal holiday-light design, installation, maintenance and takedown service. Its locations page names Mountain House, Tracy, Lathrop and Manteca with a shared regional phone. Confirm solar-array work separately; no solar exclusion mesh qualification is assumed. Ask for current scope, credentials, availability and a written quote.",
+  "sources": [
+    "https://allprowindowcleaning.com/bird-control.html",
+    "https://allprowindowcleaning.com/locations.html",
+    "https://allprowindowcleaning.com/services/christmas-lights.html"
+  ],
+  "fields": [
+    "identity",
+    "website",
+    "public phone",
+    "advertised services",
+    "advertised service area"
+  ]
+}

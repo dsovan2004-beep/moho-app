@@ -1,0 +1,76 @@
+[
+  {
+    "city": "Mountain House",
+    "service": "solar-bird-exclusion",
+    "names": [
+      "Clear Gutter",
+      "Eagle Home Solutions Inc.",
+      "Grime Getterz"
+    ]
+  },
+  {
+    "city": "Mountain House",
+    "service": "holiday-light-installation",
+    "names": [
+      "All Pro Cleaning Services — Bird Cleanup & Holiday Lighting",
+      "K & T Lights",
+      "MAAN Perm Lights"
+    ]
+  },
+  {
+    "city": "Tracy",
+    "service": "solar-bird-exclusion",
+    "names": [
+      "Clear Gutter",
+      "Eagle Home Solutions Inc.",
+      "Grime Getterz"
+    ]
+  },
+  {
+    "city": "Tracy",
+    "service": "holiday-light-installation",
+    "names": [
+      "All Pro Cleaning Services — Bird Cleanup & Holiday Lighting",
+      "Bright Prodigy",
+      "K & T Lights",
+      "MAAN Perm Lights"
+    ]
+  },
+  {
+    "city": "Lathrop",
+    "service": "solar-bird-exclusion",
+    "names": [
+      "Clear Gutter",
+      "Eagle Home Solutions Inc.",
+      "Grime Getterz"
+    ]
+  },
+  {
+    "city": "Lathrop",
+    "service": "holiday-light-installation",
+    "names": [
+      "All Pro Cleaning Services — Bird Cleanup & Holiday Lighting",
+      "Bright Prodigy",
+      "MAAN Perm Lights"
+    ]
+  },
+  {
+    "city": "Manteca",
+    "service": "solar-bird-exclusion",
+    "names": [
+      "Clear Gutter",
+      "Eagle Home Solutions Inc.",
+      "Grime Getterz"
+    ]
+  },
+  {
+    "city": "Manteca",
+    "service": "holiday-light-installation",
+    "names": [
+      "All Pro Cleaning Services — Bird Cleanup & Holiday Lighting",
+      "Bright Prodigy",
+      "K & T Lights",
+      "MAAN Perm Lights"
+    ]
+  }
+]

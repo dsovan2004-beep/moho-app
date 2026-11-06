@@ -1,0 +1,235 @@
+{
+  "checkedAt": "2026-11-06",
+  "providers": [
+    {
+      "id": "14ca3203-2e6b-40c9-ac29-f6e643b4ed37",
+      "name": "Aappakadai Indian Chettinad",
+      "category": "Restaurants",
+      "city": "Mountain House",
+      "address": "19685 S Mountain House Parkway, Mountain House, CA 95391",
+      "phone": "(209) 207-9631",
+      "website": "https://www.aappakadaimountainhouse.com/",
+      "tags": [
+        "Indian cuisine",
+        "South Indian cuisine",
+        "Chettinad",
+        "catering"
+      ],
+      "description": "Mountain House restaurant advertising South Indian Chettinad dishes, appam, dosa and party orders. Official site lists 19685 S Mountain House Parkway and online ordering. Confirm current hours, dietary requirements and catering details directly. No photographs or reviews reused.",
+      "areas": [
+        "Mountain House"
+      ],
+      "fields": [
+        "identity",
+        "website",
+        "advertised services",
+        "location",
+        "public phone"
+      ]
+    },
+    {
+      "id": "13c711d5-c388-4be5-a7f0-aebea3c648ba",
+      "name": "Dhaba Indian Cuisine",
+      "category": "Restaurants",
+      "city": "Tracy",
+      "address": "2242 W Grant Line Road #101, Tracy, CA 95377",
+      "phone": "(209) 835-9090",
+      "website": "https://dhabaindiancuisines.com/",
+      "tags": [
+        "Indian cuisine",
+        "vegetarian options",
+        "catering",
+        "takeout"
+      ],
+      "description": "Tracy Indian restaurant advertising vegetarian and meat dishes, dine-in, takeout and catering. Official contact page lists 2242 W Grant Line Road, Suite 101. Confirm current hours, dietary needs and order availability directly; delivery to another city is not established by this listing.",
+      "areas": [
+        "Tracy"
+      ],
+      "fields": [
+        "identity",
+        "website",
+        "advertised services",
+        "location",
+        "public phone"
+      ]
+    },
+    {
+      "id": "730829a4-1bb4-446a-89f1-bacd7683da4e",
+      "name": "Rasoi Indian Kitchen",
+      "category": "Restaurants",
+      "city": "Lathrop",
+      "address": "15338 S Harlan Road, Lathrop, CA 95330",
+      "phone": "(209) 858-4444",
+      "website": "https://rasoitheindiankitchen.com/",
+      "tags": [
+        "Indian cuisine",
+        "vegetarian options",
+        "catering",
+        "takeout"
+      ],
+      "description": "Lathrop restaurant advertising Indian curries, biryani, vegetarian options, dine-in, takeout and catering. The official page lists 15338 S Harlan Road. Confirm current hours, allergens, dietary requirements and any delivery boundary with the restaurant.",
+      "areas": [
+        "Lathrop"
+      ],
+      "fields": [
+        "identity",
+        "website",
+        "advertised services",
+        "location",
+        "public phone"
+      ]
+    },
+    {
+      "name": "New Indian Supermarket",
+      "category": "Retail",
+      "city": "Tracy",
+      "address": "3250 North Tracy Boulevard, Tracy, CA 95376",
+      "phone": "(209) 237-2939",
+      "website": "https://newindiansupermarket.com/",
+      "tags": [
+        "Indian groceries",
+        "Pakistani groceries",
+        "spices",
+        "festival supplies"
+      ],
+      "description": "Tracy grocery store advertising Indian and Pakistani pantry staples, produce, frozen foods, snacks and festival supplies. The official site lists 3250 North Tracy Boulevard. Confirm product stock, current hours and delivery eligibility directly; site pages show differing closing times, so no fixed hours or free-delivery promise is adopted.",
+      "areas": [
+        "Tracy"
+      ],
+      "fields": [
+        "identity",
+        "website",
+        "advertised services",
+        "location",
+        "public phone"
+      ]
+    },
+    {
+      "name": "Raunak Bazar",
+      "category": "Retail",
+      "city": "Manteca",
+      "address": "2151 Moffat Boulevard, Manteca, CA 95336",
+      "phone": "(209) 647-0518",
+      "website": "https://www.raunakbazar.com/",
+      "tags": [
+        "Indian groceries",
+        "spices",
+        "festival supplies"
+      ],
+      "description": "Manteca grocery store advertising Indian pantry staples, produce, frozen foods, snacks and festival supplies at 2151 Moffat Boulevard. Confirm current hours, item availability and any pickup or delivery terms directly. Store operation, food quality and health claims have not been independently assessed.",
+      "areas": [
+        "Manteca"
+      ],
+      "fields": [
+        "identity",
+        "website",
+        "advertised services",
+        "location",
+        "public phone"
+      ]
+    },
+    {
+      "name": "Aapli Marathi Shala & Community",
+      "category": "Education",
+      "city": "Mountain House",
+      "address": "Delta College Mountain House Campus, Classroom 203, 2073 Central Parkway",
+      "website": "https://mhshala.org/admissions/",
+      "areas": [
+        "Mountain House",
+        "Manteca"
+      ],
+      "tags": [
+        "Marathi language classes",
+        "cultural education",
+        "children classes"
+      ],
+      "description": "Community organization advertising Marathi reading, writing, conversation and cultural learning. The admissions page lists Mountain House Saturday beginner and intermediate batches, and a Manteca Friday beginner batch. Mountain House contact venue is Delta College Classroom 203; confirm the Manteca classroom, eligibility, fees, current schedule and available places through the official website. No affiliation with MoHoLocal implied.",
+      "phone": "",
+      "fields": [
+        "identity",
+        "website",
+        "advertised services",
+        "location"
+      ]
+    },
+    {
+      "name": "Grime Getterz",
+      "category": "Home Services",
+      "city": "Service area only",
+      "phone": "(209) 624-6249",
+      "website": "https://grimegetterz.com/services/",
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "tags": [
+        "solar bird exclusion",
+        "solar panel cleaning",
+        "gutter cleaning"
+      ],
+      "description": "Exterior cleaning business advertising solar-panel washing and pigeon-exclusion mesh, with Mountain House, Tracy, Lathrop and Manteca among its named service cities. Office location not established. Confirm any under-panel nest or droppings cleanup, roof access, attachment method, warranty compatibility and availability directly; cleanup beyond panel washing is not independently established.",
+      "address": "",
+      "fields": [
+        "identity",
+        "website",
+        "advertised services",
+        "advertised service area",
+        "public phone"
+      ]
+    },
+    {
+      "name": "MAAN Perm Lights",
+      "category": "Home Services",
+      "city": "Service area only",
+      "phone": "(510) 890-8862",
+      "website": "https://maanpermlights.com/service-areas/",
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "tags": [
+        "holiday light installation",
+        "permanent outdoor lighting"
+      ],
+      "description": "Advertises permanent outdoor RGBW lighting installations for Mountain House, Tracy, Lathrop and Manteca. This is a year-round installed lighting system rather than a seasonal rental or takedown service. Confirm mounting, controls, equipment, credentials, warranty terms, written quote and scheduling directly. Office location not established.",
+      "address": "",
+      "fields": [
+        "identity",
+        "website",
+        "advertised services",
+        "advertised service area",
+        "public phone"
+      ]
+    },
+    {
+      "name": "Bright Prodigy",
+      "category": "Home Services",
+      "city": "Service area only",
+      "website": "https://www.brightprodigy.com/",
+      "areas": [
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "tags": [
+        "holiday light installation",
+        "holiday light removal",
+        "permanent outdoor lighting"
+      ],
+      "description": "Advertises temporary and permanent holiday-light installation in Tracy, Lathrop and Manteca. The official site requests a service form before scheduling and says customers supply their own lights; its form includes takedown options. Use the website to request details. Mountain House coverage, office location and a public phone were not established in this check.",
+      "address": "",
+      "phone": "",
+      "fields": [
+        "identity",
+        "website",
+        "advertised services",
+        "advertised service area"
+      ]
+    }
+  ],
+  "scope": "Cuisines, groceries, language programs and advertised services; no inference about business owners or residents ethnicity/religion; no outreach"
+}

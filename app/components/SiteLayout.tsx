@@ -8,6 +8,7 @@ import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { useState, useEffect, useRef, Suspense } from 'react'
 import { getSupabaseClient, signOut } from '@/lib/supabase'
 import { CITIES as CITY_CONFIG, RELAUNCH_CITY_NAMES } from '@/lib/cities'
+import { exploreLinks } from '@/lib/explore-links'
 import { OPERATOR_CONTACT } from '@/lib/site-policy'
 import type { User } from '@supabase/supabase-js'
 
@@ -106,14 +107,6 @@ function getCityFromPath(path: string): string | null {
   const segment = path.split('/')[1] ?? ''
   return SLUG_TO_CITY[segment] ?? null
 }
-
-// Explore dropdown items (Best Of + Discover)
-const EXPLORE_LINKS = [
-  { slug: 'restaurants', label: 'Restaurants', emoji: '🍽️' },
-  { slug: 'health-wellness', label: 'Health & wellness', emoji: '🦷' },
-  { slug: 'home-services', label: 'Home services', emoji: '🔧' },
-  { slug: 'beauty-spa', label: 'Beauty & spa', emoji: '💈' },
-]
 
 // Community dropdown items
 const COMMUNITY_LINKS = [
@@ -424,26 +417,26 @@ function NavContent() {
                 </button>
 
                 {exploreOpen && (
-                  <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50 animate-dropdown">
+                  <div className="absolute top-full left-0 mt-1 w-72 max-h-[75vh] overflow-y-auto bg-white rounded-xl shadow-lg border border-gray-100 z-50 animate-dropdown">
                     {/* Discover */}
                     <Link
-                      href="/discover"
+                      href={`/discover?${new URLSearchParams({city})}`}
                       onClick={() => setExploreOpen(false)}
                       className="flex items-center gap-3 px-4 py-3 text-sm text-gray-800 font-semibold hover:bg-gray-50 transition border-b border-gray-100"
                     >
                       <span>🗺️</span> Discover
                     </Link>
 
-                    {/* Best Of */}
+                    {/* Current city discovery */}
                     <div className="px-4 py-2.5 border-b border-gray-100">
                       <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Explore {city}</p>
                     </div>
-                    {EXPLORE_LINKS.map(({ slug, label, emoji }) => (
+                    {exploreLinks(city).map(({ key, label, emoji, href }) => (
                       <Link
-                        key={slug}
-                        href={`/${CITY_SLUGS[city]}/${slug}`}
+                        key={key}
+                        href={href}
                         onClick={() => setExploreOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
+                        className="flex min-h-11 items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
                       >
                         <span>{emoji}</span>
                         <span>{label}</span>
@@ -451,7 +444,7 @@ function NavContent() {
                     ))}
                     <div className="border-t border-gray-100 px-4 py-2.5">
                       <Link
-                        href="/directory"
+                        href={`/directory?${new URLSearchParams({city})}`}
                         onClick={() => setExploreOpen(false)}
                         className="text-xs font-semibold text-blue-600 hover:underline"
                       >
@@ -484,13 +477,13 @@ function NavContent() {
                 </button>
 
                 {communityOpen && (
-                  <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50 animate-dropdown">
+                  <div className="absolute top-full left-0 mt-1 w-72 max-h-[75vh] overflow-y-auto bg-white rounded-xl shadow-lg border border-gray-100 z-50 animate-dropdown">
                     {COMMUNITY_LINKS.map(({ href, label, emoji }) => (
                       <Link
                         key={href}
                         href={href}
                         onClick={() => setCommunityOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
+                        className="flex min-h-11 items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
                         style={{ fontWeight: pathname === href ? 700 : 400, color: pathname === href ? '#1d4ed8' : undefined }}
                       >
                         <span>{emoji}</span>
@@ -602,9 +595,10 @@ function NavContent() {
           </div>
         </div>
 
-        <div className="xl:hidden grid grid-cols-4 border-t border-white/15" aria-label="Mobile navigation">
+        <div className="xl:hidden grid grid-cols-5 border-t border-white/15" aria-label="Mobile navigation">
           {[
             { href: `/directory?city=${encodeURIComponent(city)}`, label: 'Find help' },
+            { href: `/discover?${new URLSearchParams({city})}`, label: 'Explore' },
             { href: `/lost-and-found?city=${encodeURIComponent(city)}`, label: 'Pets' },
             { href: `/community?city=${encodeURIComponent(city)}`, label: 'Community' },
             { href: user ? '/messages' : '/login', label: user ? 'Messages' : 'Sign in' },
