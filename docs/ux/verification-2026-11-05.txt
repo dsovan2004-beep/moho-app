@@ -20,7 +20,7 @@ page overflow) on homepage and exact-service results. Raw tab screenshots captur
 at actual emulated resolution after the higher-level viewport helper failed to
 resize the hidden browser. Emulation was cleared afterward.
 
-Artifacts: home-desktop.png, home-mobile.png, results-mobile.png.
+Artifacts: home-desktop.jpg, home-mobile.png, results-mobile.png.
 Remaining: resident usability/keyboard testing, deeper legacy-city-page redesign,
 checked-provider supply (especially landscaping), owner-supplied job fit and
 availability expiry, and pet owner-update/freshness lifecycle. Facebook research
