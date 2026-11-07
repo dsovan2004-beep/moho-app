@@ -1,0 +1,79 @@
+{
+  "checked_on": "2026-11-06",
+  "providers": [
+    {
+      "name": "Bird Proof — Rain Defense",
+      "category": "Home Services",
+      "city": "Service area only",
+      "address": "",
+      "phone": "(707) 999-7949",
+      "website": "https://baybirdproofing.com/",
+      "domain": "baybirdproofing.com",
+      "areas": [
+        "Mountain House",
+        "Lathrop"
+      ],
+      "tags": [
+        "solar bird exclusion",
+        "pigeon cleanup",
+        "gutter cleaning"
+      ],
+      "description": "Advertises solar-panel bird exclusion, nest/debris cleanup, roof surface cleaning and gutter services. Its FAQ names Mountain House and Lathrop. Confirm your address, active-nest handling, roof access, warranty compatibility, quote and scheduling directly. Office location not established.",
+      "note": "First-party website desk check of identity/DBA, public phone, advertised work and explicit Mountain House/Lathrop coverage. No independent credential/insurance validation, performance, quality or availability endorsement. Tracy/Manteca coverage not established. No photos reused.",
+      "sources": [
+        "https://baybirdproofing.com/",
+        "https://baybirdproofing.com/faq"
+      ]
+    },
+    {
+      "name": "Watermill Express — Main & Alameda",
+      "category": "Retail",
+      "city": "Manteca",
+      "address": "445 N Main St, Manteca, CA",
+      "phone": "(800) 487-9643",
+      "website": "https://watermillexpress.com/refill-stations/476-water-refill-station-in-manteca-ca/",
+      "domain": "watermillexpress.com",
+      "areas": [
+        "Manteca"
+      ],
+      "tags": [
+        "water refills",
+        "drinking water"
+      ],
+      "description": "Operator-listed drinking-water refill station at Main & Alameda, 445 N Main Street in Manteca. The location page identifies water service; ice availability has not been established. Confirm current operation and pricing directly.",
+      "note": "Official operator location page checked for station identity, address, support phone and water service. No water quality testing, onsite visit or operating/price guarantee. Held Commons ice-and-water photo is NOT attributed to this address or reused.",
+      "sources": [
+        "https://watermillexpress.com/refill-stations/476-water-refill-station-in-manteca-ca/"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "title": "Adult/Teen: Diamond Painting Craft",
+      "city": "Tracy",
+      "location": "Tracy Branch Library, Wadsworth Room, 20 East Eaton Avenue, Tracy",
+      "start": "2026-11-07T11:00:00-08:00",
+      "end": "2026-11-07T13:00:00-08:00",
+      "url": "https://www.ssjcpl.org/events-services/events-calendar/tracy/november-2026/adult-teen-diamond-painting-craft?id=1794078000-246764",
+      "description": "The library lists a diamond-painting craft session for adults and teens in the Wadsworth Room. Confirm materials and any registration requirements directly. Official occurrence checked November 6, 2026; no images reused."
+    },
+    {
+      "title": "Book Buddies — Elementary Reading Practice",
+      "city": "Tracy",
+      "location": "Tracy Branch Library, Children's Area, 20 East Eaton Avenue, Tracy",
+      "start": "2026-11-09T15:00:00-08:00",
+      "end": "2026-11-09T16:00:00-08:00",
+      "url": "https://www.ssjcpl.org/events-services/events-calendar/tracy/reoccurring-weekly-monthly-events/book-buddies?id=1794265200-211639",
+      "description": "Teen volunteers read with elementary-school children in the library's Children's Area. Covers the November 9 occurrence only. Confirm attendance arrangements with the library. Official date, time and location checked November 6, 2026; no photos reused."
+    },
+    {
+      "title": "Shedskin Reptile Experience",
+      "city": "Manteca",
+      "location": "Manteca Branch Library, 320 W Center Street, Manteca",
+      "start": "2026-11-10T15:30:00-08:00",
+      "end": "2026-11-10T16:30:00-08:00",
+      "url": "https://www.ssjcpl.org/events-services/events-calendar/manteca-branch/shedskin-reptile-experience?id=1794353400-247246",
+      "description": "The library lists a free, all-ages reptile presentation with Shedskin Reptiles. Its branch calendar directs November 10 Lego Club attendees to this replacement program. Confirm attendance details directly. Official occurrence and branch address checked November 6, 2026; no images reused."
+    }
+  ]
+}

@@ -1,5 +1,11 @@
 # MoHoLocal Product Roadmap
 
+## Fresh content + genuine pet pilot readiness — November 6, afternoon
+
+Published2website-checked providers (Bird Proof serving explicit MH/Lathrop areas; Watermill Main&Alameda inManteca) and3official library occurrences (TracyNov7DiamondPainting/Nov9BookBuddies; MantecaNov10ReptileExperience). Totals58dated listing checks/22approved occurrences. Anonymous API and live directory/event detail checks pass; no app/schema/permission change. Provider credential/quality/availability checks and photo rights remain separate. [Evidence](research/pilot-freshness-followup-2026-11-06.md).
+
+Real-reporter pilot remains OPEN:0linked reporter records/0authenticated pet submissions. Actual signed-in account reaches My pet reports empty state and enabled, preselected pet intake; status selector tested without submitting. No genuine case available, fake record created or outreach sent. Manteca photo location remains HOLD after checking both official Watermill addresses and read-only older map imagery; no conclusive exact-kiosk match. Mountain House real2026photo remains OPEN.
+
 ## Pet matching/contact deployment accepted — November 6, 2026
 
 PET-05 matching/contact increment deployed: application9996ab5, native buildeaae2ae5-73c6-4759-9ed2-fd31482f6cf6 Ready (2m17s), versionf169d1e7.135tests, TypeScript/OpenNext pass. Live board new explanations, four-city navigation and390px layout checked; missing report and removed local fixture return404. Anonymous RPC safe-read200/[] and mutation401 checks pass. Reporter permissions/revision/quota/visibility tests pass on disposable local Postgres. Current production:60legacy reports,0reporter-linked public cases; real-reporter saved-case pilot remains OPEN. No automatic identity match, reunion, message or notification is implied. [Release evidence](pet-matching-release-2026-11-06.md).

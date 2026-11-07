@@ -10,7 +10,23 @@
     "location_evidence": "Photographer description explicitly says Manteca, California. No GPS in exposed EXIF. Operator confirms Manteca location at445N Main St but exact photographed kiosk not independently matched.",
     "operator_reference": "https://watermillexpress.com/refill-stations/476-water-refill-station-in-manteca-ca/",
     "decision": "HOLD for independent location corroboration and editorial fit as city guide image. Do not assume exact address or publish as a civic panorama.",
-    "sha256": "ec232bdd3595806624111c87b81b81422d6f8d02e701c4b9c232f283f7c4cd10"
+    "sha256": "ec232bdd3595806624111c87b81b81422d6f8d02e701c4b9c232f283f7c4cd10",
+    "additional_location_checks": {
+      "operator_stations": [
+        {
+          "address": "445 N Main St, Manteca",
+          "station": 476,
+          "maps_cid": "11981730314518087887"
+        },
+        {
+          "address": "1359 E Yosemite, Manteca",
+          "station": 5598,
+          "maps_cid": "12558040132310770780"
+        }
+      ],
+      "street_context": "Read-only Main2022/Yosemite2023 views inspected; no Google image copied or reused. No conclusive exact-kiosk match established.",
+      "decision": "HOLD remains; do not attach candidate to either address."
+    }
   },
   "mountain_house": {
     "candidate": "https://commons.wikimedia.org/wiki/File:IMG-mountain_house.jpg",
