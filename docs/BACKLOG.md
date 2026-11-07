@@ -1,5 +1,11 @@
 # MoHoLocal active execution queue
 
+## Newspaper verification + class coverage UX — November 6, 2026
+
+Reviewed MH Matters current linked October28 issue civic/calendar/senior/business sections and the user's open official homepage. Published Zany Entertainment (Tracy), added a dated THub Cafe check retaining the cafe-linked 1158 address, and published two city November14 civic occurrences with official RSVP links. Totals: 64 dated listing checks / 35 approved events. Autobot/Falafel leads remain unverified; no guessed coverage or images copied.
+
+Class discovery now shows topic-aware counts for all four cities, an explicit result summary, clear-topic action and counted nearby recovery. 137 tests, TypeScript and final OpenNext build pass. Source2a3e0ba is live (version5d6c0d5a); Manteca music0 → nearby1 recovery and 390px no-overflow checks pass. Native build808f6f70-7063-4b15-8b88-ce0c97fb1500 Ready (2m8s). Photo tasks and real-reporter pet pilot stay OPEN. [Evidence](research/matters-class-release-2026-11-06.md).
+
 ## Mountain House Matters source added — November 6, 2026
 
 Confirmed local newspaper at https://www.mhmatters.net/ and linked October 28, 2026 flagship PDF. Add new issues to the twice-weekly source-review queue for provider, event, cultural-program and local-opening leads. Verify candidates with businesses/organizers before publishing. Photos remain rights-held; publication is not reuse permission. Review was targeted, not an exhaustive audit of all 32 pages. [Source note](research/mountain-house-matters-source-2026-11-06.md). Inventory unchanged at 62 checks / 33 events; photo tasks and pet pilot stay open.
