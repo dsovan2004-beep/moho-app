@@ -1,5 +1,9 @@
 # MoHoLocal active execution queue
 
+## Mountain House Matters source added — November 6, 2026
+
+Confirmed local newspaper at https://www.mhmatters.net/ and linked October 28, 2026 flagship PDF. Add new issues to the twice-weekly source-review queue for provider, event, cultural-program and local-opening leads. Verify candidates with businesses/organizers before publishing. Photos remain rights-held; publication is not reuse permission. Review was targeted, not an exhaustive audit of all 32 pages. [Source note](research/mountain-house-matters-source-2026-11-06.md). Inventory unchanged at 62 checks / 33 events; photo tasks and pet pilot stay open.
+
 ## Pet-service discovery and four-city supply — November 6, 2026
 
 Added grouped Home & yard / Pets & everyday care shortcuts and exact mobile-grooming, pet-sitting and dog-walking filters. Directory, Explore and city landing links use category-aware service routes, preserving resident city; incompatible filters rejected. 136 tests, TypeScript and OpenNext build pass; local Lathrop grooming results and 390px overflow checked. App f6aa6d0 deployed; native build 84262a5a-7444-48e2-b4fd-7320ed96160b Ready (2m21s), version a6919bd1. Live pet-sitting result/action and dog-walking route checked; production 390px has no horizontal overflow.
