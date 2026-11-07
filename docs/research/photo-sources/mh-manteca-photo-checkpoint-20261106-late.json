@@ -1,0 +1,39 @@
+{
+  "checked_on": "2026-11-06",
+  "status": "no newly qualifying asset; both tasks remain open",
+  "commons": [
+    {
+      "city": "mountain-house",
+      "request": "https://commons.wikimedia.org/w/api.php?action=query&format=json&generator=geosearch&ggscoord=37.774%7C-121.543&ggsradius=10000&ggsnamespace=6&ggslimit=100&prop=imageinfo&iiprop=url%7Cextmetadata&iilimit=1",
+      "returned_files": 100,
+      "query_limit": 100,
+      "metadata_date_contains_2026": 0,
+      "missing_capture_metadata": 0,
+      "scope": "10km radius selected city center; returned files only, not exhaustive city photo coverage"
+    },
+    {
+      "city": "manteca",
+      "request": "https://commons.wikimedia.org/w/api.php?action=query&format=json&generator=geosearch&ggscoord=37.7974%7C-121.2161&ggsradius=10000&ggsnamespace=6&ggslimit=100&prop=imageinfo&iiprop=url%7Cextmetadata&iilimit=1",
+      "returned_files": 87,
+      "query_limit": 100,
+      "metadata_date_contains_2026": 0,
+      "missing_capture_metadata": 0,
+      "scope": "10km radius selected city center; returned files only, not exhaustive city photo coverage"
+    }
+  ],
+  "manteca_lead": {
+    "referring_page": "https://teslamagz.com/supercharger/tesla-supercharger-in-manteca-ca-1890-daniels-st/",
+    "original": "https://www.mapillary.com/app/?pKey=547173996443019",
+    "observed_capture": "2018-07-14",
+    "creator": "lvl5",
+    "comparison": "https://www.mapillary.com/app/?pKey=3078545162357622&focus=photo",
+    "comparison_capture": "2021-11-23",
+    "decision": "rejected: both capture years predate2026 despite referring page\u2019s2026 opening claim"
+  },
+  "flickr": {
+    "query": "https://www.flickr.com/search/?text=Manteca%20California&license=4%2C5%2C9%2C10%2C11%2C12&min_taken_date=1767254400&max_taken_date=1794038399",
+    "observed": "Commercial use & mods allowed; no matches for Manteca California",
+    "scope": "single text and capture-date/license query; not proof that all Flickr imagery is unavailable"
+  },
+  "publication": "No image downloaded for publication or replaced; no permission requests/messages sent; existing MH satellite and Manteca welcome panel retained."
+}

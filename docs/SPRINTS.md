@@ -1,5 +1,11 @@
 # MoHoLocal — SPRINTS.md
 
+## Mountain House / Manteca photo continuation — November 6, late afternoon
+
+Expanded Commons geographic metadata review:100 returned Mountain House-area files and87 Manteca-area files within10km searches; no2026 capture dates in returned metadata (bounded searches, not exhaustive). New Manteca charger-page lead rejected after original Mapillary capture proved July14,2018; Time travel comparison November23,2021 also fails. Manteca Flickr commercial-use/modification-permitted2026 query explicitly returned no matches. Evidence: [photo checkpoint](research/photo-sources/mh-manteca-photo-checkpoint-20261106-late.json).
+
+Mountain House real2026 street photo and Manteca photo remain OPEN. No replacement, rights assumption or outreach. Lathrop c27b38a/version05c8fa94 remains latest accepted image release. Continue new existing-license sources with actual capture dates; do not repeat rejected sources as new candidates.
+
 ## Lathrop photo release accepted — November 6, 2026
 
 Application c27b38a / native build2f624477-25fe-49da-b3fd-937b1da90d48 Ready, version05c8fa94. Licensed March23,2026 Lathrop Harlan Road-area photograph now replaces the guide/hub placeholder, with Anthrico/Panoramax credit and CC BY-SA4.0 source/license links. Live image-load and390px width checks pass;135 workspace tests, TypeScript and OpenNext pass. Separate credits navigation was blocked by browser security policy; no workaround attempted. Source/rights record and screenshot saved.

@@ -19,3 +19,7 @@ Sources: original Panoramax metadata and geographic queries saved in photo-sourc
 ## Deployment acceptance
 
 Application c27b38a; native build2f624477-25fe-49da-b3fd-937b1da90d48 Ready (2m17s), version05c8fa94. Live Lathrop guide photo loads and displays date/source/license;390px document width matches viewport.135 workspace tests, TypeScript/OpenNext pass. Screenshot: ../ux/lathrop-photo-live-20261106.png. Separate credits-link navigation blocked by browser security policy; no workaround attempted. Mountain House and Manteca remain open.
+
+## Late-afternoon continuation
+
+Expanded Commons10km queries returned100 Mountain House-area files (query limit100) and87 Manteca-area files; metadata returned no2026 capture dates. Neither query proves exhaustive city coverage. Full responses saved with request URLs. Current Manteca TeslaMagz page credits Mapillary image547173996443019; direct source visibly identifies lvl5, July14,2018. Time travel comparison3078545162357622 is Anthrico November23,2021. Both rejected. Flickr exact Manteca California query with2026 capture range and commercial-use/modification licenses reports no matches. No new asset qualifies and no website replacement made. Checkpoint: photo-sources/mh-manteca-photo-checkpoint-20261106-late.json.
