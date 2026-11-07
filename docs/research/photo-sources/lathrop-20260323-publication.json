@@ -1,7 +1,7 @@
 {
   "checked_on": "2026-11-06",
   "city": "Lathrop",
-  "status": "approved for publication; deployment pending",
+  "status": "deployed and live accepted",
   "capture_date": "2026-03-23",
   "author": "Anthrico",
   "license": "CC BY-SA 4.0",
@@ -23,5 +23,12 @@
       "bytes": 218540,
       "sha256": "1d44fbe5dfb74c6bfb542d9cf421ef40b7dae7da50ff952336f4e1b3e45949e9"
     }
-  ]
+  ],
+  "release": {
+    "commit": "c27b38a5afe54e2b4a7857bfef2938f8075e0b3d",
+    "native_build": "2f624477-25fe-49da-b3fd-937b1da90d48",
+    "version_prefix": "05c8fa94",
+    "build_status": "Ready",
+    "live_check": "Lathrop guide image loaded; capture date, producer/source and CC BY-SA link visible;390px no horizontal overflow. Screenshot saved. Separate credits navigation was blocked by browser security policy; no workaround attempted."
+  }
 }

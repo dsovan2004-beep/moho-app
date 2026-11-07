@@ -10,8 +10,12 @@ Fresh Panoramax2026 geographic query returned0; response saved. Search result ar
 
 ## Manteca — remains open
 
-Panoramax2026 geographic query returned0 within selected bbox. Mapillary downtown date filter Jan1–Nov6,2026 showed no visible coverage in the inspected center map; this does not establish absence across all neighborhoods. Flickr St Anthonys Blue Mass photo55534708790 has September11,2026 capture date but explicitly All rights reserved, so excluded. Wikimedia IMAG3041-lathrop-manteca is CC0 but captured October17,2016;2026 page edit is not capture. Wikimedia Lathrop State Park2026 result is Colorado, not Lathrop CA; excluded.
+Panoramax2026 geographic query returned0 within selected bbox. Mapillary downtown date filter Jan1–Nov6,2026 showed no visible coverage in the inspected center map; Expanded inspection included downtown through the Highway120/99 area; this does not establish absence across all neighborhoods. KartaView2026 area search also returned0, with response saved in photo-sources/manteca-kartaview-20261106.json. Flickr St Anthonys Blue Mass photo55534708790 has September11,2026 capture date but explicitly All rights reserved, so excluded. Wikimedia IMAG3041-lathrop-manteca is CC0 but captured October17,2016;2026 page edit is not capture. Wikimedia Lathrop State Park2026 result is Colorado, not Lathrop CA; excluded.
 
 Remaining: broaden Manteca city/neighborhood coverage and Mountain House sources with existing reuse permission, then inspect candidate date/location/license before publication. No messages sent or rights requests made.
 
 Sources: original Panoramax metadata and geographic queries saved in photo-sources/*-panoramax-20261106-afternoon.json; https://www.flickr.com/photos/200058807@N07/55534708790 ; https://commons.wikimedia.org/wiki/File:IMAG3041-lathrop-manteca.jpg ; https://www.ihg.com/holidayinnexpress/hotels/us/en/lathrop/lthhr/hoteldetail .
+
+## Deployment acceptance
+
+Application c27b38a; native build2f624477-25fe-49da-b3fd-937b1da90d48 Ready (2m17s), version05c8fa94. Live Lathrop guide photo loads and displays date/source/license;390px document width matches viewport.135 workspace tests, TypeScript/OpenNext pass. Screenshot: ../ux/lathrop-photo-live-20261106.png. Separate credits-link navigation blocked by browser security policy; no workaround attempted. Mountain House and Manteca remain open.

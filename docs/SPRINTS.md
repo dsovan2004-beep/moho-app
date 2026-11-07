@@ -1,5 +1,11 @@
 # MoHoLocal — SPRINTS.md
 
+## Lathrop photo release accepted — November 6, 2026
+
+Application c27b38a / native build2f624477-25fe-49da-b3fd-937b1da90d48 Ready, version05c8fa94. Licensed March23,2026 Lathrop Harlan Road-area photograph now replaces the guide/hub placeholder, with Anthrico/Panoramax credit and CC BY-SA4.0 source/license links. Live image-load and390px width checks pass;135 workspace tests, TypeScript and OpenNext pass. Separate credits navigation was blocked by browser security policy; no workaround attempted. Source/rights record and screenshot saved.
+
+Mountain House real2026 street photo and Manteca photo remain OPEN; satellite/welcome panel retained. More recent search checkpoints include Panoramax all three cities, wider Manteca Mapillary coverage and KartaView (0), plus rejected older/all-rights-reserved/wrong-location results. No outreach. [Research evidence](research/city-photos-2026-afternoon-followup.md).
+
 ## 2026 photo follow-up — November 6 afternoon
 
 Lathrop qualifying March23,2026 Anthrico/Panoramax street photo found: original publisher GPS/capture/CC BY-SA4.0 verified, landmark cross-checked with official IHG. Guide/hub welcome panel replaced locally; deployment pending. Mountain House street photo and Manteca photo remain open. Rejected2016 imagery, Colorado namesake and2026 Flickr photo with all-rights-reserved license. No messages sent. [Evidence](research/city-photos-2026-afternoon-followup.md).

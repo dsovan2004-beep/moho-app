@@ -1,0 +1,16 @@
+{
+  "request": "https://api.kartaview.org/2.0/photo/?lat=37.7974&lng=-121.2161&zoomLevel=12&join=sequence&orderBy=id&orderDirection=desc&startDate=2026-01-01&endDate=2026-11-06&itemsPerPage=50",
+  "response": {
+    "status": {
+      "apiCode": 600,
+      "apiMessage": "The request has been processed without incidents",
+      "httpCode": 200,
+      "httpMessage": "Success",
+      "executionTime": 0.024044475
+    },
+    "result": {
+      "data": [],
+      "hasMoreData": false
+    }
+  }
+}
