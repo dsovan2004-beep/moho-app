@@ -1,0 +1,44 @@
+{
+  "checked_on": "2026-11-06",
+  "newspaper": "https://www.mhmatters.net/pdf/2026/261028_MHMatters_Flagship147_s.pdf",
+  "reviewed_sections": [
+    "printed page 14 civic calendar",
+    "printed page 20 community calendar",
+    "printed page 23 senior programs",
+    "printed page 28 business directory"
+  ],
+  "provider": {
+    "name": "Zany Entertainment",
+    "source": "https://zanyentertainment.com/",
+    "city": "Tracy",
+    "phone": "(209) 835-8383",
+    "address": "1005 E Pescadero Ave, Unit 167, Tracy, CA 95304",
+    "description": "Advertises magic shows, clown entertainment and balloon twisting for birthdays, festivals, schools and libraries. Website lists a Tracy contact address and separate performer phone numbers; the main listed contact here is Sparkles. Confirm travel coverage, suitability, quote and scheduling directly. No additional city service area established."
+  },
+  "recheck": {
+    "id": "4176afc1-6005-4240-9f86-e7b8c0567699",
+    "name": "THub Cafe",
+    "source": "https://order.toasttab.com/online/t-hub-cafe-mountain-house-1158-tradition-street",
+    "result": "Official cafe website links this ordering page; it confirms existing 1158 Tradition Street address and (209)989-8482. Newspaper's 1140/#158 address not adopted."
+  },
+  "events": [
+    {
+      "title": "Veterans Liberty Garden Ribbon Cutting",
+      "city": "Mountain House",
+      "start": "2026-11-14T11:00:00-08:00",
+      "end": null,
+      "location": "Veterans Liberty Garden, end of Grand Avenue west of Safeway, near Raphael Street, Mountain House",
+      "url": "https://www.mountainhouseca.gov/FormCenter/RSVPs-8/Veterans-Liberty-Garden-Ribbon-Cutting-R-69",
+      "description": "City ceremony honoring veterans at the new Liberty Garden. The official Form Center lists November 14 at 11 AM and requests an RSVP to help plan attendance and seating. Check the city page for arrangements and any changes. End time not confirmed."
+    },
+    {
+      "title": "A Salute to Service: Veterans Day Luncheon",
+      "city": "Mountain House",
+      "start": "2026-11-14T12:00:00-08:00",
+      "end": null,
+      "location": "Mountain House Town Hall, Lobby and Board Room, 251 E Main Street, Mountain House",
+      "url": "https://www.mountainhouseca.gov/FormCenter/RSVPs-8/A-Salute-to-Service-Veterans-Day-Luncheo-70",
+      "description": "City luncheon honoring veterans. Official Form Center lists November 14 at noon in Town Hall's Lobby and Board Room. RSVP through the city; seating is limited. Confirm attendance and end time directly. MoHoLocal does not reserve a place."
+    }
+  ]
+}

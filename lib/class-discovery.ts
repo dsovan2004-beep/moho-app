@@ -15,3 +15,13 @@ export function matchesClassTopic(tags:string[],topic:ClassTopic) {
 export function classesHref(city:string,topic:ClassTopic='all') {
   return `/classes?${new URLSearchParams({city,...(topic==='all'?{}:{topic})})}`
 }
+
+
+export function classCoverage<T extends {service_areas:string[];service_tags:string[]}>(programs:T[],city:string,topic:ClassTopic) {
+  const inCity=programs.filter(row=>city==='All Cities'||row.service_areas.includes(city))
+  return {
+    visible:inCity.filter(row=>matchesClassTopic(row.service_tags,topic)),
+    inCity,
+    countForCity:(name:string)=>programs.filter(row=>(name==='All Cities'||row.service_areas.includes(name))&&matchesClassTopic(row.service_tags,topic)).length,
+  }
+}
