@@ -1,0 +1,34 @@
+'use client'
+import {useEffect,useState} from 'react'
+import Link from 'next/link'
+import {getSupabaseClient} from '@/lib/supabase'
+import {petMatchAction,socialDate} from '@/lib/pet-social'
+import {matchLabel,petReportId,type PetMatch} from '@/lib/pet-matches'
+import {useRequestAccount} from './RequestAccount'
+const button='min-h-11 rounded-lg border px-3 py-2 text-sm font-semibold disabled:opacity-50'
+export function PetMatchCards({links,canManage,busy,onReview}:{links:PetMatch[];canManage:boolean;busy:boolean;onReview:(match:PetMatch,decision:string)=>void}){
+ return <ul className="mt-4 space-y-3">{links.map(link=><li key={link.id} className="rounded-xl border bg-white p-4 break-words"><p className="font-semibold text-teal-950">{matchLabel(link.state)}</p><Link href={`/lost-and-found/${link.other_pet_id}`} className="inline-block underline font-semibold min-h-11 py-2">{link.title} →</Link><p className="text-sm text-slate-600">{link.city} · Recorded status: {link.status}</p><p className="mt-2 text-xs text-slate-600">Link updated {socialDate(link.updated_at)} Pacific</p>
+ {canManage&&<div className="mt-3"><p className="text-sm mb-2">Your report’s decision: {link.my_decision==='confirmed'?'Marked as a match':link.my_decision==='ruled_out'?'Ruled out':'Not confirmed'}</p><div className="flex flex-wrap gap-2"><button disabled={busy||link.my_decision==='confirmed'} className={button} onClick={()=>onReview(link,'confirmed')}>Mark as a match</button><button disabled={busy||link.my_decision==='ruled_out'} className={button} onClick={()=>onReview(link,'ruled_out')}>Rule out</button><button disabled={busy||link.my_decision==='pending'} className={button} onClick={()=>onReview(link,'pending')}>Reset to unconfirmed</button></div></div>}
+ </li>)}</ul>
+}
+export default function PetMatches({petId,status}:{petId:string;status:string}){
+ const {user,checking}=useRequestAccount()
+ const [links,setLinks]=useState<PetMatch[]>([]),[canManage,setCanManage]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState(''),[loading,setLoading]=useState(true),[busy,setBusy]=useState(false),[refresh,setRefresh]=useState(0),[other,setOther]=useState('')
+ useEffect(()=>{let active=true;setLinks([]);setCanManage(false);setLoading(true);setError('')
+ async function load(){
+  try{
+   if(user){const context=await petMatchAction('context',{pet_id:petId});if(!active)return;if(context.can_manage){setCanManage(true);setLinks(context.links??[]);return}}
+   const result=await getSupabaseClient().rpc('pet_match_links',{pet_id:petId});if(result.error)throw new Error('Possible matches could not load.');if(active)setLinks(result.data??[])
+  }catch(e){if(active)setError(e instanceof Error?e.message:'Possible matches could not load.')}finally{if(active)setLoading(false)}
+ }
+ void load();return()=>{active=false}
+ },[petId,user?.id,refresh])
+ useEffect(()=>{setNotice('');setOther('')},[petId,user?.id])
+ async function act(work:()=>Promise<void>){if(busy)return;setBusy(true);setError('');setNotice('');try{await work();setRefresh(n=>n+1)}catch(e){setError(e instanceof Error?e.message:'Match update could not save.')}finally{setBusy(false)}}
+ return <section className="mt-6 rounded-xl border p-5 bg-slate-50" aria-labelledby="pet-matches-heading"><h2 id="pet-matches-heading" className="text-lg font-bold">Possible matches</h2><p className="mt-2 text-sm text-slate-700">Reporters can link a lost report with a found report. Compare photos, dates and identifying details privately. A linked report is a lead; it does not establish ownership or confirm a reunion.</p>
+ <Link className="inline-block underline min-h-11 py-2 text-sm font-semibold" href={`/lost-and-found?city=All+Cities&status=${status==='lost'?'found':'lost'}`}>Browse {status==='lost'?'found':'lost'} reports across our four cities →</Link>
+ {loading?<p className="mt-3 text-sm">Loading possible matches…</p>:error?<p className="mt-3 text-sm text-red-800" role="alert">{error} <button className="underline min-h-11 px-2" onClick={()=>setRefresh(n=>n+1)}>Retry</button></p>:!links.length?<p className="mt-3 text-sm">No possible matches linked here yet.</p>:<PetMatchCards links={links} canManage={canManage} busy={busy} onReview={(link,decision)=>void act(async()=>{await petMatchAction('review',{pet_id:petId,id:link.id,revision:link.revision,decision});setNotice('Your report’s match decision was saved. This does not change either pet’s reunion status.')})}/>}
+ {canManage&&['lost','found'].includes(status)&&<form className="mt-4" onSubmit={e=>{e.preventDefault();void act(async()=>{const otherId=petReportId(other);if(otherId===petId)throw new Error('Choose a different pet report.');await petMatchAction('suggest',{pet_id:petId,other_pet_id:otherId});setOther('');setNotice('Possible match linked publicly. Each report’s reporter confirms separately.')})}}><label htmlFor="pet-match-link" className="block text-sm font-semibold">Link another MoHoLocal pet report</label><input id="pet-match-link" required maxLength={500} value={other} onChange={e=>setOther(e.target.value)} placeholder="Paste report link or ID" className="block border rounded-lg min-h-11 w-full mt-2 px-3"/><p className="mt-2 text-xs text-slate-600">The link and its match label will be public while both reports are public. No message is sent. A reporter can rule it out or reset their decision.</p><button disabled={busy||!other.trim()} className={`${button} mt-3 bg-[#19352d] text-white`}>{busy?'Saving…':'Link as possible match'}</button></form>}
+ {!checking&&!canManage&&<p className="mt-3 text-sm text-slate-600">Share a possible report link in the discussion or a private message. Only linked reporters can add or review a match.{!user&&<> <Link className="underline" href={`/login?next=${encodeURIComponent(`/lost-and-found/${petId}`)}`}>Sign in</Link> to manage your report.</>}</p>}
+ {notice&&<p role="status" className="mt-3 text-sm text-green-900">{notice}</p>}<p className="mt-3 text-xs text-slate-500">Up to 20 recent links. Ruled-out links are visible only to linked reporters. Neither a match decision nor contact update marks a pet reunited automatically.</p></section>
+}

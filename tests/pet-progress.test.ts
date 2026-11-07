@@ -18,3 +18,8 @@ test('observation time is explicit and round-trips device local time',()=>{
  assert.throws(()=>observationInstant(''),/Enter when/)
  assert.throws(()=>observationInstant('invalid'),/Enter when/)
 })
+test('secured labels reflect contact without continuing to claim the owner is being sought',()=>{
+ assert.equal(petProgressLabel('secured','found','contacted'),'Secured — contact made')
+ assert.equal(petProgressLabel('secured','found','return_arranged'),'Secured — return arranged')
+ assert.equal(petProgressLabel('unknown','reunited','return_arranged'),'Reunited — recorded status')
+})

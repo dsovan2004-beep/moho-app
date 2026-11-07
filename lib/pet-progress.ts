@@ -1,8 +1,8 @@
 export type PetProgress = 'unknown' | 'sighted' | 'secured'
-export function petProgressLabel(progress?:string|null,status?:string){
+export function petProgressLabel(progress?:string|null,status?:string,contactStage?:string|null){
  if(status==='reunited')return 'Reunited — recorded status'
  if(progress==='sighted')return 'Sighted — not secured'
- if(progress==='secured')return 'Secured — seeking owner'
+ if(progress==='secured')return contactStage==='return_arranged'?'Secured — return arranged':contactStage==='contacted'?'Secured — contact made':contactStage==='attempted'?'Secured — contact attempted':'Secured — seeking owner'
  return 'Sighting / secured status not confirmed'
 }
 export function compatibleProgress(status:string,progress:string):PetProgress{

@@ -498,7 +498,7 @@ test('pet progress is reporter-only, revisioned and never inferred from legacy f
  assert.throws(()=>sql(`begin;${petFixture()}${as(bob)}select ${activity('report_status',{pet_id:pet,status:'found',progress:'secured',observed_at:'2026-11-06T18:00:00Z',revision:0})};rollback;`),/linked report/)
  const r=sql(`begin;${petFixture()}${as(alice)}select ${activity('report_status',{pet_id:pet,status:'found',progress:'sighted',observed_at:'2026-11-06T18:00:00Z',revision:0})};select ${activity('report_status',{pet_id:pet,status:'found',progress:'secured',observed_at:'2026-11-06T19:00:00Z',revision:1})};set local role anon;select public.pet_progress_timeline('${pet}');rollback;`).split('\n')
  const history=JSON.parse(r[2]);assert.equal(history.length,2);assert.equal(history[0].progress,'secured');assert.equal(history[1].progress,'sighted')
- assert.deepEqual(Object.keys(history[0]).sort(),['confirmed_at','observed_at','progress','revision','status'])
+ assert.deepEqual(Object.keys(history[0]).sort(),['confirmed_at','contact_stage','contact_updated_at','observed_at','progress','revision','status'])
  assert.throws(()=>sql(`begin;${petFixture()}${as(alice)}select ${activity('report_status',{pet_id:pet,status:'found',progress:'secured',observed_at:'2026-11-06T19:00:00Z',revision:0})};select ${activity('report_status',{pet_id:pet,status:'found',progress:'sighted',observed_at:'2026-11-06T19:00:00Z',revision:0})};rollback;`),/Report changed/)
 })
 test('pet progress rejects missing/future/infinite observations and contradictory states',()=>{
@@ -519,4 +519,72 @@ test('public pet timeline disappears with moderation, archival or expiry; privat
 test('legacy status clients can renew and reset incompatible progress on classification change',()=>{
  const r=sql(`begin;${petFixture()}${as(alice)}select ${activity('report_status',{pet_id:pet,status:'found',progress:'secured',observed_at:'2026-11-06T18:00:00Z',revision:0})};select ${activity('report_status',{pet_id:pet,status:'found',revision:1})};select progress from public.lost_and_found where id='${pet}';select ${activity('report_status',{pet_id:pet,status:'lost',revision:2})};select progress||':'||(progress_observed_at is null) from public.lost_and_found where id='${pet}';rollback;`).split('\n')
  assert.equal(r[2],'secured');assert.equal(r[4],'unknown:true')
+})
+
+const foundPet='00000000-0000-4000-8000-000000000061'
+const matchAction=(action:string,payload:Record<string,unknown>)=>`public.pet_match_action('${action}','${JSON.stringify(payload)}'::jsonb)`
+const matchFixture=()=>`${petFixture()} insert into public.lost_and_found(id,type,title,description,city,status,reporter_id) values('${foundPet}','pet','Fixture found pet','Local test only','Mountain House','found','${bob}');`
+const suggest=()=>matchAction('suggest',{pet_id:pet,other_pet_id:foundPet})
+test('contact updates are reporter-owned, dated, revisioned and do not change possession or reunion',()=>{
+ const r=sql(`begin;${petFixture()}${as(alice)}select ${activity('report_status',{pet_id:pet,status:'lost',revision:0,contact_stage:'return_arranged'})};select status||':'||progress||':'||contact_stage||':'||(contact_updated_at is not null) from public.lost_and_found where id='${pet}';set local role anon;select public.pet_progress_timeline('${pet}')->0->>'contact_stage';rollback;`).split('\n')
+ assert.equal(r[1],'lost:unknown:return_arranged:true');assert.equal(r[2],'return_arranged')
+ assert.throws(()=>sql(`begin;${petFixture()}${as(bob)}select ${activity('report_status',{pet_id:pet,status:'lost',revision:0,contact_stage:'contacted'})};rollback;`),/linked report/)
+ assert.throws(()=>sql(`begin;${petFixture()}${as(alice)}select ${activity('report_status',{pet_id:pet,status:'reunited',revision:0,contact_stage:'contacted'})};rollback;`),/does not match/)
+ assert.throws(()=>sql(`begin;${petFixture()}${as(alice)}select ${activity('report_status',{pet_id:pet,status:'lost',revision:0,contact_stage:'verified_owner'})};rollback;`),/valid contact/)
+})
+test('older status clients preserve contact on renewal and clear it on a status change',()=>{
+ const r=sql(`begin;${petFixture()}${as(alice)}select ${activity('report_status',{pet_id:pet,status:'lost',revision:0,contact_stage:'contacted'})};select ${activity('report_status',{pet_id:pet,status:'lost',revision:1})};select contact_stage from public.lost_and_found where id='${pet}';select ${activity('report_status',{pet_id:pet,status:'reunited',revision:2})};select contact_stage||':'||(contact_updated_at is null) from public.lost_and_found where id='${pet}';rollback;`).split('\n')
+ assert.equal(r[2],'contacted');assert.equal(r[4],'unknown:true')
+})
+test('only confirmed reporters can propose a match; duplicates and reverse pairs keep one link',()=>{
+ assert.throws(()=>sql(`begin;${matchFixture()}set local role anon;select ${suggest()};rollback;`),/permission denied/)
+ assert.throws(()=>sql(`begin;${matchFixture()}${as(unconfirmed)}select ${suggest()};rollback;`),/Confirmed sign-in/)
+ assert.throws(()=>sql(`begin;${matchFixture()}${as(admin)}select ${suggest()};rollback;`),/linked report/)
+ const r=sql(`begin;${matchFixture()}${as(alice)}select ${suggest()}->>'id';select ${suggest()}->>'id';${as(bob)}select ${matchAction('suggest',{pet_id:foundPet,other_pet_id:pet})}->>'id';reset role;select count(*) from directory_private.pet_match_links;select count(*) from directory_private.pet_match_history;rollback;`).split('\n')
+ assert.equal(r[0],r[1]);assert.equal(r[0],r[2]);assert.equal(r[3],'1');assert.equal(r[4],'1')
+})
+test('match confirmations apply only to each owned side; both confirmations never change pet statuses',()=>{
+ const r=sql(`begin;${matchFixture()}${as(alice)}select ${suggest()}->>'id' as matchid \\gset
+ select public.pet_match_action('review',jsonb_build_object('pet_id','${pet}','id',:'matchid','revision',0,'decision','confirmed','decision_b','confirmed'));
+ set local role anon;select public.pet_match_links('${pet}')->0->>'state';${as(bob)}select public.pet_match_action('review',jsonb_build_object('pet_id','${foundPet}','id',:'matchid','revision',1,'decision','confirmed'));
+ set local role anon;select public.pet_match_links('${pet}');reset role;select string_agg(status,',' order by id) from public.lost_and_found;rollback;`).split('\n')
+ assert.equal(r[1],'possible');const links=JSON.parse(r[3]);assert.equal(links[0].state,'confirmed');assert.equal(r[4],'lost,found')
+ for(const field of ['proposed_by','reporter_id','actor_id','my_decision','decision_a','decision_b'])assert.equal(field in links[0],false)
+})
+test('a reporter cannot review the other report, overwrite stale decisions or edit private match data',()=>{
+ assert.throws(()=>sql(`begin;${matchFixture()}${as(alice)}select ${suggest()}->>'id' as matchid \\gset
+ select public.pet_match_action('review',jsonb_build_object('pet_id','${foundPet}','id',:'matchid','revision',0,'decision','confirmed'));rollback;`),/linked report/)
+ assert.throws(()=>sql(`begin;${matchFixture()}${as(alice)}select ${suggest()}->>'id' as matchid \\gset
+ select public.pet_match_action('review',jsonb_build_object('pet_id','${pet}','id',:'matchid','revision',0,'decision','confirmed'));
+ select public.pet_match_action('review',jsonb_build_object('pet_id','${pet}','id',:'matchid','revision',0,'decision','ruled_out'));rollback;`),/Match changed/)
+ for(const table of ['pet_match_links','pet_match_history'])assert.throws(()=>sql(`begin;${as(alice)}select * from directory_private.${table};rollback;`),/permission denied/)
+ assert.throws(()=>sql(`begin;${as(alice)}insert into directory_private.pet_match_links(pet_a,pet_b) values('${pet}','${foundPet}');rollback;`),/permission denied/)
+})
+test('ruled-out matches disappear publicly but reporters can reset their own decision',()=>{
+ const r=sql(`begin;${matchFixture()}${as(alice)}select ${suggest()}->>'id' as matchid \\gset
+ select public.pet_match_action('review',jsonb_build_object('pet_id','${pet}','id',:'matchid','revision',0,'decision','ruled_out'));
+ set local role anon;select public.pet_match_links('${pet}');${as(alice)}select ${matchAction('context',{pet_id:pet})}->'links'->0->>'my_decision';
+ select public.pet_match_action('review',jsonb_build_object('pet_id','${pet}','id',:'matchid','revision',1,'decision','pending'));set local role anon;select public.pet_match_links('${pet}')->0->>'state';rollback;`).split('\n')
+ assert.equal(r[1],'[]');assert.equal(r[2],'ruled_out');assert.equal(r[4],'possible')
+})
+test('matching requires opposite active statuses and hides links when either parent is unavailable',()=>{
+ assert.throws(()=>sql(`begin;${matchFixture()}${as(alice)}select ${matchAction('suggest',{pet_id:pet,other_pet_id:pet})};rollback;`),/available lost report/)
+ assert.throws(()=>sql(`begin;${matchFixture()}update public.lost_and_found set status='lost' where id='${foundPet}';${as(alice)}select ${suggest()};rollback;`),/available lost report/)
+ for(const hide of ["needs_review=true","status='archived'","expires_at=now()-interval '1 second'","city='Brentwood'"]){
+  const r=sql(`begin;${matchFixture()}${as(alice)}select ${suggest()};reset role;update public.lost_and_found set ${hide} where id='${foundPet}';set local role anon;select public.pet_match_links('${pet}');${as(alice)}select ${matchAction('context',{pet_id:pet})}->'links';rollback;`).split('\n')
+  assert.equal(r[1],'[]');assert.equal(r[2],'[]')
+ }
+ assert.equal(sql(`begin;${matchFixture()}${as(bob)}select ${matchAction('context',{pet_id:pet})}->>'can_manage';rollback;`),'false')
+})
+test('match proposal budget persists across distinct links; only curated link projections are anonymous',()=>{
+ assert.throws(()=>sql(`begin;${petFixture()}insert into public.lost_and_found(type,title,description,city,status,reporter_id) select 'pet','Fixture '||n,'Local test only','Tracy','found','${bob}'::uuid from generate_series(1,11)n;
+ ${as(alice)}select public.pet_match_action('suggest',jsonb_build_object('pet_id','${pet}','other_pet_id',id)) from public.lost_and_found where status='found';rollback;`),/Daily activity limit/)
+ assert.throws(()=>sql(`begin;set local role anon;select directory_private.pet_matches('${pet}',true);rollback;`),/permission denied/)
+})
+test('existing messaging blocks prevent new match links and confirmations without preventing rule-out',()=>{
+ assert.throws(()=>sql(`begin;${matchFixture()}insert into public.pet_message_blocks(user_id,blocked_id) values('${bob}','${alice}');${as(alice)}select ${suggest()};rollback;`),/Matching unavailable/)
+ assert.throws(()=>sql(`begin;${matchFixture()}${as(alice)}select ${suggest()}->>'id' as matchid \\gset
+ reset role;insert into public.pet_message_blocks(user_id,blocked_id) values('${bob}','${alice}');${as(alice)}select public.pet_match_action('review',jsonb_build_object('pet_id','${pet}','id',:'matchid','revision',0,'decision','confirmed'));rollback;`),/Matching unavailable/)
+ const r=sql(`begin;${matchFixture()}${as(alice)}select ${suggest()}->>'id' as matchid \\gset
+ reset role;insert into public.pet_message_blocks(user_id,blocked_id) values('${bob}','${alice}');${as(alice)}select public.pet_match_action('review',jsonb_build_object('pet_id','${pet}','id',:'matchid','revision',0,'decision','ruled_out'));set local role anon;select public.pet_match_links('${pet}');rollback;`).split('\n');assert.equal(r.at(-1),'[]')
 })

@@ -1,5 +1,11 @@
 # MoHoLocal Product Roadmap
 
+## Pet matching/contact release — November 6 afternoon, verification in progress
+
+PET-05 manual possible-match linking and reporter contact milestones implemented.135tests pass; hosted anonymous read200/[] and mutation401 checks pass. Applied migration confirmed as20261106220449 and local filename aligned. Hosted data remains60legacy reports/0linked reporters/0eligible public cases; no fake production cases. Real-reporter pilot/disputes remain open.320/390px local fixture checks pass; QA route removed. Native deployment/live acceptance pending. [Release details](pet-matching-release-2026-11-06.md).
+
+Mountain House/Manteca real2026 photo searches remain open. Current targeted search surfaced2024 DollarGeneral and2020 IHOP imagery reused on2026 pages; no qualifying new asset or replacement. Previous wider catalog/Flickr/Mapillary checkpoints retained. No outreach.
+
 ## Mountain House / Manteca photo continuation — November 6, late afternoon
 
 Expanded Commons geographic metadata review:100 returned Mountain House-area files and87 Manteca-area files within10km searches; no2026 capture dates in returned metadata (bounded searches, not exhaustive). New Manteca charger-page lead rejected after original Mapillary capture proved July14,2018; Time travel comparison November23,2021 also fails. Manteca Flickr commercial-use/modification-permitted2026 query explicitly returned no matches. Evidence: [photo checkpoint](research/photo-sources/mh-manteca-photo-checkpoint-20261106-late.json).

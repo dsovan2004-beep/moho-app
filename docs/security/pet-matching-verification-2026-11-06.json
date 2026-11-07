@@ -1,0 +1,33 @@
+{
+  "checked_on": "2026-11-06",
+  "migration": "20261106220449_pet_matches_and_contact_updates",
+  "local_tests": 135,
+  "hosted_state": {
+    "reports": 60,
+    "reporters": 0,
+    "eligible_public": 0,
+    "matches": 0
+  },
+  "anonymous_smoke": {
+    "pet_match_links": {
+      "status": 200,
+      "result": []
+    },
+    "pet_match_action": {
+      "status": 401,
+      "code": "42501"
+    },
+    "contact_columns": {
+      "status": 200,
+      "result": []
+    }
+  },
+  "advisors": {
+    "level": "INFO",
+    "private_rls_no_policy": 17,
+    "warnings_or_errors": 0,
+    "remediation_reference": "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy"
+  },
+  "live_reporter_pilot": "open;no eligible production cases",
+  "local_ui": "fixture only,320/390px,match/ruleout/reset/status transitions tested;route removed"
+}

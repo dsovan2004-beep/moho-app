@@ -194,9 +194,11 @@ export interface CommunityPost {
   image_url?: string
 }
 
-export const PUBLIC_PET_COLUMNS = 'id,type,pet_name,pet_type,description,city,location_last_seen,contact_name,contact_phone,status,image_url,created_at,breed,age,gender,last_seen,location_detail,coat_description,reward,title,source,source_url,last_ingested_at,confidence_score,needs_review,image_source,ingestion_status,status_revision,status_confirmed_at,expires_at,progress,progress_observed_at'
+export const PUBLIC_PET_COLUMNS = 'id,type,pet_name,pet_type,description,city,location_last_seen,contact_name,contact_phone,status,image_url,created_at,breed,age,gender,last_seen,location_detail,coat_description,reward,title,source,source_url,last_ingested_at,confidence_score,needs_review,image_source,ingestion_status,status_revision,status_confirmed_at,expires_at,progress,progress_observed_at,contact_stage,contact_updated_at'
 
 export interface LostAndFound {
+  contact_stage?: 'unknown' | 'attempted' | 'contacted' | 'return_arranged'
+  contact_updated_at?: string | null
   progress?: 'unknown' | 'sighted' | 'secured'
   progress_observed_at?: string | null
   status_revision: number
