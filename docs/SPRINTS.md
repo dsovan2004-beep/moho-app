@@ -1,5 +1,11 @@
 # MoHoLocal — SPRINTS.md
 
+## Freshness continuation — November 6, late afternoon
+
+Published one additional website-checked provider, Light Me Up USA serving Tracy, and three specific Mountain House library occurrences: Cards for Cubs (Nov 9), Family Story Time and Teen Nature Dome Displays (Nov 10). Totals: 59 dated listing checks and 25 approved event occurrences. Live provider/event pages and anonymous API readbacks verified; no code, schema or permission changes.
+
+Photo tasks remain OPEN: Manteca candidate has verified April 2026 capture/license but no independently confirmed exact kiosk location. This pass inspected the 445 N Main gallery; its owner marketing close-up and older windmill images do not establish a match. Mountain House search found wrong-location/older Commons results and no qualifying replacement. No images reused or outreach sent. Genuine-reporter pet pilot stays OPEN pending an actual case; no synthetic production reports. [Evidence](research/freshness-evening-2026-11-06.md).
+
 ## Fresh content + genuine pet pilot readiness — November 6, afternoon
 
 Published2website-checked providers (Bird Proof serving explicit MH/Lathrop areas; Watermill Main&Alameda inManteca) and3official library occurrences (TracyNov7DiamondPainting/Nov9BookBuddies; MantecaNov10ReptileExperience). Totals58dated listing checks/22approved occurrences. Anonymous API and live directory/event detail checks pass; no app/schema/permission change. Provider credential/quality/availability checks and photo rights remain separate. [Evidence](research/pilot-freshness-followup-2026-11-06.md).

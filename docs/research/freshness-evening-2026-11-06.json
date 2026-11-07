@@ -1,0 +1,39 @@
+{
+  "checked_on": "2026-11-06",
+  "provider": {
+    "name": "Light Me Up USA — Tracy",
+    "website": "https://lightmeupusa.com/",
+    "phone": "(209) 597-8656",
+    "description": "Advertises holiday-light design, installation, seasonal maintenance and removal, with Tracy listed as a service location. Confirm your address, quote, installation dates and removal arrangements directly. Office address not established.",
+    "sources": [
+      "https://lightmeupusa.com/wp/",
+      "https://lightmeupusa.com/residential-holiday-lights-installation/"
+    ]
+  },
+  "events": [
+    {
+      "title": "Community Helpers: Cards for Cubs (Ages 5–18)",
+      "description": "Ages 5–18 can make encouragement and birthday cards for children in foster care through the Cards for Cubs drive. November 9 occurrence checked against the library calendar. Contact the branch for attendance arrangements.",
+      "start": "2026-11-09T16:00:00-08:00",
+      "end": "2026-11-09T17:00:00-08:00",
+      "location": "Mountain House Branch Library, 201 E Main Street, Mountain House",
+      "url": "https://www.ssjcpl.org/events-services/events-calendar/mountain-house/community-helpers-cards-for-cubs-ages-5-18?id=1794268800-242180"
+    },
+    {
+      "title": "Family Story Time (Ages 0–10)",
+      "description": "A half-hour story session for families with children age 10 and younger. This entry covers November 10 only; confirm attendance details with the branch.",
+      "start": "2026-11-10T17:00:00-08:00",
+      "end": "2026-11-10T17:30:00-08:00",
+      "location": "Mountain House Branch Library, Children's Area, 201 E Main Street, Mountain House",
+      "url": "https://www.ssjcpl.org/events-services/events-calendar/mountain-house/family-story-time-0-10yrs3?id=1794358800-232112"
+    },
+    {
+      "title": "Teen Fall Nature Dome Displays (Ages 13–19)",
+      "description": "Teens ages 13–19 can create a miniature autumn scene. The library supplies materials on a first-come basis. November 10 date, time, audience and Makerspace location checked November 6, 2026.",
+      "start": "2026-11-10T17:00:00-08:00",
+      "end": "2026-11-10T18:00:00-08:00",
+      "location": "Mountain House Branch Library, Makerspace, 201 E Main Street, Mountain House",
+      "url": "https://www.ssjcpl.org/events-services/events-calendar/mountain-house/teen-fall-nature-dome-displays-13-19yrs?id=1794358800-232256"
+    }
+  ]
+}
