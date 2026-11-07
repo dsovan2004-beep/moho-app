@@ -1,5 +1,11 @@
 # MoHoLocal — SPRINTS.md
 
+## Four-city pet services and community programs — November 6, 2026
+
+Published two additional website-checked pet providers, Bayberry Grooming and iThink Pet, each explicitly serving Mountain House, Tracy, Lathrop and Manteca. Added four official occurrences: MH meditation Nov 14; Tracy adult English conversation Nov 20; Lathrop tween keychains Nov 12; Manteca teen horror book club Nov 12. Totals: 61 dated listing checks / 29 approved event occurrences. Anonymous API readbacks passed; live provider/event detail checked. Bayberry waitlist and Lathrop registration/age limits are explicit. No code/schema/access changes or rebuild.
+
+Photo replacements remain OPEN: second Manteca operator-linked gallery has generic/older imagery without a conclusive landmark match; no exact-kiosk claim made. New Mountain House real-estate/social leads have no established capture-and-reuse evidence. No photos copied, fake cases or outreach. Pet pilot remains OPEN; fresh production readback confirms 0 reporter-linked cases and 0 authenticated pet submissions. [Evidence](research/four-city-pet-supply-2026-11-06.md).
+
 ## Freshness continuation — November 6, late afternoon
 
 Published one additional website-checked provider, Light Me Up USA serving Tracy, and three specific Mountain House library occurrences: Cards for Cubs (Nov 9), Family Story Time and Teen Nature Dome Displays (Nov 10). Totals: 59 dated listing checks and 25 approved event occurrences. Live provider/event pages and anonymous API readbacks verified; no code, schema or permission changes.

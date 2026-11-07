@@ -1,0 +1,77 @@
+{
+  "checked_on": "2026-11-06",
+  "providers": [
+    {
+      "name": "Bayberry Grooming",
+      "phone": null,
+      "website": "https://www.bayberrygrooming.com/",
+      "domain": "bayberrygrooming.com",
+      "tags": [
+        "mobile dog grooming",
+        "dog grooming"
+      ],
+      "sources": [
+        "https://www.bayberrygrooming.com/aboutus",
+        "https://www.bayberrygrooming.com/",
+        "https://www.bayberrygrooming.com/intakeform"
+      ],
+      "description": "Mobile dog grooming website lists Mountain House, Tracy, Lathrop and Manteca. Offers bath and haircut services. New clients are directed to a waitlist; an appointment is not guaranteed. Use the website to confirm your address, grooming needs and availability. Office address and public phone not established.",
+      "note": "First-party website desk check of identity, mobile dog grooming and four explicit service areas. New-client waitlist visibly checked. No public phone or office address established; no independent credential, insurance, quality or availability validation. No provider images reused."
+    },
+    {
+      "name": "iThink Pet",
+      "phone": "(510) 274-1750",
+      "website": "https://www.ithinkpet.com/",
+      "domain": "ithinkpet.com",
+      "tags": [
+        "pet sitting",
+        "dog walking",
+        "cat sitting"
+      ],
+      "sources": [
+        "https://www.ithinkpet.com/central-valley-rates.html",
+        "https://www.ithinkpet.com/"
+      ],
+      "description": "Advertises pet sitting and dog walking with Central Valley coverage explicitly including Mountain House, Tracy, Lathrop and Manteca. The website lists a public text number and travel fees for Mountain House, Lathrop and Manteca. Confirm pet needs, quote, holiday charges and availability directly; office address not established.",
+      "note": "First-party website desk check of identity, advertised sitting/walking services, four explicit areas and public text number. Travel fees noted; no fixed prices copied. Credential, insurance, quality and availability claims not independently validated. Website explicitly reserves all photo rights; no photos copied."
+    }
+  ],
+  "events": [
+    {
+      "title": "Weekly Meditation — November 14",
+      "city": "Mountain House",
+      "start": "2026-11-14T10:30:00-08:00",
+      "end": "2026-11-14T12:00:00-08:00",
+      "location": "Mountain House Branch Library, 201 E Main Street, Mountain House",
+      "url": "https://www.ssjcpl.org/events-services/events-calendar/mountain-house/weekly-meditation?id=1794681000-225009",
+      "description": "Adult guided breathing and relaxation session at the library; no prior experience needed. Covers the November 14 occurrence only. The official calendar lists 10:30 AM–noon; confirm attendance arrangements with the branch."
+    },
+    {
+      "title": "English Conversation Club for Adults — November 20",
+      "city": "Tracy",
+      "start": "2026-11-20T16:00:00-08:00",
+      "end": "2026-11-20T17:00:00-08:00",
+      "location": "Tracy Branch Library, Wadsworth Room, 20 E Eaton Avenue, Tracy",
+      "url": "https://www.ssjcpl.org/events-services/events-calendar/tracy/reoccurring-weekly-monthly-events/english-conversation-club-for-adults?id=1795219200-211630",
+      "description": "Adults can practice English conversation at the library. November 20 date, time and room checked against the exact official occurrence. This entry does not include the skipped November 13 or November 27 dates; confirm attendance details with the branch."
+    },
+    {
+      "title": "Tween: Random Fandom Key Chains (Ages 8–12)",
+      "city": "Lathrop",
+      "start": "2026-11-12T16:00:00-08:00",
+      "end": "2026-11-12T17:00:00-08:00",
+      "location": "Lathrop Branch Library, 450 Spartan Way, Lathrop",
+      "url": "https://www.ssjcpl.org/events-services/events-calendar/lathrop/tween-random-fandom-key-chains?id=1794528000-247454",
+      "description": "Ages 8–12 can make a fandom-themed key chain. Online registration is required; spaces are limited and may fill. The organizer asks registrants to check in at 3:50 PM, with a five-minute grace period after the start. Check the official page for current availability; no space is reserved through MoHoLocal."
+    },
+    {
+      "title": "The Grim Readers — Teen Horror Book Club",
+      "city": "Manteca",
+      "start": "2026-11-12T16:30:00-08:00",
+      "end": "2026-11-12T17:30:00-08:00",
+      "location": "Manteca Branch Library, 320 W Center Street, Manteca",
+      "url": "https://www.ssjcpl.org/events-services/events-calendar/manteca-branch/the-grim-readers-a-horror-book-club-for-teens?id=1794529800-230218",
+      "description": "Horror-reading discussion for teens ages 13–17. Covers the November 12 occurrence only. Advance registration is encouraged by the organizer; confirm attendance and the current reading selection directly, as older book announcements remain on the source page."
+    }
+  ]
+}
