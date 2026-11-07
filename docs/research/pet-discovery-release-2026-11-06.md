@@ -1,0 +1,15 @@
+# Pet discovery release — November 6, 2026
+
+Residents can now open checked mobile dog grooming, pet sitting and dog walking shortlists in any of the four cities. Grouped directory shortcuts distinguish home/yard from pet care. Category metadata replaces the previous assumption that every exact service belongs to Home Services. City and Explore links now point to the appropriate category; search/sort/city changes preserve the service, while incompatible categories cannot hide an active filter. Empty-state recovery broadens the service without losing the city.
+
+App source f6aa6d0. Validation: 136 tests pass, TypeScript and OpenNext build pass. New regression checks all four pet-service city transitions and incompatible category rejection. Local actual data: Mountain House → Lathrop switch retains mobile-dog-grooming; two grooming results (Bayberry and Wild Grace), dated source evidence and waitlist/confirmation caveats. 390px document scrollWidth equals viewport 390; local screenshot ../ux/pet-discovery-local-390-20261106.png. Temporary viewport reset.
+
+Native Cloudflare build 84262a5a-7444-48e2-b4fd-7320ed96160b Ready (2m21s), version a6919bd1, source f6aa6d0. Live Manteca mobile-grooming route displays new grouped shortcuts; changing to Pet sitting retains Manteca and loads one checked iThink Pet result with contact and travel-fee caveat. Dog walking shortcut retains city/category. Production 390px scrollWidth equals innerWidth (390). Screenshots ../ux/pet-discovery-live-20261106.png and ../ux/pet-discovery-live-390-20261106.png. Temporary viewport reset. Live Manteca circus event detail also confirms Nov18 3:30–4:30PM Pacific and official organizer link.
+
+## Fresh content
+
+Wild Grace Mobile Pet Spa: public phone (209)200-4014, explicit Mountain House/Tracy/Lathrop/Manteca service area. Appointment request requires confirmation. No street address, independent credential, insurance, quality, availability or reuse-rights claim inferred. Source contact/about pages checked. Four individually verified official library events: MH Nov17 3:30–4:30PM BINGO; Tracy Nov15 1–2:45PM Chess; Lathrop Nov7 2–3PM Legos; Manteca Nov18 3:30–4:30PM free Circus Show. All times Pacific; source audience and venue preserved, no assumed repeated occurrences. Branch addresses corroborated against official branch pages.
+
+Exact sources and applied SQL in pet-discovery-supply-2026-11-06.json and publish-pet-discovery-supply-2026-11-06.sql. Duplicate provider domain/phone checks passed before insert; event source/date guards applied. Hosted totals 62 listing checks and 33 approved event occurrences. Anonymous REST 200 returned provider with four areas/tags and all four events with correct UTC conversion. No schema/access changes.
+
+Photo tasks remain OPEN under prior location/capture/reuse criteria; no imagery replaced during this pass. Real-reporter pet pilot remains OPEN; no fabricated case or unsolicited messages sent. Broader photo-led redesign and further service/provider expansion remain active backlog items.

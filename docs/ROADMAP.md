@@ -1,5 +1,11 @@
 # MoHoLocal Product Roadmap
 
+## Pet-service discovery and four-city supply — November 6, 2026
+
+Added grouped Home & yard / Pets & everyday care shortcuts and exact mobile-grooming, pet-sitting and dog-walking filters. Directory, Explore and city landing links use category-aware service routes, preserving resident city; incompatible filters rejected. 136 tests, TypeScript and OpenNext build pass; local Lathrop grooming results and 390px overflow checked. App f6aa6d0 deployed; native build 84262a5a-7444-48e2-b4fd-7320ed96160b Ready (2m21s), version a6919bd1. Live pet-sitting result/action and dog-walking route checked; production 390px has no horizontal overflow.
+
+Published Wild Grace Mobile Pet Spa with explicit four-city coverage and four official event occurrences (MH Nov17 BINGO, Tracy Nov15 Chess, Lathrop Nov7 Legos, Manteca Nov18 Circus). Totals 62 dated listing checks / 33 approved events; hosted and anonymous API readbacks pass. No third-party photos copied. MH/Manteca photo tasks and genuine-reporter pet pilot remain OPEN. [Evidence](research/pet-discovery-release-2026-11-06.md).
+
 ## Four-city pet services and community programs — November 6, 2026
 
 Published two additional website-checked pet providers, Bayberry Grooming and iThink Pet, each explicitly serving Mountain House, Tracy, Lathrop and Manteca. Added four official occurrences: MH meditation Nov 14; Tracy adult English conversation Nov 20; Lathrop tween keychains Nov 12; Manteca teen horror book club Nov 12. Totals: 61 dated listing checks / 29 approved event occurrences. Anonymous API readbacks passed; live provider/event detail checked. Bayberry waitlist and Lathrop registration/age limits are explicit. No code/schema/access changes or rebuild.
