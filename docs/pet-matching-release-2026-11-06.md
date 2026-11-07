@@ -25,3 +25,9 @@ Supabase changelog checked November6: Flutter v3 and CLI v3 breaking changes do 
 ## Remaining
 
 Real reporter account acceptance and independently reported lost/found case pilot remain open because production has no reporter-linked cases. Matching is manual, not automatic AI/photo identity matching. Dispute/report-abuse refinements remain future work. Broader FB coverage remains incomplete. Mountain House and Manteca2026 photo tasks remain open; current targeted search found only older/reused or unlicensed images. Lathrop and Tracy’s accepted photos remain published.
+
+## Native/live acceptance
+
+Application9996ab5, native buildeaae2ae5-73c6-4759-9ed2-fd31482f6cf6 Ready in2m17s, versionf169d1e7. Live board explanations and MH→Tracy→Lathrop→Manteca navigation verified.390px document width equals viewport. Local fixture and nonexistent public report display404. Viewport restored. Live screenshot: ux/pet-matching-live-20261106.png. Mobile fixture screenshot: ux/pet-matching-local-320-20261106.png (test data only). Production has no eligible reporter-linked case, so actual reporter-session saving and resident use remain pilot criteria; not claimed as completed.
+
+Photo update: a new Manteca April19,2026 TaurusEmerald photo has cleared source/capture/license checks but is held pending independent location corroboration. Mountain House remains unresolved. Candidate records: research/photo-sources/pet-release-photo-checkpoint-20261106.json. No candidate photo published in this pet release.

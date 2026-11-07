@@ -1,5 +1,11 @@
 # MoHoLocal — SPRINTS.md
 
+## Pet matching/contact deployment accepted — November 6, 2026
+
+PET-05 matching/contact increment deployed: application9996ab5, native buildeaae2ae5-73c6-4759-9ed2-fd31482f6cf6 Ready (2m17s), versionf169d1e7.135tests, TypeScript/OpenNext pass. Live board new explanations, four-city navigation and390px layout checked; missing report and removed local fixture return404. Anonymous RPC safe-read200/[] and mutation401 checks pass. Reporter permissions/revision/quota/visibility tests pass on disposable local Postgres. Current production:60legacy reports,0reporter-linked public cases; real-reporter saved-case pilot remains OPEN. No automatic identity match, reunion, message or notification is implied. [Release evidence](pet-matching-release-2026-11-06.md).
+
+Photo continuation: Commons text search found a new April19,2026 Manteca Watermill Express photo by TaurusEmerald with explicit CC BY-SA4.0 and matching EXIF date. HOLD pending independent site corroboration/editorial suitability; no street address inferred. A generic2026 “Mountain house” image has no California location evidence and is excluded. Mountain House/Manteca replacements remain OPEN; no outreach. [Candidate checkpoint](research/photo-sources/pet-release-photo-checkpoint-20261106.json).
+
 ## Pet matching/contact release — November 6 afternoon, verification in progress
 
 PET-05 manual possible-match linking and reporter contact milestones implemented.135tests pass; hosted anonymous read200/[] and mutation401 checks pass. Applied migration confirmed as20261106220449 and local filename aligned. Hosted data remains60legacy reports/0linked reporters/0eligible public cases; no fake production cases. Real-reporter pilot/disputes remain open.320/390px local fixture checks pass; QA route removed. Native deployment/live acceptance pending. [Release details](pet-matching-release-2026-11-06.md).

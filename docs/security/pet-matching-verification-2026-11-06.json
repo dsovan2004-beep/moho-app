@@ -29,5 +29,13 @@
     "remediation_reference": "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy"
   },
   "live_reporter_pilot": "open;no eligible production cases",
-  "local_ui": "fixture only,320/390px,match/ruleout/reset/status transitions tested;route removed"
+  "local_ui": "fixture only,320/390px,match/ruleout/reset/status transitions tested;route removed",
+  "release": {
+    "commit": "9996ab5",
+    "native_build": "eaae2ae5-73c6-4759-9ed2-fd31482f6cf6",
+    "version_prefix": "f169d1e7",
+    "status": "Ready",
+    "live": "board explanations/four-city navigation/390px fit;missing pet and removed QA route404",
+    "real_reporter_pilot": "OPEN;zero reporter-linked production cases"
+  }
 }

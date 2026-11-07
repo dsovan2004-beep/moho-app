@@ -23,3 +23,7 @@ Application c27b38a; native build2f624477-25fe-49da-b3fd-937b1da90d48 Ready (2m1
 ## Late-afternoon continuation
 
 Expanded Commons10km queries returned100 Mountain House-area files (query limit100) and87 Manteca-area files; metadata returned no2026 capture dates. Neither query proves exhaustive city coverage. Full responses saved with request URLs. Current Manteca TeslaMagz page credits Mapillary image547173996443019; direct source visibly identifies lvl5, July14,2018. Time travel comparison3078545162357622 is Anthrico November23,2021. Both rejected. Flickr exact Manteca California query with2026 capture range and commercial-use/modification licenses reports no matches. No new asset qualifies and no website replacement made. Checkpoint: photo-sources/mh-manteca-photo-checkpoint-20261106-late.json.
+
+## Pet release / continued photo research
+
+Commons text search found File:Watermill Express Manteca, California.jpg: authorTaurusEmerald, explicit CC BY-SA4.0, April19,2026 date confirmed in source summary and extendedEXIF. Photographed location is asserted as Manteca by the author but lacks GPS; operator confirms a Manteca station, not an independent match to the pictured kiosk. HOLD pending site corroboration and editorial suitability; no exact address inferred. File:IMG-mountain house.jpg has2026date/CC0 but no California location evidence; excluded. Raw text-query responses and candidate checkpoint saved. No replacement or outreach.

@@ -1,0 +1,1952 @@
+{
+  "request": "https://commons.wikimedia.org/w/api.php?action=query&format=json&generator=search&gsrsearch=%22Mountain+House%22+%222026%22&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Cextmetadata&iilimit=1",
+  "response": {
+    "batchcomplete": "",
+    "query": {
+      "pages": {
+        "185574763": {
+          "pageid": 185574763,
+          "ns": 6,
+          "title": "File:Angeles National Forest (20240327-FS-Angele-NJ-2).jpg",
+          "index": 6,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/9/93/Angeles_National_Forest_%2820240327-FS-Angele-NJ-2%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:Angeles_National_Forest_(20240327-FS-Angele-NJ-2).jpg",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=185574763",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2026-03-06 08:33:24",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "Angeles National Forest (20240327-FS-Angele-NJ-2)",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Angeles National Forest|PD US USDA FS|Flickr images reviewed by FlickreviewR 2|United States photographs taken on 2024-04-11|Files from the U.S. Forest Service Pacific Southwest Region Flickr stream|U.S. Forest Service Flickr files uploaded by OptimusPrimeBot|Flickr images missing SDC published in",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "Interpretive sign at the stairs to Echo Mountain House, San Gabriel Mountains National Monument (USDA Forest Service photo)",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "Taken on\u00a011 April 2024, 09:33:03",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/usfsregion5/53647356503\">20240327-FS-Angele-NJ-2</a>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/usfsregion5/\">Region 5 Photography</a>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "Public domain",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Public domain",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "false",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Copyrighted": {
+                  "value": "False",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "pd",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "181268202": {
+          "pageid": 181268202,
+          "ns": 6,
+          "title": "File:California Colleges.webp",
+          "index": 15,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/6/6e/California_Colleges.webp?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:California_Colleges.webp",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=181268202",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2026-01-18 02:22:26",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "California Colleges",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Maps of California|Pages using multiple image with auto scaled images|CC-Zero|Education in California|Self-published work|Maps of colleges in the United States by state",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "California Colleges",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2026-01-05",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<p><span class=\"int-own-work\" lang=\"en\">Own work</span> made with <a href=\"https://en.wikipedia.org/wiki/QGIS\" class=\"extiw\" title=\"w:QGIS\">QGIS</a> and data from <br> \n</p>\n<a rel=\"nofollow\" class=\"external free\" href=\"https://hub.arcgis.com/datasets/fedmaps::colleges-universities/explore?location=37.180230%2C-95.996047%2C5.71\">https://hub.arcgis.com/datasets/fedmaps::colleges-universities/explore?location=37.180230%2C-95.996047%2C5.71</a>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<a href=\"//commons.wikimedia.org/wiki/User:Wikideas1\" title=\"User:Wikideas1\">Wikideas1</a>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Zero, Public Domain Dedication",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "false",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "94887869": {
+          "pageid": 94887869,
+          "ns": 6,
+          "title": "File:Catalogue of American scenery and architecture from original negatives (IA catalogueofameri00peab).pdf",
+          "index": 16,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/1/19/Catalogue_of_American_scenery_and_architecture_from_original_negatives_%28IA_catalogueofameri00peab%29.pdf?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:Catalogue_of_American_scenery_and_architecture_from_original_negatives_(IA_catalogueofameri00peab).pdf",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=94887869",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2020-10-09 09:35:42",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "<div class=\"fn\">\nCatalogue of American scenery and architecture from original negatives</div>",
+                  "source": "commons-desc-page"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Scans from the Internet Archive/unverified|PD US expired|Scans from the Internet Archive|Books uploaded by F\u00e6|Books without Wikidata item|Images from the Getty Research Institute|Books published in Boston|PD-US missing SDC copyright status",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Artist": {
+                  "value": "<div class=\"fn value\">\n<dl><dd>Peabody, Henry G. (Henry Greenwood), 1855-1951</dd>\n<dd>Soule Art Company (Boston)</dd></dl></div>",
+                  "source": "commons-desc-page"
+                },
+                "ImageDescription": {
+                  "value": "<div class=\"description\">\nSubjects:</div>",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<dl><dd><a href=\"//archive.org/details/catalogueofameri00peab\" class=\"extiw\" title=\"iarchive:catalogueofameri00peab\"><bdi class=\"description en\" lang=\"en\" dir=\"ltr\">Internet Archive identifier</bdi>: catalogueofameri00peab</a></dd>\n<dd><a rel=\"nofollow\" class=\"external free\" href=\"https://archive.org/download/catalogueofameri00peab/catalogueofameri00peab.pdf\">https://archive.org/download/catalogueofameri00peab/catalogueofameri00peab.pdf</a></dd></dl>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "Public domain",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Public domain",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "false",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Copyrighted": {
+                  "value": "False",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "pd",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "202836981": {
+          "pageid": 202836981,
+          "ns": 6,
+          "title": "File:IMG-mountain house.jpg",
+          "index": 10,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/5/55/IMG-mountain_house.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:IMG-mountain_house.jpg",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=202836981",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2026-11-05 14:04:10",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "IMG-mountain house",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "CC-Zero|Self-published work|All media needing categories as of 2026|Media needing categories as of 5 November 2026",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "Mountain house",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2026-09-22",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Srinithi_Sabariselvan&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:Srinithi Sabariselvan (page does not exist)\">Srinithi Sabariselvan</a>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Zero, Public Domain Dedication",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "false",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "184228489": {
+          "pageid": 184228489,
+          "ns": 6,
+          "title": "File:Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 01.jpg",
+          "index": 5,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/5/55/Kniphofia_thomsonii_%28Fackellilie%29_im_tropischen_Hochgebirgshaus_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:Kniphofia_thomsonii_(Fackellilie)_im_tropischen_Hochgebirgshaus_01.jpg",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=184228489",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2026-02-16 13:19:14",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 01",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Self-published work|Kniphofia thomsonii|Flora of Kilimanjaro|Specimens in the \u00d6kologisch-Botanischer Garten der Universit\u00e4t Bayreuth",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "Kniphofia thomsonii (red hot poker) in the tropical high mountain house in the Bayreuth Ecological-Botanical Garden",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2026-02-15 15:10:31",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:JensKunstfreund&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:JensKunstfreund (page does not exist)\">JensKunstfreund</a>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC BY-SA 4.0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Attribution-Share Alike 4.0",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "true",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "https://creativecommons.org/licenses/by-sa/4.0",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc-by-sa-4.0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "184228491": {
+          "pageid": 184228491,
+          "ns": 6,
+          "title": "File:Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 02.jpg",
+          "index": 3,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Kniphofia_thomsonii_%28Fackellilie%29_im_tropischen_Hochgebirgshaus_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:Kniphofia_thomsonii_(Fackellilie)_im_tropischen_Hochgebirgshaus_02.jpg",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=184228491",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2026-02-16 13:19:14",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 02",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Self-published work|Kniphofia thomsonii|Flora of Kilimanjaro|Specimens in the \u00d6kologisch-Botanischer Garten der Universit\u00e4t Bayreuth",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "Kniphofia thomsonii (red hot poker) in the tropical high mountain house in the Bayreuth Ecological-Botanical Garden",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2026-02-15 15:10:31",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:JensKunstfreund&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:JensKunstfreund (page does not exist)\">JensKunstfreund</a>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC BY-SA 4.0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Attribution-Share Alike 4.0",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "true",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "https://creativecommons.org/licenses/by-sa/4.0",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc-by-sa-4.0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "184228488": {
+          "pageid": 184228488,
+          "ns": 6,
+          "title": "File:Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 03.jpg",
+          "index": 1,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/3/36/Kniphofia_thomsonii_%28Fackellilie%29_im_tropischen_Hochgebirgshaus_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:Kniphofia_thomsonii_(Fackellilie)_im_tropischen_Hochgebirgshaus_03.jpg",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=184228488",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2026-02-16 13:19:14",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 03",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Self-published work|Kniphofia thomsonii|Flora of Kilimanjaro|Specimens in the \u00d6kologisch-Botanischer Garten der Universit\u00e4t Bayreuth",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "Kniphofia thomsonii (red hot poker) in the tropical high mountain house in the Bayreuth Ecological-Botanical Garden",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2026-02-15 15:10:31",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:JensKunstfreund&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:JensKunstfreund (page does not exist)\">JensKunstfreund</a>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC BY-SA 4.0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Attribution-Share Alike 4.0",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "true",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "https://creativecommons.org/licenses/by-sa/4.0",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc-by-sa-4.0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "184228493": {
+          "pageid": 184228493,
+          "ns": 6,
+          "title": "File:Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 04.jpg",
+          "index": 12,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/d/d1/Kniphofia_thomsonii_%28Fackellilie%29_im_tropischen_Hochgebirgshaus_04.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:Kniphofia_thomsonii_(Fackellilie)_im_tropischen_Hochgebirgshaus_04.jpg",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=184228493",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2026-02-16 13:19:16",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 04",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Self-published work|Kniphofia thomsonii|Flora of Kilimanjaro|Specimens in the \u00d6kologisch-Botanischer Garten der Universit\u00e4t Bayreuth",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "Kniphofia thomsonii (red hot poker) in the tropical high mountain house in the Bayreuth Ecological-Botanical Garden",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2026-02-15 15:10:31",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:JensKunstfreund&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:JensKunstfreund (page does not exist)\">JensKunstfreund</a>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC BY-SA 4.0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Attribution-Share Alike 4.0",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "true",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "https://creativecommons.org/licenses/by-sa/4.0",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc-by-sa-4.0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "184228495": {
+          "pageid": 184228495,
+          "ns": 6,
+          "title": "File:Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 05.jpg",
+          "index": 7,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/4/40/Kniphofia_thomsonii_%28Fackellilie%29_im_tropischen_Hochgebirgshaus_05.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:Kniphofia_thomsonii_(Fackellilie)_im_tropischen_Hochgebirgshaus_05.jpg",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=184228495",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2026-02-16 13:19:17",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 05",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Self-published work|Kniphofia thomsonii|Flora of Kilimanjaro|Specimens in the \u00d6kologisch-Botanischer Garten der Universit\u00e4t Bayreuth",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "Kniphofia thomsonii (red hot poker) in the tropical high mountain house in the Bayreuth Ecological-Botanical Garden",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2026-02-15 15:10:31",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:JensKunstfreund&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:JensKunstfreund (page does not exist)\">JensKunstfreund</a>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC BY-SA 4.0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Attribution-Share Alike 4.0",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "true",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "https://creativecommons.org/licenses/by-sa/4.0",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc-by-sa-4.0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "184228497": {
+          "pageid": 184228497,
+          "ns": 6,
+          "title": "File:Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 06.jpg",
+          "index": 8,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/5/5e/Kniphofia_thomsonii_%28Fackellilie%29_im_tropischen_Hochgebirgshaus_06.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:Kniphofia_thomsonii_(Fackellilie)_im_tropischen_Hochgebirgshaus_06.jpg",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=184228497",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2026-02-16 13:19:18",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 06",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Self-published work|Kniphofia thomsonii|Flora of Kilimanjaro|Specimens in the \u00d6kologisch-Botanischer Garten der Universit\u00e4t Bayreuth",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "Kniphofia thomsonii (red hot poker) in the tropical high mountain house in the Bayreuth Ecological-Botanical Garden",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2026-02-15 15:10:31",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:JensKunstfreund&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:JensKunstfreund (page does not exist)\">JensKunstfreund</a>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC BY-SA 4.0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Attribution-Share Alike 4.0",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "true",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "https://creativecommons.org/licenses/by-sa/4.0",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc-by-sa-4.0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "184228501": {
+          "pageid": 184228501,
+          "ns": 6,
+          "title": "File:Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 07.jpg",
+          "index": 17,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/1/16/Kniphofia_thomsonii_%28Fackellilie%29_im_tropischen_Hochgebirgshaus_07.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:Kniphofia_thomsonii_(Fackellilie)_im_tropischen_Hochgebirgshaus_07.jpg",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=184228501",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2026-02-16 13:19:20",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 07",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Self-published work|Kniphofia thomsonii|Flora of Kilimanjaro|Specimens in the \u00d6kologisch-Botanischer Garten der Universit\u00e4t Bayreuth",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "Kniphofia thomsonii (red hot poker) in the tropical high mountain house in the Bayreuth Ecological-Botanical Garden",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2026-02-15 15:10:31",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:JensKunstfreund&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:JensKunstfreund (page does not exist)\">JensKunstfreund</a>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC BY-SA 4.0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Attribution-Share Alike 4.0",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "true",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "https://creativecommons.org/licenses/by-sa/4.0",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc-by-sa-4.0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "184228503": {
+          "pageid": 184228503,
+          "ns": 6,
+          "title": "File:Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 08.jpg",
+          "index": 18,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Kniphofia_thomsonii_%28Fackellilie%29_im_tropischen_Hochgebirgshaus_08.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:Kniphofia_thomsonii_(Fackellilie)_im_tropischen_Hochgebirgshaus_08.jpg",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=184228503",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2026-02-16 13:19:20",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 08",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Self-published work|Kniphofia thomsonii|Flora of Kilimanjaro|Specimens in the \u00d6kologisch-Botanischer Garten der Universit\u00e4t Bayreuth",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "Kniphofia thomsonii (red hot poker) in the tropical high mountain house in the Bayreuth Ecological-Botanical Garden",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2026-02-15 15:10:31",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:JensKunstfreund&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:JensKunstfreund (page does not exist)\">JensKunstfreund</a>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC BY-SA 4.0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Attribution-Share Alike 4.0",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "true",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "https://creativecommons.org/licenses/by-sa/4.0",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc-by-sa-4.0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "184228506": {
+          "pageid": 184228506,
+          "ns": 6,
+          "title": "File:Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 09.jpg",
+          "index": 13,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/2/21/Kniphofia_thomsonii_%28Fackellilie%29_im_tropischen_Hochgebirgshaus_09.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:Kniphofia_thomsonii_(Fackellilie)_im_tropischen_Hochgebirgshaus_09.jpg",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=184228506",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2026-02-16 13:19:21",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 09",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Self-published work|Kniphofia thomsonii|Flora of Kilimanjaro|Specimens in the \u00d6kologisch-Botanischer Garten der Universit\u00e4t Bayreuth",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "Kniphofia thomsonii (red hot poker) in the tropical high mountain house in the Bayreuth Ecological-Botanical Garden",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2026-02-15 15:10:31",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:JensKunstfreund&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:JensKunstfreund (page does not exist)\">JensKunstfreund</a>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC BY-SA 4.0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Attribution-Share Alike 4.0",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "true",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "https://creativecommons.org/licenses/by-sa/4.0",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc-by-sa-4.0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "184228538": {
+          "pageid": 184228538,
+          "ns": 6,
+          "title": "File:Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 10.jpg",
+          "index": 19,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/0/0d/Kniphofia_thomsonii_%28Fackellilie%29_im_tropischen_Hochgebirgshaus_10.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:Kniphofia_thomsonii_(Fackellilie)_im_tropischen_Hochgebirgshaus_10.jpg",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=184228538",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2026-02-16 13:19:51",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 10",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Self-published work|Kniphofia thomsonii|Flora of Kilimanjaro|Specimens in the \u00d6kologisch-Botanischer Garten der Universit\u00e4t Bayreuth",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "Kniphofia thomsonii (red hot poker) in the tropical high mountain house in the Bayreuth Ecological-Botanical Garden",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2026-02-15 15:10:31",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:JensKunstfreund&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:JensKunstfreund (page does not exist)\">JensKunstfreund</a>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC BY-SA 4.0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Attribution-Share Alike 4.0",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "true",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "https://creativecommons.org/licenses/by-sa/4.0",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc-by-sa-4.0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "184228539": {
+          "pageid": 184228539,
+          "ns": 6,
+          "title": "File:Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 11.jpg",
+          "index": 9,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/8/84/Kniphofia_thomsonii_%28Fackellilie%29_im_tropischen_Hochgebirgshaus_11.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:Kniphofia_thomsonii_(Fackellilie)_im_tropischen_Hochgebirgshaus_11.jpg",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=184228539",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2026-02-16 13:19:52",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 11",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Self-published work|Kniphofia thomsonii|Flora of Kilimanjaro|Specimens in the \u00d6kologisch-Botanischer Garten der Universit\u00e4t Bayreuth",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "Kniphofia thomsonii (red hot poker) in the tropical high mountain house in the Bayreuth Ecological-Botanical Garden",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2026-02-15 15:10:31",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:JensKunstfreund&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:JensKunstfreund (page does not exist)\">JensKunstfreund</a>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC BY-SA 4.0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Attribution-Share Alike 4.0",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "true",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "https://creativecommons.org/licenses/by-sa/4.0",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc-by-sa-4.0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "184228540": {
+          "pageid": 184228540,
+          "ns": 6,
+          "title": "File:Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 12.jpg",
+          "index": 2,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/1/17/Kniphofia_thomsonii_%28Fackellilie%29_im_tropischen_Hochgebirgshaus_12.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:Kniphofia_thomsonii_(Fackellilie)_im_tropischen_Hochgebirgshaus_12.jpg",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=184228540",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2026-02-16 13:19:52",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "Kniphofia thomsonii (Fackellilie) im tropischen Hochgebirgshaus 12",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Self-published work|Kniphofia thomsonii|Flora of Kilimanjaro|Specimens in the \u00d6kologisch-Botanischer Garten der Universit\u00e4t Bayreuth",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "Kniphofia thomsonii (red hot poker) in the tropical high mountain house in the Bayreuth Ecological-Botanical Garden",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2026-02-15 15:10:31",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:JensKunstfreund&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:JensKunstfreund (page does not exist)\">JensKunstfreund</a>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC BY-SA 4.0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Attribution-Share Alike 4.0",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "true",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "https://creativecommons.org/licenses/by-sa/4.0",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc-by-sa-4.0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "202808263": {
+          "pageid": 202808263,
+          "ns": 6,
+          "title": "File:Magruder murders route map.svg",
+          "index": 22,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/1/17/Magruder_murders_route_map.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:Magruder_murders_route_map.svg",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=202808263",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2026-11-04 20:15:55",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "Magruder murders route map",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "Bitterroot Mountains|CC-Zero|Idaho Territory|Virginia City, Montana|Bannack, Montana|Creative Commons CC0 1.0 Universal Public Domain Dedication missing SDC copyright license|Lewiston, Idaho|Self-published work|Maps of the history of Idaho|Maps of the history of Montana|Self-published work missing SDC copyright license|1863 in Idaho|Route maps|English-language SVG maps|Magruder murders",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "Map of the routes in the <a href=\"https://en.wikipedia.org/wiki/Magruder_murders\" class=\"extiw\" title=\"w:Magruder murders\">Magruder murders</a>, October 1863, in what was then Idaho Territory (now Idaho and Montana).\n<ul><li>Lloyd Magruder's party travels from Virginia City (October 3) by way of Beaverhead Rock and Rattlesnake to Bannack, then up Grasshopper Creek, through the Big Hole valley, over Gibbons Pass to Ross's Hole and up the West Fork of the Bitterroot to Nez Perce Pass, and down the Southern Nez Perce Trail to its camp above the Selway River, where five men were killed on the night of October 11.</li>\n<li>The killers' route: west on the Southern Nez Perce Trail past Magruder Mountain and the Red River to Elk City, past the Mountain House, probably by the northern (Kamiah) branch of the Elk City trail, to a camp on Cottonwood Creek \"within about eight miles of the Garrison\" (Fort Lapwai), and into Lewiston on October 18.</li></ul>\nSolid lines follow a mapped or surveyed historic trail. Dashed lines are approximate, drawn along the valleys and modern roads that follow the old routes. The murder site is shown where the U.S. Forest Service marks it; the exact spot is uncertain. State lines are modern.",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2026-11-04",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<p><span class=\"int-own-work\" lang=\"en\">Own work</span>\n</p>\n<ul><li>Hydrography: U.S. Geological Survey National Hydrography Dataset (public domain). State lines: U.S. Census Bureau cartographic boundaries 1:500,000 (public domain).</li>\n<li>Trail alignments:\n<ul><li>USDA Forest Service Enterprise Data Warehouse trail centerline for Trail 13, \"Nez Perce Indian Trail.\"</li>\n<li>James G. Huntley, <i>Assessment of the Lewiston\u2013Elk City Trails</i> (Idaho County Historic Preservation Commission), points plotted from General Land Office survey notes.</li>\n<li>W. W. de Lacy, <i>Map of the Territory of Montana</i> (1865; Library of Congress G4250 1865 .D4).</li>\n<li>Route corridors drawn along modern roads from OpenStreetMap data (\u00a9 OpenStreetMap contributors, ODbL) through the waypoints below.</li></ul></li>\n<li>Route and waypoints: testimony of William Page, <i>Sacramento Daily Union</i>, February 24, 1864; Idaho State Historical Society, Reference Series No. 285 (1972); H. H. Bancroft, <i>History of Washington, Idaho, and Montana</i> (1890), pp. 241\u2013242; T. J. Dimsdale, <i>The Vigilantes of Montana</i>; N. P. Langford, <i>Vigilante Days and Ways</i> (1890); Ladd Hamilton, <i>This Bloody Deed: The Magruder Incident</i> (Washington State University Press, 1994), pp. 83\u201384, 230\u2013231.</li></ul>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Moscuvite&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:Moscuvite (page does not exist)\">Moscuvite</a>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Zero, Public Domain Dedication",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "false",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "185461804": {
+          "pageid": 185461804,
+          "ns": 6,
+          "title": "File:Malva Pudding is a South African dessert ... - Flickr - JFGryphon.jpg",
+          "index": 4,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/4/46/Malva_Pudding_is_a_South_African_dessert_..._-_Flickr_-_JFGryphon.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:Malva_Pudding_is_a_South_African_dessert_..._-_Flickr_-_JFGryphon.jpg",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=185461804",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2026-03-04 03:58:59",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "Malva Pudding is a South African dessert ... - Flickr - JFGryphon",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "CC-Zero|Sweet food of South Africa|Files with coordinates missing SDC location of creation|Flickr images reviewed by FlickreviewR 2|Flickr files uploaded by Red panda bot|Photos in Flickr Explore|Flickr images missing SDC published in|Photographs taken on 2026-02-19",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "GPSLatitude": {
+                  "value": "41.768069",
+                  "source": "commons-desc-page"
+                },
+                "GPSLongitude": {
+                  "value": "-74.154473",
+                  "source": "commons-desc-page"
+                },
+                "GPSMapDatum": {
+                  "value": "WGS-84",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "<p>served at Mohonk Mountain House which has many South Africans preparing and serving food. Malva pudding is a sweet, spongy cake soaked in a cream sauce while still hot.\n</p>\nMohonk offers a work program for Culinary Institute of America students to fulfill their degree requirements. The Institute is about 30 miles from Mohonk.",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "Taken on\u00a019 February 2026, 19:30",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/30484128@N03/55109260250/\">Malva Pudding is a South African dessert ...</a>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/30484128@N03\">Jim Griffin</a>",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "CC0",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Creative Commons Zero, Public Domain Dedication",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "false",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseUrl": {
+                  "value": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+                  "source": "commons-desc-page"
+                },
+                "Copyrighted": {
+                  "value": "True",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "cc0",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "120727436": {
+          "pageid": 120727436,
+          "ns": 6,
+          "title": "File:Plate Featuring the Cattskill Mountain House - DPLA - 2fda4f75b573b02ff72da01ef5b3f1c5 (page 1).jpg",
+          "index": 20,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Plate_Featuring_the_Cattskill_Mountain_House_-_DPLA_-_2fda4f75b573b02ff72da01ef5b3f1c5_%28page_1%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:Plate_Featuring_the_Cattskill_Mountain_House_-_DPLA_-_2fda4f75b573b02ff72da01ef5b3f1c5_(page_1).jpg",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=120727436",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2022-07-19 02:53:39",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "Plate Featuring the Cattskill Mountain House - DPLA - 2fda4f75b573b02ff72da01ef5b3f1c5 (page 1)",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "PD US|Media contributed by Indiana Memory|Media contributed by the Digital Public Library of America|Media contributed by Conner Prairie",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Artist": {
+                  "value": "Ralph &amp; James Clews",
+                  "source": "commons-desc-page"
+                },
+                "ImageDescription": {
+                  "value": "Part of the American Views series, this plate depicts the famous Catskill Mountain House. Built in 1823, near Palenville, New York, on a plateau with stunning views of the Hudson Valley on one side and two lakes on the other, this hotel was patronized by the elite in society, including three U.S. presidents Ulysses S. Grant, Chester A. Arthur, and Theodore Roosevelt. The hotel enjoyed a long run of popularity, but eventually closed in 1941. \"Cattskill\" \"Mountain House\" \"U.S.\" printed in red with in an oval floral frame topped with an eagle is on the bottom of the plate along with the number \"1\".<br><br>Cattskill Mountain House",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span style=\"display:inline-block; padding: 4px 16px; vertical-align: middle;\"><span class=\"skin-invert\" typeof=\"mw:File\"><span><img alt=\"\" src=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Codex_icon_download_color-progressive.svg/40px-Codex_icon_download_color-progressive.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail\" decoding=\"async\" loading=\"lazy\" width=\"24\" height=\"24\" class=\"mw-file-element\" srcset=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Codex_icon_download_color-progressive.svg/60px-Codex_icon_download_color-progressive.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail 2x\" data-file-width=\"20\" data-file-height=\"20\"></span></span>\u00a0<a rel=\"nofollow\" class=\"external text\" href=\"https://cdm17475.contentdm.oclc.org/iiif/2/CPTransware:33/full/full/0/default.jpg\">File URL</a></span><span style=\"display:inline-block; padding: 4px 16px; vertical-align: middle; border-left: 2px solid #a2a9b1;\"><span typeof=\"mw:File\"><span><img alt=\"\" src=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/International_Image_Interoperability_Framework_logo.png/40px-International_Image_Interoperability_Framework_logo.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail\" decoding=\"async\" loading=\"lazy\" width=\"24\" height=\"24\" class=\"mw-file-element\" srcset=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/International_Image_Interoperability_Framework_logo.png/60px-International_Image_Interoperability_Framework_logo.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail 2x\" data-file-width=\"460\" data-file-height=\"460\"></span></span>\u00a0<a rel=\"nofollow\" class=\"external text\" href=\"http://iuidigital.contentdm.oclc.org/iiif/info/CPTransware/35/manifest.json\">IIIF manifest</a></span><span style=\"display:inline-block; padding: 4px 16px; vertical-align: middle; border-left: 2px solid #a2a9b1;\"><span class=\"skin-invert\" typeof=\"mw:File\"><span><img alt=\"\" src=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/Breezeicons-actions-22-database-index.svg/40px-Breezeicons-actions-22-database-index.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail\" decoding=\"async\" loading=\"lazy\" width=\"24\" height=\"24\" class=\"mw-file-element\" srcset=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/Breezeicons-actions-22-database-index.svg/60px-Breezeicons-actions-22-database-index.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail 2x\" data-file-width=\"512\" data-file-height=\"512\"></span></span>\u00a0<a rel=\"nofollow\" class=\"external text\" href=\"http://iuidigital.contentdm.oclc.org/cdm/ref/collection/CPTransware/id/35\">Catalog record</a></span>",
+                  "source": "commons-desc-page"
+                },
+                "Permission": {
+                  "value": "This image might not be in the public domain outside of the United States; this especially applies in the countries and areas that do not apply the <a href=\"https://en.wikipedia.org/wiki/rule_of_the_shorter_term\" class=\"extiw\" title=\"w:rule of the shorter term\">rule of the shorter term</a> for US works, such as Canada, Mainland China (not Hong Kong or Macao), Germany, Mexico, and Switzerland. The creator and year of publication are essential information and must be provided. See <a href=\"https://en.wikipedia.org/wiki/Wikipedia:Public_domain\" class=\"extiw\" title=\"w:Wikipedia:Public domain\">Wikipedia:Public domain</a> and <a href=\"https://en.wikipedia.org/wiki/Wikipedia:Copyrights\" class=\"extiw\" title=\"w:Wikipedia:Copyrights\">Wikipedia:Copyrights</a> for more details.",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseShortName": {
+                  "value": "Public domain",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Public domain",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "false",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Copyrighted": {
+                  "value": "False",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "pd",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "120727439": {
+          "pageid": 120727439,
+          "ns": 6,
+          "title": "File:Plate Featuring the Cattskill Mountain House - DPLA - 2fda4f75b573b02ff72da01ef5b3f1c5 (page 2).jpg",
+          "index": 21,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/5/51/Plate_Featuring_the_Cattskill_Mountain_House_-_DPLA_-_2fda4f75b573b02ff72da01ef5b3f1c5_%28page_2%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:Plate_Featuring_the_Cattskill_Mountain_House_-_DPLA_-_2fda4f75b573b02ff72da01ef5b3f1c5_(page_2).jpg",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=120727439",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2022-07-19 02:53:42",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "Plate Featuring the Cattskill Mountain House - DPLA - 2fda4f75b573b02ff72da01ef5b3f1c5 (page 2)",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "PD US|Media contributed by Indiana Memory|Media contributed by the Digital Public Library of America|Media contributed by Conner Prairie",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Artist": {
+                  "value": "Ralph &amp; James Clews",
+                  "source": "commons-desc-page"
+                },
+                "ImageDescription": {
+                  "value": "Part of the American Views series, this plate depicts the famous Catskill Mountain House. Built in 1823, near Palenville, New York, on a plateau with stunning views of the Hudson Valley on one side and two lakes on the other, this hotel was patronized by the elite in society, including three U.S. presidents Ulysses S. Grant, Chester A. Arthur, and Theodore Roosevelt. The hotel enjoyed a long run of popularity, but eventually closed in 1941. \"Cattskill\" \"Mountain House\" \"U.S.\" printed in red with in an oval floral frame topped with an eagle is on the bottom of the plate along with the number \"1\".<br><br>Cattskill Mountain House",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span style=\"display:inline-block; padding: 4px 16px; vertical-align: middle;\"><span class=\"skin-invert\" typeof=\"mw:File\"><span><img alt=\"\" src=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Codex_icon_download_color-progressive.svg/40px-Codex_icon_download_color-progressive.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail\" decoding=\"async\" loading=\"lazy\" width=\"24\" height=\"24\" class=\"mw-file-element\" srcset=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Codex_icon_download_color-progressive.svg/60px-Codex_icon_download_color-progressive.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail 2x\" data-file-width=\"20\" data-file-height=\"20\"></span></span>\u00a0<a rel=\"nofollow\" class=\"external text\" href=\"https://cdm17475.contentdm.oclc.org/iiif/2/CPTransware:34/full/full/0/default.jpg\">File URL</a></span><span style=\"display:inline-block; padding: 4px 16px; vertical-align: middle; border-left: 2px solid #a2a9b1;\"><span typeof=\"mw:File\"><span><img alt=\"\" src=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/International_Image_Interoperability_Framework_logo.png/40px-International_Image_Interoperability_Framework_logo.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail\" decoding=\"async\" loading=\"lazy\" width=\"24\" height=\"24\" class=\"mw-file-element\" srcset=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/International_Image_Interoperability_Framework_logo.png/60px-International_Image_Interoperability_Framework_logo.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail 2x\" data-file-width=\"460\" data-file-height=\"460\"></span></span>\u00a0<a rel=\"nofollow\" class=\"external text\" href=\"http://iuidigital.contentdm.oclc.org/iiif/info/CPTransware/35/manifest.json\">IIIF manifest</a></span><span style=\"display:inline-block; padding: 4px 16px; vertical-align: middle; border-left: 2px solid #a2a9b1;\"><span class=\"skin-invert\" typeof=\"mw:File\"><span><img alt=\"\" src=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/Breezeicons-actions-22-database-index.svg/40px-Breezeicons-actions-22-database-index.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail\" decoding=\"async\" loading=\"lazy\" width=\"24\" height=\"24\" class=\"mw-file-element\" srcset=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/Breezeicons-actions-22-database-index.svg/60px-Breezeicons-actions-22-database-index.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail 2x\" data-file-width=\"512\" data-file-height=\"512\"></span></span>\u00a0<a rel=\"nofollow\" class=\"external text\" href=\"http://iuidigital.contentdm.oclc.org/cdm/ref/collection/CPTransware/id/35\">Catalog record</a></span>",
+                  "source": "commons-desc-page"
+                },
+                "Permission": {
+                  "value": "This image might not be in the public domain outside of the United States; this especially applies in the countries and areas that do not apply the <a href=\"https://en.wikipedia.org/wiki/rule_of_the_shorter_term\" class=\"extiw\" title=\"w:rule of the shorter term\">rule of the shorter term</a> for US works, such as Canada, Mainland China (not Hong Kong or Macao), Germany, Mexico, and Switzerland. The creator and year of publication are essential information and must be provided. See <a href=\"https://en.wikipedia.org/wiki/Wikipedia:Public_domain\" class=\"extiw\" title=\"w:Wikipedia:Public domain\">Wikipedia:Public domain</a> and <a href=\"https://en.wikipedia.org/wiki/Wikipedia:Copyrights\" class=\"extiw\" title=\"w:Wikipedia:Copyrights\">Wikipedia:Copyrights</a> for more details.",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseShortName": {
+                  "value": "Public domain",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Public domain",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "false",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Copyrighted": {
+                  "value": "False",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "pd",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "200452962": {
+          "pageid": 200452962,
+          "ns": 6,
+          "title": "File:Traffic camera still of an EF2 tornado near Rocky Mountain House on July 18, 2026.png",
+          "index": 11,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Traffic_camera_still_of_an_EF2_tornado_near_Rocky_Mountain_House_on_July_18%2C_2026.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:Traffic_camera_still_of_an_EF2_tornado_near_Rocky_Mountain_House_on_July_18,_2026.png",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=200452962",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2026-09-28 01:11:25",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "Traffic camera still of an EF2 tornado near Rocky Mountain House on July 18, 2026",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "PD automated|Tornadoes in the United States in June 2026|Pictures of tornadoes in 2026",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "ImageDescription": {
+                  "value": "Traffic camera still of an EF2 tornado near Rocky Mountain House on July 18, 2026",
+                  "source": "commons-desc-page"
+                },
+                "DateTimeOriginal": {
+                  "value": "2026-07-18",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<p><a rel=\"nofollow\" class=\"external free\" href=\"https://x.com/HaydenCWx/status/2078639552156336187/photo/1\">https://x.com/HaydenCWx/status/2078639552156336187/photo/1</a>\n</p>\n<a rel=\"nofollow\" class=\"external free\" href=\"https://roadreports.ama.ab.ca/cameras/hwy-11-at-rr65-east-of-rocky-mountain-house\">https://roadreports.ama.ab.ca/cameras/hwy-11-at-rr65-east-of-rocky-mountain-house</a>",
+                  "source": "commons-desc-page"
+                },
+                "Artist": {
+                  "value": "Alberta Motor Association traffic cameras",
+                  "source": "commons-desc-page"
+                },
+                "LicenseShortName": {
+                  "value": "Public domain",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Public domain",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "false",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Copyrighted": {
+                  "value": "False",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "pd",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        },
+        "192194427": {
+          "pageid": 192194427,
+          "ns": 6,
+          "title": "File:Volume 744, June 16 \u2013 June 18, 1944 - DPLA - 1828d9e04beebf47e28b0d99114079a7.pdf",
+          "index": 14,
+          "imagerepository": "local",
+          "imageinfo": [
+            {
+              "url": "https://upload.wikimedia.org/wikipedia/commons/f/f3/Volume_744%2C_June_16_%E2%80%93_June_18%2C_1944_-_DPLA_-_1828d9e04beebf47e28b0d99114079a7.pdf?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+              "descriptionurl": "https://commons.wikimedia.org/wiki/File:Volume_744,_June_16_%E2%80%93_June_18,_1944_-_DPLA_-_1828d9e04beebf47e28b0d99114079a7.pdf",
+              "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=192194427",
+              "extmetadata": {
+                "DateTime": {
+                  "value": "2026-05-17 11:47:45",
+                  "source": "mediawiki-metadata",
+                  "hidden": ""
+                },
+                "ObjectName": {
+                  "value": "Volume 744, June 16 \u2013 June 18, 1944 - DPLA - 1828d9e04beebf47e28b0d99114079a7",
+                  "source": "mediawiki-metadata"
+                },
+                "CommonsMetadataExtension": {
+                  "value": 1.2,
+                  "source": "extension",
+                  "hidden": ""
+                },
+                "Categories": {
+                  "value": "PD US|Media contributed by the National Archives and Records Administration|Media contributed by the Digital Public Library of America|Media contributed by Franklin D. Roosevelt Presidential Library and Museum",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Assessments": {
+                  "value": "",
+                  "source": "commons-categories",
+                  "hidden": ""
+                },
+                "Artist": {
+                  "value": "Morgenthau, Henry, 1891-1967",
+                  "source": "commons-desc-page"
+                },
+                "Credit": {
+                  "value": "<span style=\"display:inline-block; padding: 4px 16px; vertical-align: middle;\"><span class=\"skin-invert\" typeof=\"mw:File\"><span><img alt=\"\" src=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Codex_icon_download_color-progressive.svg/40px-Codex_icon_download_color-progressive.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail\" decoding=\"async\" loading=\"lazy\" width=\"24\" height=\"24\" class=\"mw-file-element\" srcset=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Codex_icon_download_color-progressive.svg/60px-Codex_icon_download_color-progressive.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail 2x\" data-file-width=\"20\" data-file-height=\"20\"></span></span>\u00a0<a rel=\"nofollow\" class=\"external text\" href=\"https://nara-media.s3.amazonaws.com/presidential-libraries/roosevelt/FDR-MORGEN/589213/md1032.pdf\">File URL</a></span><span style=\"display:inline-block; padding: 4px 16px; vertical-align: middle; border-left: 2px solid #a2a9b1;\"><span class=\"skin-invert\" typeof=\"mw:File\"><span><img alt=\"\" src=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/Breezeicons-actions-22-database-index.svg/40px-Breezeicons-actions-22-database-index.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail\" decoding=\"async\" loading=\"lazy\" width=\"24\" height=\"24\" class=\"mw-file-element\" srcset=\"https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/Breezeicons-actions-22-database-index.svg/60px-Breezeicons-actions-22-database-index.svg.png?utm_source=commons.wikimedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail 2x\" data-file-width=\"512\" data-file-height=\"512\"></span></span>\u00a0<a href=\"https://catalog.archives.gov/id/28277505\" class=\"extiw\" title=\"nara:28277505\">Catalog record</a></span>",
+                  "source": "commons-desc-page"
+                },
+                "Permission": {
+                  "value": "This image might not be in the public domain outside of the United States; this especially applies in the countries and areas that do not apply the <a href=\"https://en.wikipedia.org/wiki/rule_of_the_shorter_term\" class=\"extiw\" title=\"w:rule of the shorter term\">rule of the shorter term</a> for US works, such as Canada, Mainland China (not Hong Kong or Macao), Germany, Mexico, and Switzerland. The creator and year of publication are essential information and must be provided. See <a href=\"https://en.wikipedia.org/wiki/Wikipedia:Public_domain\" class=\"extiw\" title=\"w:Wikipedia:Public domain\">Wikipedia:Public domain</a> and <a href=\"https://en.wikipedia.org/wiki/Wikipedia:Copyrights\" class=\"extiw\" title=\"w:Wikipedia:Copyrights\">Wikipedia:Copyrights</a> for more details.",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "LicenseShortName": {
+                  "value": "Public domain",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "UsageTerms": {
+                  "value": "Public domain",
+                  "source": "commons-desc-page"
+                },
+                "AttributionRequired": {
+                  "value": "false",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Copyrighted": {
+                  "value": "False",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "Restrictions": {
+                  "value": "",
+                  "source": "commons-desc-page",
+                  "hidden": ""
+                },
+                "License": {
+                  "value": "pd",
+                  "source": "commons-templates",
+                  "hidden": ""
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

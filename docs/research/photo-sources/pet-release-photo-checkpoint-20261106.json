@@ -1,0 +1,22 @@
+{
+  "checked_on": "2026-11-06",
+  "manteca": {
+    "candidate": "https://commons.wikimedia.org/wiki/File:Watermill_Express_Manteca,_California.jpg",
+    "creator": "TaurusEmerald",
+    "capture_date": "2026-04-19 06:08:37",
+    "capture_evidence": "Source summary, extended EXIF table and local sips metadata agree. Original2919x2964 image inspected.",
+    "reuse_license": "CC BY-SA 4.0",
+    "license_source": "https://commons.wikimedia.org/wiki/File:Watermill_Express_Manteca,_California.jpg#Licensing",
+    "location_evidence": "Photographer description explicitly says Manteca, California. No GPS in exposed EXIF. Operator confirms Manteca location at445N Main St but exact photographed kiosk not independently matched.",
+    "operator_reference": "https://watermillexpress.com/refill-stations/476-water-refill-station-in-manteca-ca/",
+    "decision": "HOLD for independent location corroboration and editorial fit as city guide image. Do not assume exact address or publish as a civic panorama.",
+    "sha256": "ec232bdd3595806624111c87b81b81422d6f8d02e701c4b9c232f283f7c4cd10"
+  },
+  "mountain_house": {
+    "candidate": "https://commons.wikimedia.org/wiki/File:IMG-mountain_house.jpg",
+    "source_date": "2026-09-22",
+    "source_license": "CC0",
+    "decision": "REJECT for this task: mountainous landscape has no evidence identifying Mountain House California; generic name and2026date not enough."
+  },
+  "method": "Commons city-name/year text search complements preceding geographic queries. No new image published; no outreach."
+}
