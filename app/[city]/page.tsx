@@ -60,7 +60,7 @@ export default async function CityPage({ params }: PageProps) {
     <section className="mt-10" aria-labelledby="service-heading">
       <h2 id="service-heading" className="text-2xl font-bold text-slate-900">What needs doing?</h2>
       <p className="mt-2 text-sm text-slate-600">These shortlists use website-checked service information. We are still building coverage.</p>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-5">{SERVICE_CHOICES.map(service => <Link key={service.key} href={`${directoryUrl}&service=${service.key}`} className="rounded-2xl border border-slate-200 bg-white p-5 font-semibold text-[#19352d] hover:border-[#19352d] focus-visible:ring-2 focus-visible:ring-[#19352d]">{service.label}<span className="block mt-3 text-sm font-normal">See checked options →</span></Link>)}</div>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-5">{SERVICE_CHOICES.map(service => <Link key={service.key} href={`/directory?${new URLSearchParams({city:city.name,category:service.category,service:service.key})}`} className="rounded-2xl border border-slate-200 bg-white p-5 font-semibold text-[#19352d] hover:border-[#19352d] focus-visible:ring-2 focus-visible:ring-[#19352d]">{service.label}<span className="block mt-3 text-sm font-normal">See checked options →</span></Link>)}</div>
     </section>
 
     <section className="mt-10" aria-labelledby="checked-heading">

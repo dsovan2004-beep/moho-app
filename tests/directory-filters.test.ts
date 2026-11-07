@@ -33,3 +33,16 @@ test('specialty service filters survive city changes without broadening the job'
     assert.equal(p.get('city'),'Manteca')
   }
 })
+
+
+test('pet shortlists retain exact service across cities and reject mismatched categories',()=>{
+  const pet={...current,category:'Pet Services',service:'mobile-dog-grooming'}
+  for(const city of ['Mountain House','Tracy','Lathrop','Manteca']) {
+    const p=params(directoryHref(pet,{city}))
+    assert.equal(p.get('service'),'mobile-dog-grooming')
+    assert.equal(p.get('category'),'Pet Services')
+    assert.equal(p.get('city'),city)
+  }
+  assert.equal(params(directoryHref({...pet,category:'Home Services'})).get('service'),null)
+  assert.equal(params(directoryHref({...pet,service:'plumbing'})).get('service'),null)
+})

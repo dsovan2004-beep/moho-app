@@ -1,0 +1,51 @@
+{
+  "checked_on": "2026-11-06",
+  "provider": {
+    "name": "Wild Grace Mobile Pet Spa",
+    "website": "https://wildgracepetspa.com/",
+    "phone": "(209) 200-4014",
+    "sources": [
+      "https://wildgracepetspa.com/contact/",
+      "https://wildgracepetspa.com/about-us/"
+    ],
+    "description": "Mobile dog grooming provider whose website explicitly lists Mountain House, Tracy, Lathrop and Manteca. Requests are followed up to confirm service and appointment time; submitting a request does not reserve an appointment. Confirm pet suitability, quote and availability directly. Street address not established."
+  },
+  "events": [
+    {
+      "title": "Family BINGO — November 17",
+      "city": "Mountain House",
+      "start": "2026-11-17T15:30:00-08:00",
+      "end": "2026-11-17T16:30:00-08:00",
+      "location": "Mountain House Branch Library, 201 E Main Street, Mountain House",
+      "url": "https://www.ssjcpl.org/events-services/events-calendar/mountain-house/family-bingo4?id=1794958200-246965",
+      "description": "The library invites families of all ages to play BINGO. This entry covers November 17 only. Date, time and branch checked against official sources; confirm attendance details with the library."
+    },
+    {
+      "title": "Chess Club — November 15",
+      "city": "Tracy",
+      "start": "2026-11-15T13:00:00-08:00",
+      "end": "2026-11-15T14:45:00-08:00",
+      "location": "Tracy Branch Library, Wadsworth Community Room, 20 E Eaton Avenue, Tracy",
+      "url": "https://www.ssjcpl.org/events-services/events-calendar/tracy/october-2026/chess-club?id=1794776400-245603",
+      "description": "All-ages chess club at the library. Exact November 15 occurrence and room verified on the official calendar. Confirm equipment, attendance and any registration arrangements directly."
+    },
+    {
+      "title": "Legos — November 7",
+      "city": "Lathrop",
+      "start": "2026-11-07T14:00:00-08:00",
+      "end": "2026-11-07T15:00:00-08:00",
+      "location": "Lathrop Branch Library, 450 Spartan Way, Lathrop",
+      "url": "https://www.ssjcpl.org/events-services/events-calendar/lathrop/legos?id=1794088800-239062",
+      "description": "Library building club where participants can create a model for display. Official branch calendar identifies children, teens and all ages. Covers November 7 only; confirm attendance arrangements directly."
+    },
+    {
+      "title": "Bri Crabtree’s Totally Sweet Circus Show",
+      "city": "Manteca",
+      "start": "2026-11-18T15:30:00-08:00",
+      "end": "2026-11-18T16:30:00-08:00",
+      "location": "Manteca Branch Library, 320 W Center Street, Manteca",
+      "url": "https://www.ssjcpl.org/events-services/events-calendar/manteca-branch/bri-crabtree-s-totally-sweet-circus-show?id=1795044600-247292",
+      "description": "The library lists a free circus performance featuring juggling, unicycling and audience participation, categorized for children and teens. Official November 18 occurrence checked; confirm attendance arrangements directly."
+    }
+  ]
+}
