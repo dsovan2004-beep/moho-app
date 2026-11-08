@@ -1,0 +1,17 @@
+# November 8 — newspaper continuation and event UX
+
+## Source review and new data
+
+Official MH Matters homepage still links October28 flagship (no newer linked flagship found). Targeted printed pages26/29 advertise Spencer Flooring & Paint and Golden Valley Nursery. First-party websites independently confirm both Tracy locations, public phones and advertised offerings. Spencer Saturday appointment restriction noted; no surrounding-city work coverage inferred from newspaper circulation. Nursery location page confirms South Reeve Road rather than stale Lammers Road directory entries. No licensing/insurance/quality endorsement or image rights inferred. Source/SQL: newspaper-refresh-2026-11-08.json and publish-newspaper-refresh-2026-11-08.sql.
+
+City-source follow-up added Nov18 pickleball opening at4:30PM Central Community Park. Official City Form Center states date/time/all ages/RSVP; official courts page corroborates scheduled opening. End time unknown/null. This is a city-source follow-up, not attributed to a newspaper article. No RSVP submitted. Past October market/festival coverage not republished as future events.
+
+Hosted readback:66dated checks /36approved event records, including past occurrences. Anonymous REST200 returns both providers with Tracy-only service areas and new event with correct Nov19 00:30UTC start and null end. Public records do not imply current availability. Duplicate name/domain/phone/source-date checks applied before publication; no schema/access changes.
+
+Supabase skill followed: current changelog and table guide fetched Nov8; Flutterv3/CLIv3 changes do not affect existing JS/RPC/content DML; no SDK/CLI/Postgres upgrade made. Photos remain untouched and rights-held. Pet pilot remains OPEN: fresh production count0reporter-linked records; no fabricated cases or outreach.
+
+## Event UX
+
+The shared events view now states current/upcoming count, retains past occurrences in a collapsed native details/summary archive, marks archive cards as past, and provides a useful all-city recovery when a view has no upcoming dates. This applies to all four city filters and seasonal views. No database rows deleted or status changed.
+
+Local Nov8 Lathrop view exposed a preexisting calendar bug: Nov14 was labeled “This Weekend” on SundayNov8. Weekend classification now ends with the current calendar week's Sunday; other dates within7days use “Next 7 Days.” Regression covers Sunday→next Saturday/Sunday and Thursday→current Saturday.138tests pass; TypeScript and final OpenNext build pass. Source d776c4b pushed. Native build ef1b07aa-56a3-4fa5-bd15-e300b4bff4f4 Ready (1m48s), deployed version38181574. Local archive initially collapsed; clicking summary opens the Nov7 event with explicit past-event label. Live new pickleball detail shows Nov18 4:30PM Pacific, correct venue/RSVP and no invented end time. Live archive keyboard Enter opens/closes correctly; old LegosNov7 visible only on expansion, with past-event label. Live current/upcoming counts: MH13, Tracy8, Lathrop4, Manteca7 (32 total,4past). Each city filter navigated in UI; Lathrop Nov14 correctly in Next7Days. Production390px scrollWidth=innerWidth=390; temporary viewport reset. Screenshots ../ux/events-refresh-live-20261108.png and ../ux/events-refresh-live-390-20261108.png. Live nursery detail confirms new dated check, Reeve Road contact and Tracy-only service area. Local dev server stopped after acceptance. No claim of complete newspaper review or real-device pet pilot.

@@ -1,5 +1,11 @@
 # MoHoLocal — SPRINTS.md
 
+## November 8 freshness + event discovery
+
+Resumed source review: homepage still links October28 flagship. Newspaper pages26/29 leads independently checked; published Spencer Flooring & Paint and Golden Valley Nursery in Tracy. Added City-listed Nov18 4:30PM pickleball ribbon cutting, verified against official Form Center/courts page. Totals: 66 dated listing checks / 36 approved event occurrences (historical and future combined). Public API readbacks pass. No surrounding-city coverage inferred.
+
+Events UX: upcoming count, collapsed accessible past-event archive, and no-upcoming recovery across all four cities. Corrected Sunday labeling so the next Saturday is not “This Weekend”; near-term group now “Next 7 Days.” 138 tests, TypeScript and final OpenNext build pass. Source d776c4b deployed: native ef1b07aa-56a3-4fa5-bd15-e300b4bff4f4 Ready (1m48s), version38181574. All four live city views, Lathrop archive keyboard open/close and390px overflow checks pass. Photo replacements and genuine-reporter pet pilot remain OPEN; fresh production has0reporter-linked reports. [Evidence](research/nov8-event-release.md).
+
 ## Newspaper verification + class coverage UX — November 6, 2026
 
 Reviewed MH Matters current linked October28 issue civic/calendar/senior/business sections and the user's open official homepage. Published Zany Entertainment (Tracy), added a dated THub Cafe check retaining the cafe-linked 1158 address, and published two city November14 civic occurrences with official RSVP links. Totals: 64 dated listing checks / 35 approved events. Autobot/Falafel leads remain unverified; no guessed coverage or images copied.
