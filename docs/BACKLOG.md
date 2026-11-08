@@ -1,5 +1,12 @@
 # MoHoLocal active execution queue
 
+## November 8 — HVAC discovery and newspaper home-service leads
+
+Published Virginia Mechanical after first-party phone/address/service-area checks explicitly covering Mountain House, Tracy, Lathrop and Manteca. Published Image Tile & Stone with Tracy and Mountain House evidence only; office address and other cities not inferred. Added exact Lathrop November17 10:30–11AM preschool storytime from the official library occurrence. Hosted readback:69 dated listing checks and39 approved event records including past. Newspaper page30 pancake breakfast is retrospective and was not made an upcoming event. No credentials, quality, availability or image reuse endorsed.
+
+UX: heating/air-conditioning service shortcut backed by dated provider coverage; archived event pages suppress calendar CTA and use Original event source, while current pages link Organizer details & attendance information. Tests139 pass; final build/native acceptance in progress. Mountain House real2026 photo, Manteca exact-location verification and genuine-reporter pet pilot remain OPEN. No outreach or fabricated reports. [Evidence](research/matters-home-services-2026-11-08.json).
+
+
 ## November 8 afternoon — contact UX + newspaper continuation
 
 Published The Pampered Pet Grooming & Spa after official contact/site verification (Tracy salon; wider mobile coverage held), plus TracyNov16 Fall Lanterns and MantecaDec4 DIY Winter Crafts from exact library occurrences. Totals67dated listing checks/38approved event records. Public API readbacks pass. Newspaper Hadestown article is retrospective; not added as upcoming. Paws on Puente/V6GarageDoor remain held without accessible first-party confirmation.

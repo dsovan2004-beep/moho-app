@@ -1,0 +1,45 @@
+{
+  "checked_on": "2026-11-08",
+  "newspaper_page": 29,
+  "providers": [
+    {
+      "name": "Virginia Mechanical",
+      "phone": "(209) 832-2966",
+      "website": "https://www.virginiamechanical.com/",
+      "city": "Tracy",
+      "address": "7553 Carmelo Avenue, Tracy, CA 95304",
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "tags": [
+        "heating and air conditioning"
+      ],
+      "description": "Heating and air conditioning repair, installation and maintenance provider based in Tracy. Its official website explicitly lists Mountain House, Tracy, Lathrop and Manteca. Confirm the job, quote and appointment directly; license and insurance claims have not been independently checked."
+    },
+    {
+      "name": "Image Tile & Stone",
+      "phone": "(209) 834-6861",
+      "website": "https://www.imagetileandstone.com/",
+      "city": "Tracy",
+      "address": null,
+      "areas": [
+        "Mountain House",
+        "Tracy"
+      ],
+      "tags": [
+        "tile and stone installation"
+      ],
+      "description": "Tile and stone installation and remodeling provider whose official site names Tracy and shows Mountain House projects. Advertises bathroom, kitchen, floor and fireplace work. Office address is not established. Confirm current service coverage, project scope and quote directly; license claims have not been independently checked."
+    }
+  ],
+  "event_source": "https://www.ssjcpl.org/events-services/events-calendar/lathrop/preschool-storytime?id=1794940200-212861",
+  "holds": [
+    "Newspaper page30 pancake breakfast is retrospective; no upcoming occurrence inferred",
+    "Mountain House real2026 photo and Manteca exact-location verification remain open",
+    "Genuine reporter pet pilot remains open; no reports fabricated",
+    "No photographs copied or outreach sent"
+  ]
+}

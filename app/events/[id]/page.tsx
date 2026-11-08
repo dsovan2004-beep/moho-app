@@ -35,6 +35,7 @@ export default async function EventDetailPage({ params }: PageProps) {
   if (!event) notFound()
 
   const { weekday, date, time, month, day } = eventDateParts(event.start_date)
+  const upcoming = isUpcomingEvent(event)
   const theme = CITY_THEMES[event.city] ?? CITY_THEMES['Mountain House']
 
   return (
@@ -62,7 +63,7 @@ export default async function EventDetailPage({ params }: PageProps) {
         </div>
       )}
 
-      {!isUpcomingEvent(event) && <p role="status" className="rounded-xl bg-amber-50 border border-amber-200 p-4 mb-5 text-sm text-amber-900">This event has ended. This page is an archive; check the events calendar for upcoming gatherings.</p>}
+      {!upcoming && <p role="status" className="rounded-xl bg-amber-50 border border-amber-200 p-4 mb-5 text-sm text-amber-900">This event has ended. This page is an archive; check the events calendar for upcoming gatherings.</p>}
       {/* Header card */}
       <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm mb-5">
         {/* City color bar */}
@@ -121,7 +122,7 @@ export default async function EventDetailPage({ params }: PageProps) {
         </div>
       </div>
 
-      <div className="mb-5 flex flex-wrap gap-3 items-center"><a href={`/events/${event.id}/calendar`} className="inline-flex min-h-11 items-center rounded-xl bg-[#1e3a5f] text-white font-semibold px-5 py-3">Add to calendar ↓</a><span className="text-xs text-slate-500">Download an .ics file. Check the organizer for later changes.</span></div>
+      {upcoming && <div className="mb-5 flex flex-wrap gap-3 items-center"><a href={`/events/${event.id}/calendar`} className="inline-flex min-h-11 items-center rounded-xl bg-[#1e3a5f] text-white font-semibold px-5 py-3">Add to calendar ↓</a><span className="text-xs text-slate-500">Download an .ics file. Check the organizer for later changes.</span></div>}
 
       {/* Description */}
       {event.description && (
@@ -143,7 +144,7 @@ export default async function EventDetailPage({ params }: PageProps) {
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
-            More info / Register
+            {upcoming ? 'Organizer details & attendance information' : 'Original event source'}
           </a>
         </div>
       )}
