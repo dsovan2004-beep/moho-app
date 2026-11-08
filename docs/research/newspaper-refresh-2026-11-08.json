@@ -1,0 +1,64 @@
+{
+  "checked_on": "2026-11-08",
+  "newspaper": "https://www.mhmatters.net/pdf/2026/261028_MHMatters_Flagship147_s.pdf",
+  "providers": [
+    {
+      "name": "Spencer Flooring & Paint",
+      "category": "Home Services",
+      "city": "Tracy",
+      "address": "475 W Grant Line Road, Tracy, CA 95376",
+      "phone": "(209) 835-5537",
+      "website": "https://www.spencerflooringandpaint.com/",
+      "domain": "spencerflooringandpaint.com",
+      "tags": [
+        "flooring installation",
+        "carpet installation",
+        "painting"
+      ],
+      "sources": [
+        "https://www.spencerflooringandpaint.com/aboutus.aspx",
+        "https://www.spencerflooringandpaint.com/contactus.aspx"
+      ],
+      "description": "Tracy flooring showroom advertising carpet installation/removal and painting services. Official contact page lists 475 W Grant Line Road and Saturday visits by appointment. Confirm job location, scope, current hours, quote and scheduling directly. Coverage beyond Tracy not independently established.",
+      "note": "First-party desk check of identity, address, public phone and advertised flooring/paint services. Newspaper lead reviewed on printed pages26/29. Do not infer surrounding-city job coverage from newspaper distribution; license/insurance, workmanship and availability not independently verified. No images reused."
+    },
+    {
+      "name": "Golden Valley Nursery",
+      "category": "Retail",
+      "city": "Tracy",
+      "address": "21459 South Reeve Road, Tracy, CA 95304",
+      "phone": "(209) 830-9200",
+      "website": "https://www.goldenvalleynursery.com/",
+      "domain": "goldenvalleynursery.com",
+      "tags": [
+        "plant nursery",
+        "landscape design",
+        "planting",
+        "plant delivery"
+      ],
+      "sources": [
+        "https://www.goldenvalleynursery.com/location",
+        "https://www.goldenvalleynursery.com/"
+      ],
+      "description": "Plant nursery whose official site lists 21459 South Reeve Road in Tracy, plant sales and landscape design, planting and delivery services. Confirm current inventory, opening hours and delivery or on-site work coverage directly. No delivery area outside Tracy established.",
+      "note": "First-party desk check of nursery address, public phone and advertised services. Newspaper business-directory lead; old third-party Lammers Road addresses not adopted. Delivery radius, stock, quality, credentials and availability not independently verified. No images copied."
+    }
+  ],
+  "event": {
+    "title": "Pickleball Courts Grand Opening & Ribbon Cutting",
+    "city": "Mountain House",
+    "location": "Central Community Park, Mountain House",
+    "start": "2026-11-18T16:30:00-08:00",
+    "url": "https://www.mountainhouseca.gov/FormCenter/RSVPs-8/Pickleball-Courts-Ribbon-Cutting-RSVP-71",
+    "description": "City-listed opening of the new pickleball courts at Central Community Park, with remarks, a ribbon cutting and pickleball activities. All ages welcome; RSVP through the City. Official Form Center lists November 18, 2026 at 4:30 PM. Confirm construction/weather changes and arrangements directly; end time not established."
+  },
+  "event_sources": [
+    "https://www.mountainhouseca.gov/formcenter",
+    "https://www.mountainhouseca.gov/208/Tennis-Pickleball-Courts"
+  ],
+  "holds": [
+    "Mountain House/Manteca photo replacements remain open",
+    "Genuine reporter pet pilot remains open"
+  ],
+  "source_limits": "Targeted pages26/29 provider continuation; not a complete 32-page audit. Pickleball is a city-source follow-up, not attributed to newspaper."
+}

@@ -28,7 +28,9 @@ export function eventBucket(value: string, now = new Date()): 'today' | 'tomorro
   if (delta === 0) return 'today'
   if (delta === 1) return 'tomorrow'
   const weekday = new Date(`${day}T12:00:00Z`).getUTCDay()
-  if (delta >= 2 && delta < 7 && (weekday === 0 || weekday === 6)) return 'this-weekend'
+  const todayWeekday = new Date(`${localDay(now)}T12:00:00Z`).getUTCDay()
+  const daysUntilSunday = (7 - todayWeekday) % 7
+  if (delta >= 2 && delta <= daysUntilSunday && (weekday === 0 || weekday === 6)) return 'this-weekend'
   if (delta >= 2 && delta < 7) return 'this-week'
   return 'upcoming'
 }

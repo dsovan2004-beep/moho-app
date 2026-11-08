@@ -18,3 +18,10 @@ test('buckets use Pacific calendar days across daylight saving transitions', () 
   assert.equal(eventBucket('2026-11-01T18:00:00-08:00',new Date('2026-11-01T06:30:00Z')), 'tomorrow')
   assert.equal(eventBucket('2026-12-06T01:00:00Z',new Date('2026-12-06T02:00:00Z')), 'today')
 })
+
+test('Sunday does not label the following Saturday as this weekend',()=>{
+  const sunday=new Date('2026-11-08T12:00:00Z')
+  assert.equal(eventBucket('2026-11-14T18:00:00-08:00',sunday),'this-week')
+  assert.equal(eventBucket('2026-11-15T18:00:00-08:00',sunday),'upcoming')
+  assert.equal(eventBucket('2026-11-14T18:00:00-08:00',new Date('2026-11-12T12:00:00Z')),'this-weekend')
+})

@@ -31,7 +31,7 @@ const BUCKET_META: Record<string, { label: string; emoji: string; desc: string }
   'today':        { label: 'Today',        emoji: '🔴', desc: 'Happening today' },
   'tomorrow':     { label: 'Tomorrow',     emoji: '📅', desc: 'Coming up tomorrow' },
   'this-weekend': { label: 'This Weekend', emoji: '🎉', desc: 'This Saturday & Sunday' },
-  'this-week':    { label: 'This Week',    emoji: '📆', desc: 'Happening this week' },
+  'this-week':    { label: 'Next 7 Days',    emoji: '📆', desc: 'Within the next seven days' },
   'upcoming':     { label: 'Upcoming',     emoji: '🗓️', desc: 'Coming up soon' },
 }
 
@@ -45,7 +45,7 @@ const CITY_COLORS: Record<string, string> = {
   Brentwood: 'bg-teal-100 text-teal-800',
 }
 
-function EventCard({ event }: { event: Event }) {
+function EventCard({ event, archived = false }: { event: Event; archived?: boolean }) {
   const { month, day, date: full, time } = eventDateParts(event.start_date)
   const cityColor = CITY_COLORS[event.city] ?? 'bg-gray-100 text-gray-700'
 
@@ -103,6 +103,7 @@ function EventCard({ event }: { event: Event }) {
           {/* Bucket label chip on each card — immediate visual context */}
           {(() => {
             const bucket = eventBucket(event.start_date)
+            if (archived) return <p className="mt-2 text-xs font-semibold text-slate-500">Past event · kept for reference</p>
             if (bucket === 'upcoming') return null
             const meta = BUCKET_META[bucket]
             return (
@@ -169,6 +170,10 @@ export default async function EventsPage({ searchParams }: PageProps) {
         ))}
       </div>
 
+      {!unavailable && events.length > 0 && <div role="status" className="mb-6 rounded-xl border border-[#dce5d5] bg-[#f0f4ec] px-4 py-3 text-sm text-[#19352d]">
+        <p className="font-semibold">{upcoming.length} current or upcoming {upcoming.length === 1 ? 'event' : 'events'}{city === 'All Cities' ? ' across our cities' : ` in ${city}`}</p>
+        <p className="mt-1 text-slate-600">Check the organizer for availability and changes.{past.length > 0 && ' Past events are tucked into the archive below.'}</p>
+      </div>}
       {unavailable ? <div role="status" className="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-slate-700"><h2 className="font-bold">Events are temporarily unavailable</h2><p className="mt-2">We couldn’t load the calendar. Please try again shortly.</p><Link href={`/events?city=${encodeURIComponent(city)}`} className="inline-flex min-h-11 items-center underline mt-2">Try again →</Link></div> : events.length === 0 ? (
         <div className="text-center py-20 text-gray-400">
           <p className="text-4xl mb-3">📅</p>
@@ -177,6 +182,7 @@ export default async function EventsPage({ searchParams }: PageProps) {
         </div>
       ) : (
         <>
+          {upcoming.length === 0 && <section className="mb-6 rounded-2xl border border-slate-200 bg-white p-6"><h2 className="font-bold text-lg text-[#18324f]">No upcoming events in this view yet</h2><p className="mt-2 text-sm text-slate-600">We’re checking new dates. Past listings below are for reference.</p><Link className="mt-3 inline-flex min-h-11 items-center font-semibold underline text-[#19352d]" href={cityHref('All Cities')}>Explore all four cities →</Link></section>}
           {/* Upcoming — bucketed into time labels */}
           {upcoming.length > 0 && BUCKET_ORDER.map((key) => {
             const group = buckets[key]
@@ -202,16 +208,15 @@ export default async function EventsPage({ searchParams }: PageProps) {
 
           {/* Past */}
           {past.length > 0 && (
-            <section>
-              <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">
-                Past Events · {past.length}
-              </h2>
-              <div className="space-y-3 opacity-60">
+            <details className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5">
+              <summary className="min-h-11 cursor-pointer font-semibold text-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-700">Past events · {past.length} — open archive</summary>
+              <p className="mt-2 mb-4 text-sm text-slate-500">These dates have passed. Check the organizer for any new occurrence.</p>
+              <div className="space-y-3">
                 {past.map((event) => (
-                  <EventCard key={event.id} event={event} />
+                  <EventCard key={event.id} event={event} archived />
                 ))}
               </div>
-            </section>
+            </details>
           )}
         </>
       )}
