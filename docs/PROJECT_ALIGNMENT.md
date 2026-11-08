@@ -24,3 +24,11 @@ Reviewed the six most recent turns in “Research online directory concept” (t
 Planning queue: audit existing outbound-contact/inquiry measurement before adding tracking; prioritize consent-respecting, aggregate outcomes. Add dated holiday-hours evidence only where verified, otherwise state that availability is unconfirmed. These are queued items, not shipped functionality.
 
 Continue verified providers/events and practical UI improvements. Mountain House real2026 image, Manteca exact-location photo verification and genuine-reporter pet pilot stay OPEN. No outreach to the other chat or external businesses was sent as part of this alignment review.
+
+## Explicit implementation direction — November 8, 2:54 PM Pacific
+
+The user confirmed this MoHoLocal chat owns implementation and the backlog/roadmap/sprint. The research chat made no code, database or deployment changes. Keep Next.js, Cloudflare and Supabase; do not import sawmill operators or its proposed Astro/D1 stack.
+
+Required practice: business location never establishes travel coverage. Record sources, checked fields and check dates; availability, credentials and quality require separate evidence. Screen duplicates and incorrect locations. Thanksgiving hours/closures/events require confirmation; otherwise availability remains unconfirmed. Improve mobile search, service filters, contact actions and no-match recovery. Measure useful contacts, inquiries and successful connections alongside traffic, and establish business willingness to pay before expanding monetization. Photo tasks and the genuine-reporter pilot remain open until their stated acceptance criteria are met.
+
+Next measurement step: repository search of lib, app/api and app/components found no matching outbound/contact-event tracking symbols in this pass. This is a limited source audit, not proof that hosting analytics are absent. Audit deployed analytics/configuration before proposing aggregate event instrumentation; do not count contact clicks as successful connections.
