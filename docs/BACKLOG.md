@@ -1,5 +1,12 @@
 # MoHoLocal active execution queue
 
+## November 8 — library programs, gym evidence and event duration
+
+Published Iron Zone Gym in Mountain House after official contact/address/service checks; 24/7 is member access, not established staffed/visitor/holiday hours. Added MountainHouse November19 11:30AM–12:15PM AnimalServices storytime (no animals present) and November30 4–5PM winter reading kickoff (snow-themed activities; no real-snow promise). Winter kickoff appears in seasonal discovery. Hosted readback:70 dated listing checks,41 approved event records including past. SafeHaven source timed out and is held; existing TracyCyclery record was not duplicated or updated from an unverified domain. [Sources and holds](research/gym-library-2026-11-08.json).
+
+UX across all four cities: event cards now show known end times and explicit PacificTime, with overnight end dates preserved and missing/invalid ends handled conservatively. Existing description previews already existed; no claim that they were newly added. 140 tests pass, including date rollover and invalid-end regressions. Production build/native acceptance pending. Photo tasks and genuine-reporter pet pilot remain OPEN. Next supply priority: independently checked Lathrop/Manteca providers; no unsupported service-area expansion.
+
+
 ## Cross-chat alignment — November 8
 
 Reviewed recent decisions in Research online directory concept: its mobile-sawmill experiment and proposed Astro/D1 stack are separate from the existing four-city MoHoLocal app. Keep Next.js/Cloudflare/Supabase. Carry over source verification, service-area matching, confirmed holiday information and outcome measurement. Queue an audit of contact/inquiry measurement and dated holiday-hours evidence; no invented availability or revenue claims. [Decision record](PROJECT_ALIGNMENT.md).

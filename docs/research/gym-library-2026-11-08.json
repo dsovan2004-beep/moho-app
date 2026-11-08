@@ -1,0 +1,38 @@
+{
+  "checked_on": "2026-11-08",
+  "provider": {
+    "name": "Iron Zone Gym",
+    "phone": "(209) 207-9281",
+    "website": "https://www.ironzonegym.com/",
+    "contact": "https://www.ironzonegym.com/contact",
+    "address": "579 Wicklund Crossing Way, Mountain House, CA 95391",
+    "description": "Mountain House gym advertising strength equipment, coaching support and 24/7 access for members. Member access is not the same as staffed or visitor hours. Confirm membership, day-pass arrangements and training availability directly."
+  },
+  "events": [
+    {
+      "title": "Preschool Storytime with Tracy Animal Services",
+      "description": "No animals will be present. Preschoolers can hear stories with a City of Tracy Animal Services officer and learn about their work. Official Mountain House library occurrence checked November 8, 2026; confirm attendance arrangements with the library.",
+      "city": "Mountain House",
+      "location": "Mountain House Branch Library, 201 E Main Street, Mountain House, CA 95391",
+      "start": "2026-11-19T11:30:00-08:00",
+      "end": "2026-11-19T12:15:00-08:00",
+      "source_url": "https://www.ssjcpl.org/events-services/events-calendar/mountain-house/preschool-storytime-with-tracy-animal-services?id=1795116600-246956",
+      "source": "editorial_community_2026"
+    },
+    {
+      "title": "Winter Reading Kickoff: Snow Party!",
+      "description": "Snow-themed games, activities and music at the Mountain House library, ahead of the winter reading challenge beginning December 1. All-ages November 30 occurrence checked against the official library page November 8, 2026. Confirm attendance arrangements with the library; no promise of real snow.",
+      "city": "Mountain House",
+      "location": "Mountain House Branch Library, 201 E Main Street, Mountain House, CA 95391",
+      "start": "2026-11-30T16:00:00-08:00",
+      "end": "2026-11-30T17:00:00-08:00",
+      "source_url": "https://www.ssjcpl.org/events-services/events-calendar/mountain-house/winter-reading-kickoff-snow-party?id=1796083200-242216",
+      "source": "editorial_seasonal_2026"
+    }
+  ],
+  "holds": [
+    "SafeHaven first-party source timed out; not published",
+    "Tracy Cyclery existing record; guessed domain unavailable, no duplicate or unverified update",
+    "Photo tasks and real-reporter pet pilot OPEN; no images copied or outreach"
+  ]
+}

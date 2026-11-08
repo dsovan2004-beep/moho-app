@@ -4,7 +4,7 @@ import { getSupabaseClient, type Event } from '@/lib/supabase'
 import Link from 'next/link'
 import CardCityPhoto from '@/app/components/CardCityPhoto'
 import { RELAUNCH_CITY_NAMES } from '@/lib/cities'
-import { eventDateParts, eventBucket, isUpcomingEvent } from '@/lib/event-dates'
+import { eventDateParts, eventBucket, isUpcomingEvent, eventTimeRange } from '@/lib/event-dates'
 
 const CITIES = ['All Cities', ...RELAUNCH_CITY_NAMES]
 
@@ -46,7 +46,7 @@ const CITY_COLORS: Record<string, string> = {
 }
 
 function EventCard({ event, archived = false }: { event: Event; archived?: boolean }) {
-  const { month, day, date: full, time } = eventDateParts(event.start_date)
+  const { month, day, date: full } = eventDateParts(event.start_date)
   const cityColor = CITY_COLORS[event.city] ?? 'bg-gray-100 text-gray-700'
 
   return (
@@ -95,7 +95,7 @@ function EventCard({ event, archived = false }: { event: Event; archived?: boole
           <div className="flex flex-col items-start gap-1.5 sm:flex-row sm:flex-wrap sm:gap-x-4 mt-2 text-xs text-slate-600">
             <span>📅 {full}</span>
             {event.start_date.includes('T') && (
-              <span>🕐 {time}</span>
+              <span>🕐 {eventTimeRange(event)}</span>
             )}
             {event.location && <span>📍 {event.location}</span>}
           </div>

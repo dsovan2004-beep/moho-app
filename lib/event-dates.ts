@@ -34,3 +34,15 @@ export function eventBucket(value: string, now = new Date()): 'today' | 'tomorro
   if (delta >= 2 && delta < 7) return 'this-week'
   return 'upcoming'
 }
+
+// A card must distinguish a short visit from an evening or overnight program.
+export function eventTimeRange(event: {start_date: string; end_date?: string | null}) {
+  const start = eventDateParts(event.start_date)
+  if (!start.time) return 'Time not listed'
+  if (!event.end_date || new Date(event.end_date) < new Date(event.start_date)) return `${start.time} Pacific Time`
+  const end = eventDateParts(event.end_date)
+  if (!end.time) return `${start.time} Pacific Time`
+  return localDay(event.start_date) === localDay(event.end_date)
+    ? `${start.time} – ${end.time} Pacific Time`
+    : `${start.time} – ${end.date}, ${end.time} Pacific Time`
+}
