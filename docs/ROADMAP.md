@@ -1,5 +1,11 @@
 # MoHoLocal Product Roadmap
 
+## November 8 afternoon — contact UX + newspaper continuation
+
+Published The Pampered Pet Grooming & Spa after official contact/site verification (Tracy salon; wider mobile coverage held), plus TracyNov16 Fall Lanterns and MantecaDec4 DIY Winter Crafts from exact library occurrences. Totals67dated listing checks/38approved event records. Public API readbacks pass. Newspaper Hadestown article is retrospective; not added as upcoming. Paws on Puente/V6GarageDoor remain held without accessible first-party confirmation.
+
+Contact UX: iThink Pet's verified host-and-phone pair now opens an empty SMS draft with a Text action across shared four-city discovery cards/detail actions; detail contact row also says Text. No automated outreach, body or recipient inferred.139tests and OpenNext/TypeScript pass; app641dab3 deployed: native build0ef5a790-bf3c-4745-8db0-2ab5b7488306 Ready (2m21s), version53eca25e. Live SMS links verified in all four city shortlists and the Manteca detail page; city/service filters retained. No message sent or physical-device SMS launch claimed. Photo tasks and genuine reporter pet pilot stay OPEN. [Evidence](research/nov8-contact-release.md).
+
 ## November 8 freshness + event discovery
 
 Resumed source review: homepage still links October28 flagship. Newspaper pages26/29 leads independently checked; published Spencer Flooring & Paint and Golden Valley Nursery in Tracy. Added City-listed Nov18 4:30PM pickleball ribbon cutting, verified against official Form Center/courts page. Totals: 66 dated listing checks / 36 approved event occurrences (historical and future combined). Public API readbacks pass. No surrounding-city coverage inferred.
