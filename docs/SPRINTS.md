@@ -1,5 +1,14 @@
 # MoHoLocal — SPRINTS.md
 
+## November 8 — Lathrop/Manteca supply and outcome audit
+
+Published JVS Plumbing (explicit Lathrop service) and MW Plumbing (explicit Manteca service; POBox excluded from visitable address). Other-city coverage, emergency/holiday availability, credentials and quality not inferred. Sources/holds:research/lathrop-manteca-2026-11-08.json. No duplicated Salen record or referral-site operator, no images or outreach.
+
+METRIC-01 audit found no application search/contact analytics; listing requests are not provider inquiries, and contact clicks would not prove successful connections. Hosting dashboard-only analytics remain unknown. Prioritized privacy-preserving measurement and optional self-reported outcome stages are documented in [audit](research/resident-outcome-audit-2026-11-08.md); instrumentation is not shipped. REV-01 willingness-to-pay remains unproven.
+
+UX: no-results can check other cities retaining service/category/query, or broaden local listings retaining city, with a coverage caution. Tests/build/live acceptance pending. Keep MountainHouse/Manteca photo tasks and genuine-reporter pet pilot OPEN.
+
+
 ## November 8 — library programs, gym evidence and event duration
 
 Published Iron Zone Gym in Mountain House after official contact/address/service checks; 24/7 is member access, not established staffed/visitor/holiday hours. Added MountainHouse November19 11:30AM–12:15PM AnimalServices storytime (no animals present) and November30 4–5PM winter reading kickoff (snow-themed activities; no real-snow promise). Winter kickoff appears in seasonal discovery. Hosted readback:70 dated listing checks,41 approved event records including past. SafeHaven source timed out and is held; existing TracyCyclery record was not duplicated or updated from an unverified domain. [Sources and holds](research/gym-library-2026-11-08.json).

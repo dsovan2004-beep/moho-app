@@ -1,0 +1,31 @@
+{
+  "checked_on": "2026-11-08",
+  "providers": [
+    {
+      "name": "JVS Plumbing",
+      "city": "Lathrop",
+      "address": "17036 S Harlan Road, Lathrop, CA 95330",
+      "phone": "(209) 229-5487",
+      "website": "https://www.jvsplumb.com/",
+      "source_url": "https://www.jvsplumb.com/contact-us",
+      "description": "Residential and commercial plumbing provider explicitly advertising service in Lathrop, including drains, leak detection and water heaters. Confirm service fit, quote, emergency response and holiday availability directly. Other focus-city coverage and license/insurance claims have not been independently verified."
+    },
+    {
+      "name": "MW Plumbing",
+      "city": "Manteca",
+      "address": null,
+      "phone": "(209) 992-0461",
+      "website": "https://www.mwplumbing.com/",
+      "source_url": "https://www.mwplumbing.com/plumbing-services",
+      "description": "Plumbing provider explicitly offering Manteca residential and commercial service, including drain cleaning, leaks, repiping and water heaters. The published Central Valley contact is listed here. PO Box 66 in Manteca is a mailing address, not an established walk-in office. Confirm current availability, quote and service scope directly; license and insurance claims have not been independently verified."
+    }
+  ],
+  "holds": [
+    "Haro/Santini: business location does not establish explicit travel coverage; no publication in this pass",
+    "Pena has template testimonials and broad valley language; not published",
+    "EGC sources returned502; not published",
+    "Salen already listed with checked Lathrop/Manteca coverage; no duplicate",
+    "lathropplumbing.com is a referral/partner lead form; not treated as a distinct verified operator",
+    "No images reused or outreach; photo tasks and genuine-reporter pet pilot remain open"
+  ]
+}

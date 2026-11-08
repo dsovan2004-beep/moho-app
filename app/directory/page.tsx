@@ -602,9 +602,12 @@ export default function DirectoryPage() {
               <p className="font-medium text-gray-700">{query ? 'No matches for your search' : service ? `No website-checked ${service.label.toLowerCase()} providers in this shortlist yet` : 'No businesses found'}</p>
               <p className="text-sm mt-1 mb-4">{query ? 'Try another name or remove your search term.' : 'Broaden the service while keeping your city selected.'}</p>
               <div className="flex flex-wrap justify-center gap-3">
+                {city !== 'All Cities' && <Link href={directoryHref(filters,{city:'All Cities'})} className="inline-flex min-h-11 items-center rounded-xl border border-slate-300 px-4 text-sm font-semibold text-[#19352d]">Check other cities</Link>}
+                {!service && <Link href={directoryHref(filters,{category:'All',service:null,query:null})} className="inline-flex min-h-11 items-center rounded-xl border border-slate-300 px-4 text-sm font-semibold text-[#19352d]">Browse all local listings</Link>}
                 {query && <Link href={directoryHref(filters,{query:null})} className="inline-flex min-h-11 items-center rounded-xl border border-slate-300 px-4 text-sm font-semibold text-[#19352d]">Remove search term</Link>}
                 {service && <Link href={directoryHref(filters,{service:null})} className="inline-flex min-h-11 items-center rounded-xl border border-slate-300 px-4 text-sm font-semibold text-[#19352d]">Browse more services</Link>}
               </div>
+              {city !== 'All Cities' && <p className="mt-3 text-sm text-slate-600">Other-city results may not serve your address. Confirm coverage directly.</p>}
               {(city !== 'All Cities' || category !== 'All' || service || query) && (
                 <Link
                   href="/directory"
