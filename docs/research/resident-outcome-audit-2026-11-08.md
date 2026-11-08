@@ -2,13 +2,13 @@
 
 ## Evidence and limits
 
-Source inspected: app/layout.tsx, app/directory/page.tsx, app/components/BusinessContactActions.tsx, app/api/business-requests/route.ts, lib/directory-filters.ts, wrangler.jsonc, package.json, public schema table inventory. Repository text search across app/lib/workers/migrations for analytics, outbound, contact_click, trackEvent, beacon, gtag, Clarity, PostHog and inquiry terms found no application contact/search outcome instrumentation. Cloudflare observability is enabled for moho-web; operational logs do not establish successful resident connections. Cloudflare Web Analytics configuration and any dashboard-only settings were not audited in this pass, so traffic reporting outside the source remains unknown.
+Source inspected: app/layout.tsx, app/directory/page.tsx, app/components/BusinessContactActions.tsx, app/api/business-requests/route.ts, lib/directory-filters.ts, wrangler.jsonc, package.json, public schema table inventory. Repository text search across app/lib/workers/migrations for analytics, outbound, contact_click, trackEvent, beacon, gtag, Clarity, PostHog and inquiry terms found no application contact/search outcome instrumentation. Cloudflare observability is enabled for moho-web; operational logs do not establish successful resident connections. Live DOM inspection of the published MW Plumbing page found the Cloudflare Insights beacon script loaded from static.cloudflareinsights.com. This establishes a traffic-beacon integration in the rendered page, not successful receipt, dashboard totals or resident outcomes. Dashboard settings, delivery and traffic totals were not audited.
 
 ## Current coverage
 
 | Outcome | Current evidence | Verdict |
 |---|---|---|
-| Traffic | Hosting observability configured; dashboard traffic analytics not checked | Cannot claim a resident-outcome baseline |
+| Traffic | Hosting observability plus Cloudflare Insights script present in live DOM; delivery/dashboard totals not checked | Traffic integration found; no resident-outcome baseline |
 | Search/no result | Search/filter state exists in browser; no stored aggregate events found | Not measured by app |
 | Contact intent | Direct tel/sms/website anchors, no application tracking handler | Not measured by app |
 | Provider inquiry | business_requests stores listing submissions, claims and corrections, not service inquiries | Do not count as customer leads |
@@ -28,3 +28,7 @@ No private message bodies, search histories or contact details were exported for
 ## UX improvement from audit
 
 No-result recovery previously offered remove-search, broaden-service and clear-all. It now adds Check other cities preserving the exact category/service/query, with an explicit coverage caution, and a local all-listings recovery preserving city when no service is active. No nearby coverage inferred. Acceptance requires live navigation to preserve filters.
+
+## Release acceptance
+
+Sourceca5357d deployed (version5b2fd9fa, native Ready1m42s). 140 tests and final OpenNext/TypeScript build pass. Live Manteca service/query recovery retains service/category/query when switching to AllCities. Live Lathrop local broadening retains city while clearing category/query. Screenshot nov8-no-results-recovery-live.png. No search test created a database listing or resident inquiry.

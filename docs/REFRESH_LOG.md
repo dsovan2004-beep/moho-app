@@ -4,9 +4,9 @@
 
 Published JVS Plumbing (explicit Lathrop service) and MW Plumbing (explicit Manteca service; POBox excluded from visitable address). Other-city coverage, emergency/holiday availability, credentials and quality not inferred. Sources/holds:research/lathrop-manteca-2026-11-08.json. No duplicated Salen record or referral-site operator, no images or outreach.
 
-METRIC-01 audit found no application search/contact analytics; listing requests are not provider inquiries, and contact clicks would not prove successful connections. Hosting dashboard-only analytics remain unknown. Prioritized privacy-preserving measurement and optional self-reported outcome stages are documented in [audit](research/resident-outcome-audit-2026-11-08.md); instrumentation is not shipped. REV-01 willingness-to-pay remains unproven.
+METRIC-01 audit found no application search/contact analytics; listing requests are not provider inquiries, and contact clicks would not prove successful connections. Live DOM confirms a Cloudflare Insights traffic beacon; delivery/dashboard totals remain unchecked, and this is not resident-outcome instrumentation. Prioritized privacy-preserving measurement and optional self-reported outcome stages are documented in [audit](research/resident-outcome-audit-2026-11-08.md); instrumentation is not shipped. REV-01 willingness-to-pay remains unproven.
 
-UX: no-results can check other cities retaining service/category/query, or broaden local listings retaining city, with a coverage caution. Tests/build/live acceptance pending. Keep MountainHouse/Manteca photo tasks and genuine-reporter pet pilot OPEN.
+UX: no-results can check other cities retaining service/category/query, or broaden local listings retaining city, with a coverage caution. 140 tests and final OpenNext/TypeScript build passed. Sourceca5357d deployed Ready1m42s, version5b2fd9fa. Live Manteca plumbing no-result → other cities retains query/category/service; Lathrop local recovery retains city and clears category/query. Evidence:research/nov8-no-results-recovery-live.png. Hosted total72 dated listing checks;41 approved event records unchanged. Keep MountainHouse/Manteca photo tasks and genuine-reporter pet pilot OPEN.
 
 
 ## November 8 — library programs, gym evidence and event duration
