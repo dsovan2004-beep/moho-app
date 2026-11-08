@@ -1,0 +1,42 @@
+{
+  "checked_on": "2026-11-08",
+  "newspaper": "https://www.mhmatters.net/pdf/2026/261028_MHMatters_Flagship147_s.pdf",
+  "provider": {
+    "name": "The Pampered Pet Grooming & Spa",
+    "website": "https://www.pamperedpettracy.com/",
+    "phone": "(209) 833-7600",
+    "address": "1872 W 11th Street, Tracy, CA 95376",
+    "description": "Tracy grooming salon whose official website also advertises mobile grooming in the Central Valley. Confirm your pet's needs, quote, appointment and exact mobile coverage directly. Coverage for Mountain House, Lathrop and Manteca has not been individually established.",
+    "sources": [
+      "https://www.pamperedpettracy.com/pages/contact",
+      "https://www.pamperedpettracy.com/",
+      "https://www.pamperedpettracy.com/pages/services"
+    ]
+  },
+  "events": [
+    {
+      "title": "Fall Lanterns for Grades 6–12",
+      "city": "Tracy",
+      "location": "Tracy Branch Library, Wadsworth Room, 20 E Eaton Avenue, Tracy",
+      "start": "2026-11-16T16:00:00-08:00",
+      "end": "2026-11-16T17:00:00-08:00",
+      "url": "https://www.ssjcpl.org/events-services/events-calendar/tracy/november-2026/fall-lanterns-for-grades-6-12?id=1794873600-246213",
+      "description": "Students in grades 6–12 can make a fall lantern using a mason jar, pressed flowers and acrylic paint. Official occurrence, grade range and room checked November 8, 2026. Confirm attendance and materials arrangements directly with the library."
+    },
+    {
+      "title": "DIY Winter Crafts (Ages 3–7)",
+      "city": "Manteca",
+      "location": "Manteca Branch Library, 320 W Center Street, Manteca",
+      "start": "2026-12-04T15:00:00-08:00",
+      "end": "2026-12-04T16:00:00-08:00",
+      "url": "https://www.ssjcpl.org/events-services/events-calendar/manteca-branch/diy-winter-crafts?id=1796425200-245768",
+      "description": "Winter craft-making program for children ages 3–7. Exact December 4 occurrence, audience and branch location checked November 8, 2026 on the library's official page. Confirm attendance and any registration requirements directly."
+    }
+  ],
+  "contact_source": "https://www.ithinkpet.com/central-valley-rates.html",
+  "holds": [
+    "Hadestown article is retrospective; no future performance inferred",
+    "Paws on Puente and V6 Garage Door first-party evidence unavailable in this pass; no publication",
+    "Photo replacements and real-reporter pet pilot remain open"
+  ]
+}

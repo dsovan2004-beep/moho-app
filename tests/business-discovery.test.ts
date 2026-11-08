@@ -2,7 +2,7 @@ import {test} from 'node:test'
 import assert from 'node:assert/strict'
 import {renderToStaticMarkup} from 'react-dom/server'
 import React from 'react'
-import {businessHref, contactPreference, discoveryContext, latestCheck} from '../lib/business-discovery'
+import {businessHref, contactPreference, discoveryContext, latestCheck, textContact} from '../lib/business-discovery'
 import BusinessContactActions from '../app/components/BusinessContactActions'
 import type {Business} from '../lib/supabase'
 const old = {checked_at:'2026-10-01',source_url:'https://example.com',checked_fields:[],service_areas:['Tracy'],service_tags:['plumbing'],scope_note:''}
@@ -34,4 +34,16 @@ test('request-first contact renders before follow-up phone with an accessible ta
   assert.ok(html.indexOf('Start service request') < html.indexOf('Call for follow-up'))
   assert.match(html,/required website request form/)
   assert.match(html,/min-h-11/)
+})
+
+
+test('text channel requires the exact checked provider host and phone',()=>{
+  assert.equal(textContact('https://www.ithinkpet.com/','+1 (510) 274-1750')?.href,'sms:+15102741750')
+  assert.equal(textContact('https://ithinkpet.com.example.com/','5102741750'),null)
+  assert.equal(textContact('https://ithinkpet.com/','2095550100'),null)
+  const html=renderToStaticMarkup(React.createElement(BusinessContactActions,{phone:'(510) 274-1750',website:'https://www.ithinkpet.com/'}))
+  assert.match(html,/href="sms:\+15102741750"/)
+  assert.doesNotMatch(html,/sms:[^" ]*[?&]body=/)
+  assert.doesNotMatch(html,/tel:/)
+  assert.match(html,/nothing is sent automatically/)
 })

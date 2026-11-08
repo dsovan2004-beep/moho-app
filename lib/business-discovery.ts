@@ -33,3 +33,17 @@ export function contactPreference(website?: string) {
   }
   return null
 }
+
+
+// Only verified host + number pairs can change the contact channel.
+export function textContact(website?:string, phone?:string) {
+  let host=''
+  try { const url=new URL(website??''); if(!['https:','http:'].includes(url.protocol)) return null; host=url.hostname.replace(/^www\./,'') } catch { return null }
+  const digits=(phone??'').replace(/\D/g,'').replace(/^1(?=\d{10}$)/,'')
+  if(host==='ithinkpet.com'&&digits==='5102741750') return {
+    href:'sms:+15102741750',label:'Text (510) 274-1750',
+    note:'The provider lists this number for texts. Opens your messaging app; nothing is sent automatically.',
+    source:'https://www.ithinkpet.com/central-valley-rates.html',checkedAt:'2026-11-08',
+  }
+  return null
+}

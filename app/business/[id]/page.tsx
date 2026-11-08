@@ -1,7 +1,7 @@
 import { serializeJsonLd } from '@/lib/json-ld'
 import ListingEvidence from '@/app/components/ListingEvidence'
 import BusinessContactActions from '@/app/components/BusinessContactActions'
-import { businessHref, discoveryContext } from '@/lib/business-discovery'
+import { businessHref, discoveryContext, textContact } from '@/lib/business-discovery'
 import { CHECK_COLUMNS } from '@/lib/listing-evidence'
 import { PUBLIC_BUSINESS_COLUMNS } from '@/lib/supabase'
 export const runtime = 'nodejs'
@@ -485,7 +485,7 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
               />
             )}
             {biz.phone && (
-              <InfoRow icon="📞" label="Phone" value={biz.phone} href={`tel:${biz.phone}`} />
+              <InfoRow icon="📞" label={textContact(biz.website,biz.phone) ? "Text" : "Phone"} value={biz.phone} href={textContact(biz.website,biz.phone)?.href ?? `tel:${biz.phone}`} />
             )}
             {biz.website && (
               <InfoRow
