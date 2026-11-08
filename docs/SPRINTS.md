@@ -1,10 +1,14 @@
 # MoHoLocal — SPRINTS.md
 
+## Cross-chat alignment — November 8
+
+Reviewed recent decisions in Research online directory concept: its mobile-sawmill experiment and proposed Astro/D1 stack are separate from the existing four-city MoHoLocal app. Keep Next.js/Cloudflare/Supabase. Carry over source verification, service-area matching, confirmed holiday information and outcome measurement. Queue an audit of contact/inquiry measurement and dated holiday-hours evidence; no invented availability or revenue claims. [Decision record](PROJECT_ALIGNMENT.md).
+
 ## November 8 — HVAC discovery and newspaper home-service leads
 
 Published Virginia Mechanical after first-party phone/address/service-area checks explicitly covering Mountain House, Tracy, Lathrop and Manteca. Published Image Tile & Stone with Tracy and Mountain House evidence only; office address and other cities not inferred. Added exact Lathrop November17 10:30–11AM preschool storytime from the official library occurrence. Hosted readback:69 dated listing checks and39 approved event records including past. Newspaper page30 pancake breakfast is retrospective and was not made an upcoming event. No credentials, quality, availability or image reuse endorsed.
 
-UX: heating/air-conditioning service shortcut backed by dated provider coverage; archived event pages suppress calendar CTA and use Original event source, while current pages link Organizer details & attendance information. Tests139 pass; final build/native acceptance in progress. Mountain House real2026 photo, Manteca exact-location verification and genuine-reporter pet pilot remain OPEN. No outreach or fabricated reports. [Evidence](research/matters-home-services-2026-11-08.json).
+UX: heating/air-conditioning service shortcut backed by dated provider coverage; archived event pages suppress calendar CTA and use Original event source, while current pages link Organizer details & attendance information. Tests139 and final OpenNext/TypeScript build pass. Source38810c6 deployed, native Ready1m49s, version2d8af0b0. Live MountainHouse HVAC shortcut shows VirginiaMechanical with selected service; archived Diwali event has0calendar CTA and Original event source. Cross-chat research did not change the app stack or city scope. Mountain House real2026 photo, Manteca exact-location verification and genuine-reporter pet pilot remain OPEN. No outreach or fabricated reports. [Evidence](research/matters-home-services-2026-11-08.json).
 
 
 ## November 8 afternoon — contact UX + newspaper continuation
