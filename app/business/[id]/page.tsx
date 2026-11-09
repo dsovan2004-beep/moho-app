@@ -283,7 +283,8 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
   const related = relatedResult.businesses
   const returnQuery = new URLSearchParams({city: context.city, category: biz.category})
   if (context.service) returnQuery.set('service', context.service.key)
-  const city = CITY_CFG[biz.city] ?? CITY_CFG['Mountain House']
+  const city = CITY_CFG[context.city] ?? CITY_CFG['Mountain House']
+  const officeEmoji = CITY_CFG[biz.city]?.emoji ?? '📍'
   const catEmoji = getCategoryEmoji(biz.category)
   const hasContact = !!(biz.phone || biz.website || biz.contact_email)
   const hoursList = biz.hours ? parseHours(biz.hours) : []
@@ -509,7 +510,7 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
             <InfoRow
               icon="🏙️"
               label="Office location"
-              value={`${city.emoji} ${biz.city === 'Service area only' ? 'Office location not listed' : `${biz.city}, CA`}`}
+              value={`${officeEmoji} ${biz.city === 'Service area only' ? 'Office location not listed' : `${biz.city}, CA`}`}
             />
             <InfoRow
               icon="📂"

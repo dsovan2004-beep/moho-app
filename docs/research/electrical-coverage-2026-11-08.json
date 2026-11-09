@@ -1,0 +1,40 @@
+{
+  "checked_on": "2026-11-08",
+  "method": "Official websites rendered in Chrome; no forms submitted",
+  "providers": [
+    {
+      "name": "Luminate Electric",
+      "city": "Lathrop",
+      "phone": "(510) 303-0655",
+      "website": "https://www.luminateelectric.com/",
+      "source_url": "https://www.luminateelectric.com/service-areas",
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "description": "Lathrop-based provider advertising residential, commercial and industrial electrical work, including panel, lighting and EV-charger services. Its official Central Valley service-area section explicitly names Mountain House, Tracy, Lathrop and Manteca. Confirm property eligibility, job scope, quote, required credentials and current appointment availability directly; a public visitor office is not established here."
+    },
+    {
+      "name": "Lainez Electric",
+      "city": "Manteca",
+      "phone": "(650) 644-5235",
+      "website": "https://lainezelectric.com/",
+      "source_url": "https://lainezelectric.com/",
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "description": "Manteca-based provider advertising electrical repairs, panel upgrades, EV-charger installation and residential and commercial work. Its official service-area list explicitly names Mountain House, Tracy, Lathrop and Manteca. Confirm your property, job scope, quote, required credentials and appointment directly; advertised same-day or emergency service is not confirmed availability."
+    }
+  ],
+  "limits": [
+    "Phone/name/domain duplicate checks passed before publication",
+    "No public home/visitor address, photos, ratings or fixed prices copied",
+    "Website checks do not independently validate licensing, insurance, quality, safety, estimates, same-day service or response times",
+    "Electrical services tagged separately; general handyman tags do not establish electrical specialization"
+  ]
+}

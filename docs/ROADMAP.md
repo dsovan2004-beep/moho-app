@@ -1,5 +1,14 @@
 # MoHoLocal Product Roadmap
 
+## November 8 — electrical coverage and provider-page city consistency
+
+DATA-17: published Luminate Electric (Lathrop based) and Lainez Electric (Manteca based), each with explicit first-party service-area evidence for all four cities and public phone/name/domain duplicate checks.88dated checks; Electrical services has2choices in each city. No office/home street address, photographs, license/insurance/quality confirmation, price, appointment or emergency-response endorsement copied. [Evidence](research/electrical-coverage-2026-11-08.json) and matching SQL. Website information checks remain separate from required credential/availability checks.
+
+LAUNCH-01/UX-04: shared Electrical services shortcut uses a distinct service tag, not generic handyman classification. Provider detail styling now follows validated browsing-city context while office text/emoji uses the business's actual city or neutral pin. Fixes unsupported office-city fallback to Mountain House styling. Local rendered checks on a Modesto provider confirm each four-city gradient with office label still Modesto.147tests and final OpenNext/TypeScript pass; native/live acceptance pending.
+
+SEO-03 follow-up after7:53PMrequest: overview baseline reports still processing; no new traffic/indexing baseline or redundant submission. FB drafts unpublished. Photo acceptance tasks, genuine-reporter pet pilot, physical-phone delivery/native contact-app behavior and genuine resident/owner acceptance remain OPEN.
+
+
 ## November 8 — garage-door and landmark release accepted
 
 DATA-16/LAUNCH-01: source8396829 deployed Ready2m21s, native3cbd34ed.86dated website checks total. Dedicated Garage door repair shortlist shows Barton Overhead Door and R&S Erection of Tri-County for each of Mountain House/Tracy/Lathrop/Manteca. Live390px city-link switching retains category/service, shows2of2choices in each city, selected shortcut remains active and no document overflow. Both office cities remain Modesto; no local walk-in office inferred. Detail and related-provider link preserve Manteca/garage-door context. No calls, bookings, messages or synthetic reports/outcomes created. [Evidence](research/garage-door-coverage-2026-11-08.json); screenshot research/nov8-garage-door-live.png.
