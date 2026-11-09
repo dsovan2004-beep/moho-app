@@ -148,7 +148,7 @@ function BusinessCard({ biz, activeCategory, city, service, returnTo }: { biz: B
 
         <ListingEvidence check={biz.listing_checks} />
 
-        <BusinessContactActions phone={biz.phone} website={biz.website} />
+        <BusinessContactActions businessName={biz.name} phone={biz.phone} website={biz.website} />
         <div className="mt-2 flex flex-wrap gap-x-4 border-t border-slate-100 pt-1">
           <Link href={`/report-listing/${biz.id}?${new URLSearchParams({city})}`} aria-label={`Suggest a correction for ${biz.name}`} className="inline-flex min-h-11 items-center text-xs font-semibold text-slate-600 underline underline-offset-4 hover:text-[#19352d] focus-visible:ring-2 focus-visible:ring-[#19352d]">Suggest a correction</Link>
           {!biz.claimed && <Link href={`/claim-listing/${biz.id}`} aria-label={`Claim listing for ${biz.name}`} className="inline-flex min-h-11 items-center text-xs font-semibold text-slate-600 underline underline-offset-4 hover:text-[#19352d] focus-visible:ring-2 focus-visible:ring-[#19352d]">Own this business? Claim listing</Link>}

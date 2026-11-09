@@ -2,6 +2,7 @@ import { serializeJsonLd } from '@/lib/json-ld'
 import ListingEvidence from '@/app/components/ListingEvidence'
 import BusinessContactActions from '@/app/components/BusinessContactActions'
 import { businessHref, discoveryContext, directoryReturn, textContact } from '@/lib/business-discovery'
+import { businessPhoneHref, businessWebsiteHref } from '@/lib/contact-links'
 import { CHECK_COLUMNS } from '@/lib/listing-evidence'
 import { PUBLIC_BUSINESS_COLUMNS } from '@/lib/supabase'
 export const runtime = 'nodejs'
@@ -289,7 +290,10 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
   const city = CITY_CFG[context.city] ?? CITY_CFG['Mountain House']
   const officeEmoji = CITY_CFG[biz.city]?.emoji ?? '📍'
   const catEmoji = getCategoryEmoji(biz.category)
-  const hasContact = !!(biz.phone || biz.website || biz.contact_email)
+  const phoneHref = businessPhoneHref(biz.phone)
+  const websiteHref = businessWebsiteHref(biz.website)
+  const textChannel = phoneHref ? textContact(websiteHref ?? undefined,biz.phone) : null
+  const hasContact = !!(phoneHref || websiteHref || biz.contact_email)
   const hoursList = biz.hours ? parseHours(biz.hours) : []
 
   const jsonLd = buildJsonLd(biz)
@@ -392,7 +396,7 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
 
           {/* Action buttons — full width on mobile, auto-width on sm+ */}
           <div className="flex flex-col gap-2 shrink-0 w-full sm:w-auto">
-            <BusinessContactActions phone={biz.phone} website={biz.website} tone="dark" />
+            <BusinessContactActions businessName={biz.name} phone={biz.phone} website={biz.website} tone="dark" />
             {biz.address && (
               <a
                 href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(biz.address + ', ' + biz.city + ', CA')}`}
@@ -488,15 +492,15 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
                 href={`https://maps.google.com/?q=${encodeURIComponent(biz.address + ', ' + biz.city + ', CA')}`}
               />
             )}
-            {biz.phone && (
-              <InfoRow icon="📞" label={textContact(biz.website,biz.phone) ? "Text" : "Phone"} value={biz.phone} href={textContact(biz.website,biz.phone)?.href ?? `tel:${biz.phone}`} />
+            {phoneHref && (
+              <InfoRow icon="📞" label={textChannel ? "Text" : "Phone"} value={biz.phone!} href={textChannel?.href ?? phoneHref} />
             )}
-            {biz.website && (
+            {websiteHref && (
               <InfoRow
                 icon="🌐"
                 label="Website"
-                value={biz.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}
-                href={biz.website}
+                value={websiteHref.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+                href={websiteHref}
               />
             )}
             {biz.contact_email && !biz.phone && (
@@ -533,7 +537,7 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
               </div>
             )}
 
-            <BusinessContactActions phone={biz.phone} website={biz.website} />
+            <BusinessContactActions businessName={biz.name} phone={biz.phone} website={biz.website} />
             {biz.contact_email && !biz.phone && (
               <a
                 href={`mailto:${biz.contact_email}`}
@@ -649,7 +653,7 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
                 </Link>
                 <p className="mt-1 text-xs text-slate-500">{r.city === 'Service area only' ? 'Office location not listed' : `Based in ${r.city}`}</p>
                 <ListingEvidence check={r.listing_checks} />
-                <BusinessContactActions phone={r.phone} website={r.website} />
+                <BusinessContactActions businessName={r.name} phone={r.phone} website={r.website} />
               </article>
             ))}
           </div>

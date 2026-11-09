@@ -76,7 +76,7 @@ export default async function CityPage({ params }: PageProps) {
         <h3 className="font-bold text-lg"><Link href={businessHref(biz.id, city.name)} className="text-[#19352d] underline underline-offset-4 break-words">{biz.name}</Link></h3>
         <p className="mt-2 text-sm text-slate-600">{biz.city === 'Service area only' ? 'Office location not listed' : `Based in ${biz.city}`} </p>
         <ListingEvidence check={biz.listing_checks} />
-        <div className="mt-4"><BusinessContactActions phone={biz.phone} website={biz.website} /></div>
+        <div className="mt-4"><BusinessContactActions businessName={biz.name} phone={biz.phone} website={biz.website} /></div>
       </article>)}</div> : <div className="mt-5 border border-dashed border-slate-300 rounded-2xl p-6 text-slate-700">{served.error ? 'Checked providers could not load right now.' : 'No website-checked providers are ready for this city yet.'} <Link href={directoryUrl} className="underline font-semibold">Browse existing listings</Link> and check details directly.</div>}
     </section>
 
