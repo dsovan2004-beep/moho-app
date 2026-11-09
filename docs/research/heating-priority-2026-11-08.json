@@ -1,0 +1,35 @@
+{
+  "checked_on": "2026-11-08",
+  "priority_reason": "Only one dated HVAC choice per city versus6\u20138plumbing choices; prioritize winter service choice",
+  "before_hvac_by_city": {
+    "Mountain House": 1,
+    "Tracy": 1,
+    "Lathrop": 1,
+    "Manteca": 1
+  },
+  "providers": [
+    {
+      "name": "Irish Heating and Air Conditioning LLC",
+      "city": "Tracy",
+      "phone": "(209) 257-3999",
+      "website": "https://www.irishheatandair.com/",
+      "source_url": "https://www.irishheatandair.com/heating-ac-repairs-lathrop/",
+      "description": "Advertises furnace repair, installation and maintenance alongside air conditioning and commercial HVAC. Its official service pages explicitly name Mountain House, Tracy, Lathrop and Manteca. The Tracy contact number is shown here; a walk-in office is not established. Confirm job type, quote, current service coverage and appointment availability directly."
+    },
+    {
+      "name": "Warren's Heating & Air Conditioning",
+      "city": "Manteca",
+      "phone": "(209) 825-0682",
+      "website": "https://www.warrenshvac.com/",
+      "source_url": "https://www.warrenshvac.com/mountain-house",
+      "description": "Manteca-based heating and air conditioning provider whose official page explicitly names Mountain House, Tracy, Lathrop and Manteca. Advertises furnace repair, replacement and maintenance alongside AC services. The website shows conflicting Manteca street addresses, so no visitable address is published here. Confirm current location, job scope, quote and appointment availability directly."
+    }
+  ],
+  "holds": [
+    "Warren two conflicting Manteca street addresses; street address withheld",
+    "Irish suite mailing/visitor-office distinction unconfirmed; street address withheld",
+    "No current appointments, emergency response, credentials or Thanksgiving hours verified",
+    "Pet sitting/dog walking1percity remain next supply priority",
+    "Photo tasks and genuine reporter pet pilot remain open; no outreach"
+  ]
+}

@@ -1,5 +1,16 @@
 # MoHoLocal — SPRINTS.md
 
+## Current priorities — November 8 evening
+
+Priority chosen from production coverage counts, rather than adding features by default. Heating/AC had1dated choice per city versus6–8plumbing choices. DATA-12: published IrishHeating&Air and Warren's, explicitly covering all four cities; heating/AC now3dated choices in MountainHouse,Tracy,Lathrop,Manteca. Native directory filters checked live in all four cities. Street addresses withheld where visitor-office evidence or conflicting addresses prevented certainty. These are website checks, not owner confirmations, credentials, availability or quality endorsements. [Evidence](research/heating-priority-2026-11-08.json), [publication SQL](research/publish-heating-priority-2026-11-08.sql), screenshot research/nov8-heating-priority-live.png. Data-only publication; existing application unchanged.
+
+Next execution order:
+1. DATA-13: strengthen pet sitting/dog walking, currently1dated option per city. Require explicit service cities; do not assume coverage from group membership or office location.
+2. DATA-14: fill carpet-cleaning depth (MountainHouse1; other cities2 before this pass) and mobile-grooming depth (2percity exceptTracy3), with distinct operator/contact checks and no generalized house-cleaning tags.
+3. PILOT-01/METRIC-01: genuine resident use and voluntary outcomes; no fake reports or conversion claims. Pet reporter pilot remains gated on a real eligible reporter, not a synthetic case.
+4. Continue bounded UI/mobile checks tied to actual resident tasks and confirmed defects. Photo rights/location acceptance tasks stay OPEN; do not replace assets without meeting criteria. No outreach authorized.
+
+
 ## November 8 — private outcome overview and carpet-cleaning discovery
 
 Added an admin-only30-Pacific-day outcome summary with all four city totals, refresh/error/loading states and explicit self-report/selection-bias limits. Database enforces confirmed non-anonymous non-banned admin access; public/ordinary users cannot retrieve the summary. Missing/error payloads do not become zero, and raw/private account/limit rows remain inaccessible. SQL transaction checks passed for no-auth/nonadmin rejection and admin city/date scope; no data written.144 tests and final OpenNext/TypeScript build pass. Source7646125 deployed Ready2m2s, version8f431669. Live owner admin summary and Refresh show October10–November8 with all four city rows and0actual updates. Lathrop carpet filter shows Ayres and selected shortcut.76 dated website checks;41 event records unchanged. Screenshot:research/nov8-carpet-discovery-live.png.
