@@ -1,5 +1,16 @@
 # MoHoLocal — SPRINTS.md
 
+## November 9 — local-first mobile search recovery; four more listing checks
+
+MOBILE-06 LIVE and accepted. Compact named no-results region prioritizes removing text while retaining city/category/exact service, broadening to category services within that city, then browsing all city listings. Other cities is a separate explicit action; no unfiltered self-loop. Full-width mobile recovery links, missing-business suggestion and coverage caveat retained. Top-level Clear all remains an explicit global reset.
+
+165tests pass (two new four-city recovery/self-loop regressions), TypeScript and OpenNext build pass. Local action routes retain Manteca correctly;320px width matches viewport and actions are44–66px tall. Accepted source4842dd1cfa2413943d99317b4b3a73b65966ca93; native version53d03f74 Ready in1m31s; public build marker matches. Live Manteca remove-text route retains Home Services/plumbing; all-city-listings recovery retains Manteca and resets category. Live empty region at320px has no document overflow and smallest link target44px. Screenshot research/nov9-local-empty-recovery-live.png inspected; temporary emulation reset.
+
+FRESH-04 complete: Aappakadai (Mountain House), Home Depot #1020 (Tracy), Rasoi (Lathrop) and Watermill Express Main & Alameda (Manteca) rechecked against primary pages. Four check dates, scoped notes and compared fields updated, with private before/after audits and anonymous public read-back. Store locations do not establish delivery/contractor coverage; station water marker does not confirm ice; stock, dietary/quality, current operation and holiday hours remain unconfirmed. Business records/service areas/tags unchanged; no new/duplicate rows. [Evidence and sources](research/local-empty-recovery-2026-11-09.md).
+
+Facebook UNPUBLISHED; real2026 exact-location/reuse-rights photo tasks and genuine-reporter pet pilot OPEN. Physical-phone/screen-reader acceptance OPEN. Continue oldest-source rechecks and resident workflow improvements without full-catalog freshness claims.
+
+
 ## November 9 — preserve mobile results on loading failure; four more rechecks
 
 MOBILE-05 LIVE and accepted. A failed next-page request now preserves existing listing cards/contacts and the current offset, with Try loading more beneath them. Pending retry remains visible and disabled with Trying feedback; success clears the message. Initial-load errors keep their separate Try again flow. New filters clear prior failures; stale-response sequence checks retained.
