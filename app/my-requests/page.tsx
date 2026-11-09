@@ -25,7 +25,7 @@ export default function MyRequests() {
       })
     return () => { active = false }
   }, [user?.id])
-  return <main className="max-w-2xl mx-auto px-4 py-10 space-y-5">
+  return <div className="max-w-2xl mx-auto px-4 py-10 space-y-5">
     <h1 className="text-2xl font-bold">My business requests</h1>
     {checking ? <p role="status">Checking your account…</p> : !user ? <RequestAccount returnTo="/my-requests" /> : <>
       {loading && <p role="status">Loading requests…</p>}
@@ -39,5 +39,5 @@ export default function MyRequests() {
       </article>)}
     </>}
     <Link className="underline inline-block" href="/directory">Browse directory</Link>
-  </main>
+  </div>
 }

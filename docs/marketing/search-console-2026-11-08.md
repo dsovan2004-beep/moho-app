@@ -13,3 +13,5 @@ References: [Google property setup](https://support.google.com/webmasters/answer
 Follow-up after7:06PMrequest: overview performance/indexing/experience/enhancement reports remain Processing data. No repeated sitemap submission or indexing requests; preserve the accepted Success/1,102discovered record and wait for Google's baseline processing. No improvement claimed from elapsed minutes.
 
 Follow-up after7:14PMrequest: baseline overview reports remain Processing data, please check again in a day or so. No repeated sitemap submission, indexing request or traffic-growth claim. Further inventory changes do not imply new Google discovery/indexing counts.
+
+Follow-up after7:42PMrequest: overview baseline reports still processing. No repeated sitemap or indexing requests, traffic baseline or growth claim. Keep waiting for Google's processing; prior successful sitemap read is not proof that later provider additions are indexed.

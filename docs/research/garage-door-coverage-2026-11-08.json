@@ -1,0 +1,39 @@
+{
+  "checked_on": "2026-11-08",
+  "method": "First-party website desk check; no outreach",
+  "providers": [
+    {
+      "name": "Barton Overhead Door",
+      "city": "Modesto",
+      "phone": "(209) 571-3667",
+      "website": "https://www.bartondoor.com/",
+      "source_url": "https://www.bartondoor.com/contact-us/mountain-house-garage-doors/",
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "description": "Modesto-based garage-door repair, installation and opener service. The official service-area list names Mountain House, Tracy, Lathrop and Manteca; Mountain House service is coordinated through Modesto, not a local walk-in branch. Confirm your property, job type, quote, current appointment and any urgent response directly."
+    },
+    {
+      "name": "R&S Erection of Tri-County, Inc.",
+      "city": "Modesto",
+      "phone": "(209) 526-8760",
+      "website": "https://www.rstricounty.com/",
+      "source_url": "https://www.rstricounty.com/service-repair/",
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "description": "Modesto-based provider advertising residential and commercial garage-door and opener service and repair. Its official service-area list explicitly names Mountain House, Tracy, Lathrop and Manteca. Confirm your property, door or opener type, quote and appointment directly; advertised emergency service is not a confirmed response time or available booking."
+    }
+  ],
+  "holds": [
+    "Additional pet sitting/dog walking leads did not meet current first-party identity/contact/service-area gates; not published",
+    "No resident/private home addresses, photos, ratings, license/insurance confirmations, safety endorsements, prices or guaranteed urgent response copied"
+  ],
+  "feature": "Dedicated garage door repair service; do not treat general handyman tags as this specialty"
+}

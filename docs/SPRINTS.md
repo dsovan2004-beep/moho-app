@@ -1,5 +1,14 @@
 # MoHoLocal — SPRINTS.md
 
+## November 8 — garage-door repair and scoped landmark fix
+
+DATA-16: published Barton Overhead Door and R&S Erection of Tri-County with explicit first-party Mountain House/Tracy/Lathrop/Manteca coverage and Modesto office city.86dated checks; garage-door repair has two dated choices per city. Website/phone/name duplicate check passed. No local branch inferred, resident/home address or image reused, credential/quality/availability or emergency-response guarantee. Pet-sitting leads remain held without sufficient current first-party coverage. [Evidence](research/garage-door-coverage-2026-11-08.json) and matching SQL.
+
+LAUNCH-01: added a distinct Garage door repair shortcut/tag through the shared service configuration for directory/city/Discover. Generic handyman listings are not classified as door repair. Local rendered shortcut checks pass for all four city pages and directory. A11Y-01 scope corrected: city/directory pages already use div; actual duplicate main was My business requests only. Changed that page wrapper to div, preserving shared main-content focus target. Local rendered requests/directory/four-city pages each have exactly one main and the focusable skip target.147tests and final OpenNext/TypeScript pass; native/live acceptance pending. No broad accessibility conformance claim.
+
+SEO-03 follow-up after7:42PMrequest: overview performance/indexing/experience/enhancement reports still processing; no redundant sitemap submission/indexing request or growth claim. FB drafts unpublished. Photo tasks, genuine-reporter pet pilot, physical-phone delivery and genuine resident/owner acceptance remain OPEN.
+
+
 ## November 8 — grooming and city-sharing release accepted
 
 DATA-15:84dated checks after two new providers and one existing-brand correction. California Pet Grooming Mobile names all four cities. Ana's Mobile Dog Grooming appears only in Lathrop/Manteca, with new-client exclusions and parking/apartment/weight restrictions retained. Bayberry ID50b70a38-4a16-44e4-8ba3-feaa10231ff1 now identifies iLuvMyPack/former Bayberry from official source evidence; former-brand search returns one result rather than duplicate operators. Live390px results: Mountain House3/Tracy4/Lathrop4/Manteca4, correct Ana inclusion/exclusion, no document overflow. No appointment, owner confirmation, quality/credential or photo-rights claim. [Evidence](research/grooming-followup-2026-11-08.json); screenshot research/nov8-mobile-grooming-live.png.
