@@ -1,5 +1,12 @@
 # MoHoLocal Product Roadmap
 
+## November 8 — search-return release accepted
+
+SEARCH-02 COMPLETE: source814d5ce/nativeb15ed3d8 Ready2m41s. Live390px Lathrop name search → detail → Back restores city/category/q/newest exactly; document width390/scroll390. Live Manteca electrical-services/electrician → Luminate → related Lainez → Back retains all filters and returns2results. Local production build also accepts All Cities without office-city narrowing.152tests, final OpenNext/TypeScript pass; device emulation reset. Category/breadcrumb browse semantics and authentication return controls unchanged. [Acceptance](research/search-return-acceptance-2026-11-08.md), screenshot research/nov8-search-return-live.png.
+
+DATA-19 accepted: Top to Bottom Washers has explicit first-party all-four-city coverage; live name search returns1in each city.90dated website checks, not credential/quality/availability certification. No contact or photo reuse. Search Console sitemap remains Success/1,102discovered pages, no resubmission or indexing-growth claim. FB drafts unpublished; photo tasks, genuine pet pilot, genuine resident/owner acceptance and physical-phone/native-app checks OPEN.
+
+
 ## November 8 — search-return fix and exterior-provider follow-up
 
 SEARCH-02: directory cards carry a validated directory-only return destination. Dedicated Back to results actions restore city (including All Cities), category, explicit service, search text and sort; related-provider visits retain the original return destination. Category/breadcrumb browse actions retain their existing semantics. Reject external URLs, other routes, unknown/duplicate parameters, invalid cities/categories, excessive/control-character query text; canonicalize compatible services and allowed sort. Authentication return policies unchanged.152 tests pass; final build/native/live acceptance pending.
