@@ -35,5 +35,42 @@
     "Additional pet sitting/dog walking leads did not meet current first-party identity/contact/service-area gates; not published",
     "No resident/private home addresses, photos, ratings, license/insurance confirmations, safety endorsements, prices or guaranteed urgent response copied"
   ],
-  "feature": "Dedicated garage door repair service; do not treat general handyman tags as this specialty"
+  "feature": "Dedicated garage door repair service; do not treat general handyman tags as this specialty",
+  "published_counts": {
+    "dated_checks": 86,
+    "garage_door_repair_by_city": {
+      "Mountain House": 2,
+      "Tracy": 2,
+      "Lathrop": 2,
+      "Manteca": 2
+    }
+  },
+  "local_acceptance": {
+    "single_main_and_focusable_skip_target": [
+      "/my-requests",
+      "/directory?city=Tracy",
+      "/mountain-house",
+      "/tracy",
+      "/lathrop",
+      "/manteca"
+    ],
+    "related_provider_preserves_city_and_service": true,
+    "tests_passed": 147,
+    "opennext_typecheck_build": "pass"
+  },
+  "live_acceptance": {
+    "source": "8396829",
+    "native_version": "3cbd34ed",
+    "native_build": "Ready 2m21s",
+    "viewport": 390,
+    "city_switching_preserves_service": true,
+    "two_results_each_city": true,
+    "no_horizontal_overflow": true,
+    "related_provider_preserves_service_and_city": true,
+    "requests_main_before": 2,
+    "requests_main_after": 1,
+    "keyboard_skip_target": "main-content",
+    "device_emulation_reset": true,
+    "real_user_transactions_created": false
+  }
 }

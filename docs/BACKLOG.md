@@ -1,5 +1,14 @@
 # MoHoLocal active execution queue
 
+## November 8 — garage-door and landmark release accepted
+
+DATA-16/LAUNCH-01: source8396829 deployed Ready2m21s, native3cbd34ed.86dated website checks total. Dedicated Garage door repair shortlist shows Barton Overhead Door and R&S Erection of Tri-County for each of Mountain House/Tracy/Lathrop/Manteca. Live390px city-link switching retains category/service, shows2of2choices in each city, selected shortcut remains active and no document overflow. Both office cities remain Modesto; no local walk-in office inferred. Detail and related-provider link preserve Manteca/garage-door context. No calls, bookings, messages or synthetic reports/outcomes created. [Evidence](research/garage-door-coverage-2026-11-08.json); screenshot research/nov8-garage-door-live.png.
+
+A11Y-01 scoped acceptance: prior note naming city/directory nesting was too broad. Those pages already use div wrappers; My business requests was the confirmed duplicate-main case. Live request page changed from2main landmarks to1, shared focusable main-content retained, keyboard Tab reaches Skip to content and Enter focuses main-content. Local requests/directory/four-city pages each have one main.147tests and final OpenNext/TypeScript pass. This closes the scoped landmark fix, not a full accessibility audit or physical-device acceptance. Device emulation reset.
+
+SEO-03 current baseline reports still processing; no redundant sitemap/indexing requests or growth claim. Pet-sitting/dog-walking depth remains OPEN where new leads lack current first-party coverage. FB drafts unpublished; photo acceptance tasks, genuine-reporter pet pilot, genuine resident/owner participation and physical-phone push/native contact-app acceptance remain OPEN. Next: expand supply with evidence and continue bounded resident task/mobile checks.
+
+
 ## November 8 — garage-door repair and scoped landmark fix
 
 DATA-16: published Barton Overhead Door and R&S Erection of Tri-County with explicit first-party Mountain House/Tracy/Lathrop/Manteca coverage and Modesto office city.86dated checks; garage-door repair has two dated choices per city. Website/phone/name duplicate check passed. No local branch inferred, resident/home address or image reused, credential/quality/availability or emergency-response guarantee. Pet-sitting leads remain held without sufficient current first-party coverage. [Evidence](research/garage-door-coverage-2026-11-08.json) and matching SQL.
