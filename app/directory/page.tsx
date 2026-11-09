@@ -11,10 +11,11 @@ import { CITIES as CITY_LIST, CITY_BY_NAME, RELAUNCH_CITY_NAMES } from '@/lib/ci
 import Link from 'next/link'
 import ListingEvidence from '@/app/components/ListingEvidence'
 import { CHECK_COLUMNS } from '@/lib/listing-evidence'
-import { SERVICE_CHOICES, serviceForCategory, serviceSearchTag } from '@/lib/services'
+import { serviceForCategory, serviceSearchTag } from '@/lib/services'
 import { directoryHref } from '@/lib/directory-filters'
 import { businessHref } from '@/lib/business-discovery'
 import BusinessContactActions from '@/app/components/BusinessContactActions'
+import DirectoryServices from '@/app/components/DirectoryServices'
 
 const PAGE_SIZE = 20
 
@@ -325,20 +326,9 @@ export default function DirectoryPage() {
       <div className="mb-6">
         <h1 className="text-3xl font-extrabold text-gray-900">Find your local help</h1>
         <p className="text-gray-500 mt-1">Find local help in Mountain House, Tracy, Lathrop and Manteca. Confirm the exact service area with each business.</p>
-        <a href="#resident-outcome" className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-[#19352d] underline">Already used the directory? Share an optional outcome</a>
       </div>
 
       {loadError && <p role="alert" className="mb-5 bg-amber-50 border border-amber-300 p-4 rounded-xl">We couldn't load these listings. <button onClick={() => fetchPage(0, true)} className="inline-flex min-h-11 items-center font-bold underline">Try again</button></p>}
-      <section className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 mb-5" aria-labelledby="service-shortcuts-heading">
-        <h2 id="service-shortcuts-heading" className="text-lg font-bold text-[#19352d]">What do you need help with?</h2>
-        <p className="mt-1 text-sm text-slate-600">Choose a service to see providers with dated website checks for your city.</p>
-        <div className="grid md:grid-cols-2 gap-5 mt-4">{(['Home Services', 'Pet Services'] as const).map(group => <div key={group}>
-          <h3 className="text-xs font-bold uppercase tracking-wide text-slate-500 mb-2">{group === 'Home Services' ? 'Home & yard' : 'Pets & everyday care'}</h3>
-          <div className="flex flex-wrap gap-2">{SERVICE_CHOICES.filter(item => item.category === group).map(item => <Link key={item.key} aria-current={service?.key === item.key ? 'page' : undefined} className={`inline-flex min-h-11 items-center px-3 py-2 rounded-xl text-sm border focus-visible:ring-2 focus-visible:ring-[#19352d] ${service?.key === item.key ? 'bg-[#19352d] text-white border-[#19352d]' : 'border-slate-200 bg-[#f7f8f5] text-slate-700 hover:border-[#19352d]'}`} href={`/directory?${new URLSearchParams({city,category:item.category,service:item.key})}`}>{item.label}</Link>)}</div>
-        </div>)}</div>
-      </section>
-      {service && <div className="bg-[#f0f4ec] border border-[#dce5d5] p-4 rounded-xl mb-5"><p className="font-semibold">{service.label} · website-checked shortlist</p><p className="text-sm text-slate-600 mt-1">Only providers with dated source evidence for this service and city appear here. This is a contact shortlist, not a quality endorsement.</p><Link className="inline-flex min-h-11 items-center mt-2 text-sm underline" href={`/directory?${new URLSearchParams({city,category:service.category})}`}>Browse all {service.category.toLowerCase()} listings →</Link></div>}
-
       {/* ── Mobile: search + filter chips ── */}
       <div className="lg:hidden mb-4 space-y-3">
         {/* Mobile search bar */}
@@ -410,6 +400,9 @@ export default function DirectoryPage() {
             style={{ background: 'linear-gradient(to right, transparent, white)' }} />
         </div>
       </div>
+
+      <DirectoryServices city={city} selected={service?.key} />
+      {service && <div className="bg-[#f0f4ec] border border-[#dce5d5] p-4 rounded-xl mb-5"><p className="font-semibold">{service.label} · website-checked shortlist</p><p className="text-sm text-slate-600 mt-1">Dated website checks for this service and city. Confirm your job and availability directly; this is not a quality endorsement.</p><Link className="inline-flex min-h-11 items-center mt-2 text-sm underline" href={`/directory?${new URLSearchParams({city,category:service.category})}`}>Browse all {service.category.toLowerCase()} listings →</Link></div>}
 
       <div className="flex flex-col lg:flex-row gap-6">
 
@@ -660,6 +653,7 @@ export default function DirectoryPage() {
           )}
         </div>
       </div>
+      <a href="#resident-outcome" className="mt-6 inline-flex min-h-11 items-center text-sm font-semibold text-[#19352d] underline">Already used the directory? Share an optional outcome</a>
       <ResidentOutcome city={city} />
     </div>
   )

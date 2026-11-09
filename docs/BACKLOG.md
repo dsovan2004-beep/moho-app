@@ -1,5 +1,12 @@
 # MoHoLocal active execution queue
 
+## November 9 — build-first execution and mobile directory sprint
+
+Founder direction: stop repetitive status loops and continue building the living directory. Updated all16MoHoLocal role responsibilities through the OPERATIONS execution mandate: this chat owns product, engineering/architecture, UX, research/curation, openings/events, licensed imagery, community/pets, growth/SEO/monetization, data quality, security/privacy, QA/release, planning and resident outcomes. Retain the existing stack and publication boundaries.
+
+UX-06 P1 IN PROGRESS: phone search was1354px down on the window-cleaning shortlist at390px. Move search/city/category above services; replace always-expanded mobile services with an accessible Browse/Change/Hide chooser, retain visible desktop services, collapse on service selection, keep exact city/service links. Move optional outcome prompt beside its form below results. No data/auth/API changes.152tests pass; final build/local/native/live acceptance pending. Next build work should improve resident task completion and living-directory freshness, not repeat unchanged Search Console/provider-count checks. FB unpublished; photo tasks, genuine-reporter pet pilot and physical-phone acceptance OPEN.
+
+
 ## November 8 — landscape expansion and launch monitoring
 
 DATA-22 COMPLETE: published P&N Landscaping & Hardscaping with explicit official four-city coverage, public phone, installation scope and no inferred office.94dated website checks total. Routine lawn maintenance is unconfirmed. Duplicate guards passed; Villanueva/Golden Valley Materials already existed and were not duplicated. Live landscaping shortlists include the new provider: Mountain House9/Tracy9/Lathrop6/Manteca6. Detail fits390px without document overflow; screenshot research/nov8-landscape-provider-live.png. [Evidence](research/landscape-followup-2026-11-08.json), matching SQL. No photos, street address, owner contact or credential/quality/availability claims adopted.

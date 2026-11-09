@@ -1,10 +1,18 @@
 # MoHoLocal — Operations Guide
 
-Updated November 6, 2026. This guide replaces the March 2026 operating model. The founder has authorized autonomous relaunch engineering, source-checked listing curation, release work and planning upkeep in the current session. User instructions take precedence over historical documentation.
+Updated November 9, 2026. This guide replaces the March 2026 operating model. The founder has authorized autonomous relaunch engineering, source-checked listing curation, release work and planning upkeep in the current session. User instructions take precedence over historical documentation.
 
 ## Product direction: a living local directory
 
 Founder direction, November 6: MoHoLocal is a living directory for locals. Maintain useful services, places/openings, events, discussions and pet updates as connected local information, with clear dates and correction paths. More records should produce better city/service coverage and useful actions, rather than unsupported quality claims. Expansion now includes services and events across all four relaunch cities, with rights-checked service/event imagery. Prioritize gaps and freshness; measure successful contacts, useful replies, event-detail/calendar actions, corrections and resolved reports. Unattended research is now explicitly authorized through FRESH-01; messaging remains prohibited.
+
+## Execution mandate — November 9
+
+This chat is the MoHoLocal implementation owner for Mountain House, Tracy, Lathrop and Manteca. The roles below remain active as one accountable team, not separate chats. Keep the Next.js/Cloudflare/Supabase stack. Lead product decisions and finish reviewable increments autonomously.
+
+Prioritize resident-facing improvements over repeated status passes. Choose one concrete build outcome, implement it, test the affected journey, deploy and verify it, then update plans once with accepted evidence. Provider/event curation and imagery research continue as supporting work. Do not turn unchanged Search Console processing, a healthy deployment or unchanged photo/pet-pilot gates into repeated work. Check those at meaningful intervals or when a new release/evidence requires it.
+
+Engineering, UX, editorial freshness, security/privacy, community/pet operations, growth/SEO, monetization strategy, analytics and release delivery all remain owned here. Basic listings remain free for initial validation; no paid activation or willingness-to-pay claims without validation. Facebook drafts stay unpublished; no outreach or photo-permission requests. Keep photo-location/rights, genuine-reporter pilot and physical-phone acceptance open until their actual criteria pass.
 
 ## Responsibilities
 
