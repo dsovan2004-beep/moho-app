@@ -1,0 +1,31 @@
+{
+  "checked_date": "2026-11-08",
+  "provider": {
+    "name": "P&N Landscaping & Hardscaping",
+    "city": "Service area only",
+    "phone": "(209) 684-8953",
+    "website": "https://www.pnscape.com/",
+    "source_url": "https://www.pnscape.com/",
+    "areas": [
+      "Mountain House",
+      "Tracy",
+      "Lathrop",
+      "Manteca"
+    ],
+    "tags": [
+      "landscaping",
+      "landscape construction",
+      "pavers",
+      "artificial turf installation"
+    ],
+    "description": "Provider advertising landscape and hardscape projects including pavers, concrete, artificial grass and retaining walls. Its official service-area list individually names Mountain House, Tracy, Lathrop and Manteca. No public visitor office is established here. Confirm property eligibility, installation scope, required credentials, quote and appointment directly. Routine lawn maintenance and current availability are not confirmed."
+  },
+  "fields_checked": [
+    "identity",
+    "website",
+    "public phone",
+    "advertised installation services",
+    "individually named service cities"
+  ],
+  "limits": "Official website desk check only. No routine maintenance/credential/insurance/quality/price/availability confirmation. No office inferred, photos reused or contact sent. Villanueva and Golden Valley Materials duplicate leads retained as existing records, not counted as new."
+}
