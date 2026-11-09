@@ -1,5 +1,14 @@
 # MoHoLocal living-directory refresh ledger
 
+## November 9 — resident listing corrections shipped
+
+LIVING-01 COMPLETE: source02055f6/native36f178cd Ready1m36s; live build marker matches02055f6d4ad3e112f9d19c1332e397768a85decf. Directory cards expose business-specific Suggest a correction links. Report route loads only approved/public business context, pre-fills name/reference and affected city; detail links also retain resident city. Focused correction form hides unrelated submission types, supplies source/date guidance, labels fields, includes a read-only listing URL and returns Back to the business. Existing confirmed-account gate and manually reviewed business_update endpoint retained; no direct listing edits, auth/schema/permission changes.
+
+Acceptance: local+live Manteca card → Luminate form retains Manteca rather than Lathrop office, correct summary/business UUID/canonical listing URL. Live390px has no document overflow; readOnly=true. Local signed-out fields disabled, sign-in return includes business/city; helper regression checks prove existing safeReturnTo preserves context. Invalid/missing IDs404; repeated city ignored with valid office fallback. General event form still has ordinary submission-type choices.155tests and final OpenNext/TypeScript pass. No report or synthetic participation submitted. UI prefill/read-only is convenience, not proof that resident-supplied corrections are true. [Acceptance](research/listing-corrections-2026-11-09.md); screenshot research/nov9-listing-correction-live.png. Emulation reset.
+
+Next build: LIVING-02 — improve correction confirmation with a returned request reference and a clear return to the original listing; audit existing API response/own-request visibility before promising tracking. Continue evidence-backed freshness through established twice-weekly workflow. Facebook UNPUBLISHED. Photo rights/location tasks, genuine-reporter pet pilot, physical-phone and genuine resident/owner acceptance OPEN.
+
+
 ## November 9 — mobile search redesign shipped
 
 UX-06 COMPLETE: sourcea8b67b3/nativeec0ba5ab Ready2m6s; live build marker matches source. At390px with scrollY0, search starts318px down (previous1354px). Mobile search/city/category filters precede an expandable service chooser; keyboard Enter opens it, selecting Pest control retains Manteca, closes chooser and returns3. Local320px and390px have no document overflow; desktop service links remain visible with mobile toggle hidden. Optional outcome prompt moved beside its form below results.152tests and final OpenNext/TypeScript pass. [Acceptance](research/mobile-search-redesign-2026-11-09.md); screenshot research/nov9-mobile-search-live.png. Emulation reset.
