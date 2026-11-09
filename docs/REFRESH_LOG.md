@@ -1,5 +1,16 @@
 # MoHoLocal living-directory refresh ledger
 
+## November 9 — preserve mobile results on loading failure; four more rechecks
+
+MOBILE-05 LIVE and accepted. A failed next-page request now preserves existing listing cards/contacts and the current offset, with Try loading more beneath them. Pending retry remains visible and disabled with Trying feedback; success clears the message. Initial-load errors keep their separate Try again flow. New filters clear prior failures; stale-response sequence checks retained.
+
+Local browser fixture:20 loaded cards remain on offset20 failure; delayed retry keeps20 and disables its control; retry adds exactly one, total21, and removes recovery message. Initial failure correctly shows zero cards/initial retry. Fictional local-only fixture removed by reload; no production data or outcomes created. Final163tests, TypeScript and OpenNext build pass. Accepted source2d899cdd50a8c7b80c6a4632c3c82542d2f3521a; native versionf60647bb Ready in2m27s; public build marker matches. Live All Cities pagination expanded20→40, with40 unique listing IDs and status Showing40. Document width matches390px/320px viewports. Failure/retry proof remains explicitly local; no outage simulated on production. Emulation reset. [Local failure proof](research/nov9-pagination-failure-local.png).
+
+FRESH-03 complete: Aapli Marathi Shala (Mountain House), Roto-Rooter Tracy, Knights Plumbing (Lathrop) and Raunak Bazar (Manteca) rechecked against current primary pages. Four dated checks and private before/after audits saved; anonymous public read-back accepted. Service areas/tags retained; Roto-Rooter does not claim a street office; Knights contact/map-location discrepancy disclosed. Class seats/schedule, holiday response, festival stock, credentials and photo rights remain unconfirmed. No duplicate/new business rows. [Evidence and sources](research/pagination-recovery-freshness-2026-11-09.md).
+
+Facebook UNPUBLISHED; exact-location/reuse-rights photo tasks and genuine-reporter pet pilot OPEN. Physical-phone/screen-reader acceptance OPEN. Continue resident reliability fixes and bounded oldest-source rechecks; do not label the full catalog freshly verified.
+
+
 ## November 9 — resident-first mobile directory and four-city freshness
 
 MOBILE-04 LIVE and accepted. Mobile search uses 16px text and a search keyboard hint; submit clears the pending debounce. Added the existing sort choices to mobile, preserving city/category/exact service. Searches explain relevance ordering. Owner claims now follow resident contact actions and corrections, with unique accessible business labels; listing titles gain full width.
