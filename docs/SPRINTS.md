@@ -1,5 +1,14 @@
 # MoHoLocal — SPRINTS.md
 
+## November 9 — mobile sharing feedback and copy recovery
+
+SHARE-03 mobile feedback increment LIVE: shared action feedback gives immediate Copying/opening state, locks repeated taps while pending, ignores stale results after the share target changes, and places persistent atomic status beside the action buttons. Full-width mobile actions and 16px fields; denied clipboard exposes Select link/text with full manual selection. Native cancellation never copies; native completion asks residents to confirm sending in their chosen app. Safe canonical payload boundaries retained.
+
+Validation: 163 tests, TypeScript and OpenNext build pass. Local 390px delayed/denied/success clipboard fixtures verify exact safe payload, pending disable, full selection and honest feedback. Native cancellation/completion mocked locally; no message or post sent. Business safe field and fallback accepted at 320px without overflow. Fixtures and viewport overrides removed after QA. Physical-device, real OS clipboard/share-sheet and screen-reader acceptance remain OPEN.
+
+Accepted app source a836ef8b8753fc1c5426688ca5cd193d07933e06; native deployment 26928c94 Ready in 2m40s (build e8a8b21f-bf58-4bf5-89c3-9e64f3f598e2); public build marker matches. Live shortlist link/text and business copy feedback accepted; both 320px layouts have no document overflow, mobile fields 16px, shortlist copy target 44px high. Automatic copy API feedback verified; physical OS clipboard acceptance remains separate. Screenshot research/nov9-mobile-share-feedback-live.png. Historical pre-guard source 3b57e30 was blocked by the persisted central command (missing release:check), with no deployment from that build. Next: physical-phone copy/share and screen-reader acceptance; retain resident freshness/correction priorities. Facebook UNPUBLISHED. Photo location/reuse-rights tasks and genuine-reporter pet pilot OPEN. No new provider checks claimed. [Evidence](research/mobile-share-feedback-2026-11-09.md).
+
+
 ## November 9 — safe business sharing and stale-release protection shipped
 
 SHARE-02 COMPLETE: business share links use a validated public UUID and optional supported city only. Search, return destinations, tracking and fragments are excluded. Residents see explicit Copy business link, persistent status feedback, busy states and a selectable manual-copy fallback. Device-share cancellation never silently copies. No automatic posting.
