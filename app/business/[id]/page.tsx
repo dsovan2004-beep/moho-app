@@ -403,7 +403,7 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
                 📍 Get Directions
               </a>
             )}
-            <ShareButton businessName={biz.name} />
+            <ShareButton businessName={biz.name} businessId={biz.id} city={context.city} />
 
             {!hasContact && (
               <Link

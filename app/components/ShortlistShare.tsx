@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { shortlistShare } from '@/lib/shortlist-share'
+import { copyShareText } from '@/lib/share-links'
 
 export default function ShortlistShare({city,service}: {city:string;service?:string}) {
   const share=shortlistShare(city,service)
@@ -10,8 +11,8 @@ export default function ShortlistShare({city,service}: {city:string;service?:str
   useEffect(()=>{setNotice('')},[city,service])
   if(!share)return null
   async function copy(text:string,kind:string) {
-    try { await navigator.clipboard.writeText(text); setNotice(`${kind} copied. Paste it wherever you choose.`) }
-    catch { setNotice('Copy is unavailable here. Select and copy the link or suggested text below.') }
+    const copied=await copyShareText(text,navigator.clipboard)
+    setNotice(copied ? `${kind} copied. Paste it wherever you choose.` : 'Copy is unavailable here. Select and copy the link or suggested text below.')
   }
   async function nativeShare() {
     try { await navigator.share({title:share!.title,text:share!.description,url:share!.url}); setNotice('Share action completed on your device.') }
