@@ -2,6 +2,7 @@ export const SERVICE_CHOICES = [
   { key: 'handyman', label: 'Handyman & small repairs', category: 'Home Services', tag: 'handyman' },
   { key: 'heating-air-conditioning', label: 'Heating & air conditioning', category: 'Home Services', tag: 'heating and air conditioning' },
   { key: 'plumbing', label: 'Plumbing', category: 'Home Services', tag: 'plumbing' },
+  { key: 'carpet-tile-cleaning', label: 'Carpet & tile cleaning', category: 'Home Services', tag: 'carpet cleaning' },
   { key: 'house-cleaning', label: 'House cleaning', category: 'Home Services', tag: 'house cleaning' },
   { key: 'landscaping', label: 'Landscaping & yard care', category: 'Home Services', tag: 'landscaping' },
   { key: 'solar-bird-exclusion', label: 'Solar bird exclusion', category: 'Home Services', tag: 'solar bird exclusion' },

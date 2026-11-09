@@ -1,5 +1,12 @@
 # MoHoLocal Product Roadmap
 
+## November 8 — private outcome overview and carpet-cleaning discovery
+
+Added an admin-only30-Pacific-day outcome summary with all four city totals, refresh/error/loading states and explicit self-report/selection-bias limits. Database enforces confirmed non-anonymous non-banned admin access; public/ordinary users cannot retrieve the summary. Missing/error payloads do not become zero, and raw/private account/limit rows remain inaccessible. SQL transaction checks passed for no-auth/nonadmin rejection and admin city/date scope; no data written.144 tests pass; final build/native/live acceptance pending.
+
+Published AyresCarpet&TileCleaning after official identity/contact/service-city check, explicitly Manteca/Lathrop/Tracy; no MountainHouse from and-more language. Added dedicated carpet/tile shortcut, not general house-cleaning classification. BasilBee held without first-party service evidence. No photo reuse, credentials/quality/safety or holiday availability endorsement. Photo tasks, genuine reporter pet pilot and real resident outcome participation remain OPEN. [Source evidence](research/carpet-summary-2026-11-08.json).
+
+
 ## November 8 — outcome sign-in continuity and holiday service evidence
 
 Fixed an acceptance gap: /directory was absent from safeReturnTo, so the original optional outcome login could return home. Added plain directory and tightly validated city-only #resident-outcome targets; unknown cities, duplicate city parameters, foreign next parameters and alternate fragments fail closed. The form opens on its fragment, restores selected city after sign-in and clearly asks residents to choose a result again rather than silently submitting a draft. A top-of-directory shortcut makes the optional form discoverable without passive tracking.142 tests and final OpenNext/TypeScript build pass. Source3acab94 deployed Ready1m40s, version551c8860. Live Lathrop fragment auto-opens form with Lathrop selected; signed-out login and JoinFree link retain exact city/fragment target. Manteca top shortcut preserves current service filters and opens the form. Screenshot:research/nov8-outcome-return-live.png. No authenticated submission or outcome generated. Hosted total75 dated checks;41 event records unchanged.

@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { getSupabaseClient } from '@/lib/supabase'
 import Link from 'next/link'
+import ResidentOutcomeSummary from '@/app/components/ResidentOutcomeSummary'
 import PetModeration from '@/app/components/PetModeration'
 import BusinessRequestInbox from '@/app/components/BusinessRequestInbox'
 import { reviewBusiness } from '@/lib/review-business'
@@ -265,6 +266,7 @@ export default function AdminPage() {
 
       <div className="max-w-5xl mx-auto px-4 py-8">
 
+        <ResidentOutcomeSummary />
         <BusinessRequestInbox />
         <PetModeration />
 
