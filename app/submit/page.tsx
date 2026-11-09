@@ -5,6 +5,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { UUID } from '@/lib/directory-requests'
+import { savedSubmissionReference, receiptListingHref } from '@/lib/submission-receipt'
+import SubmissionReceipt from '@/app/components/SubmissionReceipt'
 import { RequestAccount, useRequestAccount } from '@/app/components/RequestAccount'
 import { getSupabaseClient } from '@/lib/supabase'
 
@@ -20,7 +22,7 @@ const SUBMISSION_TYPES = [
   { value: 'business_update', label: '🏪 Business Update',    desc: 'Hours change, new location, closed permanently' },
 ]
 
-type FormState = 'idle' | 'submitting' | 'success' | 'error'
+type FormState = 'idle' | 'submitting' | 'success' | 'error' | 'uncertain'
 
 export default function SubmitPage() {
   const params = useSearchParams()
@@ -30,6 +32,7 @@ export default function SubmitPage() {
   const [petStatus,setPetStatus]=useState('lost')
   const { user, checking } = useRequestAccount()
   const [formState, setFormState] = useState<FormState>('idle')
+  const [savedReference,setSavedReference] = useState<string | null>(null)
   const [errorMsg,  setErrorMsg]  = useState('')
 
   const [city,           setCity]           = useState(CITIES.includes(params.get('city') ?? '') ? params.get('city')! : '')
@@ -45,9 +48,10 @@ export default function SubmitPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!user || formState === 'submitting') return
+    if (!user || formState === 'submitting' || formState === 'uncertain') return
     setFormState('submitting')
     setErrorMsg('')
+    let requestStarted = false
 
     try {
       const body: Record<string, string> = {
@@ -63,6 +67,7 @@ export default function SubmitPage() {
 
       const { data: { session } } = await getSupabaseClient().auth.getSession()
       if (!session?.access_token) throw new Error('Sign in before submitting.')
+      requestStarted = true
       const res = await fetch(`${WORKER_URL}/submit-signal`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
@@ -70,50 +75,29 @@ export default function SubmitPage() {
       })
 
       if (res.ok) {
-        setFormState('success')
+        const result: unknown = await res.json().catch(() => null)
+        const reference = savedSubmissionReference(result)
+        if (reference) { setSavedReference(reference); setFormState('success') }
+        else setFormState('uncertain')
       } else {
-        const data = await res.json() as { message?: string; error?: string; errors?: string[] }
+        const data = await res.json().catch(() => ({})) as { message?: string; error?: string; errors?: string[] }
         const msg  = data.errors?.join(', ') ?? data.message ?? data.error ?? 'Something went wrong — try again'
         setErrorMsg(msg)
         setFormState('error')
       }
     } catch {
-      setErrorMsg('Network error — check your connection and try again')
-      setFormState('error')
+      if (requestStarted) setFormState('uncertain')
+      else { setErrorMsg('Could not start your submission. Check your sign-in and try again.'); setFormState('error') }
     }
   }
 
   // ── Success state ──────────────────────────────────────────────────────────
-  if (formState === 'success') {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-        <div className="bg-white rounded-3xl shadow-md p-10 max-w-md w-full text-center">
-          <div className="text-5xl mb-4">🙌</div>
-          <h2 className="text-2xl font-black text-gray-900 mb-2">Thanks for the tip!</h2>
-          <p className="text-gray-500 text-sm mb-8">
-            Your submission is in. Our team reviews everything before it goes live — and keeps it pending until approved.
-          </p>
-          <div className="flex gap-3 justify-center">
-            <button
-              onClick={() => {
-                setFormState('idle')
-                setCity(''); setSubmissionType(''); setTitle(''); setDescription(''); setEventDate(''); setContactUrl('')
-              }}
-              className="px-5 py-2.5 rounded-xl text-sm font-bold border border-gray-200 text-gray-600 hover:bg-gray-50 transition"
-            >
-              Submit another
-            </button>
-            <Link
-              href="/"
-              className="px-5 py-2.5 rounded-xl text-sm font-bold text-white transition"
-              style={{ backgroundColor: '#1e3a5f' }}
-            >
-              Back to MoHo Local
-            </Link>
-          </div>
-        </div>
-      </div>
-    )
+  if (formState === 'success' && savedReference) {
+    return <div className="px-4 py-5"><SubmissionReceipt reference={savedReference} listingId={isListingCorrection ? businessId : undefined} city={city} onAnother={() => {
+      setFormState('idle'); setSavedReference(null); setDescription(''); setEventDate('')
+      if (isListingCorrection) setTitle((params.get('title') ?? 'Listing correction').slice(0,200))
+      else { setCity(''); setSubmissionType(''); setTitle(''); setContactUrl('') }
+    }} /></div>
   }
 
   // ── Form ───────────────────────────────────────────────────────────────────
@@ -274,6 +258,7 @@ export default function SubmitPage() {
             />
           </div>
 
+          {formState === 'uncertain' && <div role="alert" className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-950"><p className="font-bold">We couldn't confirm your request reference</p><p className="mt-2">Your request may have been saved. Your details remain in this form. Avoid sending it again right away to prevent duplicates.</p>{isListingCorrection && <Link className="mt-2 inline-flex min-h-11 items-center font-bold underline" href={receiptListingHref(businessId,city)!}>Return to listing</Link>}</div>}
           {/* Error */}
           {formState === 'error' && (
             <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700 font-medium">
@@ -284,7 +269,7 @@ export default function SubmitPage() {
           {/* Submit */}
           <button
             type="submit"
-            disabled={!city || !submissionType || !title.trim() || !description.trim() || formState === 'submitting'}
+            disabled={!city || !submissionType || !title.trim() || !description.trim() || (formState === 'submitting' || formState === 'uncertain')}
             className="w-full py-4 rounded-2xl text-base font-black text-white transition disabled:opacity-40 disabled:cursor-not-allowed"
             style={{ backgroundColor: '#1e3a5f' }}
           >

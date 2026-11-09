@@ -2,6 +2,7 @@ import { test, afterEach } from 'node:test'
 import assert from 'node:assert/strict'
 import { readRequest, validateRequest } from '../lib/directory-requests'
 import { safeReturnTo } from '../lib/auth-return'
+import { savedSubmissionReference } from '../lib/submission-receipt'
 import worker from '../workers/ingestion-worker'
 import { POST as createRequest } from '../app/api/business-requests/route'
 import { POST as oldClaim } from '../app/api/notify/claim/route'
@@ -72,7 +73,7 @@ test('confirmed resident signals use the rate-limited RPC rather than a privileg
     body: JSON.stringify({ title: 'Fixture event', description: 'Fixture local event', city: 'Tracy', submission_type: 'event' }),
   }), env)
   assert.equal(result.status, 201)
-  assert.equal((await result.json()).submission_id, '00000000-0000-4000-8000-000000000099')
+  assert.equal(savedSubmissionReference(await result.json()), '00000000-0000-4000-8000-000000000099')
   assert.equal(calls.length, 2)
 })
 
