@@ -1,5 +1,16 @@
 # MoHoLocal living-directory refresh ledger
 
+## November 8 — electrical, city-context and typed-search acceptance
+
+DATA-17:88dated website checks. Luminate Electric and Lainez Electric have explicit four-city electrical-service evidence; dated Electrical services shortlists show2in each city at390px with no document overflow. Source evidence/limits remain separate from license, insurance, quality and appointment confirmation. No calls, forms, bookings, messages or synthetic resident/pet outcomes created. [Provider evidence](research/electrical-coverage-2026-11-08.json).
+
+UX-04 accepted:78a040f/nativee3c270a1 Ready1m59s, inherited by current source6b28858/native9c8af722 Ready2m16s. Provider theme follows validated resident browsing city; actual office city/neutral pin retained. Live Barton in Manteca changed from Mountain House blue to Manteca orange while office text stayed Modesto. New Luminate detail uses Manteca styling while labeled Lathrop. Local four-city gradient controls passed.
+
+SEARCH-01 accepted: reproduced electrician on Manteca electrical shortlist0→2 after exact service-term lookup. All four electrical shortlists return2with typed electrician. Conflicting Manteca Pet Services or plumbing filters return0. Real city-page search form with electrician retains Manteca and returns3ordinary-search results including both checked providers; general search still permits ordinary text matches and does not claim every result checked.150tests and final OpenNext/TypeScript pass. [Acceptance](research/service-search-acceptance-2026-11-08.md), before/after screenshots research/nov8-electrician-search-before.png and research/nov8-electrician-search-live.png. Provider proof research/nov8-electrical-provider-live.png. Device emulation reset.
+
+SEO-03 baseline remains processing; no redundant sitemap/indexing requests, new indexing count or growth claim. FB drafts unpublished, photo tasks and genuine-reporter pet pilot OPEN. Physical-phone delivery/native contact-app behavior and genuine resident/owner participation OPEN. Next UX acceptance includes typed-search→detail→return continuity; expand thin categories only with explicit source coverage.
+
+
 ## November 8 — typed-service search launch fix
 
 SEARCH-01 P1: reproduced live Manteca Electrical services + electrician returning0despite2checked choices. Exact role/canonical terms now also match dated service tags via public checked IDs; existing city/category/explicit-service/publication constraints remain. No inference for ambiguous cleaning/solar/pet-care terms or company-name fragments; ordinary text results retain per-row evidence status. Anonymous public API composed-filter checks return2for all four electrical shortlists and0for conflicting Pet Services/plumbing cases. New regressions cover normalization, exactness and filter-like input. [Evidence](research/service-search-acceptance-2026-11-08.md). Final build/native/live acceptance pending.

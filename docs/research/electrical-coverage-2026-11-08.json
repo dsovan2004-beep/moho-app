@@ -36,5 +36,27 @@
     "No public home/visitor address, photos, ratings or fixed prices copied",
     "Website checks do not independently validate licensing, insurance, quality, safety, estimates, same-day service or response times",
     "Electrical services tagged separately; general handyman tags do not establish electrical specialization"
-  ]
+  ],
+  "live_acceptance": {
+    "dated_checks": 88,
+    "checked_electrical_choices": {
+      "Mountain House": 2,
+      "Tracy": 2,
+      "Lathrop": 2,
+      "Manteca": 2
+    },
+    "viewport": 390,
+    "horizontal_overflow": false,
+    "typed_electrician_shortlist_before": 0,
+    "typed_electrician_shortlist_after": 2,
+    "general_city_form_results": 3,
+    "general_city_form_includes_both_checked": true,
+    "conflicting_category_or_service_count": 0,
+    "resident_theme_and_actual_office_separated": true,
+    "source": "6b28858",
+    "native_version": "9c8af722",
+    "tests": 150,
+    "physical_device_acceptance": false,
+    "no_real_user_transactions_created": true
+  }
 }
