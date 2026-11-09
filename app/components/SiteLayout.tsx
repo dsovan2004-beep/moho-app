@@ -9,6 +9,7 @@ import { useState, useEffect, useRef, Suspense } from 'react'
 import { getSupabaseClient, signOut } from '@/lib/supabase'
 import { CITIES as CITY_CONFIG, RELAUNCH_CITY_NAMES } from '@/lib/cities'
 import { exploreLinks } from '@/lib/explore-links'
+import { shortlistShare } from '@/lib/shortlist-share'
 import { OPERATOR_CONTACT } from '@/lib/site-policy'
 import type { User } from '@supabase/supabase-js'
 
@@ -104,7 +105,8 @@ const SLUG_TO_CITY: Record<string, string> = {
 
 function getCityFromPath(path: string): string | null {
   // Extract first segment: '/san-jose/restaurants' → 'san-jose'
-  const segment = path.split('/')[1] ?? ''
+  const parts = path.split('/')
+  const segment = parts[1] === 'shortlists' ? parts[2] ?? '' : parts[1] ?? ''
   return SLUG_TO_CITY[segment] ?? null
 }
 
@@ -242,7 +244,10 @@ function NavContent() {
     // If user is on a city/category page (e.g. /mountain-house/restaurants)
     // and switches to Tracy, take them to /tracy — not /mountain-house/restaurants?city=Tracy.
     const currentCityFromPath = getCityFromPath(pathname)
-    if (currentCityFromPath) {
+    if (pathname.startsWith('/shortlists/')) {
+      const share=shortlistShare(c,pathname.split('/')[3])
+      router.push(share?.path ?? `/directory?${new URLSearchParams({city:c})}`)
+    } else if (currentCityFromPath) {
       // On a city page — jump to new city root
       router.push(`/${CITY_SLUGS[c]}`)
     } else {
