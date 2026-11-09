@@ -1,5 +1,16 @@
 # Resident launch readiness — November 8, 2026
 
+## November 9 — safe business sharing and stale-release protection shipped
+
+SHARE-02 COMPLETE: business share links use a validated public UUID and optional supported city only. Search, return destinations, tracking and fragments are excluded. Residents see explicit Copy business link, persistent status feedback, busy states and a selectable manual-copy fallback. Device-share cancellation never silently copies. No automatic posting.
+
+Accepted source ee872dbe2131fbcae760af3ef7fa7135caee8352; guarded native deployment e7b2d059 Ready in 1m36s; public build marker matches. 163 tests and final OpenNext/TypeScript build pass. Expanded layout fits 320px/390px and desktop. Exact copy payload and rejection behavior are tested; manual clipboard fallback verified. Automatic OS clipboard integration and physical-device sharing remain acceptance items because automation clipboard readback was inconsistent.
+
+DEPLOY-02 COMPLETE: observed an older revision redeployed and removed newer release features. Current source restored. Persisted Cloudflare build and deploy commands now run release:check before each operation; it fetches main and compares protected application paths, permits docs-only differences, and fails closed if verification is unavailable. scripts/** added to build watch paths. Current-source guarded retry passed; local Git fixtures cover stale source rejection, current source, docs-only changes and unavailable origin. Delivery timing/root cause remains unproven.
+
+Next: physical-device copy/share acceptance and continued resident workflow improvements. Facebook UNPUBLISHED. Photo location/reuse-rights tasks and genuine-reporter pet pilot remain OPEN until their acceptance criteria pass. No provider records freshly rechecked this increment. [Evidence](research/safe-business-sharing-2026-11-09.md).
+
+
 ## November 9 — shareable city/service shortlists shipped
 
 LIVING-03 COMPLETE: sourceadc6b86/native9265c5a4 Ready2m36s; live build marker matchesadc6b866e61f1149bb3cce6a8cd58736e2625ff2. Directory Share disclosure offers Copy link, Copy suggested text, selectable fallback fields and optional device share menu. Stable public /shortlists/{city}/{optional-service} routes render current shared DirectoryBrowser results, not frozen provider counts. City navigation derives from the route and preserves the exact service. Payload contains only supported city/service, excluding search text/sort/account context; no automatic posting or endorsement/availability guarantee.

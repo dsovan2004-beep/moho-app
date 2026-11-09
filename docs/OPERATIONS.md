@@ -1,5 +1,12 @@
 # MoHoLocal — Operations Guide
 
+## Release source guard — accepted November 9
+
+Cloudflare moho-web native Builds must retain build command `npm run release:check && npm run typecheck && npm run cf:build` and deploy command `npm run release:check && npx wrangler deploy`. Include `scripts/**` alongside existing application watch paths. Both commands were persisted and reloaded; guarded current-source retry e7b2d059 completed Ready.
+
+`scripts/check-release-source.mjs` fetches origin main and compares protected app/config/package/script paths to HEAD. Docs-only differences are permitted; stale application trees or unavailable verification fail closed. Do not remove the checks or blindly retry old revisions. Verify the public build-info.json source marker after release. This follows an observed older-source redeployment; its delivery timing cause remains unproven. Local Wrangler OAuth remains Pages-only; use the existing authorized native Git deployment setup without expanding credentials.
+
+
 Updated November 9, 2026. This guide replaces the March 2026 operating model. The founder has authorized autonomous relaunch engineering, source-checked listing curation, release work and planning upkeep in the current session. User instructions take precedence over historical documentation.
 
 ## Product direction: a living local directory
