@@ -324,7 +324,7 @@ export default function DirectoryPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-6">
         <h1 className="text-3xl font-extrabold text-gray-900">Find your local help</h1>
-        <p className="text-gray-500 mt-1">Find local help in Mountain House, Tracy and nearby cities. Confirm the exact service area with each business.</p>
+        <p className="text-gray-500 mt-1">Find local help in Mountain House, Tracy, Lathrop and Manteca. Confirm the exact service area with each business.</p>
         <a href="#resident-outcome" className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-[#19352d] underline">Already used the directory? Share an optional outcome</a>
       </div>
 
