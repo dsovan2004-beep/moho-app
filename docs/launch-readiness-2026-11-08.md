@@ -1,5 +1,21 @@
 # Resident launch readiness — November 8, 2026
 
+## November 8 — deployment recovery and service shortcuts live-accepted
+
+DEPLOY-01/UX-05 COMPLETE for this release: source45ae8b1 deployed native0cc5b469 Ready1m50s after the existing build trigger was saved disabled then re-enabled. Public build-info.json source_revision matches45ae8b13b8c12a992b3e5f85117ba755e573edb2. No credential/permission changes; local CLI still Pages-only. Earlier dispatch failure root cause is not established; monitor future app/lib pushes rather than claiming a proven permanent cure. Last retry of prior source canceled before deployment. New build provenance emits only app name and commit hash, no environment values.
+
+Live390px acceptance: Pest control shortcut3published website-checked options per city; Window cleaning2per city, all four city switches preserve service/category and fit without horizontal overflow. Manteca window-cleaning typed search → Top to Bottom detail → Back preserves city/category/service/q/sort and returns2. Four-city directory intro is live in this source.152tests and final OpenNext/TypeScript pass; device emulation reset. [Acceptance](research/deployment-recovery-2026-11-08.md); screenshot research/nov8-service-shortcuts-live.png.
+
+DATA-21 COMPLETE: Delk published with first-party all-four-city coverage, Stockton office city retained, no local branch or credential/safety/effectiveness/quality/availability endorsement.93dated website checks total. FB drafts UNPUBLISHED. Mountain House2026photo rights/location, Manteca photo location, genuine-reporter pet pilot, physical-phone/native-app and genuine resident/owner acceptance OPEN. Search Console baseline latest check still processing; no redundant submission.
+
+
+## November 8 — native dispatch recovered; release acceptance pending
+
+DEPLOY-01: confirmed local Wrangler OAuth has Pages write, not Worker scripts access; prior CLI denial did not deploy. Existing native trigger settings still main/correct repository and app/lib watch paths. Saved Disable builds on then off, returning to enabled without credential/permission changes. New source45ae8b1 successfully dispatched native build after refresh; cause of earlier missing events is not established. New npm precf:build hook writes public build-info.json containing only app name and Git source revision; generated file ignored by Git, no environment/secret serialization.152tests and final OpenNext/TypeScript pass. Wait for Ready and live marker/shortcut acceptance before closing.
+
+DATA-21: published Delk Pest Control, actual Stockton office city and explicit official service-area evidence for all four cities.93dated website checks. Duplicate name/domain/phone guard and readback passed. Live Manteca text search has3pest providers. No credentials, safety/effectiveness, quality, availability, prices, street address or photos adopted; no contact sent. [Evidence](research/pest-followup-2026-11-08.json) and matching SQL. Existing photo tasks, genuine-reporter pet pilot and physical-phone/genuine resident acceptance OPEN; Facebook UNPUBLISHED.
+
+
 ## November 8 — provider acceptance; shortcut deployment held
 
 DATA-20 COMPLETE: Moore Quality Pest Control and California Pest Control published with explicit four-city website evidence;92dated checks. Live Manteca pest-control text search shows both providers. Each city's checked inventory has2pest-control and2window-cleaning options. California Pest Control has no inferred visitor office from its mailing address. No contact, photos or credential/quality/safety/availability endorsement.
