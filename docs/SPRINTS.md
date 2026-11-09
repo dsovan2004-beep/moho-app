@@ -1,5 +1,12 @@
 # MoHoLocal — SPRINTS.md
 
+## November 8 — outcome sign-in continuity and holiday service evidence
+
+Fixed an acceptance gap: /directory was absent from safeReturnTo, so the original optional outcome login could return home. Added plain directory and tightly validated city-only #resident-outcome targets; unknown cities, duplicate city parameters, foreign next parameters and alternate fragments fail closed. The form opens on its fragment, restores selected city after sign-in and clearly asks residents to choose a result again rather than silently submitting a draft. A top-of-directory shortcut makes the optional form discoverable without passive tracking.142 tests pass; final build/native/live acceptance pending.
+
+Published LenziCleaning with dated first-party holiday-light service evidence for commercial coverage in Tracy/Lathrop/Manteca. Residential address coverage remains unconfirmed; MountainHouse excluded. Rudolph lead held for inconsistent footer/other-brand reference; no guessed phone. No photo reuse, outreach, holiday-hours or booking promises. Photo tasks, genuine reporter pet pilot and real resident outcome participation remain OPEN. [Evidence](research/holiday-return-2026-11-08.json).
+
+
 ## November 8 — optional resident outcomes and Lathrop/Manteca expansion
 
 METRIC-01c first increment: optional directory form, explicit city/result, confirmed sign-in, one report/account/Pacific day. Private daily totals contain no resident/business/search/contact identifiers; separate private anti-repeat row holds latest day only. No passive tracking or verified-booking claim. Privacy disclosure updated. SQL rollback security/retry tests and141 tests pass; final OpenNext/TypeScript build passed. Sourced2cfe42 deployed Ready1m52s, versionc057c057. Live Manteca form defaults city correctly, stays optional, and signed-out submission shows sign-in without recording an outcome. Privacy disclosure verified; aggregate/limiter remain0 after test. Screenshot:research/nov8-outcome-form-live.png. [Release evidence](research/resident-outcome-release-2026-11-08.md). Passive search/contact instrumentation and genuine resident participation remain OPEN.

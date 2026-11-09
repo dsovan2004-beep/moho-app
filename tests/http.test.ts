@@ -198,3 +198,13 @@ test('structured listing data cannot terminate its HTML script container', async
  assert.equal(rendered.includes('<'),false)
  assert.deepEqual(JSON.parse(rendered),payload)
 })
+
+
+test('outcome sign-in returns only to a known city and exact optional form',()=>{
+  for(const city of ['Mountain House','Tracy','Lathrop','Manteca','All Cities']) {
+    const target=`/directory?${new URLSearchParams({city})}#resident-outcome`
+    assert.equal(safeReturnTo(target),target)
+  }
+  assert.equal(safeReturnTo('/directory'),'/directory')
+  for(const target of ['/directory?city=San+Jose#resident-outcome','/directory?city=Lathrop&city=Manteca#resident-outcome','/directory?city=Manteca&next=https://evil.test#resident-outcome','/directory?city=Lathrop#admin','/directory?city=Lathrop%0d%0aLocation:https://evil.test#resident-outcome']) assert.equal(safeReturnTo(target),'/')
+})

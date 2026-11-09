@@ -1,0 +1,22 @@
+{
+  "checked_on": "2026-11-08",
+  "provider": {
+    "name": "Lenzi Cleaning",
+    "city": "Lodi",
+    "phone": "(209) 400-1944",
+    "website": "https://lenzicleaning.com/",
+    "source_url": "https://lenzicleaning.com/christmas-light-installation/",
+    "description": "Advertises holiday-light design, installation, maintenance and removal. Its service page names Tracy, Manteca and Lathrop in a commercial service-area section; residential coverage at a particular address needs confirmation. Based in Lodi; street office address not established. Ask about job type, quote, dates and removal terms. Current availability is unconfirmed."
+  },
+  "service_areas": [
+    "Tracy",
+    "Lathrop",
+    "Manteca"
+  ],
+  "scope": "Named commercial service section; residential exact address needs confirmation",
+  "holds": [
+    "Rudolph lead has inconsistent footer/other-brand reference and no established public phone; not published",
+    "No current booking dates or Thanksgiving hours inferred from evergreen seasonal copy",
+    "Photos and genuine-reporter pet pilot remain open; no media reused or outreach"
+  ]
+}

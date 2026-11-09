@@ -316,6 +316,7 @@ export default function DirectoryPage() {
       <div className="mb-6">
         <h1 className="text-3xl font-extrabold text-gray-900">Find your local help</h1>
         <p className="text-gray-500 mt-1">Find local help in Mountain House, Tracy and nearby cities. Confirm the exact service area with each business.</p>
+        <a href="#resident-outcome" className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-[#19352d] underline">Already used the directory? Share an optional outcome</a>
       </div>
 
       {loadError && <p role="alert" className="mb-5 bg-amber-50 border border-amber-300 p-4 rounded-xl">We couldn't load these listings. <button onClick={() => fetchPage(0, true)} className="inline-flex min-h-11 items-center font-bold underline">Try again</button></p>}
