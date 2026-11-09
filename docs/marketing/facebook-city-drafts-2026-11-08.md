@@ -55,3 +55,5 @@ What would make a local directory useful enough for you to return to it? I’d l
 - Initially compare substantive feedback, referral traffic and voluntary outcome reports. A like or link click is not a completed connection; no claimed revenue or ranking lift.
 - No tracking identifiers embedded in the initial drafts. Attribution options can be reviewed before a future authorized campaign.
 - Human-approved distribution remains pending. Do not use these drafts as permission to post or send.
+
+November8 implementation note: city-specific Open Graph/Twitter metadata with MoHoLocal's own logo is live-validated on the four landing links. The logo is not a city photograph. Actual Facebook/X cached previews are untested; recheck before any future authorized distribution. Drafts remain unpublished and unsent.

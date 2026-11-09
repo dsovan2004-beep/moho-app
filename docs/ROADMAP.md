@@ -1,5 +1,14 @@
 # MoHoLocal Product Roadmap
 
+## November 8 — grooming and city-sharing release accepted
+
+DATA-15:84dated checks after two new providers and one existing-brand correction. California Pet Grooming Mobile names all four cities. Ana's Mobile Dog Grooming appears only in Lathrop/Manteca, with new-client exclusions and parking/apartment/weight restrictions retained. Bayberry ID50b70a38-4a16-44e4-8ba3-feaa10231ff1 now identifies iLuvMyPack/former Bayberry from official source evidence; former-brand search returns one result rather than duplicate operators. Live390px results: Mountain House3/Tracy4/Lathrop4/Manteca4, correct Ana inclusion/exclusion, no document overflow. No appointment, owner confirmation, quality/credential or photo-rights claim. [Evidence](research/grooming-followup-2026-11-08.json); screenshot research/nov8-mobile-grooming-live.png.
+
+SEO-02/LAUNCH-01: sourcec6b6c94 deployed Ready2m12s, native2221be8a.147tests and final OpenNext/TypeScript pass. All four live city routes have matching city-specific canonical/og:url/title, own-logo og:image/alt and Twitter summary card. These are emitted metadata, not acceptance of Facebook/X cached previews; no platform rescrape or post performed. Root description names all four cities. All four city landing pages also fit320px without document overflow. Device emulation reset.
+
+SEO-03: current baseline reports remain processing; no redundant sitemap/indexing requests or growth claim. A11Y-01 P2 queued: audit shared/page main-landmark ownership (SiteLayout wrapper plus page main elements) before accessibility conformance claims. Next supply work remains thin pet-sitting/dog-walking depth in Lathrop/Manteca, with genuine resident/owner acceptance and physical-phone delivery checks still OPEN. FB drafts unpublished; photo acceptance tasks and genuine-reporter pet pilot OPEN. No outreach/spend/monetization activated.
+
+
 ## November 8 — mobile-grooming depth, brand correction and city sharing
 
 DATA-15: published California Pet Grooming Mobile with all four explicit service cities and Ana's Mobile Dog Grooming with Lathrop/Manteca only. Ana's FAQ excludes new clients in Mountain House/Tracy and lists parking/apartment/weight restrictions; no inferred coverage. Corrected existing Bayberry record to iLuvMyPack Mobile Grooming (formerly Bayberry Grooming), based on official former-brand statement, retaining its ID and not counting a duplicate operator.84dated checks; mobile-grooming choices now Mountain House3/Tracy4/Lathrop4/Manteca4. No public home/visitor address, photos, fixed prices or quality/credentials/availability endorsement. [Evidence](research/grooming-followup-2026-11-08.json) and matching SQL. Live city/eligibility acceptance pending.

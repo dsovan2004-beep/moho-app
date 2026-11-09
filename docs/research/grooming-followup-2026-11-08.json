@@ -40,5 +40,26 @@
     "No photos, testimonial text, fixed prices, owner confirmation, credentials, quality or availability endorsement",
     "California primary site rendered in Chrome: contact2094878400 and all four service cities visible; no booking submitted",
     "iLuvMyPack identity link is the official sites explicit formerly-Bayberry statement; no owner contact/ownership-transfer verification claimed"
-  ]
+  ],
+  "live_acceptance": {
+    "dated_checks": 84,
+    "mobile_grooming_by_city": {
+      "Mountain House": 3,
+      "Tracy": 4,
+      "Lathrop": 4,
+      "Manteca": 4
+    },
+    "phone_width": 390,
+    "horizontal_overflow": false,
+    "ana_results": {
+      "Mountain House": 0,
+      "Tracy": 0,
+      "Lathrop": 1,
+      "Manteca": 1
+    },
+    "former_brand_query": "Bayberry",
+    "former_brand_query_result_count": 1,
+    "existing_brand_id_retained": "50b70a38-4a16-44e4-8ba3-feaa10231ff1",
+    "calls_messages_or_bookings_sent": false
+  }
 }
