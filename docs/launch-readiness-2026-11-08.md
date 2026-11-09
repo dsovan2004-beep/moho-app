@@ -22,3 +22,15 @@ Decision: prioritize a dependable four-city directory before public promotion. T
 3. Expand thin pet sitting/dog walking coverage and keep event dates/source checks fresh.
 4. Audit no-result recovery, contact actions, mobile navigation and indexing/utility-route metadata. Record pass/fail evidence rather than declaring the whole site ready from a build.
 5. Only distribute the prepared founder-disclosed Facebook drafts after explicit posting authorization and exact group-rule checks. Current instruction remains draft-only.
+
+
+## Follow-up — November 8, 6:54 PM request
+
+Published two duplicate-checked pet sitting/dog walking providers with first-party named service-city evidence.80dated checks total. Pet-sitting choices: Mountain House3, Tracy3, Lathrop2, Manteca2. Acti-Kare is excluded from Manteca; Growls N Meows is excluded from Lathrop. No office/home address invented, no photo reused, no availability/quality/background-check endorsement. Evidence: research/pet-care-expansion-2026-11-08.json and matching publication transaction.
+
+Phone-width browser acceptance now observed using tab-scoped device emulation:390px document/client width and390px scroll width on all four pet-sitting result pages. Lathrop2/Manteca2/Mountain House3/Tracy3 results match coverage. Manteca no-result search shows removal/other-city guidance; removing only the search term restores two results while retaining city/service. Growls detail opens with Manteca/service context, dated coverage and correct tel/website actions. No call or message sent. This is browser emulation, not a physical-phone push or native SMS-app test.
+
+Search Console: canonical URL-prefix property setup in current Google account requires HTML ownership verification. Google-supplied HTML file prepared and deployed through existing native build; verification and sitemap submission pending acceptance. No new DNS/OAuth access or Google Analytics tracking added. Facebook drafts stay unpublished. Photo tasks and genuine-reporter pet pilot remain OPEN.
+
+
+A further phone intake check found selected-city loss through /post-lost-found. Fix prepared: board supplies its selected city, alias accepts only one of four named cities and passes it to the existing form; All Cities/unknown values do not invent a city. City buttons now expose aria-pressed.147tests and final OpenNext/TypeScript pass; native deployment/live acceptance pending. No genuine reporter transaction performed. Google canonical property ownership verified with the Google-provided HTML file (source31d32cc / native96371fa0 Ready2m14s); keep the file in place. Sitemap submission/indexing status remains pending.

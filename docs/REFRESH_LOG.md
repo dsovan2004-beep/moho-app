@@ -1,5 +1,12 @@
 # MoHoLocal living-directory refresh ledger
 
+## November 8 — phone-width launch checks, pet-care supply and Search Console
+
+DATA-13: published Acti-Kare of Tracy pet-care offering (Mountain House/Tracy/Lathrop) and Growls N Meows (Mountain House/Tracy/Manteca), after domain/name/phone duplicate checks and dated first-party service-city checks.80dated checks total; pet-sitting and dog-walking coverage now3/3/2/2 across Mountain House/Tracy/Lathrop/Manteca. No inferred fourth-city coverage, public home addresses, reused photos, credentials, quality or current availability endorsement. [Evidence](research/pet-care-expansion-2026-11-08.json). Continue thin-category depth; this increment does not close ongoing supply work.
+
+LAUNCH-01:390px browser-emulated four-city pet-sitting results fit without horizontal overflow; Manteca no-result recovery restores original city/service and two options. Provider detail preserves context and contact evidence. Physical-phone notification and genuine-user transaction acceptance remain OPEN. SEO-03: canonical Search Console URL-prefix setup and verification-file native build in progress; sitemap/index acceptance pending. No new analytics tracking or account access grants. FB drafts remain unpublished; photo tasks and genuine-reporter pet pilot remain OPEN. [Acceptance ledger](launch-readiness-2026-11-08.md).
+
+
 ## November 8 — monetization ownership and resident readiness
 
 MON-01: role expanded to Growth, Community Marketing & Monetization Lead. Own pricing/offer research, willingness-to-pay validation, business retention, revenue/cost measurement and clearly disclosed sponsorship proposals. [Validation plan](marketing/monetization-validation-plan.md). Research/proposal only; no billing, charges, outreach, ad spend or commercial promises. Keep initial basic browsing/listings free; payment cannot buy verification or undisclosed recommendations.

@@ -153,6 +153,7 @@ export default function SubmitPage() {
                   key={c}
                   type="button"
                   onClick={() => setCity(c)}
+                  aria-pressed={city === c}
                   className="px-3 py-2.5 rounded-xl text-sm font-semibold border transition text-left"
                   style={{
                     borderColor:     city === c ? '#1e3a5f' : '#e5e7eb',

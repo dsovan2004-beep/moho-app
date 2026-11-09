@@ -240,7 +240,7 @@ export default async function LostAndFoundPage({ searchParams }: PageProps) {
           </p>
         </div>
         <Link
-          href="/post-lost-found"
+          href={`/post-lost-found${city === 'All Cities' ? '' : `?${new URLSearchParams({city})}`}`}
           className="shrink-0 text-sm font-bold px-4 py-2 rounded-lg transition hover:opacity-90"
           style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}
         >
