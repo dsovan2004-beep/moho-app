@@ -1,0 +1,21 @@
+{
+  "checked_date": "2026-11-08",
+  "provider": {
+    "name": "Delk Pest Control",
+    "city": "Stockton",
+    "phone": "(209) 465-5656",
+    "website": "https://delkpestcontrol.com/",
+    "source_url": "https://delkpestcontrol.com/delk-pest-control-service-area/",
+    "areas": [
+      "Mountain House",
+      "Tracy",
+      "Lathrop",
+      "Manteca"
+    ],
+    "tags": [
+      "pest control"
+    ],
+    "description": "Provider advertising residential and commercial pest control. Its official Stockton-office service-area list individually names Mountain House, Tracy, Lathrop and Manteca. Confirm the specific pest, property eligibility, treatment scope, required credentials, quote and appointment directly. Website information does not establish treatment safety, effectiveness or current availability."
+  },
+  "limits": "Official website desk check only; public phone, named service cities, identity and advertised pest service. No street address or image reused. No owner contact or credential, insurance, safety, effectiveness, quality, appointment or price endorsement."
+}
