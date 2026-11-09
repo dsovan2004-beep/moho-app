@@ -1,5 +1,12 @@
 # MoHoLocal active execution queue
 
+## November 8 — typed-service search launch fix
+
+SEARCH-01 P1: reproduced live Manteca Electrical services + electrician returning0despite2checked choices. Exact role/canonical terms now also match dated service tags via public checked IDs; existing city/category/explicit-service/publication constraints remain. No inference for ambiguous cleaning/solar/pet-care terms or company-name fragments; ordinary text results retain per-row evidence status. Anonymous public API composed-filter checks return2for all four electrical shortlists and0for conflicting Pet Services/plumbing cases. New regressions cover normalization, exactness and filter-like input. [Evidence](research/service-search-acceptance-2026-11-08.md). Final build/native/live acceptance pending.
+
+Electrical/theme increment is already deployed:78a040f / nativee3c270a1 Ready1m59s. Live390px shortlists show2eachcity and active Electrical services shortcut; browsing Manteca now uses Manteca gradient while Modesto office label stays intact.88dated website checks remain. FB drafts unpublished, photo tasks and genuine-reporter pet pilot OPEN; physical-phone and genuine resident/owner acceptance OPEN. Search Console baseline still processing.
+
+
 ## November 8 — electrical coverage and provider-page city consistency
 
 DATA-17: published Luminate Electric (Lathrop based) and Lainez Electric (Manteca based), each with explicit first-party service-area evidence for all four cities and public phone/name/domain duplicate checks.88dated checks; Electrical services has2choices in each city. No office/home street address, photographs, license/insurance/quality confirmation, price, appointment or emergency-response endorsement copied. [Evidence](research/electrical-coverage-2026-11-08.json) and matching SQL. Website information checks remain separate from required credential/availability checks.

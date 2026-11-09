@@ -11,7 +11,7 @@ import { CITIES as CITY_LIST, CITY_BY_NAME, RELAUNCH_CITY_NAMES } from '@/lib/ci
 import Link from 'next/link'
 import ListingEvidence from '@/app/components/ListingEvidence'
 import { CHECK_COLUMNS } from '@/lib/listing-evidence'
-import { SERVICE_CHOICES, serviceForCategory } from '@/lib/services'
+import { SERVICE_CHOICES, serviceForCategory, serviceSearchTag } from '@/lib/services'
 import { directoryHref } from '@/lib/directory-filters'
 import { businessHref } from '@/lib/business-discovery'
 import BusinessContactActions from '@/app/components/BusinessContactActions'
@@ -247,10 +247,19 @@ export default function DirectoryPage() {
 
     const safeQuery = query.replace(/[^\p{L}\p{N}\s'-]/gu, ' ').trim().slice(0,100)
     if (safeQuery) {
-      // Expand search to name, description, category, city, and address
-      req = req.or(
-        `name.ilike.%${safeQuery}%,description.ilike.%${safeQuery}%,category.ilike.%${safeQuery}%,city.ilike.%${safeQuery}%,address.ilike.%${safeQuery}%`
-      )
+      // Known job terms also match dated service evidence, retaining every existing filter.
+      const tag = serviceSearchTag(safeQuery)
+      let evidenceIds:string[]=[]
+      if (tag) {
+        let evidence = supabase.from('listing_checks').select('business_id').contains('service_tags',[tag])
+        if (city !== 'All Cities') evidence=evidence.contains('service_areas',[city])
+        const {data:matches,error:searchError}=await evidence
+        if (requestId !== fetchSequence.current) return
+        if (searchError) { setLoadError(true); setLoading(false); setLoadingMore(false); return }
+        evidenceIds=(matches??[]).map(row=>row.business_id).filter(id=>/^[0-9a-f-]{36}$/i.test(id))
+      }
+      const textFields=`name.ilike.%${safeQuery}%,description.ilike.%${safeQuery}%,category.ilike.%${safeQuery}%,city.ilike.%${safeQuery}%,address.ilike.%${safeQuery}%`
+      req=req.or(textFields+(evidenceIds.length?`,id.in.(${evidenceIds.join(',')})`:''))
       // Fetch alphabetically; relevance re-sort happens client-side below
       req = req.order('name', { ascending: true })
     } else {

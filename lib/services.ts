@@ -17,3 +17,21 @@ export const SERVICE_CHOICES = [
 export function serviceForCategory(key: string | null | undefined, category: string) {
   return SERVICE_CHOICES.find(item => item.key === key && (category === 'All' || item.category === category))
 }
+
+// Exact resident job terms only; ambiguous words and company names stay text searches.
+const SERVICE_SEARCH_ALIASES:Record<string,readonly string[]> = {
+  'electrical-services':['electrician','electricians','electrical'],
+  plumbing:['plumber','plumbers'],
+  'garage-door-repair':['garage door repairs'],
+  'heating-air-conditioning':['hvac','heating and cooling'],
+  'pet-sitting':['pet sitter','pet sitters'],
+  'dog-walking':['dog walker','dog walkers'],
+  landscaping:['landscaper','landscapers'],
+  handyman:['handymen'],
+}
+export function serviceSearchTag(query:string):string|undefined {
+  const normalize=(value:string)=>value.toLowerCase().replace(/[^\p{L}\p{N}\s'-]/gu,' ').replace(/\s+/g,' ').trim()
+  const normalized=normalize(query)
+  return SERVICE_CHOICES.find(item=>[item.label,item.tag,...(SERVICE_SEARCH_ALIASES[item.key]??[])]
+    .some(term=>normalize(term)===normalized))?.tag
+}
