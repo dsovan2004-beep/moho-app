@@ -11,3 +11,5 @@ Overview performance, indexing and experience reports display Processing data, p
 References: [Google property setup](https://support.google.com/webmasters/answer/34592), [Google Sitemaps report](https://support.google.com/webmasters/answer/7451001). Submission/discovery is distinct from indexing; retain the verified canonical prefix and inspect subsequent processing results.
 
 Follow-up after7:06PMrequest: overview performance/indexing/experience/enhancement reports remain Processing data. No repeated sitemap submission or indexing requests; preserve the accepted Success/1,102discovered record and wait for Google's baseline processing. No improvement claimed from elapsed minutes.
+
+Follow-up after7:14PMrequest: baseline overview reports remain Processing data, please check again in a day or so. No repeated sitemap submission, indexing request or traffic-growth claim. Further inventory changes do not imply new Google discovery/indexing counts.

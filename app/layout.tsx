@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   appleWebApp:{capable:true,title:'MoHoLocal',statusBarStyle:'default'},
   icons:{apple:'/icons/moho-180.png'},
   title: 'MoHoLocal — Local Community Directory',
-  description: 'Local directory, events, and community for Mountain House, Tracy and nearby cities.',
+  description: 'Local directory, events, and community for Mountain House, Tracy, Lathrop and Manteca.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

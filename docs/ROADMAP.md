@@ -1,5 +1,14 @@
 # MoHoLocal Product Roadmap
 
+## November 8 — mobile-grooming depth, brand correction and city sharing
+
+DATA-15: published California Pet Grooming Mobile with all four explicit service cities and Ana's Mobile Dog Grooming with Lathrop/Manteca only. Ana's FAQ excludes new clients in Mountain House/Tracy and lists parking/apartment/weight restrictions; no inferred coverage. Corrected existing Bayberry record to iLuvMyPack Mobile Grooming (formerly Bayberry Grooming), based on official former-brand statement, retaining its ID and not counting a duplicate operator.84dated checks; mobile-grooming choices now Mountain House3/Tracy4/Lathrop4/Manteca4. No public home/visitor address, photos, fixed prices or quality/credentials/availability endorsement. [Evidence](research/grooming-followup-2026-11-08.json) and matching SQL. Live city/eligibility acceptance pending.
+
+SEO-02/LAUNCH-01: city routes now emit city-specific Open Graph and Twitter summary metadata using the existing MoHoLocal brand icon, explicitly labeled logo; no city photography generated/reused. Root description names all four cities. Local HTTP rendered checks pass for all four canonical/title/description/image/card combinations.147tests and final OpenNext/TypeScript pass. Native/live verification pending; actual Facebook/X cache rendering not tested and nothing posted.
+
+SEO-03: current overview performance/indexing/experience/enhancement reports still processing; no redundant submission or growth/baseline claim. Keep successful prior sitemap/city-index evidence separate from later inventory additions. FB drafts unpublished. Photo tasks and genuine-reporter pet pilot OPEN; physical phone/push and genuine resident/owner acceptance remain OPEN.
+
+
 ## November 8 — carpet and utility-route release accepted
 
 DATA-14:82dated checks. Reynolds Carpet Cleaning Service & Janitorial and Magic Wand Professional Cleaning Services are live with individually named coverage for all four cities. Phone-width390px search acceptance matches carpet-cleaning counts Mountain House3/Tracy4/Lathrop4/Manteca4, without horizontal overflow. No contact sent, photos reused, office address invented or quality/credentials/availability endorsement. [Evidence](research/carpet-expansion-2026-11-08.json); screenshot research/nov8-phone-carpet-options-live.png.

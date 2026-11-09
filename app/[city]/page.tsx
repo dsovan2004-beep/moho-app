@@ -18,10 +18,16 @@ export async function generateMetadata({ params }: PageProps) {
   const { city: slug } = await params
   const city = CITIES.find(c => c.slug === slug)
   if (!city) return { title: 'MoHoLocal' }
+  const title = `${city.name} Local Businesses & Services | MoHoLocal`
+  const description = `Find services for your home and businesses in ${city.name}, California. Compare dated information checks, service areas and contact details.`
+  const url = `https://www.moholocal.com/${slug}`
+  const image = {url:'https://www.moholocal.com/icons/moho-512.png',width:512,height:512,alt:'MoHoLocal logo'}
   return {
-    title: `${city.name} Local Businesses & Services | MoHoLocal`,
-    description: `Find services for your home and businesses in ${city.name}, California. Compare dated information checks, service areas and contact details.`,
-    alternates: { canonical: `https://www.moholocal.com/${slug}` },
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {title,description,url,type:'website',siteName:'MoHoLocal',locale:'en_US',images:[image]},
+    twitter: {card:'summary',title,description,images:[image]},
   }
 }
 

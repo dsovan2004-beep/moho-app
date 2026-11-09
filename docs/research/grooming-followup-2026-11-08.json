@@ -1,0 +1,44 @@
+{
+  "checked_on": "2026-11-08",
+  "providers": [
+    {
+      "name": "California Pet Grooming Mobile",
+      "city": "Manteca",
+      "phone": "(209) 487-8400",
+      "website": "https://www.californiapetgroomingmobile.com/",
+      "source_url": "https://www.californiapetgroomingmobile.com/#service-area",
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "description": "Advertises mobile dog grooming and explicitly lists Mountain House, Tracy, Lathrop and Manteca. The official website publishes this contact number and links to an appointment-request system. Confirm your service address, dog requirements, quote and appointment directly; a displayed request does not confirm availability. Public visitor office not established."
+    },
+    {
+      "name": "Ana's Mobile Dog Grooming",
+      "city": "Riverbank",
+      "phone": "(350) 226-3247",
+      "website": "https://anasmobilegrooming.com/",
+      "source_url": "https://anasmobilegrooming.com/faq",
+      "areas": [
+        "Lathrop",
+        "Manteca"
+      ],
+      "description": "Riverbank-based mobile dog groomer whose FAQ names Lathrop and Manteca. It excludes new clients in Mountain House and Tracy, does not serve apartment complexes, requires two street-parking spaces and lists a 60-pound dog limit. Confirm address eligibility, dog requirements, quote and current appointment availability directly."
+    }
+  ],
+  "rebrand_update": {
+    "id": "50b70a38-4a16-44e4-8ba3-feaa10231ff1",
+    "name": "iLuvMyPack Mobile Grooming (formerly Bayberry Grooming)",
+    "website": "https://www.iluvmypack.com/",
+    "description": "The official iLuvMyPack site identifies its former name as Bayberry Grooming and explicitly lists Mountain House, Tracy, Lathrop and Manteca for mobile dog grooming. It offers new-client intake with availability dependent on existing routes. Confirm address eligibility, dog needs, quote and appointments directly; public phone and visitor office not established."
+  },
+  "limits": [
+    "Two new providers plus one existing record corrected, not three new operators",
+    "Ana new-client exclusion for Mountain House and Tracy respected",
+    "No photos, testimonial text, fixed prices, owner confirmation, credentials, quality or availability endorsement",
+    "California primary site rendered in Chrome: contact2094878400 and all four service cities visible; no booking submitted",
+    "iLuvMyPack identity link is the official sites explicit formerly-Bayberry statement; no owner contact/ownership-transfer verification claimed"
+  ]
+}
