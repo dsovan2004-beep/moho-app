@@ -171,6 +171,7 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
 
   const [businesses, setBusinesses] = useState<Business[]>([])
   const [loadError, setLoadError] = useState(false)
+  const [loadMoreError, setLoadMoreError] = useState(false)
   const [total, setTotal] = useState(0)
   const [offset, setOffset] = useState(0)
   const [loading, setLoading] = useState(true)
@@ -210,8 +211,14 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
   async function fetchPage(from: number, reset = false) {
     const requestId = ++fetchSequence.current
     const supabase = getSupabaseClient()
-    if (reset) setLoading(true)
-    else       setLoadingMore(true)
+    if (reset) { setLoading(true); setLoadError(false); setLoadMoreError(false) }
+    else { setLoadingMore(true) }
+    function failPage() {
+      if (reset) setLoadError(true)
+      else setLoadMoreError(true)
+      setLoading(false)
+      setLoadingMore(false)
+    }
 
     const to = from + PAGE_SIZE - 1
 
@@ -225,7 +232,7 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
     if (city !== 'All Cities') {
       const { data: checks, error: checkError } = await supabase.from('listing_checks').select('business_id').contains('service_areas', [city])
       if (requestId !== fetchSequence.current) return
-      if (checkError) { setLoadError(true); setLoading(false); setLoadingMore(false); return }
+      if (checkError) { failPage(); return }
       const ids = (checks ?? []).map(row => row.business_id).filter(id => /^[0-9a-f-]{36}$/i.test(id))
       req = ids.length ? req.or(`city.eq."${city}",id.in.(${ids.join(',')})`) : req.eq('city', city)
     }
@@ -235,7 +242,7 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
       if (city !== 'All Cities') checked = checked.contains('service_areas', [city])
       const {data: matching, error: matchError} = await checked
       if (requestId !== fetchSequence.current) return
-      if (matchError) { setLoadError(true); setLoading(false); setLoadingMore(false); return }
+      if (matchError) { failPage(); return }
       const ids = (matching ?? []).map(row => row.business_id)
       req = req.in('id',ids.length ? ids : ['00000000-0000-0000-0000-000000000000'])
     }
@@ -250,7 +257,7 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
         if (city !== 'All Cities') evidence=evidence.contains('service_areas',[city])
         const {data:matches,error:searchError}=await evidence
         if (requestId !== fetchSequence.current) return
-        if (searchError) { setLoadError(true); setLoading(false); setLoadingMore(false); return }
+        if (searchError) { failPage(); return }
         evidenceIds=(matches??[]).map(row=>row.business_id).filter(id=>/^[0-9a-f-]{36}$/i.test(id))
       }
       const textFields=`name.ilike.%${safeQuery}%,description.ilike.%${safeQuery}%,category.ilike.%${safeQuery}%,city.ilike.%${safeQuery}%,address.ilike.%${safeQuery}%`
@@ -272,8 +279,9 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
 
     const { data, count, error } = await req
     if (requestId !== fetchSequence.current) return
-    if (error) { setLoadError(true); setLoading(false); setLoadingMore(false); return }
+    if (error) { failPage(); return }
     setLoadError(false)
+    setLoadMoreError(false)
     let newBizs = (data ?? []) as Business[]
 
     // Client-side relevance re-sort when search query is active
@@ -637,12 +645,19 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
                 ))}
               </div>
 
+              {loadMoreError && <div role="alert" aria-busy={loadingMore} className="mt-4 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-slate-800">
+                <p className="font-semibold">Couldn’t load more listings. Your current results are still here.</p>
+                <button type="button" onClick={handleLoadMore} disabled={loadingMore} className="mt-2 inline-flex min-h-11 items-center rounded-xl border border-slate-400 bg-white px-4 py-2 font-bold focus-visible:ring-2 focus-visible:ring-[#19352d]">{loadingMore ? 'Trying…' : 'Try loading more'}</button>
+              </div>}
+
               {/* Load More */}
-              {hasMore && (
+              {hasMore && !loadMoreError && (
                 <div className="mt-6 text-center">
                   <button
+                    type="button"
                     onClick={handleLoadMore}
                     disabled={loadingMore}
+                    aria-busy={loadingMore}
                     className="text-sm font-bold px-8 py-3 rounded-xl transition hover:opacity-90 disabled:opacity-60"
                     style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}
                   >
