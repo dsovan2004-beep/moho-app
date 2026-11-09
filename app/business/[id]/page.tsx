@@ -618,7 +618,7 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
 
           {/* Report listing */}
           <Link
-            href={`/report-listing/${biz.id}`}
+            href={`/report-listing/${biz.id}?${new URLSearchParams({city:context.city})}`}
             className="block w-full text-center text-xs text-gray-400 hover:text-red-500 transition py-1"
           >
             🚩 Report this listing

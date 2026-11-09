@@ -26,6 +26,7 @@ export default function SubmitPage() {
   const params = useSearchParams()
   const requestedType=params.get('submission_type') ?? ''
   const businessId=params.get('business_id') ?? ''
+  const listingUrl=UUID.test(businessId) ? `https://www.moholocal.com/business/${businessId}` : ''
   const [petStatus,setPetStatus]=useState('lost')
   const { user, checking } = useRequestAccount()
   const [formState, setFormState] = useState<FormState>('idle')
@@ -38,6 +39,7 @@ export default function SubmitPage() {
   const [eventDate,      setEventDate]      = useState('')
   const [contactUrl,     setContactUrl]     = useState(UUID.test(businessId) ? `https://www.moholocal.com/business/${businessId}` : '')
 
+  const isListingCorrection = submissionType === 'business_update' && !!listingUrl
   const selectedType = SUBMISSION_TYPES.find((t) => t.value === submissionType)
   const showEventDate = submissionType === 'event' || submissionType === 'garage_sale'
 
@@ -56,7 +58,8 @@ export default function SubmitPage() {
       }
       if (submissionType === 'lost_pet') body.pet_status=petStatus
       if (eventDate)  body.event_date  = new Date(eventDate).toISOString()
-      if (contactUrl) body.contact_url = contactUrl.trim()
+      if (isListingCorrection) body.contact_url = listingUrl
+      else if (contactUrl) body.contact_url = contactUrl.trim()
 
       const { data: { session } } = await getSupabaseClient().auth.getSession()
       if (!session?.access_token) throw new Error('Sign in before submitting.')
@@ -123,7 +126,7 @@ export default function SubmitPage() {
           <Link href="/" className="text-xl font-black tracking-tight" style={{ color: '#1e3a5f' }}>
             MoHo<span style={{ color: '#f59e0b' }}>Local</span>
           </Link>
-          <Link href="/" className="text-sm text-gray-400 hover:text-gray-700 transition">
+          <Link href={isListingCorrection ? `/business/${businessId}${city ? `?${new URLSearchParams({city})}` : ''}` : '/'} className="text-sm text-gray-400 hover:text-gray-700 transition">
             ← Back
           </Link>
         </div>
@@ -133,20 +136,20 @@ export default function SubmitPage() {
 
         {/* Hero */}
         <div className="mb-8">
-          <h1 className="text-3xl font-black text-gray-900 mb-2">Share something with the 209 👋</h1>
+          <h1 className="text-3xl font-black text-gray-900 mb-2">{isListingCorrection ? 'Suggest a listing correction' : 'Share something with the 209 👋'}</h1>
           <p className="text-gray-500">
-            Got a local event, lost pet, garage sale, or community tip? Let your neighbors know.
-            We review everything before it goes live.
+            {isListingCorrection ? 'Help keep local information current. Tell us what changed and how you know; an editor reviews corrections before updating a listing.' : 'Got a local event, lost pet, garage sale, or community tip? Let your neighbors know. We review everything before it goes live.'}
           </p>
         </div>
 
+        {isListingCorrection && <div className="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-slate-700"><p className="font-bold">{title.startsWith('Listing correction: ') ? title.slice(20) : 'Listing being corrected'}</p><Link className="mt-2 inline-flex min-h-11 items-center font-semibold underline" href={`/business/${businessId}${city ? `?${new URLSearchParams({city})}` : ''}`}>View the listing →</Link><p className="mt-1">Report outdated hours, contact details, service areas or a closure. Include a public source or the date you noticed the change. Keep private personal information out of the report.</p></div>}
         {!user && !checking && <RequestAccount returnTo={`/submit${params.size ? `?${params.toString()}` : ''}`} />}
           <form onSubmit={handleSubmit} className="space-y-5">
             <fieldset disabled={!user || checking || formState === 'submitting'} className="space-y-5">
 
           {/* City */}
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1.5">Your city *</label>
+            <label className="block text-sm font-bold text-gray-700 mb-1.5">{isListingCorrection ? 'City affected *' : 'Your city *'}</label>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
               {CITIES.map((c) => (
                 <button
@@ -168,8 +171,8 @@ export default function SubmitPage() {
             </div>
           </div>
 
-          {/* Submission type */}
-          <div>
+          {/* A listing correction already has a fixed submission type. */}
+          {!isListingCorrection && <div>
             <label className="block text-sm font-bold text-gray-700 mb-1.5">What are you sharing? *</label>
             <div className="space-y-2">
               {SUBMISSION_TYPES.map((t) => (
@@ -192,16 +195,17 @@ export default function SubmitPage() {
                 </button>
               ))}
             </div>
-          </div>
+          </div>}
 
           {submissionType === 'lost_pet' && <div className="rounded-xl border border-amber-200 bg-amber-50 p-4"><label htmlFor="pet-status" className="block font-bold text-sm">Report status</label><select id="pet-status" value={petStatus} onChange={e=>setPetStatus(e.target.value)} className="mt-2 border border-slate-300 rounded-lg p-2 bg-white"><option value="lost">Lost pet</option><option value="found">Found pet / sighting</option><option value="reunited">Reunited update</option></select><p className="text-sm text-slate-600 mt-3">Include the sighting date and a neighborhood or nearby public landmark. Share a contact link only if you have permission; keep private home addresses and sensitive ownership details out of the report. Reports are reviewed before publication.</p></div>}
           {/* Title */}
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1.5">
-              {submissionType === 'lost_pet' ? 'Pet description (breed, color, name)' : 'Title *'}
+            <label htmlFor="submission-title" className="block text-sm font-bold text-gray-700 mb-1.5">
+              {submissionType === 'lost_pet' ? 'Pet description (breed, color, name)' : isListingCorrection ? 'Correction summary *' : 'Title *'}
             </label>
             <input
               type="text"
+              id="submission-title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder={
@@ -220,14 +224,15 @@ export default function SubmitPage() {
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1.5">Details *</label>
+            <label htmlFor="submission-details" className="block text-sm font-bold text-gray-700 mb-1.5">{isListingCorrection ? 'What changed? *' : 'Details *'}</label>
             <textarea
+              id="submission-details"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder={
                 submissionType === 'lost_pet'
                   ? 'Where and when last seen, contact number, any distinguishing marks...'
-                  : 'Share the details — location, time, what to bring, how to contact you...'
+                  : isListingCorrection ? 'What is incorrect, what should it say, and when did you check? Add a public source link if available.' : 'Share the details — location, time, what to bring, how to contact you...'
               }
               required
               rows={4}
@@ -254,13 +259,15 @@ export default function SubmitPage() {
 
           {/* Contact URL */}
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1.5">
-              Link
-              <span className="text-gray-400 font-normal ml-1">(optional — Facebook event, Nextdoor post, etc.)</span>
+            <label htmlFor="submission-link" className="block text-sm font-bold text-gray-700 mb-1.5">
+              {isListingCorrection ? 'Listing link (included automatically)' : 'Link'}
+              {!isListingCorrection && <span className="text-gray-400 font-normal ml-1">(optional — Facebook event, Nextdoor post, etc.)</span>}
             </label>
             <input
               type="url"
-              value={contactUrl}
+              id="submission-link"
+              readOnly={isListingCorrection}
+              value={isListingCorrection ? listingUrl : contactUrl}
               onChange={(e) => setContactUrl(e.target.value)}
               placeholder="https://..."
               className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-900 placeholder-gray-400"
