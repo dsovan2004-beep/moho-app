@@ -21,3 +21,5 @@ Follow-up after7:53PMrequest: overview performance/indexing/experience/enhanceme
 ## Late November 8 follow-up
 
 After the11:31PMrequest, canonical property overview still reports processing for performance, indexing, experience and enhancements. No redundant submission/indexing request made; no new traffic or indexed-page count inferred.
+
+Sitemap follow-up after11:33PMrequest: table remains Success, submitted/readNov8,1,102discovered pages and0videos. No resubmission. This is not proof of newest listing crawl or indexing.

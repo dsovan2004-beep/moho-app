@@ -1,7 +1,7 @@
 import { serializeJsonLd } from '@/lib/json-ld'
 import ListingEvidence from '@/app/components/ListingEvidence'
 import BusinessContactActions from '@/app/components/BusinessContactActions'
-import { businessHref, discoveryContext, textContact } from '@/lib/business-discovery'
+import { businessHref, discoveryContext, directoryReturn, textContact } from '@/lib/business-discovery'
 import { CHECK_COLUMNS } from '@/lib/listing-evidence'
 import { PUBLIC_BUSINESS_COLUMNS } from '@/lib/supabase'
 export const runtime = 'nodejs'
@@ -17,7 +17,7 @@ import type { Metadata } from 'next'
 
 interface PageProps {
   params: Promise<{ id: string }>
-  searchParams: Promise<{ city?: string; service?: string }>
+  searchParams: Promise<{ city?: string; service?: string; returnTo?: string | string[] }>
 }
 
 // ── JSON-LD builder ──────────────────────────────────────────────────────────
@@ -283,6 +283,9 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
   const related = relatedResult.businesses
   const returnQuery = new URLSearchParams({city: context.city, category: biz.category})
   if (context.service) returnQuery.set('service', context.service.key)
+  const returnHref = directoryReturn(search.returnTo) ?? `/directory?${returnQuery}`
+  const returnCity = new URL(returnHref, 'https://www.moholocal.com').searchParams.get('city')
+  const returnLabel = returnCity === 'All Cities' ? 'all cities' : context.city
   const city = CITY_CFG[context.city] ?? CITY_CFG['Mountain House']
   const officeEmoji = CITY_CFG[biz.city]?.emoji ?? '📍'
   const catEmoji = getCategoryEmoji(biz.category)
@@ -623,15 +626,15 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
 
           {/* Back to city link */}
           <Link
-            href={`/directory?${returnQuery}`}
+            href={returnHref}
             className="block text-center text-sm text-gray-400 hover:text-blue-600 transition py-2"
           >
-            ← Back to {context.city} results
+            ← Back to {returnLabel} results
           </Link>
         </aside>
       </div>
 
-      <Link href={`/directory?${returnQuery}`} className="mt-8 inline-flex min-h-11 items-center font-semibold text-[#19352d] underline">← Back to {context.city} results</Link>
+      <Link href={returnHref} className="mt-8 inline-flex min-h-11 items-center font-semibold text-[#19352d] underline">← Back to {returnLabel} results</Link>
       {/* ── Related Businesses ── */}
       {related.length > 0 && (
         <section className="mt-12">
@@ -641,7 +644,7 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {related.map((r) => (
               <article key={r.id} className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
-                <Link href={businessHref(r.id, context.city, context.service?.key)} className="inline-flex min-h-11 items-center text-base font-bold text-[#19352d] underline-offset-4 hover:underline">
+                <Link href={businessHref(r.id, context.city, context.service?.key, returnHref)} className="inline-flex min-h-11 items-center text-base font-bold text-[#19352d] underline-offset-4 hover:underline">
                   {r.name} →
                 </Link>
                 <p className="mt-1 text-xs text-slate-500">{r.city === 'Service area only' ? 'Office location not listed' : `Based in ${r.city}`}</p>
@@ -660,10 +663,10 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
             {relatedResult.failed ? 'Related providers could not be loaded. Please try again.' : `No other website-checked options with matching services for ${context.city} in this shortlist yet.`}
           </p>
           <Link
-            href={`/directory?${returnQuery}`}
+            href={returnHref}
             className="text-sm font-semibold text-blue-600 hover:underline"
           >
-            Back to {context.city} results →
+            Back to {returnLabel} results →
           </Link>
         </section>
       )}

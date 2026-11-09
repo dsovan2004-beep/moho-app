@@ -95,7 +95,7 @@ function StarRating({ rating }: { rating?: number | null }) {
 }
 
 // ── Business card ─────────────────────────────────────────────────────────────
-function BusinessCard({ biz, activeCategory, city, service }: { biz: Business; activeCategory: string; city: string; service?: string }) {
+function BusinessCard({ biz, activeCategory, city, service, returnTo }: { biz: Business; activeCategory: string; city: string; service?: string; returnTo: string }) {
   // Category chip: amber highlight when the active filter matches this business's category
   const catChip = activeCategory !== 'All' && biz.category === activeCategory
     ? 'bg-amber-50 text-amber-800 border border-amber-200'
@@ -104,7 +104,7 @@ function BusinessCard({ biz, activeCategory, city, service }: { biz: Business; a
   return (
     <div className="group flex gap-4 bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md hover:-translate-y-0.5 transition-all">
       {/* Thumbnail — links to detail page */}
-      <Link href={businessHref(biz.id, city, service)} className="hidden sm:flex shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-blue-50 items-center justify-center">
+      <Link href={businessHref(biz.id, city, service, returnTo)} className="hidden sm:flex shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-blue-50 items-center justify-center">
         {biz.image_url ? (
           <img src={biz.image_url} alt={biz.name} className="w-full h-full object-cover" loading="lazy" />
         ) : (
@@ -115,7 +115,7 @@ function BusinessCard({ biz, activeCategory, city, service }: { biz: Business; a
       <div className="flex-1 min-w-0">
         {/* Name + badges — claim badge stays visible; category chip hidden on mobile (redundant when filtered) */}
         <div className="flex items-start justify-between gap-2">
-          <Link href={businessHref(biz.id, city, service)} className="min-w-0 flex-1">
+          <Link href={businessHref(biz.id, city, service, returnTo)} className="min-w-0 flex-1">
             <h3 className="font-bold text-gray-900 group-hover:text-blue-700 transition leading-snug">
               {biz.name}
             </h3>
@@ -632,7 +632,7 @@ export default function DirectoryPage() {
             <>
               <div className="space-y-3">
                 {businesses.map((biz) => (
-                  <BusinessCard key={biz.id} biz={biz} activeCategory={category} city={city} service={service?.key} />
+                  <BusinessCard key={biz.id} biz={biz} activeCategory={category} city={city} service={service?.key} returnTo={directoryHref(filters)} />
                 ))}
               </div>
 

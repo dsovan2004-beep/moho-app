@@ -1,5 +1,16 @@
 # MoHoLocal active execution queue
 
+## November 8 — search-return fix and exterior-provider follow-up
+
+SEARCH-02: directory cards carry a validated directory-only return destination. Dedicated Back to results actions restore city (including All Cities), category, explicit service, search text and sort; related-provider visits retain the original return destination. Category/breadcrumb browse actions retain their existing semantics. Reject external URLs, other routes, unknown/duplicate parameters, invalid cities/categories, excessive/control-character query text; canonicalize compatible services and allowed sort. Authentication return policies unchanged.152 tests pass; final build/native/live acceptance pending.
+
+DATA-19: published Top to Bottom Washers, actual office city Stockton, with explicit official FAQ coverage for Mountain House, Tracy, Lathrop and Manteca and advertised exterior/window/gutter/solar-panel cleaning.90dated website checks total. Name/domain/phone duplicate guard and database readback passed. No local branch, bird-exclusion specialization, credential/quality/availability endorsement, photo reuse or contact sent. [Evidence](research/exterior-followup-2026-11-08.json), matching publication SQL.
+
+SEO-03: sitemap report follow-up remains Success, submitted/readNovember8,1,102discovered pages and0videos; this is not an indexed-page count and does not establish that the newest listings have been crawled. No resubmission. Overview baseline processing from preceding pass remains latest baseline evidence.
+
+Facebook drafts UNPUBLISHED. Mountain House2026photo rights/location, Manteca exact-photo-location, genuine-reporter pet pilot and physical-phone/native contact-app acceptance OPEN. No synthetic residents, outcomes, claims, bookings or pet reports. Final acceptance evidence to follow.
+
+
 ## November 8 — late launch-readiness and exterior-cleaning acceptance
 
 DATA-18: published Shamblin Softwash & Pressure Washing (Manteca based), with explicit official-site Mountain House, Tracy, Lathrop and Manteca coverage, public phone and advertised window/gutter/solar-panel cleaning and pressure washing. **89 dated website checks**; this is not credential, quality or appointment confirmation. No street address or image copied. Database name/domain/phone guard passed. Live name search shows one result in each city; detail preserves Lathrop context and actual Manteca office city. [Evidence](research/exterior-cleaning-2026-11-08.json), matching SQL and research/nov8-exterior-provider-live.png. Existing All Pro was identified and not duplicated; Quicky is held because direct page content/title did not substantiate the search snippet.

@@ -1,0 +1,31 @@
+{
+  "checked_date": "2026-11-08",
+  "provider": {
+    "name": "Top to Bottom Washers",
+    "city": "Stockton",
+    "phone": "(350) 217-0618",
+    "website": "https://www.toptobottomwashers.com/",
+    "source_url": "https://www.toptobottomwashers.com/",
+    "areas": [
+      "Mountain House",
+      "Tracy",
+      "Lathrop",
+      "Manteca"
+    ],
+    "tags": [
+      "window cleaning",
+      "gutter cleaning",
+      "solar panel cleaning",
+      "pressure washing"
+    ],
+    "description": "Stockton-based exterior cleaning provider advertising window, gutter and solar-panel cleaning, pressure washing and house soft washing. Its official service-area FAQ individually names Mountain House, Tracy, Lathrop and Manteca. Confirm property eligibility, exact methods, job scope, required credentials, quote and appointment directly. Solar-panel cleaning does not establish bird-exclusion installation capability."
+  },
+  "fields_checked": [
+    "identity",
+    "public phone",
+    "website",
+    "advertised services",
+    "individually named service cities"
+  ],
+  "limits": "First-party website desk check only; no credentials, insurance, quality, safety, price, availability or owner confirmation. No street address or photo reused. No local branches inferred; no contact sent."
+}
