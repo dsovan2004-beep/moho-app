@@ -114,24 +114,14 @@ function BusinessCard({ biz, activeCategory, city, service, returnTo }: { biz: B
       </Link>
 
       <div className="flex-1 min-w-0">
-        {/* Name + badges — claim badge stays visible; category chip hidden on mobile (redundant when filtered) */}
+        {/* Resident name first; owner actions follow contact details */}
         <div className="flex items-start justify-between gap-2">
           <Link href={businessHref(biz.id, city, service, returnTo)} className="min-w-0 flex-1">
-            <h3 className="font-bold text-gray-900 group-hover:text-blue-700 transition leading-snug">
+            <h3 className="font-bold text-gray-900 group-hover:text-blue-700 transition leading-snug break-words">
               {biz.name}
             </h3>
           </Link>
           <div className="flex items-center gap-1.5 shrink-0">
-            {/* Unclaimed badge — drives owner acquisition */}
-            {!biz.claimed && (
-              <Link
-                href={`/claim-listing/${biz.id}`}
-                onClick={(e) => e.stopPropagation()}
-                className="inline-flex min-h-11 items-center text-xs font-bold px-3 py-2 rounded-xl border border-amber-300 bg-amber-50 text-amber-700 hover:bg-amber-100 transition whitespace-nowrap"
-              >
-                📌 Claim
-              </Link>
-            )}
             {/* Category chip — hidden on xs to prevent squeezing the name; visible sm+ */}
             <span className={`hidden sm:inline text-xs font-medium px-2 py-0.5 rounded-full ${catChip}`}>
               {biz.category}
@@ -158,7 +148,10 @@ function BusinessCard({ biz, activeCategory, city, service, returnTo }: { biz: B
         <ListingEvidence check={biz.listing_checks} />
 
         <BusinessContactActions phone={biz.phone} website={biz.website} />
-        <Link href={`/report-listing/${biz.id}?${new URLSearchParams({city})}`} aria-label={`Suggest a correction for ${biz.name}`} className="mt-2 inline-flex min-h-11 items-center text-xs font-semibold text-slate-600 underline underline-offset-4 hover:text-[#19352d] focus-visible:ring-2 focus-visible:ring-[#19352d]">Suggest a correction</Link>
+        <div className="mt-2 flex flex-wrap gap-x-4 border-t border-slate-100 pt-1">
+          <Link href={`/report-listing/${biz.id}?${new URLSearchParams({city})}`} aria-label={`Suggest a correction for ${biz.name}`} className="inline-flex min-h-11 items-center text-xs font-semibold text-slate-600 underline underline-offset-4 hover:text-[#19352d] focus-visible:ring-2 focus-visible:ring-[#19352d]">Suggest a correction</Link>
+          {!biz.claimed && <Link href={`/claim-listing/${biz.id}`} aria-label={`Claim listing for ${biz.name}`} className="inline-flex min-h-11 items-center text-xs font-semibold text-slate-600 underline underline-offset-4 hover:text-[#19352d] focus-visible:ring-2 focus-visible:ring-[#19352d]">Own this business? Claim listing</Link>}
+        </div>
       </div>
     </div>
   )
@@ -299,6 +292,7 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault()
+    if (debounceRef.current) clearTimeout(debounceRef.current)
     const params = new URLSearchParams()
     params.set('city', city)
     params.set('category', category)
@@ -335,12 +329,14 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
         {/* Mobile search bar */}
         <form onSubmit={handleSearch} className="relative">
           <input
-            type="text"
+            type="search"
+            enterKeyHint="search"
+            autoComplete="off"
             value={searchInput}
             onChange={(e) => handleSearchInput(e.target.value)}
             aria-label="Search businesses"
             placeholder="Search by name, category, or city…"
-            className="w-full border border-gray-200 rounded-xl pl-4 pr-14 min-h-11 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full border border-gray-200 rounded-xl pl-4 pr-14 min-h-11 py-2.5 text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <button
             type="submit"
@@ -400,6 +396,15 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
           <div className="absolute right-0 top-0 bottom-0 w-8 pointer-events-none"
             style={{ background: 'linear-gradient(to right, transparent, white)' }} />
         </div>
+      </div>
+
+      <div className="lg:hidden mb-4 flex flex-wrap items-center gap-2">
+        {query ? <p className="text-sm text-slate-600">Sorted by search relevance</p> : <>
+          <label htmlFor="mobile-directory-sort" className="text-sm font-semibold text-slate-700">Sort results</label>
+          <select id="mobile-directory-sort" value={SORT_OPTIONS.some(option=>option.value===sortBy) ? sortBy : 'rating'} onChange={event=>router.push(sortUrl(event.target.value))} className="min-h-11 min-w-0 flex-1 rounded-xl border border-slate-300 bg-white px-3 py-2 text-base text-slate-800 focus-visible:ring-2 focus-visible:ring-[#19352d]">
+            {SORT_OPTIONS.map(option=><option key={option.value} value={option.value}>{option.label}</option>)}
+          </select>
+        </>}
       </div>
 
       <DirectoryServices city={city} selected={service?.key} />
