@@ -1,5 +1,16 @@
 # Resident launch readiness — November 8, 2026
 
+## November 9 — mobile search redesign shipped
+
+UX-06 COMPLETE: sourcea8b67b3/nativeec0ba5ab Ready2m6s; live build marker matches source. At390px with scrollY0, search starts318px down (previous1354px). Mobile search/city/category filters precede an expandable service chooser; keyboard Enter opens it, selecting Pest control retains Manteca, closes chooser and returns3. Local320px and390px have no document overflow; desktop service links remain visible with mobile toggle hidden. Optional outcome prompt moved beside its form below results.152tests and final OpenNext/TypeScript pass. [Acceptance](research/mobile-search-redesign-2026-11-09.md); screenshot research/nov9-mobile-search-live.png. Emulation reset.
+
+All16operating roles are current in OPERATIONS, including Growth/Community Marketing/Monetization, editorial freshness, community/pet operations, data quality, security/privacy, analytics and release ownership. Build-first execution: ship a concrete resident improvement, verify it, then update plans. No repeated unchanged Search Console/provider-count passes this increment.
+
+Next build: LIVING-01 P1 — expose the existing listing-correction route from directory cards and improve the specific business handoff, so residents can flag stale contact/service details without finding a buried detail-page action. Existing report-listing route redirects to moderated business_update submission; extend that flow, do not create duplicate reporting infrastructure. Audit actual handoff before implementation; no fake production submissions. Ongoing supporting curation/freshness continues through established workflow.
+
+Facebook stays unpublished. Photo rights/location tasks, genuine-reporter pet pilot, physical-phone and genuine resident/owner acceptance OPEN. Existing Next.js/Cloudflare/Supabase architecture retained. No auth/schema/private-data or monetization activation changes.
+
+
 ## November 8 — landscape expansion and launch monitoring
 
 DATA-22 COMPLETE: published P&N Landscaping & Hardscaping with explicit official four-city coverage, public phone, installation scope and no inferred office.94dated website checks total. Routine lawn maintenance is unconfirmed. Duplicate guards passed; Villanueva/Golden Valley Materials already existed and were not duplicated. Live landscaping shortlists include the new provider: Mountain House9/Tracy9/Lathrop6/Manteca6. Detail fits390px without document overflow; screenshot research/nov8-landscape-provider-live.png. [Evidence](research/landscape-followup-2026-11-08.json), matching SQL. No photos, street address, owner contact or credential/quality/availability claims adopted.

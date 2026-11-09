@@ -1,5 +1,16 @@
 # MoHoLocal — SPRINTS.md
 
+## November 9 — mobile search redesign shipped
+
+UX-06 COMPLETE: sourcea8b67b3/nativeec0ba5ab Ready2m6s; live build marker matches source. At390px with scrollY0, search starts318px down (previous1354px). Mobile search/city/category filters precede an expandable service chooser; keyboard Enter opens it, selecting Pest control retains Manteca, closes chooser and returns3. Local320px and390px have no document overflow; desktop service links remain visible with mobile toggle hidden. Optional outcome prompt moved beside its form below results.152tests and final OpenNext/TypeScript pass. [Acceptance](research/mobile-search-redesign-2026-11-09.md); screenshot research/nov9-mobile-search-live.png. Emulation reset.
+
+All16operating roles are current in OPERATIONS, including Growth/Community Marketing/Monetization, editorial freshness, community/pet operations, data quality, security/privacy, analytics and release ownership. Build-first execution: ship a concrete resident improvement, verify it, then update plans. No repeated unchanged Search Console/provider-count passes this increment.
+
+Next build: LIVING-01 P1 — expose the existing listing-correction route from directory cards and improve the specific business handoff, so residents can flag stale contact/service details without finding a buried detail-page action. Existing report-listing route redirects to moderated business_update submission; extend that flow, do not create duplicate reporting infrastructure. Audit actual handoff before implementation; no fake production submissions. Ongoing supporting curation/freshness continues through established workflow.
+
+Facebook stays unpublished. Photo rights/location tasks, genuine-reporter pet pilot, physical-phone and genuine resident/owner acceptance OPEN. Existing Next.js/Cloudflare/Supabase architecture retained. No auth/schema/private-data or monetization activation changes.
+
+
 ## November 9 — build-first execution and mobile directory sprint
 
 Founder direction: stop repetitive status loops and continue building the living directory. Updated all16MoHoLocal role responsibilities through the OPERATIONS execution mandate: this chat owns product, engineering/architecture, UX, research/curation, openings/events, licensed imagery, community/pets, growth/SEO/monetization, data quality, security/privacy, QA/release, planning and resident outcomes. Retain the existing stack and publication boundaries.
