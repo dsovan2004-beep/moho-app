@@ -17,6 +17,7 @@ import BusinessContactActions from '@/app/components/BusinessContactActions'
 import DirectoryServices from '@/app/components/DirectoryServices'
 import ShortlistShare from '@/app/components/ShortlistShare'
 import DirectoryEmptyState from '@/app/components/DirectoryEmptyState'
+import { regionalDirectoryFilter } from '@/lib/directory-scope'
 
 const PAGE_SIZE = 20
 
@@ -230,7 +231,12 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
       .eq('verified', true)
       .range(from, to)
 
-    if (city !== 'All Cities') {
+    if (city === 'All Cities') {
+      const {data: regionalChecks,error: regionalError}=await supabase.from('listing_checks').select('business_id').overlaps('service_areas',[...RELAUNCH_CITY_NAMES])
+      if (requestId !== fetchSequence.current) return
+      if (regionalError) { failPage(); return }
+      req=req.or(regionalDirectoryFilter((regionalChecks ?? []).map(row=>row.business_id)))
+    } else {
       const { data: checks, error: checkError } = await supabase.from('listing_checks').select('business_id').contains('service_areas', [city])
       if (requestId !== fetchSequence.current) return
       if (checkError) { failPage(); return }
@@ -373,7 +379,7 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
                       : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300'
                   }`}
                 >
-                  {c}
+                  {c === 'All Cities' ? 'All four cities' : c}
                 </Link>
               ))}
             </div>
@@ -488,7 +494,7 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
                       : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >
-                  {c}
+                  {c === 'All Cities' ? 'All four cities' : c}
                 </Link>
               ))}
             </div>
