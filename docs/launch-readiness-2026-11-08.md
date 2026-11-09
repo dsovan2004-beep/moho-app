@@ -1,5 +1,25 @@
 # Resident launch readiness — November 8, 2026
 
+## November 9 afternoon — enforce the four-city regional browsing boundary
+
+MOBILE-08 LIVE and accepted. All Cities now means locations in Mountain House/Tracy/Lathrop/Manteca OR outside-city providers with listing-check coverage explicitly naming at least one launch city. Label changed to All four cities. Regional scope is retained through search, service filters and pagination; existing direct city URLs remain readable. No rows deleted/unpublished and no evidence/approval gates weakened.
+
+SQL/local acceptance:1,023regional records including46covered outside bases;839unscoped legacy rows excluded. These are inventory counts, not fresh-check counts. Local unique San Jose legacy search returns0regionally and1via explicit San Jose URL; iThink remains discoverable through recorded coverage.169tests, TypeScript and final OpenNext pass. Accepted final sourcefdd3419013b93903a36160d46f8743b03b219731; native version83d6ab65 Ready1m47s; public marker matches. Production count1,023; pagination20→40 with40unique listing IDs. Legacy-name search0regional results; covered iThink provider1result. Live320px document width equals viewport. Regional proof research/nov9-regional-directory-live.png and contact proof research/nov9-mobile-contact-live.png inspected. Emulation reset. [Evidence](research/four-city-directory-scope-2026-11-09.md).
+
+Same FRESH-05 four-record recheck below; no extra providers counted for this scope fix. Facebook UNPUBLISHED; photo exact-location/reuse-rights tasks, genuine-reporter pet pilot, physical-phone and screen-reader acceptance OPEN.
+
+
+## November 9 afternoon — mobile contact actions and four-city rechecks
+
+MOBILE-07 contact release LIVE and accepted. Shared contact actions use full-width narrow-screen buttons, business-specific accessible labels and validated HTTP(S)/telephone destinations. Malformed links omitted; missing details get a plain fallback. Detail sidebar phone/website links use the same helpers. Request-first and exact checked text-only channels preserved; no automatic message body. Scope is shared actions and detail sidebar, not a full application-link audit.
+
+167tests, TypeScript and final OpenNext build pass. Local390px request action310px wide/44px high;320px no overflow. Handyman request-first order and iThink Pet sms destination accepted without activating either. New tests cover bad protocol/credentials/app-parameter rejection, ordinary phone/extension normalization, omitted malformed contacts and named accessible links. Accepted contact sourcee6c1ffed4612ea326fac284a2b4c7d821ff6ad6c; native versiona4c8e50a Ready2m15s and public marker match. Live JVS phone link tel:+12092295487 with named target310px wide/44px high at390px; screenshot research/nov9-mobile-contact-live.png. No call/text activation. Explicit international country codes are preserved; superseded fca4f6d native build canceled before deployment while this edge case was corrected and rebuilt.
+
+FRESH-05 complete: Tabla Niketan (Mountain House), Harbor Freight #516 (Tracy), JVS Plumbing (Lathrop) and MW Plumbing (Manteca) checked against current primary sources. Four scoped check dates/notes/fields updated with private original-row audits, SQL and anonymous public read-back. Exact city limits retained; MW PO box remains mailing only, Tabla phone not invented, JVS Sunday wording is unresolved. Business records, tags and service areas unchanged; no new/duplicate rows or credential/availability claims. [Evidence and sources](research/mobile-contact-actions-2026-11-09.md).
+
+Facebook UNPUBLISHED; real2026 exact-location/reuse-rights photo tasks and genuine-reporter pet pilot OPEN. Physical-phone and screen-reader voice acceptance OPEN. Continue resident usability and bounded oldest-source rechecks without full-catalog freshness claims.
+
+
 ## November 9 — local-first mobile search recovery; four more listing checks
 
 MOBILE-06 LIVE and accepted. Compact named no-results region prioritizes removing text while retaining city/category/exact service, broadening to category services within that city, then browsing all city listings. Other cities is a separate explicit action; no unfiltered self-loop. Full-width mobile recovery links, missing-business suggestion and coverage caveat retained. Top-level Clear all remains an explicit global reset.

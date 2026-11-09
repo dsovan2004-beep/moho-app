@@ -1,5 +1,10 @@
 # MoHoLocal — Operations Guide
 
+## Regional directory boundary — November 9 acceptance
+
+DirectoryBrowser All Cities must apply the four relaunch city locations OR listing-check coverage naming at least one relaunch city, on initial and subsequent pages. Use the shared regionalDirectoryFilter predicate and the RLS-scoped coverage lookup. Retain checked outside-city providers; office location alone must not be used to remove them. Do not restore the unrestricted legacy inventory query. Existing explicit legacy city URLs remain readable; this is a browsing-scope change, not record deletion or blanket freshness verification. Mobile/desktop label is All four cities; internal All Cities URL value remains compatible. Evidence: docs/research/four-city-directory-scope-2026-11-09.md.
+
+
 ## Release source guard — accepted November 9
 
 Cloudflare moho-web native Builds must retain build command `npm run release:check && npm run typecheck && npm run cf:build` and deploy command `npm run release:check && npx wrangler deploy`. Include `scripts/**` alongside existing application watch paths. Both commands were persisted and reloaded; guarded current-source retry e7b2d059 completed Ready.
