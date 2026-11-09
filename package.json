@@ -12,7 +12,8 @@
     "deploy": "npm run cf:build && opennextjs-cloudflare deploy",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
-    "precf:build": "node scripts/write-build-info.mjs"
+    "precf:build": "node scripts/write-build-info.mjs",
+    "release:check": "node scripts/check-release-source.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.119.0",
