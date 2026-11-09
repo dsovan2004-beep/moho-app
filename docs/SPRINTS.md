@@ -1,5 +1,12 @@
 # MoHoLocal — SPRINTS.md
 
+## November 8 — growth role, local SEO and Facebook drafts
+
+GROW-01: added Growth & Community Marketing Lead to OPERATIONS.md, covering local SEO, community content, honest measurement and business participation. Four founder-disclosed city-specific Facebook drafts are ready in [marketing/facebook-city-drafts-2026-11-08.md](marketing/facebook-city-drafts-2026-11-08.md). DRAFT ONLY: nothing posted, sent or scheduled; no outreach or paid spend.
+
+SEO-01: corrected sitemap scope to our four cities, removed retired/regional sitemap entries, added Discover/Classes, paginated public catalog queries, fixed missing event/pet field queries and replaced silent query failures with retryable503. Alternate sitemap redirects to the canonical endpoint. Local XML and redirect checks pass:1100 URLs (52static/1007business/41event/0pet), including providers based outside our cities with explicit coverage.147 tests pass; final native build/deployment verification pending. Removed static XML shadowing the live route. Business submission UI narrowed to four launch cities. Resident readiness now takes priority over promotion; [readiness ledger](launch-readiness-2026-11-08.md) records evidence and remaining gates. [Audit and next priorities](marketing/local-seo-audit-2026-11-08.md). SEO-02 content/social/utility-route audit and SEO-03 Search Console indexing/baseline remain OPEN. No ranking or growth lift claimed. DATA-13 pet-care expansion remains next data priority; photo acceptance tasks and genuine-reporter pet pilot remain OPEN.
+
+
 ## Current priorities — November 8 evening
 
 Priority chosen from production coverage counts, rather than adding features by default. Heating/AC had1dated choice per city versus6–8plumbing choices. DATA-12: published IrishHeating&Air and Warren's, explicitly covering all four cities; heating/AC now3dated choices in MountainHouse,Tracy,Lathrop,Manteca. Native directory filters checked live in all four cities. Street addresses withheld where visitor-office evidence or conflicting addresses prevented certainty. These are website checks, not owner confirmations, credentials, availability or quality endorsements. [Evidence](research/heating-priority-2026-11-08.json), [publication SQL](research/publish-heating-priority-2026-11-08.sql), screenshot research/nov8-heating-priority-live.png. Data-only publication; existing application unchanged.

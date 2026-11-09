@@ -5,11 +5,11 @@ export const runtime = 'nodejs'
 import { useState, useRef } from 'react'
 import Link from 'next/link'
 import { RequestAccount, useRequestAccount, sendBusinessRequest } from '@/app/components/RequestAccount'
-import { CITY_NAMES } from '@/lib/cities'
+import { RELAUNCH_CITY_NAMES } from '@/lib/cities'
 import { BUSINESS_CATEGORIES } from '@/lib/directory-requests'
 
 const CATEGORIES = BUSINESS_CATEGORIES
-const CITIES = CITY_NAMES
+const CITIES = RELAUNCH_CITY_NAMES
 
 const FIELD_STYLE = {
   base: 'w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder-gray-400 focus:outline-none transition bg-white',
@@ -120,7 +120,7 @@ export default function SubmitBusinessPage() {
           </Link>
           <h1 className="text-2xl font-bold text-gray-900 mt-3 mb-1">Add Your Business</h1>
           <p className="text-sm text-gray-500">
-            Suggest a business in a supported city. Basic listings are free.
+            Suggest a business in Mountain House, Tracy, Lathrop or Manteca. Basic listings are free.
             Listings are reviewed before going live.
           </p>
         </div>

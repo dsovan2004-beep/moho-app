@@ -1,209 +1,43 @@
-export const runtime = 'nodejs'
-
-/**
- * Dynamic sitemap at /sitemap.xml — the standard location Google Search Console expects.
- * Uses getSupabaseClient() (anon key) — same auth pattern as the rest of the app.
- */
-
-import { getSupabaseClient } from '@/lib/supabase'
-
-const BASE = 'https://www.moholocal.com'
-
-const CITIES = [
-  'mountain-house',
-  'tracy',
-  'lathrop',
-  'manteca',
-  'brentwood',
-]
-
-const CATEGORY_SLUGS = [
-  'restaurants',
-  'health-wellness',
-  'beauty-spa',
-  'retail',
-  'education',
-  'automotive',
-  'real-estate',
-  'home-services',
-  'pet-services',
-]
-
-const BEST_OF_SLUGS = [
-  'restaurants',
-  'health-and-wellness',
-  'beauty-and-spa',
-  'retail',
-  'education',
-  'automotive',
-  'real-estate',
-  'home-services',
-  'pet-services',
-]
-
-// ── Standalone discovery pages (FIFA + city guides) ──────────────────────────
-const DISCOVERY_PAGES: Array<{ slug: string; priority: string }> = [
-  // FIFA / Levi's Stadium pages
-  { slug: 'restaurants-near-levis-stadium',          priority: '0.9' },
-  { slug: 'coffee-near-levis-stadium',               priority: '0.8' },
-  { slug: 'best-bars-watch-world-cup-san-jose',      priority: '0.9' },
-  { slug: 'best-places-watch-world-cup-san-jose',    priority: '0.9' },
-  // City guide pages — Sprint 3
-  { slug: 'best-restaurants-tracy',                  priority: '0.85' },
-  { slug: 'best-coffee-tracy',                       priority: '0.8' },
-  { slug: 'best-brunch-manteca',                     priority: '0.8' },
-  { slug: 'best-dentists-mountain-house',            priority: '0.8' },
-  { slug: 'best-family-restaurants-tracy',           priority: '0.8' },
-  // City guide pages — Sprint 4 (Tracy)
-  { slug: 'best-pizza-tracy',                        priority: '0.85' },
-  { slug: 'best-breakfast-tracy',                    priority: '0.8' },
-  { slug: 'best-lunch-tracy',                        priority: '0.8' },
-  { slug: 'best-dinner-tracy',                       priority: '0.8' },
-  { slug: 'best-hair-salon-tracy',                   priority: '0.8' },
-  { slug: 'best-nail-salon-tracy',                   priority: '0.8' },
-  { slug: 'best-dentists-tracy',                     priority: '0.85' },
-  // City guide pages — Sprint 4 (Mountain House)
-  { slug: 'best-pizza-mountain-house',               priority: '0.85' },
-  { slug: 'best-breakfast-mountain-house',           priority: '0.8' },
-  { slug: 'best-lunch-mountain-house',               priority: '0.8' },
-  { slug: 'best-dinner-mountain-house',              priority: '0.8' },
-  { slug: 'best-hair-salon-mountain-house',          priority: '0.8' },
-  { slug: 'best-nail-salon-mountain-house',          priority: '0.8' },
-  // City guide pages — Sprint 4 (Manteca)
-  { slug: 'best-pizza-manteca',                      priority: '0.85' },
-  { slug: 'best-breakfast-manteca',                  priority: '0.8' },
-  { slug: 'best-lunch-manteca',                      priority: '0.8' },
-  { slug: 'best-dinner-manteca',                     priority: '0.8' },
-  { slug: 'best-hair-salon-manteca',                 priority: '0.8' },
-  { slug: 'best-nail-salon-manteca',                 priority: '0.8' },
-  { slug: 'best-dentists-manteca',                   priority: '0.85' },
-]
-
-interface SitemapEntry {
-  loc: string
-  priority: string
-  changefreq: string
-  lastmod?: string
-}
-
-function urlTag(entry: SitemapEntry): string {
-  const lastmod = entry.lastmod ? `\n    <lastmod>${entry.lastmod}</lastmod>` : ''
-  return `  <url>
-    <loc>${entry.loc}</loc>${lastmod}
-    <changefreq>${entry.changefreq}</changefreq>
-    <priority>${entry.priority}</priority>
-  </url>`
-}
+export const runtime='nodejs'
+import {getSupabaseClient} from '@/lib/supabase'
+import {RELAUNCH_CITY_NAMES} from '@/lib/cities'
+import {sitemapStaticPaths,sitemapXml} from '@/lib/sitemap'
 
 export async function GET() {
-  const supabase = getSupabaseClient()
-  const entries: SitemapEntry[] = []
-
-  const add = (loc: string, priority: string, changefreq: string, lastmod?: string) => {
-    entries.push({ loc, priority, changefreq, lastmod })
-  }
-
-  // ── Core static pages ────────────────────────────────────────────────
-  add(`${BASE}/`,                '1.0', 'daily')
-  add(`${BASE}/ask`,             '0.9', 'weekly')
-  add(`${BASE}/directory`,       '0.9', 'daily')
-  add(`${BASE}/events`,          '0.8', 'weekly')
-  add(`${BASE}/community`,       '0.8', 'weekly')
-  add(`${BASE}/lost-and-found`,  '0.8', 'daily')
-  add(`${BASE}/new-resident`,    '0.7', 'monthly')
-  add(`${BASE}/submit-business`, '0.6', 'monthly')
-
-  // ── City landing pages ───────────────────────────────────────────────
-  for (const city of CITIES) {
-    add(`${BASE}/${city}`, '0.9', 'weekly')
-  }
-
-  // ── City/category pages ──────────────────────────────────────────────
-  for (const city of CITIES) {
-    for (const cat of CATEGORY_SLUGS) {
-      add(`${BASE}/${city}/${cat}`, '0.8', 'weekly')
-    }
-  }
-
-  // ── Best Of pages ────────────────────────────────────────────────────
-  for (const city of CITIES) {
-    for (const cat of BEST_OF_SLUGS) {
-      add(`${BASE}/best/${cat}/${city}`, '0.75', 'weekly')
-    }
-  }
-
-  // ── New-resident city pages ──────────────────────────────────────────
-  for (const city of CITIES) {
-    add(`${BASE}/new-resident/${city}`, '0.6', 'monthly')
-  }
-
-  // ── Standalone discovery pages (FIFA + city guides) ──────────────────
-  for (const page of DISCOVERY_PAGES) {
-    add(`${BASE}/${page.slug}`, page.priority, 'weekly')
-  }
-
-  // ── Dynamic pages (fetched from Supabase via anon key, same as all pages) ──
+  const db=getSupabaseClient()
+  const entries:Array<{path:string;updated_at?:string|null}>=sitemapStaticPaths().map(path=>({path}))
+  // Fail the sitemap request rather than silently publishing a truncated/empty catalog.
   try {
-    const { data: businesses } = await supabase
-      .from('businesses')
-      .select('id, updated_at')
-      .eq('status', 'approved')
-      .eq('verified', true)
-
-    if (businesses) {
-      for (const biz of businesses) {
-        const lm = (biz.updated_at ?? '').slice(0, 10) || undefined
-        add(`${BASE}/business/${biz.id}`, '0.7', 'monthly', lm)
-      }
+    const ids:string[]=[]
+    for(let from=0;;from+=500) {
+      const {data:checks,error:checkError}=await db.from('listing_checks').select('business_id').overlaps('service_areas',[...RELAUNCH_CITY_NAMES]).order('business_id').range(from,from+499)
+      if(checkError) throw checkError
+      ids.push(...(checks??[]).map(c=>c.business_id).filter(id=>/^[0-9a-f-]{36}$/i.test(id)))
+      if((checks??[]).length<500) break
     }
-  } catch {
-    // non-fatal — static pages already added above
-  }
-
-  try {
-    const { data: events } = await supabase
-      .from('events')
-      .select('id, updated_at')
-      .eq('ingestion_status', 'approved')   // only surface approved events to Google
-
-    if (events) {
-      for (const ev of events) {
-        const lm = (ev.updated_at ?? '').slice(0, 10) || undefined
-        add(`${BASE}/events/${ev.id}`, '0.6', 'weekly', lm)
-      }
+    const scope=[...RELAUNCH_CITY_NAMES.map(city=>`city.eq."${city}"`),...(ids.length?[`id.in.(${ids.join(',')})`]:[])].join(',')
+    const pageSize=500
+    for(let from=0;;from+=pageSize) {
+      const {data,error}=await db.from('businesses').select('id,updated_at').eq('status','approved').eq('verified',true).or(scope).order('id').range(from,from+pageSize-1)
+      if(error) throw error
+      for(const row of data??[]) if(/^[0-9a-f-]{36}$/i.test(row.id)) entries.push({path:`/business/${row.id}`,updated_at:row.updated_at})
+      if((data??[]).length<pageSize) break
     }
-  } catch {
-    // non-fatal
-  }
-
-  try {
-    const { data: laf } = await supabase
-      .from('lost_and_found')
-      .select('id, updated_at')
-
-    if (laf) {
-      for (const item of laf) {
-        const lm = (item.updated_at ?? '').slice(0, 10) || undefined
-        add(`${BASE}/lost-and-found/${item.id}`, '0.5', 'weekly', lm)
-      }
+    for(let from=0;;from+=pageSize) {
+      const {data,error}=await db.from('events').select('id').eq('status','approved').in('city',[...RELAUNCH_CITY_NAMES]).order('id').range(from,from+pageSize-1)
+      if(error) throw error
+      for(const row of data??[]) if(/^[0-9a-f-]{36}$/i.test(row.id)) entries.push({path:`/events/${row.id}`})
+      if((data??[]).length<pageSize) break
     }
+    // Pet report eligibility is enforced by its public-read RLS policy.
+    for(let from=0;;from+=pageSize) {
+      const {data:pets,error:petError}=await db.from('lost_and_found').select('id').in('city',[...RELAUNCH_CITY_NAMES]).order('id').range(from,from+pageSize-1)
+      if(petError) throw petError
+      for(const row of pets??[]) if(/^[0-9a-f-]{36}$/i.test(row.id)) entries.push({path:`/lost-and-found/${row.id}`})
+      if((pets??[]).length<pageSize) break
+    }
+    return new Response(sitemapXml(entries),{headers:{'Content-Type':'application/xml; charset=utf-8','Cache-Control':'public, max-age=300, s-maxage=300'}})
   } catch {
-    // non-fatal
+    return new Response('Sitemap temporarily unavailable. Please retry.',{status:503,headers:{'Cache-Control':'no-store','Retry-After':'300'}})
   }
-
-  // ── Build XML ────────────────────────────────────────────────────────
-  const xml = [
-    '<?xml version="1.0" encoding="UTF-8"?>',
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    `  <!-- Dynamic sitemap | ${entries.length} URLs | Generated at ${new Date().toISOString()} -->`,
-    ...entries.map(urlTag),
-    '</urlset>',
-  ].join('\n')
-
-  return new Response(xml, {
-    headers: {
-      'Content-Type': 'application/xml; charset=utf-8',
-      'Cache-Control': 'public, max-age=3600, s-maxage=43200, stale-while-revalidate=3600',
-    },
-  })
 }
