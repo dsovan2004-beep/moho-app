@@ -1,5 +1,16 @@
 # Resident launch readiness — November 8, 2026
 
+## November 9 — resident-first mobile directory and four-city freshness
+
+MOBILE-04 LIVE and accepted. Mobile search uses 16px text and a search keyboard hint; submit clears the pending debounce. Added the existing sort choices to mobile, preserving city/category/exact service. Searches explain relevance ordering. Owner claims now follow resident contact actions and corrections, with unique accessible business labels; listing titles gain full width.
+
+Local 390px: Newest retained Mountain House/Home Services/handyman, then city switches Manteca/Lathrop/Tracy retained the same service/category/sort. Keyboard Matt search retained Tracy and service; relevance label visible. 320px has no document overflow. All 163 tests, TypeScript and OpenNext build pass. Accepted source 191edac1846af2a6e4bdeec117707e895e7a6e14; native version 27728d36 Ready in 1m46s; public build marker matches. Live 390px title width increased from 237.75px to 316px, search font from 14px to 16px. Sort changes and city switches across all four cities retained the exact category/service/newest order; Enter search retained city/service/query and showed relevance label. Live 320px document width equals viewport. Refreshed November 9 evidence and request-form-first contact visible; claim remains below contacts. Screenshot research/nov9-resident-mobile-card-live.png; emulation reset.
+
+FRESH-02 bounded recheck complete: four existing records, one base in each city—Mountain House Handyman, American KeyTech (Tracy), Molly Maid (Lathrop), Cleaning Authority (Manteca). Compared primary contact/location/service information; refreshed check dates and scope notes with private before/after audit, then anonymous public read-back. Retained exact service-area limits, request-form-first contact and credential/availability disclaimers. No new businesses or invented expanded coverage; these four checks do not establish that every listing is current. [Evidence and sources](research/mobile-directory-freshness-2026-11-09.md).
+
+Facebook UNPUBLISHED. Photo exact-location/reuse-rights tasks and genuine-reporter pet pilot OPEN. Physical-phone/screen-reader validation OPEN; continue bounded oldest-evidence refreshes and resident task improvements.
+
+
 ## November 9 — mobile sharing feedback and copy recovery
 
 SHARE-03 mobile feedback increment LIVE: shared action feedback gives immediate Copying/opening state, locks repeated taps while pending, ignores stale results after the share target changes, and places persistent atomic status beside the action buttons. Full-width mobile actions and 16px fields; denied clipboard exposes Select link/text with full manual selection. Native cancellation never copies; native completion asks residents to confirm sending in their chosen app. Safe canonical payload boundaries retained.
