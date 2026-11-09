@@ -1,5 +1,14 @@
 # MoHoLocal Product Roadmap
 
+## November 8 — pest coverage and direct service discovery
+
+DATA-20: published Moore Quality Pest Control (Tracy) and California Pest Control (service area only; Stockton mailing address is not a visitor office). Each official service-area page individually names all four launch cities.92dated website checks total; distinct Pest control and Window cleaning tags each have2published checked choices per city. Database name/domain/phone guards passed. No public street address or photos copied; no owner contact, credentials, insurance, treatment safety/effectiveness, quality, prices or availability independently confirmed. [Evidence](research/pest-coverage-2026-11-08.json) and matching SQL.
+
+UX-05/LAUNCH-01: shared Pest control and Window cleaning shortcuts added for directory/city/Discover. Exact typed service names use the existing checked-tag search path. Window cleaning does not imply solar bird exclusion and pest control does not imply a specific treatment or safe chemical use. Existing category/city preservation tests expanded;152tests pass; final build/native/live acceptance pending.
+
+SEO-03: canonical overview follow-up after11:41PMrequest still processing for performance/indexing/experience/enhancement baselines. No redundant submission or growth claim. Facebook drafts UNPUBLISHED; photo rights/location tasks, genuine-reporter pet pilot and physical-phone/genuine resident acceptance remain OPEN. Next: verify four-city mobile shortcut behavior and retain honest contact/evidence labels.
+
+
 ## November 8 — search-return release accepted
 
 SEARCH-02 COMPLETE: source814d5ce/nativeb15ed3d8 Ready2m41s. Live390px Lathrop name search → detail → Back restores city/category/q/newest exactly; document width390/scroll390. Live Manteca electrical-services/electrician → Luminate → related Lainez → Back retains all filters and returns2results. Local production build also accepts All Cities without office-city narrowing.152tests, final OpenNext/TypeScript pass; device emulation reset. Category/breadcrumb browse semantics and authentication return controls unchanged. [Acceptance](research/search-return-acceptance-2026-11-08.md), screenshot research/nov8-search-return-live.png.

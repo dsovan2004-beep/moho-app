@@ -5,6 +5,8 @@ export const SERVICE_CHOICES = [
   { key: 'electrical-services', label: 'Electrical services', category: 'Home Services', tag: 'electrical services' },
   { key: 'plumbing', label: 'Plumbing', category: 'Home Services', tag: 'plumbing' },
   { key: 'carpet-tile-cleaning', label: 'Carpet & tile cleaning', category: 'Home Services', tag: 'carpet cleaning' },
+  { key: 'window-cleaning', label: 'Window cleaning', category: 'Home Services', tag: 'window cleaning' },
+  { key: 'pest-control', label: 'Pest control', category: 'Home Services', tag: 'pest control' },
   { key: 'house-cleaning', label: 'House cleaning', category: 'Home Services', tag: 'house cleaning' },
   { key: 'landscaping', label: 'Landscaping & yard care', category: 'Home Services', tag: 'landscaping' },
   { key: 'solar-bird-exclusion', label: 'Solar bird exclusion', category: 'Home Services', tag: 'solar bird exclusion' },
