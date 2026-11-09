@@ -1,5 +1,6 @@
 'use client'
 
+import ResidentOutcome from '@/app/components/ResidentOutcome'
 import { PUBLIC_BUSINESS_COLUMNS } from '@/lib/supabase'
 export const runtime = 'nodejs'
 
@@ -649,6 +650,7 @@ export default function DirectoryPage() {
           )}
         </div>
       </div>
+      <ResidentOutcome city={city} />
     </div>
   )
 }

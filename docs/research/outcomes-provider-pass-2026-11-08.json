@@ -1,0 +1,46 @@
+{
+  "checked_on": "2026-11-08",
+  "providers": [
+    {
+      "name": "Vince Haro Hauling and Yard Clean Up",
+      "city": "Lathrop",
+      "address": "15128 S Harlan Road, Lathrop, CA 95330",
+      "phone": "(209) 915-9126",
+      "website": "https://www.vinceharohauling.com/",
+      "source_url": "https://www.vinceharohauling.com/",
+      "description": "Hauling and yard-cleanup provider whose official website explicitly names Lathrop, Manteca and Tracy. Advertises removal and yard cleanup work. Confirm items accepted, disposal arrangements, fees, timing and exact address coverage directly; no availability or credential endorsement.",
+      "service_areas": [
+        "Lathrop",
+        "Manteca",
+        "Tracy"
+      ],
+      "service_tags": [
+        "hauling",
+        "yard cleanup"
+      ]
+    },
+    {
+      "name": "Perfection Cleaning",
+      "city": "Service area only",
+      "address": null,
+      "phone": "(209) 647-0307",
+      "website": "https://www.perfectioncleaningca.com/",
+      "source_url": "https://www.perfectioncleaningca.com/",
+      "description": "Residential, commercial and move-in or move-out cleaning explicitly advertised for Manteca and Lathrop. Official site also describes recurring and one-time deep cleaning. Office location is not established. Confirm the job, quote, schedule and exact address coverage directly; no availability or quality endorsement.",
+      "service_areas": [
+        "Lathrop",
+        "Manteca"
+      ],
+      "service_tags": [
+        "house cleaning",
+        "move-out cleaning",
+        "deep cleaning"
+      ]
+    }
+  ],
+  "holds": [
+    "No MountainHouse coverage inferred for either provider",
+    "No rights-cleared photo replacement; photo tasks remain open",
+    "Genuine-reporter pet pilot remains open; no synthetic reports or outreach"
+  ]
+}

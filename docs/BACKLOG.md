@@ -1,5 +1,12 @@
 # MoHoLocal active execution queue
 
+## November 8 — optional resident outcomes and Lathrop/Manteca expansion
+
+METRIC-01c first increment: optional directory form, explicit city/result, confirmed sign-in, one report/account/Pacific day. Private daily totals contain no resident/business/search/contact identifiers; separate private anti-repeat row holds latest day only. No passive tracking or verified-booking claim. Privacy disclosure updated. SQL rollback security/retry tests pass; final tests/build/native/live acceptance pending. [Release evidence](research/resident-outcome-release-2026-11-08.md). Passive search/contact instrumentation and genuine resident participation remain OPEN.
+
+Published PerfectionCleaning for explicit Lathrop/Manteca coverage and VinceHaroHauling for explicit Lathrop/Manteca/Tracy coverage.74 dated website checks;41 approved event records unchanged. No MountainHouse inference, duplicates, image reuse or outreach. Photo acceptance tasks and genuine-reporter pet pilot stay OPEN.
+
+
 ## November 8 — Lathrop/Manteca supply and outcome audit
 
 Published JVS Plumbing (explicit Lathrop service) and MW Plumbing (explicit Manteca service; POBox excluded from visitable address). Other-city coverage, emergency/holiday availability, credentials and quality not inferred. Sources/holds:research/lathrop-manteca-2026-11-08.json. No duplicated Salen record or referral-site operator, no images or outreach.

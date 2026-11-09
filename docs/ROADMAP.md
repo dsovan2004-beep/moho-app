@@ -1,5 +1,12 @@
 # MoHoLocal Product Roadmap
 
+## November 8 — optional resident outcomes and Lathrop/Manteca expansion
+
+METRIC-01c first increment: optional directory form, explicit city/result, confirmed sign-in, one report/account/Pacific day. Private daily totals contain no resident/business/search/contact identifiers; separate private anti-repeat row holds latest day only. No passive tracking or verified-booking claim. Privacy disclosure updated. SQL rollback security/retry tests pass; final tests/build/native/live acceptance pending. [Release evidence](research/resident-outcome-release-2026-11-08.md). Passive search/contact instrumentation and genuine resident participation remain OPEN.
+
+Published PerfectionCleaning for explicit Lathrop/Manteca coverage and VinceHaroHauling for explicit Lathrop/Manteca/Tracy coverage.74 dated website checks;41 approved event records unchanged. No MountainHouse inference, duplicates, image reuse or outreach. Photo acceptance tasks and genuine-reporter pet pilot stay OPEN.
+
+
 ## November 8 — Lathrop/Manteca supply and outcome audit
 
 Published JVS Plumbing (explicit Lathrop service) and MW Plumbing (explicit Manteca service; POBox excluded from visitable address). Other-city coverage, emergency/holiday availability, credentials and quality not inferred. Sources/holds:research/lathrop-manteca-2026-11-08.json. No duplicated Salen record or referral-site operator, no images or outreach.
@@ -159,7 +166,7 @@ Founder direction: retain Next.js, Cloudflare and Supabase; relaunch Mountain Ho
 | OPS-01 | P2 · Operations | Maintainable admin queues, correction ownership, monthly link checks and proposed 90-day fact rechecks; availability expires | FLOW-03 · Backlog |
 | SEO-01 | P2 · Release | Preserve IDs/URLs or redirect; canonical HTTPS host and bare-domain behavior; sitemap/structured data; no private/pending indexing | Bare-domain www redirect confirmed in browser; broader sitemap/structured-data/private indexing and legacy routes remain open |
 | PILOT-01 | P3 · Validation | 30–40 unique checked providers; four launch categories; useful coverage in both cities; 20 residents and 10 providers in pilot | P0/P1 gates · Backlog |
-| METRIC-01 | P3 · Analytics | Measure search success, no results, contacts, replies, corrections, freshness and maintenance cost with minimal personal data | UX-02 · Backlog |
+| METRIC-01 | P3 · Analytics | Measure search success, no results, contacts, replies, corrections, freshness and maintenance cost with minimal personal data | First optional outcome-report increment implemented; passive search/contact instrumentation and genuine participation open |
 | GROW-01 | P3 · Distribution | Shareable useful pages; local search; owner/resident research; administrator partnerships subject to group rules and explicit outreach authorization | Pilot outcomes · Backlog |
 | SEC-06 | P1 · Follow-up | Authenticate/rate-limit legacy anonymous reactions; review pg_trgm schema and compromised-password checking availability; no-policy private tables intentionally deny browser access | Complete: confirmed-account reactions with durable 60/hour quota; old definer execution revoked; pg_trgm moved; compromised-password protection enabled |
 | OPS-02 | P1 · Delivery | Connect moho-web Worker to GitHub Builds or provision scoped CI credentials; legacy Pages main auto-build must not be used for the OpenNext branch | Complete: both existing Workers connected to moho-app/main; clean push-triggered builds passed; temporary Builds Configuration Edit removed, registry access denied with 403; watch paths isolate app/worker changes; legacy Pages auto-build disabled |
