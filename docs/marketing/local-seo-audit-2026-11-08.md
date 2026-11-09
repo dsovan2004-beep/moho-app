@@ -32,3 +32,7 @@ Reference: [Google Search SEO Starter Guide](https://developers.google.com/searc
 ## Follow-up acceptance
 
 SEO-03 ownership, sitemap and four-city checks now accepted: canonical property verified; Google November8 sitemap read Success/1,102discovered pages; all four landing pages report indexed. Mountain House live Google smartphone fetch Successful, crawl/indexing allowed and expected canonical. Performance/index-coverage baselines still processing; no ranking or traffic growth claim. Keep Google's verification HTML asset. [Detailed evidence](search-console-2026-11-08.md). Facebook drafts remain unpublished.
+
+## Utility route follow-up
+
+SEO-02 first increment: noindex/nofollow on ten utility route groups, verified in local rendered HTML with public city/business negative controls. This is indexing hygiene, not authentication or guaranteed removal: crawlers must fetch a page to see the rule, and existing robots exclusions remain. No crawler-account controls changed. Reference: [Google robots metadata](https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag). Native/live acceptance pending.

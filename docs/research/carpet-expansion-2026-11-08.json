@@ -1,0 +1,39 @@
+{
+  "checked_on": "2026-11-08",
+  "method": "First-party website desk check; no outreach",
+  "providers": [
+    {
+      "name": "Reynolds Carpet Cleaning Service & Janitorial",
+      "city": "Tracy",
+      "phone": "(209) 319-9048",
+      "website": "https://janitorialservicestracy.com/",
+      "source_url": "https://janitorialservicestracy.com/carpet-cleaning",
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "description": "Advertises carpet, upholstery, tile and grout cleaning. The official site explicitly lists Mountain House, Tracy, Lathrop and Manteca and identifies this number for the Tracy Central Valley. A visitable office is not established. Confirm surfaces, treatment scope, quote and current appointment availability directly."
+    },
+    {
+      "name": "Magic Wand Professional Cleaning Services",
+      "city": "Manteca",
+      "phone": "(209) 740-3341",
+      "website": "https://carpetcleaningmantecaca.com/",
+      "source_url": "https://carpetcleaningmantecaca.com/contact-us",
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop",
+        "Manteca"
+      ],
+      "description": "Manteca-area provider advertising carpet, upholstery, tile and grout cleaning. Its official contact page explicitly lists Mountain House, Tracy, Lathrop and Manteca. A public visitor office is not established here. Confirm surface type, treatment scope, quote and current appointment availability directly."
+    }
+  ],
+  "holds": [
+    "Supreme Carpet Cleaning: service-city pages found but identity/contact validation incomplete; not published",
+    "Sampa Services: local service-city list conflicts with Los Angeles footer statement; held pending identity/location clarity",
+    "No street addresses, photographs, fixed prices, promotions, credentials/quality or appointment/holiday-hours endorsements copied"
+  ]
+}

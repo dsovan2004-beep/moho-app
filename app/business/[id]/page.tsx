@@ -523,9 +523,9 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
               <div className="mt-3 p-3 bg-amber-50 rounded-xl text-xs text-amber-700 leading-relaxed">
                 📬 No contact info on file yet.{' '}
                 <Link href={`/claim-listing/${biz.id}`} className="font-semibold underline">
-                  Claim this listing
+                  Request ownership review
                 </Link>{' '}
-                to add it.
+                so the team can follow up on listing corrections.
               </div>
             )}
 
@@ -587,7 +587,7 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
                     Is this your business?
                   </p>
                   <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">
-                    Claim this listing to add contact info, photos, hours, and respond to reviews.
+                    Request ownership review and track the decision in My business requests.
                   </p>
                 </div>
               </div>
@@ -598,7 +598,7 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
               >
                 Claim This Business →
               </Link>
-              <p className="text-[10px] text-gray-400 text-center mt-2">Free · Takes 2 minutes</p>
+              <p className="text-[10px] text-gray-400 text-center mt-2">Free · Ownership is assigned after review</p>
             </div>
           )}
 

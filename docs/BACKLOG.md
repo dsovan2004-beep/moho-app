@@ -1,5 +1,14 @@
 # MoHoLocal active execution queue
 
+## November 8 — carpet-cleaning coverage and utility-page launch polish
+
+DATA-14 increment: published Reynolds Carpet Cleaning Service & Janitorial and Magic Wand Professional Cleaning Services, both with explicit first-party coverage for Mountain House/Tracy/Lathrop/Manteca, public phone checks and domain/name/phone deduplication.82dated checks total. Carpet-cleaning choices now3/4/4/4 respectively. No visitor-office address, photos, fixed offers, credential/quality or availability endorsement copied. Supreme identity/contact validation incomplete; Sampa footer/location conflict held. [Evidence](research/carpet-expansion-2026-11-08.json) and matching publication transaction. Live four-city UI acceptance pending.
+
+SEO-02/LAUNCH-01: added noindex/nofollow metadata to ten utility route groups (login, register, profile, requests, admin, claim, report, business submission, community submission, auth callback), matching existing private message/pet report behavior. Local rendered output confirms all ten carry the rule while city/business detail pages remain indexable. No auth/RLS or crawler-account security settings changed; robots directives are not access control and blocked crawlers may not read metadata. Claim CTA now accurately describes ownership review/tracking and removes an unsupported two-minute/self-service promise.147tests and final OpenNext/TypeScript pass; native/live verification pending.
+
+SEO-03 follow-up: performance/indexing/experience/enhancement overview still says Processing data; no fresh baseline or growth claim. Prior successful1,102-URL sitemap read and four indexed city landing pages remain the last accepted evidence; no redundant resubmission. FB drafts unpublished, photo tasks and genuine-reporter pet pilot OPEN.
+
+
 ## November 8 — launch follow-up accepted
 
 SEO-03: canonical URL-prefix ownership verified using Google-provided public HTML file; retain it. Recovered property history had an old March13 sitemap read/107discovered pages. November8 resubmission now shows last read November8, Success and1,102discovered pages. All four city landing-page URL inspections report indexed. Mountain House live Google smartphone fetch succeeds with crawl/indexing allowed and expected canonical. Performance/index-coverage baselines are still processing; discovered pages are not all indexed pages. [Search Console evidence](marketing/search-console-2026-11-08.md). No new analytics tracking, DNS/OAuth grants or public posts.
