@@ -13,6 +13,6 @@ export function businessPhoneHref(value?: string): string | null {
   const parts=value.trim().match(/^([+\d\s().-]+?)(?:\s*(?:ext\.?|x|#)\s*(\d{1,6}))?$/i)
   if (!parts) return null
   const digits=parts[1].replace(/\D/g,'')
-  const number=digits.length===10 ? `+1${digits}` : digits.length===11 && digits.startsWith('1') ? `+${digits}` : parts[1].trim().startsWith('+') && /^[1-9]\d{7,14}$/.test(digits) ? `+${digits}` : null
+  const number=parts[1].trim().startsWith('+') ? (/^[1-9]\d{7,14}$/.test(digits) ? `+${digits}` : null) : digits.length===10 ? `+1${digits}` : digits.length===11 && digits.startsWith('1') ? `+${digits}` : null
   return number ? `tel:${number}${parts[2] ? `;ext=${parts[2]}` : ''}` : null
 }
