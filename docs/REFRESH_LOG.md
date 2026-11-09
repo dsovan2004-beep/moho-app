@@ -1,5 +1,16 @@
 # MoHoLocal living-directory refresh ledger
 
+## November 8 — late launch-readiness and exterior-cleaning acceptance
+
+DATA-18: published Shamblin Softwash & Pressure Washing (Manteca based), with explicit official-site Mountain House, Tracy, Lathrop and Manteca coverage, public phone and advertised window/gutter/solar-panel cleaning and pressure washing. **89 dated website checks**; this is not credential, quality or appointment confirmation. No street address or image copied. Database name/domain/phone guard passed. Live name search shows one result in each city; detail preserves Lathrop context and actual Manteca office city. [Evidence](research/exterior-cleaning-2026-11-08.json), matching SQL and research/nov8-exterior-provider-live.png. Existing All Pro was identified and not duplicated; Quicky is held because direct page content/title did not substantiate the search snippet.
+
+LAUNCH-01:150 regression tests pass. No app code, schema, RLS or deployment configuration changed this increment; current accepted app source remains6b28858/native9c8af722. Confirmed search-return gap: Lathrop q=Shamblin → detail → Back to Lathrop results omits q and adds Home Services. SEARCH-02 P2 remains OPEN: preserve safe search-return context without weakening authentication return-URL controls. Contact links inspected only; no calls, messages or synthetic participation.
+
+SEO-03: canonical Search Console overview checked again after11:31PMrequest; performance/indexing/experience/enhancement baselines still processing. No redundant sitemap/indexing request or new indexing/traffic claim. Prior successful sitemap submission and city-index evidence remain valid historical evidence.
+
+Facebook drafts remain UNPUBLISHED. Mountain House2026photo reuse/location task, Manteca exact-photo-location acceptance, genuine-reporter pet pilot, physical-phone notification/native contact-app tests and genuine resident/owner acceptance remain OPEN. Next priority: SEARCH-02 continuity, evidence-backed thin-category expansion and meaningful Search Console baseline changes.
+
+
 ## November 8 — electrical, city-context and typed-search acceptance
 
 DATA-17:88dated website checks. Luminate Electric and Lainez Electric have explicit four-city electrical-service evidence; dated Electrical services shortlists show2in each city at390px with no document overflow. Source evidence/limits remain separate from license, insurance, quality and appointment confirmation. No calls, forms, bookings, messages or synthetic resident/pet outcomes created. [Provider evidence](research/electrical-coverage-2026-11-08.json).

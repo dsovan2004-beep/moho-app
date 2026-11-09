@@ -1,5 +1,16 @@
 # Resident launch readiness — November 8, 2026
 
+## November 8 — late launch-readiness and exterior-cleaning acceptance
+
+DATA-18: published Shamblin Softwash & Pressure Washing (Manteca based), with explicit official-site Mountain House, Tracy, Lathrop and Manteca coverage, public phone and advertised window/gutter/solar-panel cleaning and pressure washing. **89 dated website checks**; this is not credential, quality or appointment confirmation. No street address or image copied. Database name/domain/phone guard passed. Live name search shows one result in each city; detail preserves Lathrop context and actual Manteca office city. [Evidence](research/exterior-cleaning-2026-11-08.json), matching SQL and research/nov8-exterior-provider-live.png. Existing All Pro was identified and not duplicated; Quicky is held because direct page content/title did not substantiate the search snippet.
+
+LAUNCH-01:150 regression tests pass. No app code, schema, RLS or deployment configuration changed this increment; current accepted app source remains6b28858/native9c8af722. Confirmed search-return gap: Lathrop q=Shamblin → detail → Back to Lathrop results omits q and adds Home Services. SEARCH-02 P2 remains OPEN: preserve safe search-return context without weakening authentication return-URL controls. Contact links inspected only; no calls, messages or synthetic participation.
+
+SEO-03: canonical Search Console overview checked again after11:31PMrequest; performance/indexing/experience/enhancement baselines still processing. No redundant sitemap/indexing request or new indexing/traffic claim. Prior successful sitemap submission and city-index evidence remain valid historical evidence.
+
+Facebook drafts remain UNPUBLISHED. Mountain House2026photo reuse/location task, Manteca exact-photo-location acceptance, genuine-reporter pet pilot, physical-phone notification/native contact-app tests and genuine resident/owner acceptance remain OPEN. Next priority: SEARCH-02 continuity, evidence-backed thin-category expansion and meaningful Search Console baseline changes.
+
+
 Decision: prioritize a dependable four-city directory before public promotion. This is an evidence ledger, not blanket launch approval. No Facebook posts or outreach sent.
 
 | Journey / safeguard | Evidence and remaining gate |
@@ -11,8 +22,8 @@ Decision: prioritize a dependable four-city directory before public promotion. T
 | Current events | Approved event records are not the same as upcoming events. Sitemap has41 approved records including historical ones. Live city event screens show37 current/upcoming records (Mountain House15, Tracy9, Lathrop5, Manteca8) on November8; the remaining4are archived. This checks display, not a fresh organizer confirmation. Recheck organizer links and city empty-state recovery; do not promote unconfirmed holiday hours or attendance. |
 | Pets and notifications | Live Mountain House board shows0eligible reports, a posting action, city/status recovery and a30-day expiry explanation. No reports created. Existing features remain live; genuine-reporter matching/contact pilot and phone push acceptance stay OPEN. Do not advertise them as proven reunions or guaranteed delivery. |
 | Security / moderation | Prior P0 credential retirement and request moderation tests documented in BACKLOG. This pass makes no claim of a fresh full security audit. RLS/auth not weakened. |
-| Search discovery | Fixed static sitemap collision, retired-route scope and silent catalog omissions. Local XML1100 URLs:52static,1007business pages,41events,0eligiblepet pages; pages in sitemap are not all independently source-checked. Search Console/indexing acceptance remains OPEN. |
-| Honest inventory |78dated listing checks at previous release, not1007verified providers. Keep legacy listing status/evidence distinct from owner confirmation, credentials, availability and quality. Pet-care category depth remains next data priority. |
+| Search discovery | Fixed static sitemap collision, retired-route scope and silent catalog omissions. Local XML1100 URLs:52static,1007business pages,41events,0eligiblepet pages; pages in sitemap are not all independently source-checked. Search Console ownership, sitemap success and all four city-index inspections accepted; baseline reports remain processing. |
+| Honest inventory |89dated listing checks now, distinct from the legacy catalog. Keep legacy listing status/evidence distinct from owner confirmation, credentials, availability and quality. Pet-care category depth remains next data priority. |
 | Photos | Mountain House2026street-image rights/location and Manteca exact-location acceptance stay OPEN. Current clearly labeled placeholders/satellite are an enhancement gap, not justification to use unlicensed or wrong-city photos. |
 
 ## Execution order

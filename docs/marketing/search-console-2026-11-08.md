@@ -17,3 +17,7 @@ Follow-up after7:14PMrequest: baseline overview reports remain Processing data, 
 Follow-up after7:42PMrequest: overview baseline reports still processing. No repeated sitemap or indexing requests, traffic baseline or growth claim. Keep waiting for Google's processing; prior successful sitemap read is not proof that later provider additions are indexed.
 
 Follow-up after7:53PMrequest: overview performance/indexing/experience/enhancement reports remain processing; no growth or current catalog-index count claimed. No repeated sitemap or indexing requests.
+
+## Late November 8 follow-up
+
+After the11:31PMrequest, canonical property overview still reports processing for performance, indexing, experience and enhancements. No redundant submission/indexing request made; no new traffic or indexed-page count inferred.
