@@ -1,6 +1,6 @@
 # Local SEO launch audit — November 8, 2026
 
-Owner: Growth & Community Marketing Lead. Scope: existing MoHoLocal Next.js / Cloudflare / Supabase application, Mountain House, Tracy, Lathrop and Manteca.
+Owner: Growth, Community Marketing & Monetization Lead. Scope: existing MoHoLocal Next.js / Cloudflare / Supabase application, Mountain House, Tracy, Lathrop and Manteca.
 
 ## Findings and first implementation
 
@@ -26,4 +26,4 @@ Reference: [Google Search SEO Starter Guide](https://developers.google.com/searc
 
 ## Validation / release
 
-147 tests pass. Local production route returns200 with1100 distinct URLs:52static,1007business pages,41events,0eligiblepet pages. Checked an out-of-city provider with explicit service evidence is retained. Alternate route returns308 to canonical sitemap. Final native build/deployment verification pending. Facebook drafts remain unpublished and unsent.
+147 tests pass. Local production route returns200 with1100 distinct URLs:52static,1007business pages,41events,0eligiblepet pages. Checked an out-of-city provider with explicit service evidence is retained. Alternate route returns308 to canonical sitemap. Source344b9fb deployed via native Cloudflare build Ready1m47s, version0d2c120c. Live XML has1100 distinct URLs (1007business/41event/52static), no retired sitemap entries, and the explicit-coverage out-of-city provider is retained. /api/sitemap resolves to canonical /sitemap.xml. Live submission form offers exactly Mountain House, Tracy, Lathrop and Manteca.147 tests and final OpenNext/TypeScript build pass. Screenshot:research/nov8-four-city-submission-live.png. No production submission, claim, message, outcome or pet report created. Desktop browser checks only; attempted phone viewport override did not produce a phone-sized document and was reset. Search Console and genuine-user/device acceptance remain OPEN. Facebook drafts remain unpublished and unsent.

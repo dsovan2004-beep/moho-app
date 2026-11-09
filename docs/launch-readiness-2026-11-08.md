@@ -4,12 +4,12 @@ Decision: prioritize a dependable four-city directory before public promotion. T
 
 | Journey / safeguard | Evidence and remaining gate |
 | --- | --- |
-| Find help in each city | Live Mountain House, Tracy, Lathrop and Manteca landing pages render their own heading/title/canonical; earlier four-city service filter acceptance recorded in BACKLOG. Recheck narrow mobile layouts on a real viewport before broad promotion. |
+| Find help in each city | Live Mountain House, Tracy, Lathrop and Manteca landing pages render their own heading/title/canonical; earlier four-city service filter acceptance recorded in BACKLOG. Attempted viewport override did not yield a phone-sized document and was reset; narrow mobile acceptance remains OPEN before broad promotion. |
 | Contact a provider | Live Ayres detail shows dated website-check evidence, explicit three-city coverage and separate Ripon office location, tel and official website actions. No calls or inquiries sent. Existing iThink SMS correction is documented separately. A link click is not a successful connection. |
 | Suggest a business | Live form reaches account-aware submission UI with moderation explanation; found extra legacy cities and narrowed UI to our four launch cities in this release. Do not submit a fictitious production business for testing. Prior request/security regression evidence remains in the backlog; genuine submission acceptance is not established by viewing the form. |
 | Claim a business | Live claim link reaches the correct business form with confirmed-account email, ownership review explanation and tracking instructions. No fake ownership claim submitted. |
-| Current events | Approved event records are not the same as upcoming events. Sitemap has41 approved records including historical ones. Recheck dates/organizer links and city empty-state recovery; do not promote unconfirmed holiday hours or attendance. |
-| Pets and notifications | Existing features remain live; genuine-reporter matching/contact pilot and phone push acceptance stay OPEN. Do not advertise them as proven reunions or guaranteed delivery. |
+| Current events | Approved event records are not the same as upcoming events. Sitemap has41 approved records including historical ones. Live city event screens show37 current/upcoming records (Mountain House15, Tracy9, Lathrop5, Manteca8) on November8; the remaining4are archived. This checks display, not a fresh organizer confirmation. Recheck organizer links and city empty-state recovery; do not promote unconfirmed holiday hours or attendance. |
+| Pets and notifications | Live Mountain House board shows0eligible reports, a posting action, city/status recovery and a30-day expiry explanation. No reports created. Existing features remain live; genuine-reporter matching/contact pilot and phone push acceptance stay OPEN. Do not advertise them as proven reunions or guaranteed delivery. |
 | Security / moderation | Prior P0 credential retirement and request moderation tests documented in BACKLOG. This pass makes no claim of a fresh full security audit. RLS/auth not weakened. |
 | Search discovery | Fixed static sitemap collision, retired-route scope and silent catalog omissions. Local XML1100 URLs:52static,1007business pages,41events,0eligiblepet pages; pages in sitemap are not all independently source-checked. Search Console/indexing acceptance remains OPEN. |
 | Honest inventory |78dated listing checks at previous release, not1007verified providers. Keep legacy listing status/evidence distinct from owner confirmation, credentials, availability and quality. Pet-care category depth remains next data priority. |
@@ -17,7 +17,7 @@ Decision: prioritize a dependable four-city directory before public promotion. T
 
 ## Execution order
 
-1. Complete this sitemap/submission-city release and verify production behavior.
+1. Sitemap/submission-city release COMPLETE:344b9fb / Cloudflare0d2c120c Ready1m47s; live sitemap1100 distinct URLs and exactly four submission city choices verified.147tests and final OpenNext/TypeScript pass.
 2. Run bounded end-to-end acceptance with genuine residents/owners and mobile devices; fix confirmed failures first. Never fabricate submissions, outcomes or pet reports.
 3. Expand thin pet sitting/dog walking coverage and keep event dates/source checks fresh.
 4. Audit no-result recovery, contact actions, mobile navigation and indexing/utility-route metadata. Record pass/fail evidence rather than declaring the whole site ready from a build.

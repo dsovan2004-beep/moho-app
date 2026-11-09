@@ -20,7 +20,7 @@ Founder direction, November 6: MoHoLocal is a living directory for locals. Maint
 | Events editor | Check organizer, dates, venues, eligibility, changing details and expiry |
 | Photo / visual editor | Relevant imagery, exact-location/capture context where required, existing reuse rights and credits |
 | Community experience lead | Useful discussions, private messaging, pet updates, notifications and moderation workflows |
-| Growth & Community Marketing Lead | Local SEO, city-specific content, Facebook draft campaigns, community-rule checks, business participation proposals and honest outcome measurement. Research and drafts authorized; do not post, send, contact admins, schedule social posts or spend without explicit authorization. |
+| Growth, Community Marketing & Monetization Lead | Local SEO, city-specific content, Facebook draft campaigns, community-rule checks, business participation proposals, willingness-to-pay research, revenue experiments, pricing proposals and honest outcome measurement. Research and drafts authorized; do not post, send, contact admins, schedule social posts or spend without explicit authorization. |
 | Data quality editor | Duplicates, stale records, corrections, provenance and city/category coverage gaps |
 | Security / privacy lead | Access controls, private-data boundaries and safe submission/claim/community workflows |
 | QA / release lead | Meaningful tests, builds, deployment verification and real live checks |
@@ -66,8 +66,13 @@ FRESH-01 is active as `moholocal-twice-weekly-freshness-refresh`, Tuesdays and F
 
 FB-01 remains active. During manual and twice-weekly refresh work, continue the private group/post coverage ledger before starting duplicate research. Review accessible local groups across all4cities, starting latest30days; read each selected post fully, inspect relevant image text and all available comments/nested replies, checking outcome rather than counting engagement as demand. Mark partial comments or inaccessible groups explicitly; never label all groups/posts reviewed without completion evidence. Separate requests, offers/promotions, updates and out-of-area content. Deduplicate crossposts and normalize dates. Keep exact per-post references and resident details outsideGit/publicdata. Publish only anonymized observations and independently website-checked listing/event facts. No joins, messages, reactions, new permissions or photo reuse without existing rights. Prioritize unfinished threads and unreviewed groups from private ledger; scope is ongoing, not a one-screen survey.
 
-## Growth & Community Marketing Lead — added November 8, 2026
+## Growth, Community Marketing & Monetization Lead — added November 8, 2026
 
 The user explicitly added this role and authorized local SEO work plus Facebook drafts for Mountain House, Tracy, Lathrop and Manteca. All social posts, outreach, permission requests and paid promotion remain unsent/unpublished. Do not invent group memberships, admin approval or endorsements. Check each group's current promotional/link rules before any future authorized distribution. Clearly disclose the founder/project relationship; avoid fake resident testimonials, guaranteed rankings, blanket verified-business claims and unconfirmed holiday availability. Existing photo rights rules apply to all marketing assets.
 
 Measure search visibility, useful clicks and optional resident outcomes separately. Search Console access/verification and search performance baseline remain to be checked; no ranking or traffic uplift claims without evidence. Do not create a Google Business Profile pretending the directory is a local storefront. Use substantive city pages and actual inventory, avoiding doorway pages or mass near-duplicate content. Current campaign drafts and SEO audit live in docs/marketing/.
+
+
+## Monetization ownership — added November 8, 2026
+
+Own the revenue strategy and economics as well as acquisition: evaluate paid enhancements, explicitly labeled sponsorships and advertising, business retention, operating costs and resident value. Basic resident browsing and basic listings should remain free for the initial validation. Payment must never purchase verification, an undisclosed recommendation or a misleading ranking. Research and draft proposals are authorized; no outreach, billing activation, charges, ad purchases, commercial commitments or public price promises without explicit authorization. Validate willingness to pay before building paid features. No revenue forecast is established by current traffic or the number of listings. MON-01 in the backlog defines acceptance.
