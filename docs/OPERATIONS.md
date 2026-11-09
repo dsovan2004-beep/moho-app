@@ -4,6 +4,8 @@ Updated November 9, 2026. This guide replaces the March 2026 operating model. Th
 
 ## Product direction: a living local directory
 
+November9founder alignment: residents already use and enjoy Facebook groups. Make MoHoLocal the useful continuing reference for local help: explicit service areas, direct contact actions, source/check dates, current events and openings, persistent pet progress, and moderated corrections. Make useful records easy to share voluntarily. Success is finding help and keeping information current, not requiring residents to abandon existing groups or maximizing post counts. Facebook drafts remain unpublished; no outreach or automated posting is authorized.
+
 Founder direction, November 6: MoHoLocal is a living directory for locals. Maintain useful services, places/openings, events, discussions and pet updates as connected local information, with clear dates and correction paths. More records should produce better city/service coverage and useful actions, rather than unsupported quality claims. Expansion now includes services and events across all four relaunch cities, with rights-checked service/event imagery. Prioritize gaps and freshness; measure successful contacts, useful replies, event-detail/calendar actions, corrections and resolved reports. Unattended research is now explicitly authorized through FRESH-01; messaging remains prohibited.
 
 ## Execution mandate — November 9

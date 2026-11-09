@@ -1,5 +1,14 @@
 # MoHoLocal Product Roadmap
 
+## November 9 — saved correction receipts and living-directory alignment
+
+LIVING-02 SHIPPED: source1b4fbb5/native0be44461 Ready2m15s; live build marker matches1b4fbb59964e7814a93f888e9e7641538031375a. API already returned saved submission_id and needs_review=true; UI now consumes that exact contract. Receipt displays actual saved reference, pending review, Return to listing with affected city, and Suggest another change retaining listing/city. No claim of approval, publication or new status-tracking page. Missing/malformed receipt or interrupted after-send requests stay uncertain, retain form contents and block immediate duplicate sending. Before-send failures remain recoverable. No automatic retry or new API/schema/security permissions.
+
+158tests pass including Worker→validator contract, invalid/missing references, safe listing return and rendered receipt. Final native build passes; latest local TypeScript passes.390px actual component fixture fits, clearly labeled example/no report sent. Live correction form still retains Manteca/read-only canonical listing URL. No synthetic report submitted; real resident saved-receipt/review acceptance remains OPEN. [Evidence](research/correction-receipts-2026-11-09.md); research/nov9-correction-receipt-fixture.png is a LOCAL FIXTURE, not an actual request. Emulation reset.
+
+Founder alignment12:17AM: residents enjoy Facebook groups; MoHoLocal should earn repeat use through useful continuing records and actions, without requiring migration. OPERATIONS updated: find local services with explicit coverage/contact/check dates, current events/openings, persistent pet progress and moderated corrections; voluntary sharing supports discovery. Next build LIVING-03: resident-facing shareable city/service shortlists with clear evidence context, reusing existing directory filters and safe URLs; inspect existing sharing before adding duplicate infrastructure. Do not auto-post, carry private search text or publish campaigns. FB UNPUBLISHED. Photo rights/location tasks, genuine-reporter pet pilot, physical-phone and genuine resident/owner acceptance OPEN.
+
+
 ## November 9 — resident listing corrections shipped
 
 LIVING-01 COMPLETE: source02055f6/native36f178cd Ready1m36s; live build marker matches02055f6d4ad3e112f9d19c1332e397768a85decf. Directory cards expose business-specific Suggest a correction links. Report route loads only approved/public business context, pre-fills name/reference and affected city; detail links also retain resident city. Focused correction form hides unrelated submission types, supplies source/date guidance, labels fields, includes a read-only listing URL and returns Back to the business. Existing confirmed-account gate and manually reviewed business_update endpoint retained; no direct listing edits, auth/schema/permission changes.
