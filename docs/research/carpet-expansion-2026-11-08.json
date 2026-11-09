@@ -35,5 +35,26 @@
     "Supreme Carpet Cleaning: service-city pages found but identity/contact validation incomplete; not published",
     "Sampa Services: local service-city list conflicts with Los Angeles footer statement; held pending identity/location clarity",
     "No street addresses, photographs, fixed prices, promotions, credentials/quality or appointment/holiday-hours endorsements copied"
-  ]
+  ],
+  "accepted_counts": {
+    "dated_checks": 82,
+    "carpet_cleaning": {
+      "Mountain House": 3,
+      "Tracy": 4,
+      "Lathrop": 4,
+      "Manteca": 4
+    }
+  },
+  "browser_acceptance": {
+    "viewport_width": 390,
+    "cities_checked": [
+      "Mountain House",
+      "Tracy",
+      "Lathrop",
+      "Manteca"
+    ],
+    "horizontal_overflow": false,
+    "counts_match": true,
+    "actual_calls_or_messages_sent": false
+  }
 }

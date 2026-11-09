@@ -1,5 +1,14 @@
 # MoHoLocal living-directory refresh ledger
 
+## November 8 — carpet and utility-route release accepted
+
+DATA-14:82dated checks. Reynolds Carpet Cleaning Service & Janitorial and Magic Wand Professional Cleaning Services are live with individually named coverage for all four cities. Phone-width390px search acceptance matches carpet-cleaning counts Mountain House3/Tracy4/Lathrop4/Manteca4, without horizontal overflow. No contact sent, photos reused, office address invented or quality/credentials/availability endorsement. [Evidence](research/carpet-expansion-2026-11-08.json); screenshot research/nov8-phone-carpet-options-live.png.
+
+SEO-02/LAUNCH-01: source2ea7949 deployed Ready3m6s, native versionea0f0652.147tests and final OpenNext/TypeScript pass. Ten utility route groups have rendered noindex/nofollow locally. Live checks confirm login/register/requests/claim/business submission/community submission; public Manteca and business-detail negative controls have no noindex. Claim CTA now describes ownership review/tracking, with no instant-editing/two-minute claim. Live390px detail fits; screenshot research/nov8-phone-claim-review-live.png. Device emulation reset. No account/RLS/robots-account security changes; indexing metadata is not access control or guaranteed removal.
+
+SEO-03: follow-up overview performance/indexing/experience/enhancement data still processing; no new baseline or growth claim and no redundant sitemap resubmission. Prior Google Success/1,102discovered and four indexed city pages remain accepted; that historical count does not imply all newly added catalog pages indexed. Next: thin Lathrop/Manteca pet-care/mobile-grooming depth, useful city/social previews and genuine resident/owner acceptance. Physical-phone push/native contact-app acceptance, photo tasks and genuine-reporter pet pilot remain OPEN. FB drafts remain unpublished; no outreach, spend or monetization activation.
+
+
 ## November 8 — carpet-cleaning coverage and utility-page launch polish
 
 DATA-14 increment: published Reynolds Carpet Cleaning Service & Janitorial and Magic Wand Professional Cleaning Services, both with explicit first-party coverage for Mountain House/Tracy/Lathrop/Manteca, public phone checks and domain/name/phone deduplication.82dated checks total. Carpet-cleaning choices now3/4/4/4 respectively. No visitor-office address, photos, fixed offers, credential/quality or availability endorsement copied. Supreme identity/contact validation incomplete; Sampa footer/location conflict held. [Evidence](research/carpet-expansion-2026-11-08.json) and matching publication transaction. Live four-city UI acceptance pending.
