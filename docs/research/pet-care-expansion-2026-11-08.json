@@ -1,0 +1,36 @@
+{
+  "checked_on": "2026-11-08",
+  "method": "First-party website desk check; no outreach",
+  "providers": [
+    {
+      "name": "Acti-Kare of Tracy \u2014 In-Home Pet Care",
+      "city": "Tracy",
+      "phone": "(209) 650-0411",
+      "website": "https://actikare.com/tracy-ca/home-care-services/family-care/in-home-pet-care/",
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Lathrop"
+      ],
+      "description": "Tracy office advertises in-home pet sitting and dog walking, with its pet-care page explicitly naming Mountain House, Tracy and Lathrop. Confirm your address, animal needs, caregiver arrangements, quote and current availability directly. This listing covers the advertised pet service only; Manteca coverage is not established."
+    },
+    {
+      "name": "Growls N Meows",
+      "city": "Service area only",
+      "phone": "(209) 808-3236",
+      "website": "https://www.growlsnmeows.com/",
+      "areas": [
+        "Mountain House",
+        "Tracy",
+        "Manteca"
+      ],
+      "description": "Advertises in-home pet sitting and dog walking. Its official location list explicitly includes Mountain House, Tracy and Manteca; a visitable office is not established. Confirm your address, animal needs, visit schedule, quote and current availability directly. Lathrop coverage is not established."
+    }
+  ],
+  "limits": [
+    "No owner confirmation, credential/background/insurance check, quality or safety endorsement, appointment or holiday availability confirmation",
+    "No photos or testimonials reused; no home addresses published",
+    "Acti-Kare human care and medication claims are outside this listing scope",
+    "Growls website includes older material; do not infer current appointments from a working website"
+  ]
+}
