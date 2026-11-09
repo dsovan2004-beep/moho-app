@@ -1,5 +1,14 @@
 # MoHoLocal living-directory refresh ledger
 
+## November 8 — launch follow-up accepted
+
+SEO-03: canonical URL-prefix ownership verified using Google-provided public HTML file; retain it. Recovered property history had an old March13 sitemap read/107discovered pages. November8 resubmission now shows last read November8, Success and1,102discovered pages. All four city landing-page URL inspections report indexed. Mountain House live Google smartphone fetch succeeds with crawl/indexing allowed and expected canonical. Performance/index-coverage baselines are still processing; discovered pages are not all indexed pages. [Search Console evidence](marketing/search-console-2026-11-08.md). No new analytics tracking, DNS/OAuth grants or public posts.
+
+LAUNCH-01: pet-board city handoff defect fixed and live-accepted at390px: Manteca board → /submit?submission_type=lost_pet&city=Manteca; Manteca aria-pressed=true, Mountain House=false, no horizontal overflow. Alias accepts only a single supported city; local HTTP checks exclude unknown/repeated cities. Source4620549/native68a769c3 Ready2m29s;147tests and final OpenNext/TypeScript pass. Device emulation reset after checks. No actual report/claim/submission or contact sent. Four-city phone-emulated pet-sitting results and no-result recovery passed earlier in this increment. Physical-device push/native contact-app behavior and genuine-user submission acceptance stay OPEN.
+
+DATA-13 increment accepted:80dated checks; pet sitting/dog walking choices Mountain House3/Tracy3/Lathrop2/Manteca2, with explicit first-party city evidence and no blanket credentials/quality/availability endorsement. Next supply work: deepen Lathrop/Manteca pet-care choices and Mountain House carpet-cleaning options, preserving duplicates/service-area gates. Current FB drafts remain unpublished. Photo acceptance tasks and genuine-reporter pet pilot remain OPEN. No monetization activated.
+
+
 ## November 8 — phone-width launch checks, pet-care supply and Search Console
 
 DATA-13: published Acti-Kare of Tracy pet-care offering (Mountain House/Tracy/Lathrop) and Growls N Meows (Mountain House/Tracy/Manteca), after domain/name/phone duplicate checks and dated first-party service-city checks.80dated checks total; pet-sitting and dog-walking coverage now3/3/2/2 across Mountain House/Tracy/Lathrop/Manteca. No inferred fourth-city coverage, public home addresses, reused photos, credentials, quality or current availability endorsement. [Evidence](research/pet-care-expansion-2026-11-08.json). Continue thin-category depth; this increment does not close ongoing supply work.

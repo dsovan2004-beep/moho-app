@@ -27,3 +27,8 @@ Reference: [Google Search SEO Starter Guide](https://developers.google.com/searc
 ## Validation / release
 
 147 tests pass. Local production route returns200 with1100 distinct URLs:52static,1007business pages,41events,0eligiblepet pages. Checked an out-of-city provider with explicit service evidence is retained. Alternate route returns308 to canonical sitemap. Source344b9fb deployed via native Cloudflare build Ready1m47s, version0d2c120c. Live XML has1100 distinct URLs (1007business/41event/52static), no retired sitemap entries, and the explicit-coverage out-of-city provider is retained. /api/sitemap resolves to canonical /sitemap.xml. Live submission form offers exactly Mountain House, Tracy, Lathrop and Manteca.147 tests and final OpenNext/TypeScript build pass. Screenshot:research/nov8-four-city-submission-live.png. No production submission, claim, message, outcome or pet report created. Desktop browser checks only; attempted phone viewport override did not produce a phone-sized document and was reset. Search Console and genuine-user/device acceptance remain OPEN. Facebook drafts remain unpublished and unsent.
+
+
+## Follow-up acceptance
+
+SEO-03 ownership, sitemap and four-city checks now accepted: canonical property verified; Google November8 sitemap read Success/1,102discovered pages; all four landing pages report indexed. Mountain House live Google smartphone fetch Successful, crawl/indexing allowed and expected canonical. Performance/index-coverage baselines still processing; no ranking or traffic growth claim. Keep Google's verification HTML asset. [Detailed evidence](search-console-2026-11-08.md). Facebook drafts remain unpublished.
