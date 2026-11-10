@@ -1,5 +1,14 @@
 # MoHoLocal Product Roadmap
 
+## Tuesday November 10, 9 AM Pacific — FRESH-01 scheduled refresh complete
+
+Corrected Tracy Ornament Stroll to November14,2–5PMPacific, replacing the published noon–9PM window. The current City notice agrees in its header, body and When section. Fresh direct HTTP200, duplicate/record check, conditional single-row update, private excluded local before/after audit, anonymous public read-back and live calendar200 accepted: DTSTART20261114T220000Z / DTEND20261115T010000Z. No app change or rebuild required; source16109db remains deployed. [Sources, scope and acceptance](research/freshness-2026-11-10.md).
+
+Reviewed near-term events across all four cities: MH teen nature domes Nov10,5–6PM; Manteca reptiles Nov10,3:30–4:30PM; Lathrop Veterans event Nov11,11AM with unknown end; Tracy stroll corrected. Other three rows unchanged; source-access freshness limits recorded. Reviewed one existing opening/store notice per city; no supported closure/date change found in that bounded sample. Feature review window remains Dec7; past events remain archived automatically. No whole-calendar or whole-catalog freshness claim.
+
+Coverage priorities: pet sitting/dog walking each have2checked records in Lathrop/Manteca versus3in MH/Tracy; next supply research targets those gaps. These counts mean dated website evidence, not availability or independent credentials. New image search did not establish real2026MH/Manteca exact-location and reuse evidence; no asset replaced. Facebook UNPUBLISHED, photo tasks and genuine-reporter pet pilot OPEN. Next: verify Nov13–18 events before Friday cycle, expand Lathrop/Manteca pet care and retain exact coverage checks. Dedicated database event-audit storage remains a follow-up; this correction has local excluded before/after history, not a new database audit table.
+
+
 ## November 9 late evening — visible mobile city choices and four-city rechecks
 
 MOBILE-09 LIVE and accepted: all four city links plus All four cities are visible without horizontal scrolling. Two-column narrow-screen layout, full-row regional action, 44px minimum targets, named navigation, selected checkmark/aria-current and visible keyboard focus. Existing category/service/sort URL behavior retained. Local320px document width320px; all five targets44px high, individual city widths140px. Actual Manteca→Tracy click retains Home Services/plumbing/name sort. Local390px screenshot inspected.169tests, TypeScript and OpenNext production build pass. LIVE accepted source16109db1b7811ef1558dd37ce479c411c5eb23ae; native versioneef44f9a Ready1m35s; public build marker matches. Live320px document/viewport both320, all five links44px high; actual Manteca→Lathrop click retains Home Services/plumbing/name sort. Live390px screenshot research/nov9-visible-city-options-live.png inspected; emulation cleared.
