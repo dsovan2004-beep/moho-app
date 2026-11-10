@@ -364,29 +364,25 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
           </button>
         </form>
 
-        {/* City chips — relative wrapper + right fade signals horizontal scroll */}
-        <div className="relative">
-          <div className="overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            <div className="flex gap-2 pb-1 min-w-max pr-6">
-              {CITIES.map((c) => (
-                <Link
-                  key={c}
-                  href={filterUrl(c, category)}
-                  aria-current={(city === c) ? 'page' : undefined}
-                  className={`inline-flex min-h-11 items-center text-xs font-semibold px-3 py-1.5 rounded-full border whitespace-nowrap transition ${
-                    city === c
-                      ? 'bg-blue-700 text-white border-blue-700'
-                      : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300'
-                  }`}
-                >
-                  {c === 'All Cities' ? 'All four cities' : c}
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className="absolute right-0 top-0 bottom-0 w-8 pointer-events-none"
-            style={{ background: 'linear-gradient(to right, transparent, white)' }} />
-        </div>
+        {/* All relaunch cities remain visible without sideways scrolling. */}
+        <nav aria-label="Filter by city" className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+          {CITIES.map((c) => (
+            <Link
+              key={c}
+              href={filterUrl(c, category)}
+              aria-current={city === c ? 'page' : undefined}
+              className={`inline-flex min-h-11 items-center justify-center gap-1 rounded-xl border px-3 py-2 text-sm font-semibold text-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2 ${
+                c === 'All Cities' ? 'col-span-2 ' : ''
+              }${city === c
+                ? 'bg-blue-700 text-white border-blue-700'
+                : 'bg-white text-gray-700 border-gray-200 hover:border-blue-300'
+              }`}
+            >
+              {city === c && <span aria-hidden="true">✓</span>}
+              {c === 'All Cities' ? 'All four cities' : c}
+            </Link>
+          ))}
+        </nav>
 
         {/* Category chips — relative wrapper + right fade signals horizontal scroll */}
         <div className="relative">

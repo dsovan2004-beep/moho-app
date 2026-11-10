@@ -1,5 +1,14 @@
 # MoHoLocal — SPRINTS.md
 
+## November 9 late evening — visible mobile city choices and four-city rechecks
+
+MOBILE-09 implemented and locally accepted: all four city links plus All four cities are visible without horizontal scrolling. Two-column narrow-screen layout, full-row regional action, 44px minimum targets, named navigation, selected checkmark/aria-current and visible keyboard focus. Existing category/service/sort URL behavior retained. Local320px document width320px; all five targets44px high, individual city widths140px. Actual Manteca→Tracy click retains Home Services/plumbing/name sort. Local390px screenshot inspected.169tests and TypeScript pass; production build/release acceptance pending.
+
+FRESH-06 complete: THub Cafe (Mountain House), Van’s Ace Hardware (Tracy), Vince Haro Hauling (Lathrop), Warren’s Heating & Air Conditioning (Manteca) rechecked November9Pacific. Four dated scope/field updates with original-row private audit and anonymous public read-back. Primary source URLs and limits in research/visible-mobile-cities-2026-11-09.md. Warren’s conflicting street addresses stay unpublished; Vince coverage remains Lathrop/Manteca/Tracy only. Business records, service areas and tags unchanged; no new providers counted. Holiday availability and photo reuse unconfirmed.
+
+Facebook UNPUBLISHED. Real2026 photo location/rights tasks, genuine-reporter pet pilot, physical-phone and screen-reader acceptance OPEN.
+
+
 ## November 9 afternoon — enforce the four-city regional browsing boundary
 
 MOBILE-08 LIVE and accepted. All Cities now means locations in Mountain House/Tracy/Lathrop/Manteca OR outside-city providers with listing-check coverage explicitly naming at least one launch city. Label changed to All four cities. Regional scope is retained through search, service filters and pagination; existing direct city URLs remain readable. No rows deleted/unpublished and no evidence/approval gates weakened.
