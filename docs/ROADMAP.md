@@ -1,5 +1,14 @@
 # MoHoLocal Product Roadmap
 
+## November 11 — clear search without losing local context; pet-care rechecks
+
+MOBILE-10 implemented and locally accepted: explicit44px Clear search text action in mobile and desktop search forms. Clears only text via existing filter helper, cancels pending debounce and returns focus to the same input. City/category/exact service/sort retained. Native WebKit cancel decoration hidden in favor of the named control. Actual320px Manteca plumbing clear retained filters and input focus; rapid type/clear did not restore the discarded query. Desktop clear/focus accepted.169tests and TypeScript pass; final build/native/live acceptance pending.
+
+FRESH-07 complete: three existing pet-care providers rechecked with fresh first-partyHTTP200 — iThink Pet (all four cities), Acti-Kare (MH/Tracy/Lathrop), Growls N Meows (MH/Tracy/Manteca). Check notes/dates updated with private original-row database audits and anonymous public read-back. iThink text-only contact and travel/holiday-fee caveat explicit; no fixed quotes or holiday availability claims. Unnamed cities remain excluded; no new providers counted, business rows/tags/coverage unchanged. [Evidence](research/clear-search-pet-care-2026-11-11.md).
+
+Facebook UNPUBLISHED; photo exact-location/date/reuse tasks and genuine-reporter pet pilot OPEN. Physical-phone/screen-reader acceptance OPEN. Continue Lathrop/Manteca pet-care supply research without inflating existing records.
+
+
 ## Tuesday November 10, 9 AM Pacific — FRESH-01 scheduled refresh complete
 
 Corrected Tracy Ornament Stroll to November14,2–5PMPacific, replacing the published noon–9PM window. The current City notice agrees in its header, body and When section. Fresh direct HTTP200, duplicate/record check, conditional single-row update, private excluded local before/after audit, anonymous public read-back and live calendar200 accepted: DTSTART20261114T220000Z / DTEND20261115T010000Z. No app change or rebuild required; source16109db remains deployed. [Sources, scope and acceptance](research/freshness-2026-11-10.md).

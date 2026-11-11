@@ -320,6 +320,13 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
     router.push(`/directory?${params.toString()}`)
   }
 
+  function clearSearch(event: React.MouseEvent<HTMLButtonElement>) {
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    setSearchInput('')
+    event.currentTarget.form?.querySelector('input')?.focus()
+    router.push(directoryHref({city,category,service:service?.key,query,sort:sortBy}, {query:''}))
+  }
+
   function filterUrl(newCity: string, newCat: string) {
     return directoryHref({city,category,service:service?.key,query,sort:sortBy}, {city:newCity,category:newCat})
   }
@@ -351,8 +358,9 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
             onChange={(e) => handleSearchInput(e.target.value)}
             aria-label="Search businesses"
             placeholder="Search by name, category, or city…"
-            className="w-full border border-gray-200 rounded-xl pl-4 pr-14 min-h-11 py-2.5 text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="[&::-webkit-search-cancel-button]:hidden w-full border border-gray-200 rounded-xl pl-4 pr-24 min-h-11 py-2.5 text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
+          {searchInput.length > 0 && <button type="button" onClick={clearSearch} aria-label="Clear search text" title="Clear search text" className="absolute right-11 top-1/2 min-h-11 min-w-11 -translate-y-1/2 inline-flex items-center justify-center rounded-lg text-slate-600 hover:text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700"><span aria-hidden="true">✕</span></button>}
           <button
             type="submit"
             aria-label="Search"
@@ -440,8 +448,9 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
                 onChange={(e) => handleSearchInput(e.target.value)}
                 aria-label="Search businesses"
                 placeholder="Search by name, category, or city…"
-                className="w-full border border-gray-200 rounded-lg pl-3 pr-14 min-h-11 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full border border-gray-200 rounded-lg pl-3 pr-24 min-h-11 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
+              {searchInput.length > 0 && <button type="button" onClick={clearSearch} aria-label="Clear search text" title="Clear search text" className="absolute right-11 top-1/2 min-h-11 min-w-11 -translate-y-1/2 inline-flex items-center justify-center rounded-lg text-slate-600 hover:text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700"><span aria-hidden="true">✕</span></button>}
               <button
                 type="submit"
                 aria-label="Search"
