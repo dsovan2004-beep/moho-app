@@ -17,7 +17,7 @@ Anonymous public query returned exact Nov12T13:57:40.468542Z checks for Rasoi,Aa
 - Lathrop: MagicWand,Rasoi,Dhaba among latest.
 - Manteca: MagicWand,Rasoi,GrowlsNMeows among latest.
 
-Brentwood link absent in each.320px viewport/document both320.172tests pass, including check-date ordering, added/check deduplication, invalid-date recovery and exact check label/city routing. TypeScript pass. Final OpenNext/native/live acceptance pending.
+Brentwood link absent in each.320px viewport/document both320.172tests pass, including check-date ordering, added/check deduplication, invalid-date recovery and exact check label/city routing. TypeScript pass. Final OpenNext production build pass. LIVE accepted source9fa397756669a9be6b994caa156345c00a081a6d; exact public marker and GitHub successful check observed. Native dashboard signed out, so native version/duration not asserted. Actual regional production feed has40items, today’s Aappakadai/Dhaba/MagicWand/Rasoi checks first, each datedNov12; zero Brentwood filter links. All four city views confirmed after waiting for the matching city subtitle. An initial Manteca read caught the prior city during navigation and was discarded; confirmed Manteca correctly shows MagicWand/Rasoi/Growls/iThink.320px document equals viewport. Screenshot nov12-activity-freshness-live.png inspected; temporary emulation cleared. No production data writes or fabricated activity.
 
 ## Scope limits and next work
 
