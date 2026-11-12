@@ -1,5 +1,14 @@
 # MoHoLocal Product Roadmap
 
+## November 12 — continued Facebook review and Activity streams (ACT-02)
+
+Four additional selected posts reviewed across four cities; full bodies expanded. Manteca All comments nine entries read; Tracy All comments eleven visible entries versus12displayed, so partial. MH donation comments/fulfillment and Lathrop promotional comment completeness unresolved. No all-group coverage or demand claim. Private references outside Git; no resident identities or content imports. Findings: donation fulfillment/pickup lifecycle (DONATE-GAP-01, discovery), tentative pet matches/custody/last reporter update (PET-GAP-01), independently checked service areas (GEO-GAP-01), and genuine discussion discovery.
+
+ACT-02 implemented/local accepted, native deployment pending: working Activity stream filters query before latest40cap; city and stream persist together. Existing moderation/publication/date/status guards retained. All four local Discussions views genuinely empty; Manteca Events six records, Pet reports empty with relevant recovery.320px fits, five44px controls.176tests and TypeScript pass; final OpenNext build passed. [Evidence](research/facebook-activity-streams-2026-11-12.md).
+
+Facebook UNPUBLISHED; no fabricated posts/comments/ratings/counts or production content writes. Photo tasks, genuine-reporter pet pilot and physical-phone/screen-reader acceptance OPEN. Next priorities: provider candidate primary-source/duplicate checks, tentative match/custody acceptance, donation lifecycle discovery and remaining thread coverage.
+
+
 ## November 12 — Directory Newest approval ordering (DIR-NEW-01) and Facebook gap review
 
 DIR-NEW-01 LIVE accepted: Newest previously sorted created_at only, burying imported records approved later, and had no unique pagination tie-breaker. Newest approved now uses recorded verified_at DESC NULLS LAST, then created_at DESC NULLS LAST and id ASC. Legacy records without approval timestamps follow by creation date with explicit caveat; missing dates not invented. A–Z remains default. All query sorts gain final unique-id ordering. Newest cards display recorded approval or clearly labeled legacy creation date. Dual approved+verified gate and four-city/recorded-coverage scope preserved. Activity uses the same actual approval timestamp and latest approval/check deduplication so a later approval cannot hide behind an older website check. No production listing, approval, post or engagement written.

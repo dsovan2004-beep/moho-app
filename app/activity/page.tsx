@@ -8,15 +8,18 @@ import { RELAUNCH_CITY_NAMES } from '@/lib/cities'
 import { regionalDirectoryFilter } from '@/lib/directory-scope'
 import { mergeActivity } from '@/lib/activity-feed'
 import { isUpcomingEvent } from '@/lib/event-dates'
+import { ACTIVITY_STREAMS, activityStream, activityHref, type ActivityStream } from '@/lib/activity-filters'
 
 export const dynamic = 'force-dynamic'
 const CITIES: string[] = [...RELAUNCH_CITY_NAMES]
 
-async function fetchActivityFeed(city?: string): Promise<ActivityItem[]> {
+async function fetchActivityFeed(city: string | undefined, stream: ActivityStream): Promise<ActivityItem[]> {
   const db = getSupabaseClient()
   const isFiltered = city && CITIES.includes(city)
   // Coverage must be looked up before the regional business predicate is built.
-  const coverage = await db.from('listing_checks').select('business_id').overlaps('service_areas',isFiltered ? [city] : CITIES)
+  const wantsListings=stream==='all' || stream==='listings'
+  const empty={data:[],error:null}
+  const coverage = wantsListings ? await db.from('listing_checks').select('business_id').overlaps('service_areas',isFiltered ? [city] : CITIES) : empty
   if (coverage.error) throw coverage.error
   const ids = (coverage.data ?? []).map(row=>row.business_id)
   let businesses = db.from('businesses').select('id,name,description,city,category,created_at,verified_at').eq('status','approved').eq('verified',true).order('verified_at',{ascending:false,nullsFirst:false}).order('created_at',{ascending:false,nullsFirst:false}).order('id',{ascending:true}).limit(40)
@@ -29,10 +32,10 @@ async function fetchActivityFeed(city?: string): Promise<ActivityItem[]> {
   const now = new Date()
   const earliestUnknown = new Date(now.getTime()-86400000).toISOString()
   const [posts, events, pets, listed, checked] = await Promise.all([
-    db.from('community_posts').select('id,title,content,city,created_at').in('city',cities).neq('status','flagged').neq('status','removed').not('title','ilike','%facebook%').not('content','ilike','%facebook.com/groups%').order('created_at',{ascending:false}).limit(40),
-    db.from('events').select('id,title,description,city,created_at,start_date,end_date').eq('status','approved').in('city',cities).or(`end_date.gte.${now.toISOString()},and(end_date.is.null,start_date.gte.${earliestUnknown})`).order('created_at',{ascending:false}).limit(40),
-    db.from('lost_and_found').select('id,title,description,city,created_at').in('city',cities).in('status',['lost','found']).order('created_at',{ascending:false}).limit(40),
-    businesses, checks,
+    stream==='all' || stream==='discussions' ? db.from('community_posts').select('id,title,content,city,created_at').in('city',cities).neq('status','flagged').neq('status','removed').not('title','ilike','%facebook%').not('content','ilike','%facebook.com/groups%').order('created_at',{ascending:false}).limit(40) : empty,
+    stream==='all' || stream==='events' ? db.from('events').select('id,title,description,city,created_at,start_date,end_date').eq('status','approved').in('city',cities).or(`end_date.gte.${now.toISOString()},and(end_date.is.null,start_date.gte.${earliestUnknown})`).order('created_at',{ascending:false}).limit(40) : empty,
+    stream==='all' || stream==='pets' ? db.from('lost_and_found').select('id,title,description,city,created_at').in('city',cities).in('status',['lost','found']).order('created_at',{ascending:false}).limit(40) : empty,
+    wantsListings ? businesses : empty, wantsListings ? checks : empty,
   ])
   for (const result of [posts,events,pets,listed,checked]) if (result.error) throw result.error
   const additions: ActivityItem[] = (listed.data ?? []).map(b=>({id:b.id,type:'business',title:b.name,description:b.description ?? '',city:b.city,category:b.category,created_at:b.verified_at ?? b.created_at,approval_recorded:!!b.verified_at}))
@@ -48,19 +51,21 @@ async function fetchActivityFeed(city?: string): Promise<ActivityItem[]> {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 interface PageProps {
-  searchParams: Promise<{ city?: string }>
+  searchParams: Promise<{ city?: string; stream?: string }>
 }
 
 export default async function ActivityPage({ searchParams }: PageProps) {
   const params = await searchParams
   // Only treat as a city filter if it's one of the 4 canonical cities
   const selectedCity = CITIES.includes(params.city ?? '') ? params.city : undefined
+  const selectedStream=activityStream(params.stream)
+  const streamLabel=ACTIVITY_STREAMS.find(item=>item.key===selectedStream)!.label
 
   let feed: ActivityItem[] = []
   let fetchError = false
 
   try {
-    feed = await fetchActivityFeed(selectedCity)
+    feed = await fetchActivityFeed(selectedCity,selectedStream)
   } catch (err) {
     console.error('ActivityPage fetch failed:', err)
     fetchError = true
@@ -81,7 +86,7 @@ export default async function ActivityPage({ searchParams }: PageProps) {
       {/* City filter tabs */}
       <div className="flex flex-wrap gap-2 mb-6">
         <Link
-          href="/activity"
+          href={activityHref(undefined,selectedStream)}
           aria-current={!selectedCity ? 'page' : undefined}
           className={`inline-flex min-h-11 items-center text-sm font-semibold px-4 py-1.5 rounded-full transition-all ${
             !selectedCity
@@ -102,7 +107,7 @@ export default async function ActivityPage({ searchParams }: PageProps) {
           return (
             <Link
               key={c}
-              href={`/activity?city=${encodeURIComponent(c)}`}
+              href={activityHref(c,selectedStream)}
               aria-current={isActive ? 'page' : undefined}
               className={`inline-flex min-h-11 items-center text-sm font-semibold px-4 py-1.5 rounded-full transition-all ${cityStyles[c]}`}
             >
@@ -112,21 +117,10 @@ export default async function ActivityPage({ searchParams }: PageProps) {
         })}
       </div>
 
-      {/* Legend */}
-      <div className="flex flex-wrap gap-3 mb-6">
-        <span className="flex items-center gap-1.5 text-xs font-semibold text-green-700 bg-green-50 px-3 py-1.5 rounded-full">
-          🔎 Listing checks & additions
-        </span>
-        <span className="flex items-center gap-1.5 text-xs font-semibold text-blue-700 bg-blue-50 px-3 py-1.5 rounded-full">
-          💬 Community Posts
-        </span>
-        <span className="flex items-center gap-1.5 text-xs font-semibold text-amber-700 bg-amber-50 px-3 py-1.5 rounded-full">
-          📅 Events
-        </span>
-        <span className="flex items-center gap-1.5 text-xs font-semibold text-red-700 bg-red-50 px-3 py-1.5 rounded-full">
-          🐾 Pet reports
-        </span>
-      </div>
+      <nav aria-label="Activity type" className="flex flex-wrap gap-2 mb-6">
+        {ACTIVITY_STREAMS.map(item=><Link key={item.key} href={activityHref(selectedCity,item.key)} aria-current={selectedStream===item.key ? 'page' : undefined} className={`inline-flex min-h-11 items-center rounded-xl border px-3 py-2 text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#19352d] focus-visible:ring-offset-2 ${selectedStream===item.key ? 'bg-[#19352d] text-white border-[#19352d]' : 'bg-white text-slate-700 border-slate-200 hover:border-[#19352d]'}`}>{item.label}</Link>)}
+      </nav>
+      <h2 className="text-lg font-bold text-slate-900 mb-3">{streamLabel}</h2>
 
       {/* Error state */}
       {fetchError && (
@@ -142,20 +136,20 @@ export default async function ActivityPage({ searchParams }: PageProps) {
           <p className="text-5xl mb-4">🏘️</p>
           <p className="text-lg font-semibold text-gray-600 mb-1">
             {selectedCity
-              ? `No recent activity in ${selectedCity} yet.`
-              : 'No recent activity yet.'}
+              ? `No ${selectedStream === 'all' ? 'recent activity' : streamLabel.toLowerCase()} in ${selectedCity} yet.`
+              : `No ${selectedStream === 'all' ? 'recent activity' : streamLabel.toLowerCase()} yet.`}
           </p>
-          <p className="text-sm mb-6">Browse the directory or check upcoming events while new activity arrives.</p>
+          <p className="text-sm mb-6">Try another activity type or browse the relevant section below.</p>
           <Link
-            href={selectedCity ? `/community?city=${encodeURIComponent(selectedCity)}` : '/community'}
+            href={`${selectedStream==='events' ? '/events' : selectedStream==='pets' ? '/lost-and-found' : selectedStream==='listings' ? '/directory' : '/community'}${selectedCity ? `?${new URLSearchParams({city:selectedCity})}` : ''}`}
             className="inline-block bg-blue-700 text-white text-sm font-semibold px-6 py-2.5 rounded-full hover:bg-blue-800 transition"
           >
-            Go to Community Board
+            {selectedStream==='events' ? 'Browse Events' : selectedStream==='pets' ? 'Browse Pet Reports' : selectedStream==='listings' ? 'Browse Directory' : 'Go to Community Board'}
           </Link>
         </div>
       )}
 
-      <p className="mb-4 rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-600">Listing checks show the latest recorded website check, not a new opening, owner confirmation or quality endorsement. <Link className="underline font-semibold" href={selectedCity ? `/directory?${new URLSearchParams({city:selectedCity})}` : '/directory'}>Browse the directory →</Link></p>
+      {(selectedStream==='all' || selectedStream==='listings') && <p className="mb-4 rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-600">Listing checks show the latest recorded website check, not a new opening, owner confirmation or quality endorsement. <Link className="underline font-semibold" href={selectedCity ? `/directory?${new URLSearchParams({city:selectedCity})}` : '/directory'}>Browse the directory →</Link></p>}
 
       {/* Feed */}
       {!fetchError && feed.length > 0 && (
