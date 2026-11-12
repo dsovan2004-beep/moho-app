@@ -437,3 +437,11 @@ MOBILE-10 LIVE and accepted: explicit44px Clear search text action in mobile and
 FRESH-07 complete: three existing pet-care providers rechecked with fresh first-partyHTTP200 — iThink Pet (all four cities), Acti-Kare (MH/Tracy/Lathrop), Growls N Meows (MH/Tracy/Manteca). Check notes/dates updated with private original-row database audits and anonymous public read-back. iThink text-only contact and travel/holiday-fee caveat explicit; no fixed quotes or holiday availability claims. Unnamed cities remain excluded; no new providers counted, business rows/tags/coverage unchanged. [Evidence](research/clear-search-pet-care-2026-11-11.md).
 
 Facebook UNPUBLISHED; photo exact-location/date/reuse tasks and genuine-reporter pet pilot OPEN. Physical-phone/screen-reader acceptance OPEN. Continue Lathrop/Manteca pet-care supply research without inflating existing records.
+
+## November 12 — accessible mobile categories and four-city freshness
+
+MOBILE-11 implemented and locally accepted: labeled native Category selector replaces sideways mobile category chips below lg. All ten existing choices are available, with16px text and44px target; unusual explicit legacy category remains displayed. Existing desktop sidebar unchanged. Actual320px Home Services/plumbing→Pet Services retains Manteca/queryMW/name sort and removes incompatible plumbing; All categories retains Manteca/text.320px viewport/document equal.169tests and TypeScript pass; final build/native/live acceptance pending.
+
+FRESH-08 complete: Aappakadai MH, Dhaba Tracy, Rasoi Lathrop and Magic Wand Manteca rechecked from primary sources. Four scope/date updates with private before/after database audits and anonymous public read-back. Expanded live FAQs establish Dhaba advertised MH/Tracy/Lathrop coverage and Rasoi Lathrop/Manteca; recorded with exact-address delivery/catering caveats, not availability promises. No new business rows, tags, contact changes, owner or quality claims. Magic Wand promotion terms and walk-in address remain unconfirmed. [Evidence](research/mobile-category-freshness-2026-11-12.md).
+
+Facebook UNPUBLISHED; photo exact-location/date/reuse tasks, genuine-reporter pet pilot and physical-phone/screen-reader acceptance OPEN. Continue Lathrop/Manteca pet-care supply gaps and upcoming organizer checks.

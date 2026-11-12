@@ -1,0 +1,14 @@
+# Mobile categories and four-city freshness — November 12, 2026
+
+MOBILE-11 replaces the narrow horizontal category chip scroller with a labeled native selector throughout the existing mobile/tablet layout (below lg). Ten existing choices,44px minimum target,16px text, focus ring. Unknown explicit legacy categories remain in an escaped option rather than a misleading blank selection. Existing filterUrl/directoryHref governs transitions; desktop sidebar retained. Local320px selecting Pet Services from Manteca/HomeServices/plumbing/queryMW/name retained city/text/sort and dropped incompatible plumbing. Selecting All retained city/text. Document width320px equals viewport.169tests and TypeScript pass; final OpenNext/native/live acceptance pending. No physical-device picker or screen-reader voice acceptance claimed.
+
+## FRESH-08 evidence
+
+Four existing records; timestamp2026-11-12T13:57:40.468542Z.
+
+- [Aappakadai Mountain House](https://www.aappakadaimountainhouse.com/): freshHTTP200,19685SMountainHouseParkway,2092079631,Chettinad/appam/dosa and party/online-order links. MH only; location not delivery proof.
+- [Dhaba Tracy](https://dhabaindiancuisines.com/): live browser after direct403;2242WGrantLineRd#101,2098359090,Indian cuisine/vegetarian options/catering/takeout. Expanded What areas do you serve FAQ explicitly names Tracy,MountainHouse,Lathrop. Added MH/Lathrop to advertised coverage only; exact delivery address and catering travel still need confirmation. Manteca not inferred.
+- [Rasoi Lathrop](https://rasoitheindiankitchen.com/): live browser after direct403;15338SHarlanRd,2098584444,Indian menu/vegetarian options/catering/takeout. Expanded same FAQ explicitly names Lathrop/Manteca. Added Manteca advertised coverage with exact-address caveat. MH/Tracy not inferred from regional wording.
+- [Magic Wand Manteca contact](https://carpetcleaningmantecaca.com/contact-us) and [services](https://carpetcleaningmantecaca.com/): contact live browser after direct403;2097403341 and explicit all-four city coverage. Existing carpet/tile/upholstery scope retained. Published contact address not established as a walk-in office; no address adopted. Percentage promotion lacks confirmed current terms; not republished. Homepage services corroborated by retrieved primary content, not owner contact.
+
+One original-row private listing_corrections audit per business; updated check dates/notes, two restaurant coverage arrays and their checked-fields provenance. Business rows/tags/contacts unchanged. Anonymous public read-back confirms all four timestamps and exact coverage. No new listing count, credentials/insurance/workmanship/quality/dietary assurance, quote or Thanksgiving availability established. No images copied or new rights assumed. FB unpublished; photo tasks and genuine-reporter pilot open.

@@ -392,28 +392,12 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
           ))}
         </nav>
 
-        {/* Category chips — relative wrapper + right fade signals horizontal scroll */}
-        <div className="relative">
-          <div className="overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            <div className="flex gap-2 pb-1 min-w-max pr-6">
-              {CATEGORIES.map(({ key, emoji }) => (
-                <Link
-                  key={key}
-                  href={filterUrl(city, key)}
-                  aria-current={category === key ? 'page' : undefined}
-                  className={`inline-flex min-h-11 items-center text-xs font-semibold px-3 py-1.5 rounded-full border whitespace-nowrap transition ${
-                    category === key
-                      ? 'bg-blue-700 text-white border-blue-700'
-                      : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300'
-                  }`}
-                >
-                  {emoji} {key}
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className="absolute right-0 top-0 bottom-0 w-8 pointer-events-none"
-            style={{ background: 'linear-gradient(to right, transparent, white)' }} />
+        <div>
+          <label htmlFor="mobile-directory-category" className="mb-1 block text-sm font-semibold text-slate-700">Category</label>
+          <select id="mobile-directory-category" value={category} onChange={event=>router.push(filterUrl(city,event.target.value))} className="min-h-11 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-base text-slate-800 focus-visible:ring-2 focus-visible:ring-[#19352d]">
+            {!CATEGORIES.some(item=>item.key===category) && <option value={category}>{category}</option>}
+            {CATEGORIES.map(({key,emoji})=><option key={key} value={key}>{emoji} {key === 'All' ? 'All categories' : key}</option>)}
+          </select>
         </div>
       </div>
 

@@ -1,5 +1,14 @@
 # MoHoLocal active execution queue
 
+## November 12 — accessible mobile categories and four-city freshness
+
+MOBILE-11 implemented and locally accepted: labeled native Category selector replaces sideways mobile category chips below lg. All ten existing choices are available, with16px text and44px target; unusual explicit legacy category remains displayed. Existing desktop sidebar unchanged. Actual320px Home Services/plumbing→Pet Services retains Manteca/queryMW/name sort and removes incompatible plumbing; All categories retains Manteca/text.320px viewport/document equal.169tests and TypeScript pass; final build/native/live acceptance pending.
+
+FRESH-08 complete: Aappakadai MH, Dhaba Tracy, Rasoi Lathrop and Magic Wand Manteca rechecked from primary sources. Four scope/date updates with private before/after database audits and anonymous public read-back. Expanded live FAQs establish Dhaba advertised MH/Tracy/Lathrop coverage and Rasoi Lathrop/Manteca; recorded with exact-address delivery/catering caveats, not availability promises. No new business rows, tags, contact changes, owner or quality claims. Magic Wand promotion terms and walk-in address remain unconfirmed. [Evidence](research/mobile-category-freshness-2026-11-12.md).
+
+Facebook UNPUBLISHED; photo exact-location/date/reuse tasks, genuine-reporter pet pilot and physical-phone/screen-reader acceptance OPEN. Continue Lathrop/Manteca pet-care supply gaps and upcoming organizer checks.
+
+
 ## November 11 — clear search without losing local context; pet-care rechecks
 
 MOBILE-10 LIVE and accepted: explicit44px Clear search text action in mobile and desktop search forms. Clears only text via existing filter helper, cancels pending debounce and returns focus to the same input. City/category/exact service/sort retained. Native WebKit cancel decoration hidden in favor of the named control. Actual320px Manteca plumbing clear retained filters and input focus; rapid type/clear did not restore the discarded query. Desktop clear/focus accepted.169tests, TypeScript and final OpenNext build pass. LIVE accepted sourceb2c33681b03441a5aaa4845ab2d405e607291615; native version72f39c8c Ready1m32s; public build marker matches. Live44×44px clear action restores blank focused input and Manteca/Home Services/plumbing/name sort;320px document equals viewport. Hydrated390px screenshot research/nov11-clear-search-live.png inspected: one clear icon plus separate search action. Temporary emulation cleared.
