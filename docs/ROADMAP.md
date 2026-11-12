@@ -1,5 +1,14 @@
 # MoHoLocal Product Roadmap
 
+## November 12 — Activity feed freshness gap (ACT-01)
+
+Root cause confirmed in source: Activity queried businesses.created_at only, so later listing_checks never moved a listing into recent activity; it also retained Brentwood and unscoped regional queries. ACT-01 implemented/local accepted: dynamic Activity reads actual public checked_at records joined to approved+verified businesses, distinguishes Website checked from Listing added, carries applicable service-city context and merges one latest item per listing. Latest40items, not historical edit log. Four-city scope includes outside-base businesses only through recorded coverage. Approved/current events, moderation-safe posts and active lost/found reports retain their actual record dates. No invented posts, comments, residents, testimonials or engagement counts; no data writes.
+
+Local public-data read-back and actual all-city page show today’s Aappakadai, Dhaba, Magic Wand and Rasoi checks first. All four city filters retain applicable providers; Brentwood control absent.320px no document overflow.172tests (three new date-order/deduplication/label-context checks) and TypeScript pass; final OpenNext/native/live acceptance pending. [Evidence](research/activity-freshness-2026-11-12.md).
+
+Founder reminders applied to OPERATIONS: no guessing/unsupported completion claims, no fabricated engagement, and cross-surface acceptance before calling listing work complete. ACT-02 follow-up: feed stream filters and genuine discussion discovery; event corrections/replies/status revisions require explicit change timestamps/history before being presented as fresh activity. Do not infer updates from text or fabricate audit entries. FB UNPUBLISHED; photo tasks and genuine-reporter pet pilot OPEN.
+
+
 ## November 12 — accessible mobile categories and four-city freshness
 
 MOBILE-11 LIVE and accepted: labeled native Category selector replaces sideways mobile category chips below lg. All ten existing choices are available, with16px text and44px target; unusual explicit legacy category remains displayed. Existing desktop sidebar unchanged. Actual320px Home Services/plumbing→Pet Services retains Manteca/queryMW/name sort and removes incompatible plumbing; All categories retains Manteca/text.320px viewport/document equal.169tests, TypeScript and final OpenNext build pass. LIVE accepted source7020428b4a384c9ca94f3f74aca059c61f7885b3 via matching public build marker and actual production category transitions.320px select44px high/16px text, ten options, no document overflow; Pet Services/All retain Manteca/queryMW/name sort and drop incompatible plumbing. Screenshot research/nov12-mobile-category-live.png inspected; emulation cleared. Native dashboard signed out, so native version/build duration not independently read; no login/agreement attempted.

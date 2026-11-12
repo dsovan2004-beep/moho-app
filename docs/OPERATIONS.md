@@ -16,6 +16,8 @@ Updated November 9, 2026. This guide replaces the March 2026 operating model. Th
 
 ## Product direction: a living local directory
 
+November12 explicit founder constraint: never fabricate posts, comments, testimonials, residents, discussion replies or engagement counts. Website-check activity is editorial evidence only and must never impersonate a resident or suggest an owner confirmed availability. All public activity derives from actual approved/public records.
+
 November9founder alignment: residents already use and enjoy Facebook groups. Make MoHoLocal the useful continuing reference for local help: explicit service areas, direct contact actions, source/check dates, current events and openings, persistent pet progress, and moderated corrections. Make useful records easy to share voluntarily. Success is finding help and keeping information current, not requiring residents to abandon existing groups or maximizing post counts. Facebook drafts remain unpublished; no outreach or automated posting is authorized.
 
 Founder direction, November 6: MoHoLocal is a living directory for locals. Maintain useful services, places/openings, events, discussions and pet updates as connected local information, with clear dates and correction paths. More records should produce better city/service coverage and useful actions, rather than unsupported quality claims. Expansion now includes services and events across all four relaunch cities, with rights-checked service/event imagery. Prioritize gaps and freshness; measure successful contacts, useful replies, event-detail/calendar actions, corrections and resolved reports. Unattended research is now explicitly authorized through FRESH-01; messaging remains prohibited.
@@ -74,6 +76,8 @@ Keep secrets out of files, logs and URLs. Use configured credential helpers and 
 The founder retains business pricing/spend decisions and approvals that specifically require owner action. Autonomous work does not authorize financial commitments, new access grants or unsolicited communications.
 
 ## Planning and acceptance
+
+November12 acceptance improvement: before declaring a listing/data increment complete, verify the affected resident surfaces, not only the edited page or database. For listing checks, verify detail evidence, applicable city discovery and the Activity feed ordering/label/date. Website checks must use checked_at rather than creation date; distinguish listing-added from opening and editorial checks from residents. Capture actual source/release/public-read-back evidence. Maintain explicit limitations for historical revisions and event corrections until implemented. No fabricated engagement.
 
 [BACKLOG.md](BACKLOG.md) is the next-work queue; [ROADMAP.md](ROADMAP.md) holds acceptance/status; [SPRINTS.md](SPRINTS.md) records outcomes. Update all three when scope or acceptance changes. Separate implemented, tested, deployed and live-accepted states.
 

@@ -1,6 +1,9 @@
+import React from 'react'
 import Link from 'next/link'
+import { checkDate } from '@/lib/listing-evidence'
+import { RELAUNCH_CITY_NAMES } from '@/lib/cities'
 
-export type ActivityItemType = 'community' | 'event' | 'lost_pet' | 'business'
+export type ActivityItemType = 'community' | 'event' | 'lost_pet' | 'business' | 'business_check'
 
 export interface ActivityItem {
   id: string
@@ -10,14 +13,16 @@ export interface ActivityItem {
   city: string
   created_at: string
   image_url?: string
+  service_areas?: string[]
   category?: string
 }
 
 const TYPE_BADGE: Record<ActivityItemType, { label: string; classes: string }> = {
   community: { label: 'COMMUNITY',    classes: 'bg-blue-100 text-blue-700'   },
   event:     { label: 'EVENT',        classes: 'bg-amber-100 text-amber-700' },
-  lost_pet:  { label: 'LOST PET',     classes: 'bg-red-100 text-red-700'     },
-  business:  { label: 'NEW BUSINESS', classes: 'bg-green-100 text-green-700' },
+  lost_pet:  { label: 'PET REPORT',     classes: 'bg-red-100 text-red-700'     },
+  business_check: { label: 'WEBSITE CHECKED', classes: 'bg-emerald-100 text-emerald-800' },
+  business:  { label: 'LISTING ADDED', classes: 'bg-green-100 text-green-700' },
 }
 
 const CITY_BADGE: Record<string, string> = {
@@ -33,12 +38,16 @@ const TYPE_ICON: Record<ActivityItemType, string> = {
   event:     '📅',
   lost_pet:  '🐾',
   business:  '🏢',
+  business_check: '🔎',
 }
 
 function getHref(item: ActivityItem, currentCity?: string): string {
   if (item.type === 'community') return `/community/${item.id}`
   if (item.type === 'event')     return `/events/${item.id}`
-  if (item.type === 'business')  return `/business/${item.id}`
+  if (item.type === 'business' || item.type === 'business_check') {
+    const city = currentCity ?? (RELAUNCH_CITY_NAMES.some(city=>city===item.city) ? item.city : item.service_areas?.[0])
+    return `/business/${item.id}${city ? `?${new URLSearchParams({city})}` : ''}`
+  }
 
   // Lost pets land on the list page with city context
   const cityParam = currentCity
@@ -91,11 +100,11 @@ export function ActivityCard({ item, currentCity }: ActivityCardProps) {
 
         <div className="p-5">
           {/* Top row: type badge + timestamp */}
-          <div className="flex items-center justify-between mb-3">
+          <div className="flex flex-wrap gap-2 items-center justify-between mb-3">
             <span className={`text-xs font-bold px-2.5 py-1 rounded-full tracking-wide ${badge.classes}`}>
               {icon} {badge.label}
             </span>
-            <span className="text-xs text-gray-400">{timeAgo(item.created_at)}</span>
+            <time dateTime={item.created_at} className="text-xs text-slate-500">{item.type === 'business_check' ? `Checked ${checkDate(item.created_at)}` : timeAgo(item.created_at)}</time>
           </div>
 
           {/* Title */}
@@ -104,7 +113,7 @@ export function ActivityCard({ item, currentCity }: ActivityCardProps) {
           </h3>
 
           {/* Category label for businesses */}
-          {item.type === 'business' && item.category && (
+          {(item.type === 'business' || item.type === 'business_check') && item.category && (
             <p className="text-xs font-semibold text-green-700 mb-1">{item.category}</p>
           )}
 
@@ -115,10 +124,12 @@ export function ActivityCard({ item, currentCity }: ActivityCardProps) {
             </p>
           )}
 
+          {item.service_areas?.length ? <p className="mb-3 text-xs text-slate-600">Advertised coverage: {item.service_areas.join(' · ')}</p> : null}
+
           {/* City badge — only rendered when city is a non-empty string */}
           {showCityBadge && (
             <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${cityColor}`}>
-              📍 {item.city}
+              📍 {item.city === 'Service area only' ? 'Office location not listed' : item.city}
             </span>
           )}
         </div>
