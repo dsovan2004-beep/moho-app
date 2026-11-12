@@ -23,3 +23,20 @@ test('secured labels reflect contact without continuing to claim the owner is be
  assert.equal(petProgressLabel('secured','found','return_arranged'),'Secured — return arranged')
  assert.equal(petProgressLabel('unknown','reunited','return_arranged'),'Reunited — recorded status')
 })
+
+test('changing custody state never reuses the previous sighting observation time',async()=>{
+ const {observationForProgress}=await import('../lib/pet-progress')
+ const old='2026-11-01T10:15'
+ assert.equal(observationForProgress('sighted','secured',old),'')
+ assert.equal(observationForProgress('secured','sighted',old),'')
+ assert.equal(observationForProgress('secured','unknown',old),'')
+ assert.equal(observationForProgress('sighted','sighted',old),old)
+})
+test('found classification and incompatible legacy progress do not imply custody',async()=>{
+ const {petCustodyLabel}=await import('../lib/pet-progress')
+ assert.match(petCustodyLabel(null,'found'),/Custody not confirmed/)
+ assert.match(petCustodyLabel('secured','lost'),/Custody not confirmed/)
+ assert.equal(petProgressLabel('secured','lost'),'Sighting / secured status not confirmed')
+ assert.match(petCustodyLabel('secured','found'),/according to the reporter/)
+ assert.match(petCustodyLabel('sighted','found'),/not secured/)
+})

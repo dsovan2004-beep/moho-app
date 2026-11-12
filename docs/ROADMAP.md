@@ -1,5 +1,14 @@
 # MoHoLocal Product Roadmap
 
+## November 12 — pet custody time and match review (PET-GAP-01)
+
+Four additional selected Facebook posts reviewed across four city-group views: MH travel referrals All comments7entries; Tracy reported-safe update15visible/16displayed, partial; Lathrop service offer and Manteca event notice opened with explicit No comments yet. Full selected bodies read. Private source ledger outside Git; no resident content imported. Gaps: private referral continuity, prominent reported closure, explicit mobile service radius and separate ticket cutoff/doors/start. Provider/event candidates HELD for primary/duplicate checks. [Evidence](research/pet-custody-review-2026-11-12.md).
+
+PET-GAP-01 implemented/local accepted, release pending: changing animal progress clears old observation time; actual required input verified. Secured→lost cannot retain possession/time. Latest reporter custody/status now precedes original narrative; dates for confirmation, observation and contact distinct. Match links jump to latest status; comparison guide keeps ownership/pickup details private and avoids equating match/contact with reunion. Public expandable guide added. Temporary local-only QA route removed before build. 180tests and TypeScript pass; final OpenNext build passed. No schema, credential or production pet data changes.
+
+OPEN: genuine-reporter pilot and physical-phone/screen-reader acceptance; photo location/date/reuse tasks. FB UNPUBLISHED, no messages or fabricated engagement. Next P1: genuine reporter custody/match/conflict/notification acceptance and independently check held providers/events. PET-GAP-01 remains partially open until pilot criteria pass.
+
+
 ## November 12 — continued Facebook review and Activity streams (ACT-02)
 
 Four additional selected posts reviewed across four cities; full bodies expanded. Manteca All comments nine entries read; Tracy All comments eleven visible entries versus12displayed, so partial. MH donation comments/fulfillment and Lathrop promotional comment completeness unresolved. No all-group coverage or demand claim. Private references outside Git; no resident identities or content imports. Findings: donation fulfillment/pickup lifecycle (DONATE-GAP-01, discovery), tentative pet matches/custody/last reporter update (PET-GAP-01), independently checked service areas (GEO-GAP-01), and genuine discussion discovery.

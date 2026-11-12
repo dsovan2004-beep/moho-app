@@ -1,3 +1,4 @@
+import {MatchComparisonGuide} from '@/app/components/PetMatches'
 import {PetProgressSummary} from '@/app/components/PetProgress'
 import { PUBLIC_PET_COLUMNS } from '@/lib/supabase'
 export const runtime = 'nodejs'
@@ -139,7 +140,7 @@ function PetCard({ pet }: { pet: LostAndFound }) {
             <span>📍</span><span>{pet.location_detail}, {pet.city}</span>
           </div>
         )}
-        <PetProgressSummary progress={pet.progress} status={pet.status} observedAt={pet.progress_observed_at} contactStage={pet.contact_stage} contactAt={pet.contact_updated_at}/>
+        <PetProgressSummary progress={pet.progress} status={pet.status} observedAt={pet.progress_observed_at} contactStage={pet.contact_stage} contactAt={pet.contact_updated_at} confirmedAt={pet.status_confirmed_at}/>
         <p className="text-xs text-slate-500 mb-2 mt-3">Reported: {pet.created_at && Number.isFinite(Date.parse(pet.created_at)) ? new Date(pet.created_at).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric',timeZone:'America/Los_Angeles'}) : 'date unavailable'}. {pet.status_confirmed_at ? `Reporter confirmed status ${new Date(pet.status_confirmed_at).toLocaleDateString('en-US',{dateStyle:'medium',timeZone:'America/Los_Angeles'})}; not independently checked.` : 'Current status needs confirmation.'}</p>
         {pet.source_url && /^https?:\/\//i.test(pet.source_url) && <a href={pet.source_url} target="_blank" rel="noopener noreferrer" className="block text-xs font-semibold text-blue-700 underline mb-2">Original report / contact link ↗</a>}
         {pet.last_seen && (
@@ -230,7 +231,7 @@ export default async function LostAndFoundPage({ searchParams }: PageProps) {
 
       <Link href="/my-pet-reports" className="inline-block underline font-semibold mb-4 min-h-11 py-2">Manage my pet reports →</Link>
       <div className="bg-blue-50 border border-blue-100 p-4 rounded-xl mb-5 text-sm text-slate-700">Reports expire from public results after 30 days without confirmation. Expiry does not mean a pet was found. Reporters can renew from My pet reports. A report date does not confirm a pet is still missing. <Link className="font-semibold underline" href={`/lost-and-found?${new URLSearchParams({city,...(includeOlder ? {} : {history:'1'})})}`}>{includeOlder ? 'Show recent reports' : 'View older report history'}</Link></div>
-      <p className="text-sm text-slate-700 mb-5"><strong>Sighted</strong> means the animal was seen but not secured. <strong>Secured</strong> means the reporter says the animal is in their care. Owner contact and an arranged return do not confirm a completed reunion. Linked reports remain possible matches until reporters review them.</p>
+
       {/* ── Header ── */}
       <div className="flex items-start justify-between gap-4 flex-wrap mb-6">
         <div>
@@ -247,6 +248,8 @@ export default async function LostAndFoundPage({ searchParams }: PageProps) {
           + Post Lost or Found Pet
         </Link>
       </div>
+
+      <details className="mb-6 rounded-xl border border-teal-200 bg-teal-50 p-4"><summary className="min-h-11 cursor-pointer font-semibold text-teal-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">How to compare reports and check custody</summary><p className="mt-2 text-sm text-slate-700"><strong>Sighted</strong> means seen but not secured. <strong>Secured</strong> means the reporter says the animal is in someone’s care. Owner contact and an arranged return do not confirm a completed reunion. Check the observation time and latest reporter confirmation separately.</p><MatchComparisonGuide/></details>
 
       {/* ── Stats bar ── */}
       <div className="grid grid-cols-3 gap-4 mb-6">
