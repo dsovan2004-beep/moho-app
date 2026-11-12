@@ -2,12 +2,13 @@
 
 ## Additional Facebook review
 
-Four further selected posts across four city-group views; full selected bodies read. Exact references remain in private-research/facebook-post-review-2026-11-12-0755.json outside Git. No copied resident bodies, identities, phones or private messages are published.
+Five further selected posts across four city-group views; full selected bodies read. Exact references remain in private-research/facebook-post-review-2026-11-12-0755.json outside Git. No copied resident bodies, identities, phones or private messages are published.
 
 | Context | Evidence and limits | Useful response |
 | --- | --- | --- |
 | Mountain House | Travel-agent referral request; All comments, seven entries read. Several replies move to DM/WhatsApp; private messages not accessed, booking outcome unknown. | Preserve checked business identity/service scope separately from private conversations. Referral leads held for primary-source checks; no demographic or broad demand inference. |
 | Tracy | Full reported pet-safe announcement; All comments,15visible entries versus16displayed after scrolling, so partial. Image/GIF-only entries not independently interpreted. | Make the latest reporter outcome prominent; acknowledgements are not independent ownership/custody verification. No imported report or pet-pilot completion. |
+| Tracy follow-up | Full short missing-cat report, All comments, seven top-level plus two nested entries read;9visible versus12displayed after scrolling, partial. Reporter describes search efforts without confirming custody/reunion. | Keep search advice, sightings, custody and outcomes distinct. No unverified animal-behavior or shelter-policy guidance republished. |
 | Lathrop group | Full mobile-mechanic offer; Stockton base, workdays and services stated, travel radius not established. Opened modal explicitly says No comments yet; flyer details not independently checked. | Hold provider candidate; verify exact service cities/contacts/duplicates before publication. |
 | Manteca | Full embedded fundraiser notice distinguishes doors, dinner and ticket cutoff/no-door-sales. Opened modal explicitly says No comments yet. | EVT-GAP-01 follow-up: check organizer/ticketing and exact venue; preserve registration cutoff separately from event start. No event published from social claims alone. |
 
@@ -23,7 +24,9 @@ The same native expandable comparison/custody guide is available on the public f
 
 ## Acceptance
 
-Local-only, explicitly labeled QA route exercised actual reporter controls without submitting: sighted→secured cleared the old observation, input empty/required/invalid; secured→lost→found→sighted did not restore it.320px viewport had305px document width and controls fit. Guide expands natively and retains city view. Temporary QA route removed before production build. Pure component regression covers separate observation/confirmation times, unknown custody, match anchors and private-proof guidance. 180tests and TypeScript pass; final OpenNext build passed; native release pending. Initial typecheck after deleting the temporary route found stale generated .next/types references; generated type cache cleared, then typecheck passed. No source route retained. Real-reporter pilot and physical-device acceptance remain OPEN; no authenticated production mutation simulated.
+Local-only, explicitly labeled QA route exercised actual reporter controls without submitting: sighted→secured cleared the old observation, input empty/required/invalid; secured→lost→found→sighted did not restore it.320px viewport had305px document width and controls fit. Guide expands natively and retains city view. Temporary QA route removed before production build. Pure component regression covers separate observation/confirmation times, unknown custody, match anchors and private-proof guidance. 180tests and TypeScript pass; final OpenNext build passed; native release accepted below. Initial typecheck after deleting the temporary route found stale generated .next/types references; generated type cache cleared, then typecheck passed. No source route retained. Real-reporter pilot and physical-device acceptance remain OPEN; no authenticated production mutation simulated.
+
+LIVE accepted application source30a2bf6da0359c2d49842217962f430f0451d120: exact public build marker and GitHub successful Workers Builds check. Public comparison/custody guide present across Mountain House, Tracy, Lathrop and Manteca; actual city transitions preserve city/status. Native details expansion accepted.320px viewport/document both320, summary48px tall;390px proof research/nov12-pet-custody-guide-live.png inspected, temporary emulation cleared. No public pet records were fabricated to exercise signed-in management: observation reset and summary/match behavior remain local-only acceptance, with genuine-reporter pilot OPEN. Native dashboard version/duration not read. No schema/RPC/security or production pet-data mutation.
 
 ## Next priorities
 
