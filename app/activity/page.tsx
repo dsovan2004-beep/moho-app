@@ -19,7 +19,7 @@ async function fetchActivityFeed(city?: string): Promise<ActivityItem[]> {
   const coverage = await db.from('listing_checks').select('business_id').overlaps('service_areas',isFiltered ? [city] : CITIES)
   if (coverage.error) throw coverage.error
   const ids = (coverage.data ?? []).map(row=>row.business_id)
-  let businesses = db.from('businesses').select('id,name,description,city,category,created_at').eq('status','approved').eq('verified',true).order('created_at',{ascending:false}).limit(40)
+  let businesses = db.from('businesses').select('id,name,description,city,category,created_at,verified_at').eq('status','approved').eq('verified',true).order('verified_at',{ascending:false,nullsFirst:false}).order('created_at',{ascending:false,nullsFirst:false}).order('id',{ascending:true}).limit(40)
   businesses = isFiltered
     ? businesses.or(`city.eq.${city}${ids.length ? `,id.in.(${ids.join(',')})` : ''}`)
     : businesses.or(regionalDirectoryFilter(ids))
@@ -35,7 +35,7 @@ async function fetchActivityFeed(city?: string): Promise<ActivityItem[]> {
     businesses, checks,
   ])
   for (const result of [posts,events,pets,listed,checked]) if (result.error) throw result.error
-  const additions: ActivityItem[] = (listed.data ?? []).map(b=>({id:b.id,type:'business',title:b.name,description:b.description ?? '',city:b.city,category:b.category,created_at:b.created_at}))
+  const additions: ActivityItem[] = (listed.data ?? []).map(b=>({id:b.id,type:'business',title:b.name,description:b.description ?? '',city:b.city,category:b.category,created_at:b.verified_at ?? b.created_at,approval_recorded:!!b.verified_at}))
   const refreshes: ActivityItem[] = (checked.data ?? []).map((check:any)=>({id:check.business_id,type:'business_check',title:check.businesses.name,description:check.businesses.description ?? 'Website information checked; confirm your service needs and current availability directly.',city:check.businesses.city,category:check.businesses.category,created_at:check.checked_at,service_areas:check.service_areas}))
   return mergeActivity([
     ...(posts.data ?? []).map(p=>({id:p.id,type:'community' as const,title:p.title ?? '',description:p.content ?? '',city:p.city ?? '',created_at:p.created_at})),

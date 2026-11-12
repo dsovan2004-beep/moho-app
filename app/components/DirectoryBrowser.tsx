@@ -9,7 +9,7 @@ import { getSupabaseClient, type Business } from '@/lib/supabase'
 import { CITIES as CITY_LIST, CITY_BY_NAME, RELAUNCH_CITY_NAMES } from '@/lib/cities'
 import Link from 'next/link'
 import ListingEvidence from '@/app/components/ListingEvidence'
-import { CHECK_COLUMNS } from '@/lib/listing-evidence'
+import { CHECK_COLUMNS, checkDate } from '@/lib/listing-evidence'
 import { serviceForCategory, serviceSearchTag } from '@/lib/services'
 import { directoryHref } from '@/lib/directory-filters'
 import { businessHref } from '@/lib/business-discovery'
@@ -58,7 +58,7 @@ const CITIES = ['All Cities', ...RELAUNCH_CITY_NAMES]
 const SORT_OPTIONS = [
   { value: 'rating', label: '⭐ Top Rated' },
   { value: 'name',   label: '🔤 A–Z'       },
-  { value: 'newest', label: '🆕 Newest'    },
+  { value: 'newest', label: '🆕 Newest approved' },
 ]
 
 // ── Client-side relevance sort ────────────────────────────────────────────────
@@ -98,7 +98,7 @@ function StarRating({ rating }: { rating?: number | null }) {
 }
 
 // ── Business card ─────────────────────────────────────────────────────────────
-function BusinessCard({ biz, activeCategory, city, service, returnTo }: { biz: Business; activeCategory: string; city: string; service?: string; returnTo: string }) {
+function BusinessCard({ biz, activeCategory, city, service, returnTo, showApprovalDate }: { biz: Business; activeCategory: string; city: string; service?: string; returnTo: string; showApprovalDate?: boolean }) {
   // Category chip: amber highlight when the active filter matches this business's category
   const catChip = activeCategory !== 'All' && biz.category === activeCategory
     ? 'bg-amber-50 text-amber-800 border border-amber-200'
@@ -147,6 +147,7 @@ function BusinessCard({ biz, activeCategory, city, service, returnTo }: { biz: B
           )}
         </div>
 
+        {showApprovalDate && <p className="mt-2 text-xs text-slate-600">{biz.verified_at ? `Recorded approval · ${checkDate(biz.verified_at)}` : `Record created · ${checkDate(biz.created_at)} (approval date unavailable)`}</p>}
         <ListingEvidence check={biz.listing_checks} />
 
         <BusinessContactActions businessName={biz.name} phone={biz.phone} website={biz.website} />
@@ -276,7 +277,8 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
       if (sortBy === 'name') {
         req = req.order('name', { ascending: true })
       } else if (sortBy === 'newest') {
-        req = req.order('created_at', { ascending: false })
+        req = req.order('verified_at', { ascending: false, nullsFirst: false })
+                 .order('created_at', { ascending: false, nullsFirst: false })
       } else {
         // Default — Top Rated: rating DESC (nulls last), then name ASC
         req = req.order('rating', { ascending: false, nullsFirst: false })
@@ -284,6 +286,8 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
       }
     }
 
+    // Deterministic tie-breaker prevents tied rows crossing page boundaries.
+    req = req.order('id', { ascending: true })
     const { data, count, error } = await req
     if (requestId !== fetchSequence.current) return
     if (error) { failPage(); return }
@@ -409,6 +413,8 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
           </select>
         </>}
       </div>
+
+      {!query && sortBy === 'newest' && <p className="mb-4 text-sm text-slate-600">Newest uses recorded approval dates. Legacy listings without that date follow by record creation date. A website recheck does not change this order.</p>}
 
       <DirectoryServices city={city} selected={service?.key} />
       {service && <div className="bg-[#f0f4ec] border border-[#dce5d5] p-4 rounded-xl mb-5"><p className="font-semibold">{service.label} · website-checked shortlist</p><p className="text-sm text-slate-600 mt-1">Dated website checks for this service and city. Confirm your job and availability directly; this is not a quality endorsement.</p><Link className="inline-flex min-h-11 items-center mt-2 text-sm underline" href={`/directory?${new URLSearchParams({city,category:service.category})}`}>Browse all {service.category.toLowerCase()} listings →</Link></div>}
@@ -618,7 +624,7 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
             <>
               <div className="space-y-3">
                 {businesses.map((biz) => (
-                  <BusinessCard key={biz.id} biz={biz} activeCategory={category} city={city} service={service?.key} returnTo={directoryHref(filters)} />
+                  <BusinessCard key={biz.id} biz={biz} activeCategory={category} city={city} service={service?.key} returnTo={directoryHref(filters)} showApprovalDate={!query && sortBy === 'newest'} />
                 ))}
               </div>
 

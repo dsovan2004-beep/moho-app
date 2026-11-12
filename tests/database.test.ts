@@ -588,3 +588,26 @@ test('existing messaging blocks prevent new match links and confirmations withou
  const r=sql(`begin;${matchFixture()}${as(alice)}select ${suggest()}->>'id' as matchid \\gset
  reset role;insert into public.pet_message_blocks(user_id,blocked_id) values('${bob}','${alice}');${as(alice)}select public.pet_match_action('review',jsonb_build_object('pet_id','${pet}','id',:'matchid','revision',0,'decision','ruled_out'));set local role anon;select public.pet_match_links('${pet}');rollback;`).split('\n');assert.equal(r.at(-1),'[]')
 })
+
+
+test('late approval ranks old records ahead of newer creation dates; tied pages are stable and unpublished rows stay private',()=>{
+ const old='00000000-0000-4000-8000-000000000091'
+ const newer='00000000-0000-4000-8000-000000000092'
+ const hidden='00000000-0000-4000-8000-000000000093'
+ const result=sql(`begin;
+ insert into public.businesses(id,name,city,category,status,verified,created_at) values
+ ('${old}','Fixture old awaiting approval','Manteca','Home Services','pending_review',false,'2025-01-01'),
+ ('${newer}','Fixture newer created','Manteca','Home Services','approved',true,'2026-01-01'),
+ ('${hidden}','Fixture never public','Manteca','Home Services','pending_review',false,'2027-01-01');
+ update public.businesses set verified_at='2026-01-02' where id='${newer}';
+ ${as(admin)} select public.review_existing_business('${old}','approve','Primary evidence reviewed for local fixture only','https://example.test/local-fixture');
+ reset role; set local role anon;
+ select id from public.businesses where id in ('${old}','${newer}','${hidden}') order by verified_at desc nulls last,created_at desc nulls last,id asc;
+ reset role;
+ update public.businesses set verified_at='2026-02-01',created_at='2025-01-01' where id in ('${old}','${newer}');
+ set local role anon;
+ select id from public.businesses where id in ('${old}','${newer}','${hidden}') order by verified_at desc nulls last,created_at desc nulls last,id asc limit 1 offset 0;
+ select id from public.businesses where id in ('${old}','${newer}','${hidden}') order by verified_at desc nulls last,created_at desc nulls last,id asc limit 1 offset 1;
+ rollback;`).split('\n')
+ assert.deepEqual(result,[old,old,newer,old,newer])
+})

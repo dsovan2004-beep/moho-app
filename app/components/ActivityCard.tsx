@@ -13,6 +13,7 @@ export interface ActivityItem {
   city: string
   created_at: string
   image_url?: string
+  approval_recorded?: boolean
   service_areas?: string[]
   category?: string
 }
@@ -78,7 +79,7 @@ interface ActivityCardProps {
 }
 
 export function ActivityCard({ item, currentCity }: ActivityCardProps) {
-  const badge = TYPE_BADGE[item.type]
+  const badge = item.type === 'business' && item.approval_recorded ? {...TYPE_BADGE.business,label:'LISTING APPROVED'} : TYPE_BADGE[item.type]
   const cityColor = CITY_BADGE[item.city] ?? 'bg-gray-50 text-gray-600'
   const icon = TYPE_ICON[item.type]
   const href = getHref(item, currentCity)
@@ -104,7 +105,7 @@ export function ActivityCard({ item, currentCity }: ActivityCardProps) {
             <span className={`text-xs font-bold px-2.5 py-1 rounded-full tracking-wide ${badge.classes}`}>
               {icon} {badge.label}
             </span>
-            <time dateTime={item.created_at} className="text-xs text-slate-500">{item.type === 'business_check' ? `Checked ${checkDate(item.created_at)}` : timeAgo(item.created_at)}</time>
+            <time dateTime={item.created_at} className="text-xs text-slate-500">{item.type === 'business_check' ? `Checked ${checkDate(item.created_at)}` : item.type === 'business' && item.approval_recorded ? `Approved ${checkDate(item.created_at)}` : timeAgo(item.created_at)}</time>
           </div>
 
           {/* Title */}

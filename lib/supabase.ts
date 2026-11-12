@@ -143,6 +143,7 @@ export interface Business {
   hours?: string
   claimed?: boolean
   created_at: string
+  verified_at?: string | null
   // Populated when queried with .select('*, business_images(image_url, position, verified, source)')
   business_images?: Array<{
     image_url: string

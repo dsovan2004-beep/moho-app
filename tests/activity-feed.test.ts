@@ -22,3 +22,13 @@ test('check card uses dated website label and carries resident city without impl
  const added=renderToStaticMarkup(React.createElement(ActivityCard,{item:row}))
  assert.match(added,/LISTING ADDED/)
 })
+
+
+test('later actual approval is not hidden behind an older website check',()=>{
+ const approval={...row,approval_recorded:true,created_at:'2026-11-12T13:00:00Z'}
+ const check={...row,type:'business_check' as const,created_at:'2026-11-11T13:00:00Z'}
+ assert.equal(mergeActivity([check,approval])[0].type,'business')
+ assert.equal(mergeActivity([approval,{...check,created_at:approval.created_at}])[0].type,'business_check')
+ const html=renderToStaticMarkup(React.createElement(ActivityCard,{item:approval}))
+ assert.match(html,/LISTING APPROVED/);assert.match(html,/Approved Nov 12, 2026/)
+})

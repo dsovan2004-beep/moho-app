@@ -1,12 +1,11 @@
 import type { ActivityItem } from '../app/components/ActivityCard'
 
-// This is a latest-record feed, not a historical audit log of every edit.
+// Latest actual approval/check per listing; check wins equal timestamps.
 export function mergeActivity(items: ActivityItem[], limit=40) {
-  const valid=items.filter(item=>Number.isFinite(Date.parse(item.created_at)))
-  const checked=new Set(valid.filter(item=>item.type==='business_check').map(item=>item.id))
   const seen=new Set<string>()
-  return valid.filter(item=>!(item.type==='business' && checked.has(item.id)))
-    .sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at))
-    .filter(item=>{const key=`${item.type}:${item.id}`;if(seen.has(key))return false;seen.add(key);return true})
+  const isBusiness=(item:ActivityItem)=>item.type==='business' || item.type==='business_check'
+  return items.filter(item=>Number.isFinite(Date.parse(item.created_at)))
+    .sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at) || Number(b.type==='business_check')-Number(a.type==='business_check'))
+    .filter(item=>{const key=`${isBusiness(item)?'listing':item.type}:${item.id}`;if(seen.has(key))return false;seen.add(key);return true})
     .slice(0,limit)
 }
