@@ -1,12 +1,21 @@
 # MoHoLocal active execution queue
 
+## November 13 — mobile navigation and boarding discovery (MOBILE-12)
+
+LIVE/accepted: six mobile destinations, three columns/two rows on narrow phones, six columns from640px; Events added with city context, Messages/unread feedback and signed-out Sign in retained. New Pet boarding shortcut uses existing exact-tag evidence filter.189regressions/TypeScript/OpenNext build pass. LIVE accepted source f4efb9c35df61782b65cbe4cdb4ae70f9d471b87: Workers Builds success, exact public source marker and actual320px six readable links (48px high, two rows, no overflow);640px one row,1280px mobile hidden. Events destination retains Manteca. Lathrop and Manteca boarding shortlists each show2; actual Activity/detail contacts accepted. Final settled screenshot inspected, viewport reset called. [Evidence](research/mobile-navigation-boarding-2026-11-13.md).
+
+DATA LIVE: existing Lathrop Veterinary Center and Northgate Veterinary Hospital corrected and newly website-checked for on-site boarding. Two private before/after audits and anonymous read-back accepted. Lathrop missing contact/facility details filled; Northgate current website restored, Drive/Avenue conflict visible. No new unique records or approval dates;1030catalog total retained. Do not infer travel areas, medical capability, quality or holiday availability.
+
+FB UNPUBLISHED; photo tasks, genuine-reporter pet pilot and physical-phone/screen-reader gates OPEN. Legacy Lathrop Clinic identity remains unmerged pending evidence.
+
+
 ## November 13 — Lathrop/Manteca pet-care and multi-animal UX
 
 SUPPLY-13 LIVE: two individually checked additions, Manteca Critter Sitters (Manteca drop-ins/dog walking) and Tyler’s Pet Boarding (Lathrop/Manteca/Tracy sitting/boarding/day care/cat care). Duplicate guards, primary HTTP200, scoped evidence, private audits2 and anonymous read-back accepted. Actual Lathrop sitting3, Manteca sitting4 and Manteca walking3 accepted; Tyler correctly absent from walking. No public phone invented for Tyler, website request route retained. [Evidence](research/pet-care-and-multi-animal-2026-11-13.md).
 
 PET-MULTI-01 guidance implemented and locally checked: shared per-animal identity/custody reminder and whole-report reunion status explanation in comparison help/details. 187regressions/TypeScript/OpenNext build pass; LIVE source a2e5f087c8c6749d97493b6e72987cfc1f233157 accepted: GitHub Workers Builds success, exact public source marker and new notice on all four city pet views. Actual320px layout fits in measured Lathrop/Tracy/MH views; screenshot inspected, viewport reset called. Regional Newest1030 (+2). Structured individual-animal workflow/enforcement and genuine-reporter pilot remain OPEN. No production pet content, schema/RPC/RLS/security changes.
 
-MOBILE-12 OPEN/P1:320px signed-in mobile navigation crowds Community/Messages; reflow labels/targets next, with keyboard/focus acceptance.
+MOBILE-12 historical finding resolved by the November13 navigation release above; physical-phone/assistive-technology acceptance remains open.
 
 FB UNPUBLISHED. Photo tasks, genuine-reporter comparison/custody/mutual-match/notification pilot and physical-phone/screen-reader acceptance OPEN. Continue exact service-area pet-care expansion; do not copy portfolios or claim availability/credentials.
 
