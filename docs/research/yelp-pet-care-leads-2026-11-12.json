@@ -1,0 +1,179 @@
+{
+  "checkedDate": "2026-11-12",
+  "scope": "First organic Pet Sitting result page for each city; leads only, not coverage or quality verification; no reviews, ratings or photos imported",
+  "cities": {
+    "Lathrop": [
+      {
+        "name": "Cozy Cuddles Pet Care",
+        "url": "https://www.yelp.com/biz/cozy-cuddles-pet-care-lathrop"
+      },
+      {
+        "name": "Mossdale Boarding",
+        "url": "https://www.yelp.com/biz/mossdale-boarding-lathrop"
+      },
+      {
+        "name": "Aloha Pet Care Services",
+        "url": "https://www.yelp.com/biz/aloha-pet-care-services-manteca"
+      },
+      {
+        "name": "All Wags Care",
+        "url": "https://www.yelp.com/biz/all-wags-care-tracy"
+      },
+      {
+        "name": "A Bed & Biscuit Kennels",
+        "url": "https://www.yelp.com/biz/a-bed-and-biscuit-kennels-ripon"
+      },
+      {
+        "name": "iThink Pet",
+        "url": "https://www.yelp.com/biz/ithink-pet-hayward-2"
+      },
+      {
+        "name": "Happy Dog Happy Home",
+        "url": "https://www.yelp.com/biz/happy-dog-happy-home-oakdale-9"
+      },
+      {
+        "name": "Niki’s Play N’ Stay",
+        "url": "https://www.yelp.com/biz/niki-s-play-n-stay-oakdale-6"
+      },
+      {
+        "name": "CR Ranch Pet-O-Tel",
+        "url": "https://www.yelp.com/biz/cr-ranch-pet-o-tel-modesto"
+      },
+      {
+        "name": "Bunches of Love",
+        "url": "https://www.yelp.com/biz/bunches-of-love-stockton-2"
+      }
+    ],
+    "Mountain House": [
+      {
+        "name": "All Wags Care",
+        "url": "https://www.yelp.com/biz/all-wags-care-tracy"
+      },
+      {
+        "name": "The Dog Walker",
+        "url": "https://www.yelp.com/biz/the-dog-walker-tracy"
+      },
+      {
+        "name": "Mountain House Pet Services",
+        "url": "https://www.yelp.com/biz/mountain-house-pet-services-mountain-house"
+      },
+      {
+        "name": "iThink Pet",
+        "url": "https://www.yelp.com/biz/ithink-pet-hayward-2"
+      },
+      {
+        "name": "MT's Welcome Waggin'",
+        "url": "https://www.yelp.com/biz/mts-welcome-waggin-tracy"
+      },
+      {
+        "name": "Pets Frolic Inn",
+        "url": "https://www.yelp.com/biz/pets-frolic-inn-brentwood-4"
+      },
+      {
+        "name": "BratPak Dog Kamp",
+        "url": "https://www.yelp.com/biz/bratpak-dog-kamp-livermore-3"
+      },
+      {
+        "name": "Camp Bow Wow Tracy",
+        "url": "https://www.yelp.com/biz/camp-bow-wow-tracy-tracy"
+      },
+      {
+        "name": "K9 Development",
+        "url": "https://www.yelp.com/biz/k9-development-tracy-2"
+      },
+      {
+        "name": "Bunches of Love",
+        "url": "https://www.yelp.com/biz/bunches-of-love-stockton-2"
+      }
+    ],
+    "Tracy": [
+      {
+        "name": "All Wags Care",
+        "url": "https://www.yelp.com/biz/all-wags-care-tracy"
+      },
+      {
+        "name": "Your Girl Friday",
+        "url": "https://www.yelp.com/biz/your-girl-friday-tracy"
+      },
+      {
+        "name": "iThink Pet",
+        "url": "https://www.yelp.com/biz/ithink-pet-tracy-2"
+      },
+      {
+        "name": "Jules Veterinary Center",
+        "url": "https://www.yelp.com/biz/jules-veterinary-center-tracy"
+      },
+      {
+        "name": "The Dog Walker",
+        "url": "https://www.yelp.com/biz/the-dog-walker-tracy"
+      },
+      {
+        "name": "The Pet Sitter of Tracy, Zena Robbins",
+        "url": "https://www.yelp.com/biz/the-pet-sitter-of-tracy-zena-robbins-tracy"
+      },
+      {
+        "name": "MT's Welcome Waggin'",
+        "url": "https://www.yelp.com/biz/mts-welcome-waggin-tracy"
+      },
+      {
+        "name": "Camp Bow Wow Tracy",
+        "url": "https://www.yelp.com/biz/camp-bow-wow-tracy-tracy"
+      },
+      {
+        "name": "K9 Development",
+        "url": "https://www.yelp.com/biz/k9-development-tracy-2"
+      },
+      {
+        "name": "The Comforted Kitty",
+        "url": "https://www.yelp.com/biz/the-comforted-kitty-san-francisco"
+      }
+    ],
+    "Manteca": [
+      {
+        "name": "Aloha Pet Care Services",
+        "url": "https://www.yelp.com/biz/aloha-pet-care-services-manteca"
+      },
+      {
+        "name": "The Animal Nanny",
+        "url": "https://www.yelp.com/biz/the-animal-nanny-manteca"
+      },
+      {
+        "name": "Happy Dog Happy Home",
+        "url": "https://www.yelp.com/biz/happy-dog-happy-home-oakdale-9"
+      },
+      {
+        "name": "iThink Pet",
+        "url": "https://www.yelp.com/biz/ithink-pet-hayward-2"
+      },
+      {
+        "name": "Jackie's Dog Grooming",
+        "url": "https://www.yelp.com/biz/jackies-dog-grooming-manteca"
+      },
+      {
+        "name": "All Wags Care",
+        "url": "https://www.yelp.com/biz/all-wags-care-tracy"
+      },
+      {
+        "name": "A Bed & Biscuit Kennels",
+        "url": "https://www.yelp.com/biz/a-bed-and-biscuit-kennels-ripon"
+      },
+      {
+        "name": "Niki’s Play N’ Stay",
+        "url": "https://www.yelp.com/biz/niki-s-play-n-stay-oakdale-6"
+      },
+      {
+        "name": "CR Ranch Pet-O-Tel",
+        "url": "https://www.yelp.com/biz/cr-ranch-pet-o-tel-modesto"
+      },
+      {
+        "name": "Cozy Cuddles Pet Care",
+        "url": "https://www.yelp.com/biz/cozy-cuddles-pet-care-lathrop"
+      }
+    ]
+  },
+  "primaryFollowup": {
+    "name": "All Wags Care",
+    "url": "https://allwagscare.wixsite.com/allwags",
+    "result": "Primary website confirms pet sitting, dog walking, public phone and Tracy base; no explicit travel coverage found. Hold pending exact service area. Credential claims not independently verified."
+  }
+}

@@ -1,0 +1,90 @@
+[
+  {
+    "name": "Squeegee Dream",
+    "city": "Brentwood",
+    "address": null,
+    "phone": "(925) 420-5921",
+    "website": "https://squeegeedream.com/",
+    "source_url": "https://squeegeedream.com/services/holiday-lighting",
+    "duplicate_key": "squeegeedream.com",
+    "areas": [
+      "Mountain House",
+      "Tracy"
+    ],
+    "tags": [
+      "holiday light installation",
+      "holiday light removal",
+      "pigeon cleanup",
+      "window cleaning",
+      "solar panel cleaning",
+      "gutter cleaning"
+    ],
+    "description": "Brentwood-based business advertising holiday-light design, installation, maintenance and takedown, plus bird/pigeon deterrent and cleanup services. Official service pages name Mountain House and Tracy. Confirm access, materials, quote and scheduling directly. Solar-array exclusion mesh and Lathrop/Manteca coverage were not established in this check.",
+    "note": "Website information check November 12, 2026 only. No owner contact, independent credentials/insurance, workmanship, reviews, availability, holiday hours or price confirmation. No photographs or testimonials reused. Phone, identity, holiday-light and bird-cleanup services and named service cities checked. Office street address omitted: current site and older service page give different address formats; confirm before visiting. Sources: https://squeegeedream.com/ https://squeegeedream.com/services/holiday-lighting https://squeegeedream.com/services/bird-abatement",
+    "category": "Home Services"
+  },
+  {
+    "name": "Exterior Prime",
+    "city": "Manteca",
+    "address": null,
+    "phone": "(209) 821-1212",
+    "website": "https://exteriorprime.com/",
+    "source_url": "https://exteriorprime.com/solar-pigeon-proofing/",
+    "duplicate_key": "exteriorprime.com",
+    "areas": [
+      "Tracy",
+      "Lathrop",
+      "Manteca"
+    ],
+    "tags": [
+      "solar bird exclusion",
+      "pigeon cleanup",
+      "solar panel cleaning"
+    ],
+    "description": "Manteca-based exterior-cleaning provider advertising solar-panel bird-exclusion mesh and accessible nest/debris cleanup. Its service pages establish Manteca, Lathrop and Tracy for this scope. Confirm roof access, treatment limits, credentials, written quote and current scheduling directly. Mountain House bird-work coverage was not established in this check.",
+    "note": "Website information check November 12, 2026 only. No owner contact, independent credentials/insurance, workmanship, reviews, availability, holiday hours or price confirmation. No photographs or testimonials reused. Phone, Manteca base, physical solar exclusion/cleanup and named service cities checked. General Mountain House cleaning/lighting coverage is not adopted as solar-bird coverage. No street office inferred. Sources: https://exteriorprime.com/solar-pigeon-proofing/ https://exteriorprime.com/tracy/solar-bird-proofing/ https://exteriorprime.com/service-area/",
+    "category": "Home Services"
+  },
+  {
+    "name": "ASAP Electric",
+    "city": "Stockton",
+    "address": null,
+    "phone": "(209) 473-8555",
+    "website": "https://asapelectric209.com/",
+    "source_url": "https://asapelectric209.com/locations/",
+    "duplicate_key": "asapelectric209.com",
+    "areas": [
+      "Tracy",
+      "Lathrop",
+      "Manteca"
+    ],
+    "tags": [
+      "electrical services",
+      "electrical panel upgrades",
+      "EV charger installation"
+    ],
+    "description": "Stockton-based electrical business advertising panel upgrades, troubleshooting and EV-charger work. Its official location list names Tracy, Lathrop and Manteca. Street address is omitted because its contact page shows two Stockton locations. Confirm project scope, credentials, address, quote and scheduling directly. Mountain House coverage was not established.",
+    "note": "Website information check November 12, 2026 only. No owner contact, independent credentials/insurance, workmanship, reviews, availability, holiday hours or price confirmation. No photographs or testimonials reused. Identity, public phone, electrical services and explicit service cities checked. Conflicting March Lane/Harding Way street-office details held; do not assume either is the current visitor location. No emergency response guarantee adopted. Sources: https://asapelectric209.com/locations/ https://asapelectric209.com/contact/ https://asapelectric209.com/frequently-asked-questions/",
+    "category": "Home Services"
+  },
+  {
+    "name": "Manteca Animal Services",
+    "city": "Manteca",
+    "address": "115 East Wetmore Street, Manteca, CA 95337",
+    "phone": "(209) 456-8270",
+    "website": "https://www.manteca.gov/347/Animal-Services",
+    "source_url": "https://www.manteca.gov/347/Animal-Services",
+    "duplicate_key": "manteca.gov/347/Animal-Services",
+    "areas": [
+      "Manteca"
+    ],
+    "tags": [
+      "animal services",
+      "lost pet resources",
+      "microchip scanning"
+    ],
+    "description": "City of Manteca municipal animal-services and shelter resource for lost/found animals, including found-animal reports and microchip scanning described on the City page. Call before visiting to confirm intake, current procedures, eligibility and hours; the City notes temporary closures for animal calls and holiday closures. An offer or referral does not confirm animal custody.",
+    "note": "Official City website information checked November 12, 2026: agency identity, published animal-services phone, shelter street address, Manteca jurisdiction and advertised lost/found/microchip resources. This is not an intake appointment, confirmed animal match, custody transfer or reunion. No holding-period, medical, fee or response-time advice adopted; contact the agency for current procedures. No images reused.",
+    "category": "Pet Services"
+  }
+]

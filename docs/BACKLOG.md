@@ -1,5 +1,14 @@
 # MoHoLocal active execution queue
 
+## November 12 night — actual listing expansion and Yelp leads (SUPPLY-12)
+
+COMPLETE: four new individually website-checked listings live: Squeegee Dream (MH/Tracy), Exterior Prime and ASAP Electric (Tracy/Lathrop/Manteca), Manteca Animal Services (Manteca). Duplicate guards, private audits and anonymous public read-back accepted. Regional Newest1027 (+4); actual four-city Newest, A–Z search, relevant service shortcuts, details and Activity accepted. Activity labels actual website checks, not new openings. Data-only; no app build or code change. [Evidence](research/listing-expansion-and-yelp-2026-11-12.md).
+
+YELP-01 ACTIVE: first organic Pet Sitting page reviewed for all four cities; lead inventory saved. No reviews/ratings/photos imported. All Wags primary service/contact checked but exact travel scope unestablished; HELD. Other leads require identity/contact/services/coverage and duplicate checks before publication. Near-city placement is not coverage.
+
+FB selected four city-group posts reviewed with available comments; exact references private. P1 PET-MULTI-01 OPEN: multi-animal sightings require per-animal identity/custody before outcome claims. No imported resident posts or fabricated reports. Continue new pet-care supply checks and primary organizer checks. FB UNPUBLISHED; photo tasks, genuine-reporter pet pilot and physical-phone/screen-reader acceptance OPEN.
+
+
 ## November 12 late — identifying details and match refresh (PET-COMPARE-01)
 
 Four new selected Facebook threads across four city-group views; additional Lathrop Neighborhood Watch/Downtown Manteca views reviewed. Full selected bodies: MH All comments8entries, Tracy5, Lathrop1; Manteca modal No comments yet. Tracy is a follow-up for an earlier missing case, not a new pet. Lathrop meeting windows already elapsed; no invented recap. Vendor cutoff separate from attendee event date; market lead HELD. Private references outside Git. [Evidence](research/pet-comparison-details-2026-11-12.md).
