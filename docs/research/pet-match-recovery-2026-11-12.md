@@ -17,7 +17,9 @@ Custody guidance explicitly distinguishes collection offers/animal-services requ
 
 ## Acceptance
 
-Local-only marked QA harness rendered the actual match-results component: simulated revision conflict retained its card, disabled review, showed read-refresh guidance; refresh cleared the failure and enabled review. No API calls or production saves from the harness.320px viewport/document both320, refresh44px tall. Harness removed before build. Pending-save fieldset behavior is implemented but not validated with a genuine reporter; actual authenticated mutations, physical-phone and screen-reader checks remain open. 183tests, TypeScript and final OpenNext build pass; native release pending.
+Local-only marked QA harness rendered the actual match-results component: simulated revision conflict retained its card, disabled review, showed read-refresh guidance; refresh cleared the failure and enabled review. No API calls or production saves from the harness.320px viewport/document both320, refresh44px tall. Harness removed before build. Pending-save fieldset behavior is implemented but not validated with a genuine reporter; actual authenticated mutations, physical-phone and screen-reader checks remain open. 183tests, TypeScript and final OpenNext build pass; native release accepted below.
+
+LIVE accepted sourcef42a9cfb01bbf0ed547689542dd116824ea2edf4: exact public build marker and GitHub successful Workers Builds check. New handoff distinction verified on Mountain House, Tracy, Lathrop and Manteca public pet views through actual city transitions. Native comparison guide remains usable;320px viewport/document both320, summary48px.390px screenshot research/nov12-evening-handoff-guide-live.png inspected; emulation reset. No production pet/match content created. Mutation recovery is local component acceptance, not a genuine-reporter production save; authenticated save/refresh/conflict/pending-fieldset/notification and physical-device acceptance remain OPEN. Native dashboard version/duration not read.
 
 ## Next
 
