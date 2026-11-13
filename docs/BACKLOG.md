@@ -1,5 +1,12 @@
 # MoHoLocal active execution queue
 
+## November 13 midday — first Yelp conversion live (YELP-01)
+
+COMPLETE increment: Your Girl Friday Pet Sitting Services individually primary-checked and published for Tracy only. FAQ makes Mountain House conditional; no MH/Lathrop/Manteca coverage invented. Fresh homepage/FAQ/contact200, global name/domain/phone duplicate check, atomic editorial transaction/private audit1 and anonymous read-back accepted. Actual regional Newest1028 (+1), Tracy pet-sitting shortlist4, detail/source/contact and Activity top Nov13 website-check accepted. [Evidence](research/yelp-followup-2026-11-13.md). Data-only, no app build/deployment or UX code change.
+
+Lathrop/Manteca pet-care supply remains P1: candidates held until primary identity/contact/exact coverage established. Mitra primary registration still does not resolve visitor access/end time; retain caveats. PET-MULTI-01 implementation OPEN. FB UNPUBLISHED; photo tasks, genuine-reporter pet pilot and physical-phone/screen-reader acceptance OPEN.
+
+
 ## Friday November 13, 9 AM Pacific — FRESH-01 completed, no publication changes
 
 Bounded four-city event audit: fresh primary HTTP200 agrees for MH Friendsgiving today, Lathrop Nov17 storytime and Manteca Nov17 Dinovember. Tracy Nov14 Ornament Stroll still agrees with cached City notice; direct403 recorded as a freshness limit. Anonymous approved-event read-back and all four production event pages HTTP200. No justified correction; unchanged records were not retimestamped or presented as new Activity.

@@ -526,3 +526,9 @@ Bounded four-city event audit: fresh primary HTTP200 agrees for MH Friendsgiving
 Opening sample: Wingstop/Sprouts/Sam's fresh source bodies agree; Manteca Jersey Mike's403 remains unconfirmed. Feature expiry Dec7 retained; no holiday hours or coupons inferred. Pet-care coverage remains MH3/Tracy3/Lathrop2/Manteca2 for checked sitting OR walking. Yelp leads held pending primary identity/coverage; no new listing count. Photo search rejected wrong-place/old-date results; no qualifying asset or rights established. [Sources and limitations](research/freshness-2026-11-13.md).
 
 No application/published-data/security/deployment changes or unnecessary build. Next priority: Lathrop/Manteca pet-care lead checks, remaining exact near-term event occurrences, PET-MULTI-01. FB UNPUBLISHED; photo tasks, genuine-reporter pet pilot and physical-phone/screen-reader gates OPEN.
+
+## November 13 midday — first Yelp conversion live (YELP-01)
+
+COMPLETE increment: Your Girl Friday Pet Sitting Services individually primary-checked and published for Tracy only. FAQ makes Mountain House conditional; no MH/Lathrop/Manteca coverage invented. Fresh homepage/FAQ/contact200, global name/domain/phone duplicate check, atomic editorial transaction/private audit1 and anonymous read-back accepted. Actual regional Newest1028 (+1), Tracy pet-sitting shortlist4, detail/source/contact and Activity top Nov13 website-check accepted. [Evidence](research/yelp-followup-2026-11-13.md). Data-only, no app build/deployment or UX code change.
+
+Lathrop/Manteca pet-care supply remains P1: candidates held until primary identity/contact/exact coverage established. Mitra primary registration still does not resolve visitor access/end time; retain caveats. PET-MULTI-01 implementation OPEN. FB UNPUBLISHED; photo tasks, genuine-reporter pet pilot and physical-phone/screen-reader acceptance OPEN.
