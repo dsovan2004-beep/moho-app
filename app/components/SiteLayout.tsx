@@ -3,6 +3,7 @@ import {removeThisPushDevice} from '@/lib/notification-settings'
 
 
 import Link from 'next/link'
+import {MobileNavigation} from './MobileNavigation'
 import {MessageBadge,MessageAlertSummary} from './MessageAlerts'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { useState, useEffect, useRef, Suspense } from 'react'
@@ -600,15 +601,7 @@ function NavContent() {
           </div>
         </div>
 
-        <div className="xl:hidden grid grid-cols-5 border-t border-white/15" aria-label="Mobile navigation">
-          {[
-            { href: `/directory?city=${encodeURIComponent(city)}`, label: 'Find help' },
-            { href: `/discover?${new URLSearchParams({city})}`, label: 'Explore' },
-            { href: `/lost-and-found?city=${encodeURIComponent(city)}`, label: 'Pets' },
-            { href: `/community?city=${encodeURIComponent(city)}`, label: 'Community' },
-            { href: user ? '/messages' : '/login', label: user ? 'Messages' : 'Sign in' },
-          ].map(item => <Link key={item.label} href={item.href} className="min-h-12 flex items-center justify-center text-xs font-semibold text-white hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-amber-300">{item.label}{item.href==='/messages'&&<MessageBadge/>}</Link>)}
-        </div>
+        <MobileNavigation city={city} signedIn={Boolean(user)} messageBadge={<MessageBadge/>}/>
       </nav>
 
       <MessageAlertSummary/>

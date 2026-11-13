@@ -13,6 +13,7 @@ export const SERVICE_CHOICES = [
   { key: 'holiday-light-installation', label: 'Holiday light installation', category: 'Home Services', tag: 'holiday light installation' },
   { key: 'mobile-dog-grooming', label: 'Mobile dog grooming', category: 'Pet Services', tag: 'mobile dog grooming' },
   { key: 'pet-sitting', label: 'Pet sitting', category: 'Pet Services', tag: 'pet sitting' },
+  { key: 'pet-boarding', label: 'Pet boarding', category: 'Pet Services', tag: 'pet boarding' },
   { key: 'dog-walking', label: 'Dog walking', category: 'Pet Services', tag: 'dog walking' },
 ] as const
 
