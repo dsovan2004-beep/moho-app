@@ -17,7 +17,9 @@ Pet matches now have an always-available manual Refresh match list action, disab
 
 ## Acceptance
 
-Local marked QA harness used actual comparison/refresh components without API calls or production writes: three missing identifiers labeled, supplied text retained, read-time feedback distinct from custody.320px viewport/document both320; refresh44px. Harness removed and generated route cache cleared before production build. Regressions cover missing fields, escaped text, unrelated contact exclusion and refresh-time semantics. 187tests, TypeScript and final OpenNext build pass; native release pending. Genuine-reporter, signed-in mutation, physical-phone and screen-reader acceptance remain OPEN.
+Local marked QA harness used actual comparison/refresh components without API calls or production writes: three missing identifiers labeled, supplied text retained, read-time feedback distinct from custody.320px viewport/document both320; refresh44px. Harness removed and generated route cache cleared before production build. Regressions cover missing fields, escaped text, unrelated contact exclusion and refresh-time semantics. 187tests, TypeScript and final OpenNext build pass; native release accepted below. Genuine-reporter, signed-in mutation, physical-phone and screen-reader acceptance remain OPEN.
+
+LIVE accepted application sourcef02a9998984aad719943b917b9a29e2aca1d0633: exact public build marker and GitHub successful Workers Builds check. Updated Details to compare guidance present through actual Mountain House/Tracy/Lathrop/Manteca transitions, preserving city/status. Expanded guide at320px has document width320;390px screenshot research/nov12-late-comparison-guide-live.png inspected and emulation reset. Actual pet detail data and match refresh behavior remain local component/source acceptance because no genuine public report was manufactured; real-reporter production read/compare/custody/mutual-match/refresh, physical-phone and screen-reader acceptance OPEN. No schema/RPC/security or production content writes. Native dashboard version/duration not read.
 
 ## Next
 
