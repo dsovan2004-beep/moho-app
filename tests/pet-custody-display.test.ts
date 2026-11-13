@@ -4,7 +4,7 @@ import React from 'react'
 import {renderToStaticMarkup} from 'react-dom/server'
 import {PetReportControls} from '../app/components/PetStatusControls'
 import {PetProgressSummary} from '../app/components/PetProgress'
-import {PetMatchCards,MatchComparisonGuide,PetMatchResults} from '../app/components/PetMatches'
+import {PetMatchCards,MatchComparisonGuide,PetMatchResults,PetMatchRefresh} from '../app/components/PetMatches'
 test('public custody summary separates status confirmation from actual observation and contact',()=>{
  const html=renderToStaticMarkup(React.createElement(PetProgressSummary,{status:'found',progress:'sighted',observedAt:'2026-11-01T18:00:00Z',confirmedAt:'2026-11-12T15:00:00Z',contactStage:'return_arranged',contactAt:'2026-11-11T18:00:00Z'}))
  assert.match(html,/Latest reporter status/);assert.match(html,/animal not secured/)
@@ -17,7 +17,7 @@ test('match review directs residents to latest custody and keeps ownership proof
  assert.match(html,/\/lost-and-found\/other#reporter-status/)
  assert.match(html,/reunion not confirmed/);assert.match(html,/latest custody/)
  const guide=renderToStaticMarkup(React.createElement(MatchComparisonGuide))
- assert.match(guide,/Photos can be older/);assert.match(guide,/pickup addresses out of public comments/)
+ assert.match(guide,/photos may be older/);assert.match(guide,/pickup addresses out of public comments/)
 })
 
 test('failed match actions preserve known cards and offer read-only refresh before retry',()=>{
@@ -38,4 +38,11 @@ test('archive and reunion controls clearly name the action instead of promising 
  assert.match(archive,/>Archive report<\/button>/);assert.doesNotMatch(archive,/>Confirm status and renew/)
  const reunion=renderToStaticMarkup(React.createElement(PetReportControls,{report:{...report,status:'reunited'},onSaved:()=>{}}))
  assert.match(reunion,/>Confirm reunion and renew 30 days<\/button>/)
+})
+
+test('match refresh time is clearly a read time and cannot imply new custody confirmation',()=>{
+ const html=renderToStaticMarkup(React.createElement(PetMatchRefresh,{busy:false,loading:false,loadedAt:'2026-11-12T15:00:00Z',onRefresh:()=>{}}))
+ assert.match(html,/Match list last loaded/);assert.match(html,/does not confirm the animal/)
+ const pending=renderToStaticMarkup(React.createElement(PetMatchRefresh,{busy:true,loading:false,loadedAt:null,onRefresh:()=>{}}))
+ assert.match(pending,/disabled=""/);assert.match(pending,/has not loaded yet/)
 })

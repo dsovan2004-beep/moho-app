@@ -5,6 +5,7 @@ import {UUID} from '@/lib/directory-requests'
 import PetStatusControls from '@/app/components/PetStatusControls'
 import {PetProgressSummary,PetProgressTimeline,type ProgressUpdate} from '@/app/components/PetProgress'
 import PetMatches from '@/app/components/PetMatches'
+import {PetIdentification} from '@/app/components/PetIdentification'
 import PetDiscussion from '@/app/components/PetDiscussion'
 export const runtime='nodejs'
 export const metadata={title:'Pet report & discussion | MoHoLocal',robots:{index:false,follow:true}}
@@ -17,6 +18,7 @@ export default async function PetReportPage({params}:{params:Promise<{id:string}
  return <div className="max-w-3xl mx-auto px-4 py-10"><Link href={`/lost-and-found?city=${encodeURIComponent(pet.city)}`} className="underline text-sm">← Pet reports in {pet.city}</Link>
   <header className="mt-6 rounded-2xl bg-[#f6f3eb] border border-[#e8e3d7] p-6"><p className="text-sm text-slate-600">{pet.city} · Recorded status: {pet.status}</p><h1 className="mt-3 text-3xl font-bold text-[#19352d]">{pet.title||pet.pet_name||'Pet report'}</h1><p className="mt-3 text-sm">Reported {new Date(pet.created_at).toLocaleDateString('en-US',{dateStyle:'medium',timeZone:'America/Los_Angeles'})}. Confirm current status with the reporter.</p></header>
   <div id="reporter-status" className="scroll-mt-28"><PetProgressSummary progress={pet.progress} status={pet.status} observedAt={pet.progress_observed_at} contactStage={pet.contact_stage} contactAt={pet.contact_updated_at} confirmedAt={pet.status_confirmed_at}/></div>
+  <PetIdentification pet={pet}/>
   <section className="mt-6" aria-labelledby="original-pet-report"><h2 id="original-pet-report" className="text-lg font-bold">Original report</h2><p className="mt-2 text-sm text-slate-600">The description may predate reporter updates. Check the latest status above before acting.</p><p className="mt-3 whitespace-pre-wrap break-words">{pet.description}</p></section>
   {pet.source_url&&/^https?:\/\//i.test(pet.source_url)&&<a className="inline-block mt-4 underline font-semibold" href={pet.source_url} target="_blank" rel="noopener noreferrer">Original report / contact ↗</a>}
   <PetProgressTimeline updates={(history.data??[]) as ProgressUpdate[]} error={Boolean(history.error)}/>

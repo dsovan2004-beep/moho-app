@@ -217,6 +217,7 @@ export interface LostAndFound {
   age?: string
   gender?: string
   last_seen?: string
+  location_last_seen?: string
   location_detail?: string
   coat_description?: string
   reward?: string

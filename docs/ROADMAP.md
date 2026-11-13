@@ -1,5 +1,14 @@
 # MoHoLocal Product Roadmap
 
+## November 12 late — identifying details and match refresh (PET-COMPARE-01)
+
+Four new selected Facebook threads across four city-group views; additional Lathrop Neighborhood Watch/Downtown Manteca views reviewed. Full selected bodies: MH All comments8entries, Tracy5, Lathrop1; Manteca modal No comments yet. Tracy is a follow-up for an earlier missing case, not a new pet. Lathrop meeting windows already elapsed; no invented recap. Vendor cutoff separate from attendee event date; market lead HELD. Private references outside Git. [Evidence](research/pet-comparison-details-2026-11-12.md).
+
+PET-COMPARE-01 implemented/local accepted, release pending: report details now expose existing recorded markings/breed/age/sex/last-seen text/sighting area with explicit missing values and no custody/date inference. Alternate recorded area retained; differing area values both visible. Latest reporter status stays above original narrative. Match list has deliberate refresh and separately labeled successful-read time, not custody confirmation. Local actual-component harness has no network saves;320px fits, refresh44px; harness removed before build. 187tests, TypeScript and final OpenNext build pass. Existing public area projection accepted anonymously with0rows returned; no record details read. No schema/RPC/security or production content mutations.
+
+FB UNPUBLISHED; photo tasks and genuine-reporter pet pilot OPEN, including signed-in comparison/custody/mutual-match/read-refresh, physical-phone and screen-reader acceptance. P1: real reporter and organizer-source checks; P2: generic lost-item source continuity/private handoff and official meeting recaps.
+
+
 ## November 12 evening — match recovery and custody handoffs (PET-RECOVERY-01)
 
 Three newly detailed Facebook posts plus continued Tracy thread across four city-group views. MH library event, Lathrop seasonal offer and Manteca shared-animal post opened with explicit No comments yet; Tracy All comments13visible/14displayed, partial. Original embedded Manteca source comments and image context unverified. Offers/intended animal-services requests do not prove custody. Leads HELD, no resident content or reports imported. [Evidence](research/pet-match-recovery-2026-11-12.md).
