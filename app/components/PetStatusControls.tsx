@@ -1,5 +1,5 @@
 'use client'
-import {useEffect,useState} from 'react'
+import React,{useEffect,useState} from 'react'
 import Link from 'next/link'
 import {useRouter} from 'next/navigation'
 import {petActivity,socialDate} from '@/lib/pet-social'
@@ -19,16 +19,16 @@ export function PetReportControls({report,onSaved}:{report:OwnPetReport;onSaved:
  }
  return <div className="border border-slate-200 rounded-xl p-4 mt-4 bg-white">
   <h3 className="font-semibold">Update your report</h3>
-  <p className="text-sm text-slate-600 mt-2">Public reports expire after 30 days without confirmation. Choose the current status to renew for another 30 days, mark a reunion, or archive it. Archiving hides the public report; you can restore it here unless it is under moderation review.</p>
+  <p className="text-sm text-slate-600 mt-2">Mark secured only after the person or organization caring for the animal confirms they have it. Asking for help does not confirm a handoff. Public reports expire after 30 days without confirmation. Choose the current status to renew for another 30 days, mark a reunion, or archive it. Archiving hides the public report; you can restore it here unless it is under moderation review.</p>
   {report.expires_at&&<p className="text-sm mt-2 font-medium">{report.expired?'Expired — confirm the current status to publish again.':`Public until ${socialDate(report.expires_at)}`}</p>}
   {report.status_confirmed_at&&<p className="text-xs mt-2">Last confirmed by you: {socialDate(report.status_confirmed_at)}</p>}
-  {report.under_review?<p className="mt-3 text-sm">Under review. Status changes are paused until moderation is complete.</p>:<form className="flex flex-wrap gap-3 items-end mt-4 [&>label]:max-w-full [&_select]:max-w-full" onSubmit={e=>{e.preventDefault();void save()}}>
+  {report.under_review?<p className="mt-3 text-sm">Under review. Status changes are paused until moderation is complete.</p>:<form className="mt-4" onSubmit={e=>{e.preventDefault();void save()}}><fieldset disabled={busy} className="flex min-w-0 flex-wrap gap-3 items-end [&>label]:max-w-full [&_select]:max-w-full">
    <label className="text-sm font-semibold">Current status<select value={status} onChange={e=>{const value=e.target.value;const next=compatibleProgress(value,progress);setObserved(observationForProgress(progress,next,observed));setStatus(value);setProgress(next);if(!['lost','found'].includes(value))setContact('unknown')}} className="block border rounded-lg min-h-11 mt-1 px-3 bg-white">{!['lost','found','reunited','archived'].includes(status)&&<option value={status} disabled>Choose current status</option>}<option value="lost">Lost / still missing</option><option value="found">Found / seeking owner</option><option value="reunited">Reunited</option><option value="archived">Archived / hide report</option></select></label>
    {['lost','found'].includes(status)&&<><label className="text-sm font-semibold">Animal progress<select value={progress} onChange={e=>{const next=e.target.value as PetProgress;setObserved(observationForProgress(progress,next,observed));setProgress(next)}} className="block border rounded-lg min-h-11 mt-1 px-3 bg-white"><option value="unknown">Not confirmed</option><option value="sighted">Sighted / not secured</option>{status==='found'&&<option value="secured">Secured / in someone’s care</option>}</select></label>
    {progress!=='unknown'&&<label className="text-sm font-semibold">When you observed this<input type="datetime-local" required value={observed} onChange={e=>setObserved(e.target.value)} className="block w-full max-w-full border rounded-lg min-h-11 mt-1 px-3 bg-white"/><span className="block font-normal text-xs mt-1">Enter the time for this observation in your device’s local time. Changing animal progress clears the previous time. A sighting is not a confirmed match.</span></label>}</>}
    {['lost','found'].includes(status)&&<label className="text-sm font-semibold">Owner / finder contact<select value={contact} onChange={e=>setContact(e.target.value as ContactStage)} className="block border rounded-lg min-h-11 mt-1 px-3 bg-white">{Object.entries(CONTACT_STAGES).map(([key,label])=><option key={key} value={key}>{label}</option>)}</select><span className="block font-normal text-xs mt-1">This public update sends no message and does not confirm ownership, possession or a completed reunion.</span></label>}
-   <button disabled={busy||!['lost','found','reunited','archived'].includes(status)} className="min-h-11 rounded-lg bg-[#19352d] text-white px-4 py-2 font-semibold disabled:opacity-50">{busy?'Saving…':'Confirm status and renew 30 days'}</button>
-  </form>}
+   <button disabled={busy||!['lost','found','reunited','archived'].includes(status)} className="min-h-11 rounded-lg bg-[#19352d] text-white px-4 py-2 font-semibold disabled:opacity-50">{busy?'Saving…':status==='archived'?'Archive report':status==='reunited'?'Confirm reunion and renew 30 days':'Confirm status and renew 30 days'}</button>
+  </fieldset></form>}
   {error&&<p role="alert" className="text-red-800 text-sm mt-3">{error} <button className="underline" onClick={()=>onSaved()}>Refresh report</button></p>}
   {notice&&<p role="status" className="text-sm mt-3 text-green-800">{notice}</p>}
  </div>

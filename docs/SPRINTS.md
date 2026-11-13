@@ -1,5 +1,14 @@
 # MoHoLocal — SPRINTS.md
 
+## November 12 evening — match recovery and custody handoffs (PET-RECOVERY-01)
+
+Three newly detailed Facebook posts plus continued Tracy thread across four city-group views. MH library event, Lathrop seasonal offer and Manteca shared-animal post opened with explicit No comments yet; Tracy All comments13visible/14displayed, partial. Original embedded Manteca source comments and image context unverified. Offers/intended animal-services requests do not prove custody. Leads HELD, no resident content or reports imported. [Evidence](research/pet-match-recovery-2026-11-12.md).
+
+PET-RECOVERY-01 implemented/local accepted, release pending: failed match changes preserve loaded cards/candidate draft, pause mutation controls and offer read refresh before retry; loading failures distinct from empty results. Custody guidance separates intended collection from confirmed handoff. Reporter fields disabled while saving; Archive and Confirm reunion actions explicitly named. Local actual-results harness simulated conflict/recovery with no network saves;320px fits and refresh44px. Harness removed before build. 183tests, TypeScript and final OpenNext build pass; authenticated mutation/in-flight fieldset validation remains in genuine-reporter pilot.
+
+FB UNPUBLISHED. Photo tasks, genuine-reporter pilot and physical-phone/screen-reader acceptance OPEN. No schema/RPC/security or production pet-data changes. P1: genuine reporter conflict/custody/notification acceptance and primary checks for held provider/event candidates.
+
+
 ## November 12 — pet custody time and match review (PET-GAP-01)
 
 Five additional selected Facebook posts reviewed across four city-group views: MH travel referrals All comments7entries; Tracy reported-safe update15visible/16displayed and missing-cat follow-up9visible/12displayed, both partial; Lathrop service offer and Manteca event notice opened with explicit No comments yet. Full selected bodies read. Private source ledger outside Git; no resident content imported. Gaps: private referral continuity, prominent reported closure, explicit mobile service radius and separate ticket cutoff/doors/start. Provider/event candidates HELD for primary/duplicate checks. [Evidence](research/pet-custody-review-2026-11-12.md).
