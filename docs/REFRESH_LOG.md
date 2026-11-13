@@ -532,3 +532,13 @@ No application/published-data/security/deployment changes or unnecessary build. 
 COMPLETE increment: Your Girl Friday Pet Sitting Services individually primary-checked and published for Tracy only. FAQ makes Mountain House conditional; no MH/Lathrop/Manteca coverage invented. Fresh homepage/FAQ/contact200, global name/domain/phone duplicate check, atomic editorial transaction/private audit1 and anonymous read-back accepted. Actual regional Newest1028 (+1), Tracy pet-sitting shortlist4, detail/source/contact and Activity top Nov13 website-check accepted. [Evidence](research/yelp-followup-2026-11-13.md). Data-only, no app build/deployment or UX code change.
 
 Lathrop/Manteca pet-care supply remains P1: candidates held until primary identity/contact/exact coverage established. Mitra primary registration still does not resolve visitor access/end time; retain caveats. PET-MULTI-01 implementation OPEN. FB UNPUBLISHED; photo tasks, genuine-reporter pet pilot and physical-phone/screen-reader acceptance OPEN.
+
+## November 13 — Lathrop/Manteca pet-care and multi-animal UX
+
+SUPPLY-13 LIVE: two individually checked additions, Manteca Critter Sitters (Manteca drop-ins/dog walking) and Tyler’s Pet Boarding (Lathrop/Manteca/Tracy sitting/boarding/day care/cat care). Duplicate guards, primary HTTP200, scoped evidence, private audits2 and anonymous read-back accepted. Actual Lathrop sitting3, Manteca sitting4 and Manteca walking3 accepted; Tyler correctly absent from walking. No public phone invented for Tyler, website request route retained. [Evidence](research/pet-care-and-multi-animal-2026-11-13.md).
+
+PET-MULTI-01 guidance implemented and locally checked: shared per-animal identity/custody reminder and whole-report reunion status explanation in comparison help/details. 187regressions/TypeScript/OpenNext build pass; LIVE source a2e5f087c8c6749d97493b6e72987cfc1f233157 accepted: GitHub Workers Builds success, exact public source marker and new notice on all four city pet views. Actual320px layout fits in measured Lathrop/Tracy/MH views; screenshot inspected, viewport reset called. Regional Newest1030 (+2). Structured individual-animal workflow/enforcement and genuine-reporter pilot remain OPEN. No production pet content, schema/RPC/RLS/security changes.
+
+MOBILE-12 OPEN/P1:320px signed-in mobile navigation crowds Community/Messages; reflow labels/targets next, with keyboard/focus acceptance.
+
+FB UNPUBLISHED. Photo tasks, genuine-reporter comparison/custody/mutual-match/notification pilot and physical-phone/screen-reader acceptance OPEN. Continue exact service-area pet-care expansion; do not copy portfolios or claim availability/credentials.
