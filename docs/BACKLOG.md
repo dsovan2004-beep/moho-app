@@ -1,5 +1,14 @@
 # MoHoLocal active execution queue
 
+## Friday November 13, 9 AM Pacific — FRESH-01 completed, no publication changes
+
+Bounded four-city event audit: fresh primary HTTP200 agrees for MH Friendsgiving today, Lathrop Nov17 storytime and Manteca Nov17 Dinovember. Tracy Nov14 Ornament Stroll still agrees with cached City notice; direct403 recorded as a freshness limit. Anonymous approved-event read-back and all four production event pages HTTP200. No justified correction; unchanged records were not retimestamped or presented as new Activity.
+
+Opening sample: Wingstop/Sprouts/Sam's fresh source bodies agree; Manteca Jersey Mike's403 remains unconfirmed. Feature expiry Dec7 retained; no holiday hours or coupons inferred. Pet-care coverage remains MH3/Tracy3/Lathrop2/Manteca2 for checked sitting OR walking. Yelp leads held pending primary identity/coverage; no new listing count. Photo search rejected wrong-place/old-date results; no qualifying asset or rights established. [Sources and limitations](research/freshness-2026-11-13.md).
+
+No application/published-data/security/deployment changes or unnecessary build. Next priority: Lathrop/Manteca pet-care lead checks, remaining exact near-term event occurrences, PET-MULTI-01. FB UNPUBLISHED; photo tasks, genuine-reporter pet pilot and physical-phone/screen-reader gates OPEN.
+
+
 ## November 12 night — actual listing expansion and Yelp leads (SUPPLY-12)
 
 COMPLETE: four new individually website-checked listings live: Squeegee Dream (MH/Tracy), Exterior Prime and ASAP Electric (Tracy/Lathrop/Manteca), Manteca Animal Services (Manteca). Duplicate guards, private audits and anonymous public read-back accepted. Regional Newest1027 (+4); actual four-city Newest, A–Z search, relevant service shortcuts, details and Activity accepted. Activity labels actual website checks, not new openings. Data-only; no app build or code change. [Evidence](research/listing-expansion-and-yelp-2026-11-12.md).
