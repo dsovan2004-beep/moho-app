@@ -1,0 +1,41 @@
+[
+  {
+    "name": "Art Pet Mobile Grooming",
+    "category": "Pet Services",
+    "city": "Service area only",
+    "address": null,
+    "phone": "(209) 554-6445",
+    "website": "https://www.artpetgrooming.com/",
+    "source_url": "https://www.artpetgrooming.com/locations/lathrop/",
+    "duplicate_key": "artpetgrooming.com",
+    "areas": [
+      "Lathrop",
+      "Manteca"
+    ],
+    "tags": [
+      "mobile dog grooming",
+      "dog grooming"
+    ],
+    "description": "Official Lathrop and Manteca pages advertise mobile dog bathing, haircuts and nail care at the customer\u2019s home. The published San Joaquin contact is used here. Confirm your address, dog eligibility, mobile setup, full quote and appointment dates directly. No public visitor office or holiday availability established.",
+    "note": "Official homepage, Lathrop and Manteca location pages read in the normal browser November14,2026 after the web fetch returned access denied. Checked identity, explicit mobile dog-grooming coverage in Lathrop/Manteca, advertised baths/haircuts/nail care and phone2095546445 specifically labeled San Joaquin. Central8666232993 booking line also shown; regional number selected deliberately. No cat-care/dog-walking tag inferred from unrelated homepage tabs; no extra cities, address from secondary directories, prices, rankings/review counts, credentials, methods/safety or availability adopted. No images/testimonials reused; no booking/contact submitted. Sources: https://www.artpetgrooming.com/ https://www.artpetgrooming.com/locations/lathrop/ https://www.artpetgrooming.com/locations/manteca/"
+  },
+  {
+    "name": "Bone-a-Fide Dog Training",
+    "category": "Pet Services",
+    "city": "Manteca",
+    "address": null,
+    "phone": "(209) 740-7420",
+    "website": "https://bfdogtraining.com/",
+    "source_url": "https://bfdogtraining.com/in-home-lessons",
+    "duplicate_key": "bfdogtraining.com",
+    "areas": [
+      "Manteca"
+    ],
+    "tags": [
+      "dog training",
+      "puppy training"
+    ],
+    "description": "Manteca-based provider advertising puppy and obedience training through group classes and private lessons, including in-home, park and dog-park sessions. Use the published Manteca contact to confirm location, eligibility, current class or lesson dates, travel fees and total quote. No visitor street office, Lathrop coverage or ordinary boarding established by this check.",
+    "note": "Fresh HTTP200 homepage, contact and in-home lesson pages checked November14,2026. Identity, Manteca office locality, Manteca-specific2097407420 phone (not the separate Iowa number), advertised puppy/obedience group/private training and Manteca home/park lesson context checked. Travel-fee wording outside Manteca is not adopted as coverage for other named cities. Old2019Lathrop reference and September2026class starts not treated as current Lathrop coverage or upcoming available events. No credentials/awards, training results, methods/safety, medical capability, fixed price, class availability or holiday hours independently verified. No images/reviews copied; no form submitted. Sources: https://bfdogtraining.com/ https://bfdogtraining.com/contact-us https://bfdogtraining.com/in-home-lessons"
+  }
+]

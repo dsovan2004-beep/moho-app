@@ -566,3 +566,11 @@ LIVE/accepted: Dog training shortcut and exact dog trainer/dog trainers search m
 Two NEW source-checked providers: Breakthrough (Lathrop/Manteca) and Morada-based Martyn private lessons (Manteca/Tracy). Explicit service coverage, correct program phone, duplicate guards, private audits and anonymous read-back accepted. No credentials/quality/availability promises, boarding inference or copied photos/reviews. Regional count1034 (+2). Actual Lathrop training shortlist2; Manteca3. Activity uses actual website-check dates. Jackie primary renders no readable page: HELD.
 
 FB UNPUBLISHED. Photo tasks, genuine-reporter pet pilot and physical-phone/screen-reader acceptance OPEN. Next: continue exact-area pet-care/grooming supply, held primary identities and genuine resident/device/outcome validation.
+
+## November 14 afternoon — full mobile descriptions and pet-care supply (MOBILE-14 / SUPPLY-16)
+
+LIVE/accepted: Read full description / Show less reveals previously clipped business scope before contact.44px control, linked aria-expanded/controls, keyboard Enter expand/collapse and retained focus/URL accepted at320px with no overflow. Pointer expansion/screenshot inspected; tested tab returned to normal1274px viewport.192regressions/TypeScript/OpenNext build pass; native cb1b61b2abc3b4ec65fa3411b1930650d2c928e5 success and exact public marker. [Evidence](research/afternoon-description-pet-care-2026-11-14.md).
+
+Two NEW source-checked listings: Art Pet Mobile Grooming (Lathrop/Manteca) and Bone-a-Fide Dog Training (Manteca only). ExistingFreshPup expanded to explicit Lathrop coverage from dedicated primary page, approval date preserved. Duplicate guards, three private audits and anonymous read-back accepted. Actual Newest1036 (+2), Lathrop mobile-grooming6, Manteca training4, Activity and detail contact evidence accepted. No portfolios/reviews copied or credential/quality/availability claims inferred. ComfortedKitty HELD: primary coverage unestablished despite secondary-city appearance.
+
+FB UNPUBLISHED; photo tasks, genuine-reporter pet pilot and physical-phone/screen-reader/notification gates OPEN. Next: continue exact-area pet-care supply and resident/device/outcome validation, keeping new additions distinct from rechecks.

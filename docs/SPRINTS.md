@@ -1,5 +1,14 @@
 # MoHoLocal — SPRINTS.md
 
+## November 14 afternoon — full mobile descriptions and pet-care supply (MOBILE-14 / SUPPLY-16)
+
+LIVE/accepted: Read full description / Show less reveals previously clipped business scope before contact.44px control, linked aria-expanded/controls, keyboard Enter expand/collapse and retained focus/URL accepted at320px with no overflow. Pointer expansion/screenshot inspected; tested tab returned to normal1274px viewport.192regressions/TypeScript/OpenNext build pass; native cb1b61b2abc3b4ec65fa3411b1930650d2c928e5 success and exact public marker. [Evidence](research/afternoon-description-pet-care-2026-11-14.md).
+
+Two NEW source-checked listings: Art Pet Mobile Grooming (Lathrop/Manteca) and Bone-a-Fide Dog Training (Manteca only). ExistingFreshPup expanded to explicit Lathrop coverage from dedicated primary page, approval date preserved. Duplicate guards, three private audits and anonymous read-back accepted. Actual Newest1036 (+2), Lathrop mobile-grooming6, Manteca training4, Activity and detail contact evidence accepted. No portfolios/reviews copied or credential/quality/availability claims inferred. ComfortedKitty HELD: primary coverage unestablished despite secondary-city appearance.
+
+FB UNPUBLISHED; photo tasks, genuine-reporter pet pilot and physical-phone/screen-reader/notification gates OPEN. Next: continue exact-area pet-care supply and resident/device/outcome validation, keeping new additions distinct from rechecks.
+
+
 ## November 14 — dog-training discovery and two new providers (TRAIN-DISC-01 / SUPPLY-15)
 
 LIVE/accepted: Dog training shortcut and exact dog trainer/dog trainers search mapping. Shared checked-service/city/category/share/return flows retained; broad training and company-name queries do not infer a service.192regressions/TypeScript/OpenNext build pass; native ea581bf9cd0916f629f9d7e75d8b4fbc83cb8b06 success and exact public marker accepted. Actual320px search→Martyn contact→return preserves query/category/city; MH empty view recovers to3regional records only after explicit action. Service-picker link44px; screenshot inspected, viewport reset called. [Evidence](research/dog-training-discovery-2026-11-14.md).
