@@ -558,3 +558,11 @@ DATA LIVE: Fresh Pup Pet Grooming (Manteca only) and K9 Courage Dog Training (La
 MOBILE-13 LIVE/accepted: consistent nonduplicated map destinations,44px directions/correction/return actions and titled map.191regressions/TypeScript/OpenNext build pass; source6ed6bf256b73e734d974a8c93932f359029f2a49 accepted with successful Workers Builds check and exact public marker. Actual320px detail fits; directions/correction/return targets44px, map query not duplicated and title present; keyboard Tab reaches visible-focus return link. Screenshot inspected, viewport reset called. Regional Newest1032 (+2). Northgate source-address conflict remains explicit; URL cleanup is not address validation.
 
 FB UNPUBLISHED; photo tasks, genuine-reporter pet pilot and physical-phone/screen-reader gates OPEN. Next: checked dog-training discovery, exact-area supply and genuine device/resident feedback.
+
+## November 14 — dog-training discovery and two new providers (TRAIN-DISC-01 / SUPPLY-15)
+
+LIVE/accepted: Dog training shortcut and exact dog trainer/dog trainers search mapping. Shared checked-service/city/category/share/return flows retained; broad training and company-name queries do not infer a service.192regressions/TypeScript/OpenNext build pass; native ea581bf9cd0916f629f9d7e75d8b4fbc83cb8b06 success and exact public marker accepted. Actual320px search→Martyn contact→return preserves query/category/city; MH empty view recovers to3regional records only after explicit action. Service-picker link44px; screenshot inspected, viewport reset called. [Evidence](research/dog-training-discovery-2026-11-14.md).
+
+Two NEW source-checked providers: Breakthrough (Lathrop/Manteca) and Morada-based Martyn private lessons (Manteca/Tracy). Explicit service coverage, correct program phone, duplicate guards, private audits and anonymous read-back accepted. No credentials/quality/availability promises, boarding inference or copied photos/reviews. Regional count1034 (+2). Actual Lathrop training shortlist2; Manteca3. Activity uses actual website-check dates. Jackie primary renders no readable page: HELD.
+
+FB UNPUBLISHED. Photo tasks, genuine-reporter pet pilot and physical-phone/screen-reader acceptance OPEN. Next: continue exact-area pet-care/grooming supply, held primary identities and genuine resident/device/outcome validation.
