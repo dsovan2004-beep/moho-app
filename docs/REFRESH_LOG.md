@@ -550,3 +550,11 @@ LIVE/accepted: six mobile destinations, three columns/two rows on narrow phones,
 DATA LIVE: existing Lathrop Veterinary Center and Northgate Veterinary Hospital corrected and newly website-checked for on-site boarding. Two private before/after audits and anonymous read-back accepted. Lathrop missing contact/facility details filled; Northgate current website restored, Drive/Avenue conflict visible. No new unique records or approval dates;1030catalog total retained. Do not infer travel areas, medical capability, quality or holiday availability.
 
 FB UNPUBLISHED; photo tasks, genuine-reporter pet pilot and physical-phone/screen-reader gates OPEN. Legacy Lathrop Clinic identity remains unmerged pending evidence.
+
+## November 14 — mobile listing actions and new pet-care supply (MOBILE-13 / SUPPLY-14)
+
+DATA LIVE: Fresh Pup Pet Grooming (Manteca only) and K9 Courage Dog Training (Lathrop/Manteca/Tracy) added after primary-source identity/contact/exact-service/coverage and duplicate checks. Two private audits and anonymous read-back accepted. Actual city Newest, Manteca mobile-grooming filter5 and regional Activity/detail evidence accepted. No ordinary boarding/sitting tag for training stays; no extra FreshPup cities inferred. Aunty's held for unavailable primary/conflicting address; iLuvMyPack duplicate skipped. [Evidence](research/mobile-actions-pet-care-2026-11-14.md).
+
+MOBILE-13 LIVE/accepted: consistent nonduplicated map destinations,44px directions/correction/return actions and titled map.191regressions/TypeScript/OpenNext build pass; source6ed6bf256b73e734d974a8c93932f359029f2a49 accepted with successful Workers Builds check and exact public marker. Actual320px detail fits; directions/correction/return targets44px, map query not duplicated and title present; keyboard Tab reaches visible-focus return link. Screenshot inspected, viewport reset called. Regional Newest1032 (+2). Northgate source-address conflict remains explicit; URL cleanup is not address validation.
+
+FB UNPUBLISHED; photo tasks, genuine-reporter pet pilot and physical-phone/screen-reader gates OPEN. Next: checked dog-training discovery, exact-area supply and genuine device/resident feedback.

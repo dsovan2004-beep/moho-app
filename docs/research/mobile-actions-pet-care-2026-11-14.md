@@ -1,0 +1,22 @@
+# November 14 — mobile listing actions and two new pet-care providers
+
+## SUPPLY-14 publication
+
+Two new individually curated listings approved November14 at02:59:13AM Pacific, not rechecks or seed publication. Global name/domain searches returned no matching new candidates; atomic transaction also guards duplicate name/domain/normalized phone. Business + scope check + private correction audit created together. Two private audits confirmed; anonymous approved/public read-back confirms unclaimed, null ratings/zero reviews and exact scope. Excluded private read-back retained outsideGit.
+
+- Fresh Pup Pet Grooming 480a1ad1-747c-4b79-b4c6-1088bbf96e19: fresh HTTP200 https://freshpuppetgrooming.com/ . Explicit Manteca, published4157703935, first-party mobile-grooming title and advertised dog baths/haircuts/nail care. No other city inferred from surrounding-areas wording; service-area-only base and no public office. No promotions, fixed prices, medical/dental capability, quality, credentials, insurance or availability adopted. No portfolio/reviews/images reused.
+- K9 Courage Dog Training c308023d-d36c-426f-8a4d-566c8dbe5497: fresh HTTP200 https://k9couragedogtraining.com/pages/contact-us and https://k9couragedogtraining.com/pages/dog-training-in-lathrop-california . Public2092471193call/text, Manteca base and explicit Lathrop/Manteca/Tracy scope. Private/puppy training and board-and-train; Lathrop parks/public-space sessions versus Manteca training stays distinguished. No MountainHouse/general boarding/sitting tag. Published street not adopted as a walk-in office; exact arrangements require confirmation. No behavior/safety/result/credential/lifetime-support/reply/price claims adopted; no form submitted or portfolio copied.
+
+Aunty's Grooming HELD: primary site timed out, directories conflict between3221Yosemite and15559Seventh. Old2022City permit does not establish current operations. iLuvMyPack already exists: not counted again. Existing Jackie's/Northgate possibilities are not counted as new without separate evidence.
+
+## Actual resident acceptance so far
+
+Lathrop Pet Services/Newest shows K9 first,27records. Manteca same view shows both new providers first. Actual mobile-grooming shortcut settles to5of5 includingFreshPup, excludesK9; initial immediate transition read still showed old results and was discarded. Actual regional Activity shows both Nov14 website checks first, not invented openings/resident posts. Both detail pages show dates/areas/public contacts and scope; K9 expanded source checked. Regional Newest accepted with1032total (+2), FreshPup andK9 first.
+
+## MOBILE-13 implementation
+
+Business detail directions/map links no longer append the city/state twice to already complete addresses. All four map surfaces share businessMapQuery; explicit complete supplied geography preserved rather than overwritten from listing-city context. Street-only records still gain city/state context. This is URL construction, not geographic validation or resolution of Northgate Drive/Avenue evidence conflict. Directions and sidebar correction/return/category actions have44px minimum targets; directions/correction/return focus treatment and higher-contrast correction text. Embedded map has business-specific title. Existing contact-row44px targets retained.
+
+191regressions (two new address-context/duplicate-geography tests), TypeScript and final OpenNext build passed. LIVE accepted source6ed6bf256b73e734d974a8c93932f359029f2a49: GitHub Workers Builds success at2026-11-14T11:00:54Z and exact public build-info source marker. Actual320px Lathrop Veterinary Center detail has viewport/document320; both directions targets44px and correction target44px. Both directions and embedded map carry17600GoldenValleyPkwy,Lathrop,CA95330 exactly once; map title names the business. Keyboard Tab from Report this listing moves to44px Back to Lathrop results, :focus-visible true with solid outline. Screenshot nov14-mobile-listing-actions-live.png inspected; viewport reset called. Native version/build duration not asserted. This is browser keyboard acceptance, not physical phone or screen-reader voice acceptance. No database schema/RPC/RLS/key changes. No fabricated production pet content, messages or outcomes.
+
+FB UNPUBLISHED; photo tasks, genuine-reporter pet pilot and physical-phone/screen-reader acceptance OPEN. Next: dog-training discovery shortcut, further exact-area pet-care supply, held address/identity checks and genuine resident/device acceptance.
