@@ -1,3 +1,4 @@
+import BusinessSummary from '@/app/components/BusinessSummary'
 import {businessMapQuery} from '@/lib/business-map'
 import { serializeJsonLd } from '@/lib/json-ld'
 import ListingEvidence from '@/app/components/ListingEvidence'
@@ -370,11 +371,7 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
                 {biz.name}
               </h1>
 
-              {biz.description && (
-                <p className="text-white/80 text-sm line-clamp-2 mb-3 leading-relaxed">
-                  {biz.description}
-                </p>
-              )}
+              {biz.description && <BusinessSummary description={biz.description}/>}
 
               <div className="flex flex-wrap gap-2 mb-3">
                 <span className="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full">
