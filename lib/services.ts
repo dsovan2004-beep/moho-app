@@ -14,6 +14,7 @@ export const SERVICE_CHOICES = [
   { key: 'mobile-dog-grooming', label: 'Mobile dog grooming', category: 'Pet Services', tag: 'mobile dog grooming' },
   { key: 'pet-sitting', label: 'Pet sitting', category: 'Pet Services', tag: 'pet sitting' },
   { key: 'pet-boarding', label: 'Pet boarding', category: 'Pet Services', tag: 'pet boarding' },
+  { key: 'dog-training', label: 'Dog training', category: 'Pet Services', tag: 'dog training' },
   { key: 'dog-walking', label: 'Dog walking', category: 'Pet Services', tag: 'dog walking' },
 ] as const
 
@@ -29,6 +30,7 @@ const SERVICE_SEARCH_ALIASES:Record<string,readonly string[]> = {
   'heating-air-conditioning':['hvac','heating and cooling'],
   'pet-sitting':['pet sitter','pet sitters'],
   'dog-walking':['dog walker','dog walkers'],
+  'dog-training':['dog trainer','dog trainers'],
   landscaping:['landscaper','landscapers'],
   handyman:['handymen'],
 }

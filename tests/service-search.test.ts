@@ -16,3 +16,8 @@ test('canonical service names retain precise specialties and whitespace toleranc
 test('ambiguous jobs, company names and filter-like text do not infer a service',()=>{
   for(const query of ['cleaning','solar','pet care','Electrician Brothers','electrician,city.eq.Tracy','']) assert.equal(serviceSearchTag(query),undefined)
 })
+
+test('dog training discovery accepts exact resident terms without broadening general training or businesses',()=>{
+ for(const q of ['dog training',' Dog Trainer ','DOG TRAINERS'])assert.equal(serviceSearchTag(q),'dog training')
+ for(const q of ['training','trainer','K9 Courage Dog Training','dog boarding','aggressive dog'])assert.equal(serviceSearchTag(q),undefined)
+})
