@@ -1,3 +1,4 @@
+import {businessMapQuery} from '@/lib/business-map'
 import { serializeJsonLd } from '@/lib/json-ld'
 import ListingEvidence from '@/app/components/ListingEvidence'
 import BusinessContactActions from '@/app/components/BusinessContactActions'
@@ -399,10 +400,10 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
             <BusinessContactActions businessName={biz.name} phone={biz.phone} website={biz.website} tone="dark" />
             {biz.address && (
               <a
-                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(biz.address + ', ' + biz.city + ', CA')}`}
+                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(businessMapQuery(biz.address,biz.city))}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white/15 border border-white/30 text-white font-semibold text-sm px-5 py-2.5 rounded-xl text-center hover:bg-white/25 transition"
+                className="min-h-11 flex items-center justify-center bg-white/15 border border-white/30 text-white font-semibold text-sm px-5 py-2.5 rounded-xl text-center hover:bg-white/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-300 transition"
               >
                 📍 Get Directions
               </a>
@@ -412,7 +413,7 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
             {!hasContact && (
               <Link
                 href={`/claim-listing/${biz.id}`}
-                className="bg-white/15 border border-white/30 text-white font-semibold text-sm px-5 py-2.5 rounded-xl text-center hover:bg-white/25 transition"
+                className="min-h-11 flex items-center justify-center bg-white/15 border border-white/30 text-white font-semibold text-sm px-5 py-2.5 rounded-xl text-center hover:bg-white/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-300 transition"
               >
                 🏷️ Claim &amp; Add Contact Info
               </Link>
@@ -489,7 +490,7 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
                 icon="📍"
                 label="Address"
                 value={biz.address}
-                href={`https://maps.google.com/?q=${encodeURIComponent(biz.address + ', ' + biz.city + ', CA')}`}
+                href={`https://maps.google.com/?q=${encodeURIComponent(businessMapQuery(biz.address,biz.city))}`}
               />
             )}
             {phoneHref && (
@@ -552,19 +553,20 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
           {biz.address && (
             <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
               <iframe
+                title={`Map for ${biz.name}`}
                 width="100%"
                 height="190"
                 loading="lazy"
                 allowFullScreen
                 style={{ border: 0 }}
-                src={`https://maps.google.com/maps?q=${encodeURIComponent(biz.address + ', ' + biz.city + ', CA')}&output=embed`}
+                src={`https://maps.google.com/maps?q=${encodeURIComponent(businessMapQuery(biz.address,biz.city))}&output=embed`}
               />
               <div className="p-3">
                 <a
-                  href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(biz.address + ', ' + biz.city + ', CA')}`}
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(businessMapQuery(biz.address,biz.city))}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block w-full text-center text-sm font-bold py-2.5 rounded-xl transition hover:opacity-90"
+                  className="min-h-11 flex items-center justify-center w-full text-center text-sm font-bold py-2.5 rounded-xl transition hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-700"
                   style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}
                 >
                   📍 Get Directions
@@ -614,7 +616,7 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
           {CAT_TO_BEST_SLUG[biz.category] && (
             <Link
               href={`/directory?${returnQuery}`}
-              className="block w-full text-center text-xs font-semibold py-2.5 rounded-xl border border-gray-200 text-gray-600 hover:border-blue-400 hover:text-blue-700 transition"
+              className="min-h-11 flex items-center justify-center w-full text-center text-xs font-semibold py-2.5 rounded-xl border border-gray-200 text-gray-600 hover:border-blue-400 hover:text-blue-700 transition"
             >
               Browse {biz.category}
             </Link>
@@ -623,7 +625,7 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
           {/* Report listing */}
           <Link
             href={`/report-listing/${biz.id}?${new URLSearchParams({city:context.city})}`}
-            className="block w-full text-center text-xs text-gray-400 hover:text-red-500 transition py-1"
+            className="min-h-11 flex items-center justify-center w-full text-center text-xs text-slate-600 hover:text-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-700 transition py-2"
           >
             🚩 Report this listing
           </Link>
@@ -631,7 +633,7 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
           {/* Back to city link */}
           <Link
             href={returnHref}
-            className="block text-center text-sm text-gray-400 hover:text-blue-600 transition py-2"
+            className="min-h-11 flex items-center justify-center text-center text-sm text-slate-600 hover:text-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-700 transition py-2"
           >
             ← Back to {returnLabel} results
           </Link>
