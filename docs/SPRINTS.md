@@ -1,5 +1,14 @@
 # MoHoLocal — SPRINTS.md
 
+## November 15 — mobile return and pet-care quality (MOBILE-15 / SUPPLY-17)
+
+LIVE: top business-detail Back to results preserves validated city/service/category/sort context.44px target and keyboard return accepted at320px without overflow; viewport restored.192tests/TypeScript/OpenNext pass; native c3b5ceffb8f572b0c009a2e9fce5f0d08c3391f5 success and exact production marker.
+
+NEW Lathrop Animal Center municipal resource; existing Petco Manteca contact/location corrected and training discovery checked (five Manteca options). Three individually inspected unsupported Lathrop legacy records held reversibly, no closure claim; private histories/anonymous read-back accepted. No new commercial sitter qualified; ThePetYogi coverage remains held. Recheck approval date preserved. [Evidence](research/pet-care-quality-2026-11-15.md).
+
+NEXT: individually reverify remaining legacy Lathrop pet records and expand explicit-area sitting/walking coverage; continue mobile journeys. FB UNPUBLISHED; photo tasks, genuine-reporter pilot and physical-device acceptance OPEN.
+
+
 ## November 14 afternoon — full mobile descriptions and pet-care supply (MOBILE-14 / SUPPLY-16)
 
 LIVE/accepted: Read full description / Show less reveals previously clipped business scope before contact.44px control, linked aria-expanded/controls, keyboard Enter expand/collapse and retained focus/URL accepted at320px with no overflow. Pointer expansion/screenshot inspected; tested tab returned to normal1274px viewport.192regressions/TypeScript/OpenNext build pass; native cb1b61b2abc3b4ec65fa3411b1930650d2c928e5 success and exact public marker. [Evidence](research/afternoon-description-pet-care-2026-11-14.md).

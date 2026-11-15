@@ -1,5 +1,14 @@
 # MoHoLocal living-directory refresh ledger
 
+## November 15 — mobile return and pet-care quality (MOBILE-15 / SUPPLY-17)
+
+LIVE: top business-detail Back to results preserves validated city/service/category/sort context.44px target and keyboard return accepted at320px without overflow; viewport restored.192tests/TypeScript/OpenNext pass; native c3b5ceffb8f572b0c009a2e9fce5f0d08c3391f5 success and exact production marker.
+
+NEW Lathrop Animal Center municipal resource; existing Petco Manteca contact/location corrected and training discovery checked (five Manteca options). Three individually inspected unsupported Lathrop legacy records held reversibly, no closure claim; private histories/anonymous read-back accepted. No new commercial sitter qualified; ThePetYogi coverage remains held. Recheck approval date preserved. [Evidence](research/pet-care-quality-2026-11-15.md).
+
+NEXT: individually reverify remaining legacy Lathrop pet records and expand explicit-area sitting/walking coverage; continue mobile journeys. FB UNPUBLISHED; photo tasks, genuine-reporter pilot and physical-device acceptance OPEN.
+
+
 ## November 12 late — identifying details and match refresh (PET-COMPARE-01)
 
 Four new selected Facebook threads across four city-group views; additional Lathrop Neighborhood Watch/Downtown Manteca views reviewed. Full selected bodies: MH All comments8entries, Tracy5, Lathrop1; Manteca modal No comments yet. Tracy is a follow-up for an earlier missing case, not a new pet. Lathrop meeting windows already elapsed; no invented recap. Vendor cutoff separate from attendee event date; market lead HELD. Private references outside Git. [Evidence](research/pet-comparison-details-2026-11-12.md).
