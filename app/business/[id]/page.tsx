@@ -312,6 +312,8 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
 
+      <Link href={returnHref} className="mb-3 inline-flex min-h-11 items-center rounded-md px-2 text-sm font-semibold text-[#19352d] underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700">← Back to {returnLabel} results</Link>
+
       {/* Breadcrumb */}
       <nav className="text-sm text-gray-400 mb-5 flex items-center gap-2 flex-wrap">
         <Link href="/" className="hover:text-blue-600 transition">Home</Link>
