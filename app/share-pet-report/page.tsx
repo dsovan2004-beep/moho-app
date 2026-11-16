@@ -2,6 +2,7 @@
 import {useState} from 'react'
 import Link from 'next/link'
 import MyPetShares from '@/app/components/MyPetShares'
+import PetPhotoPicker from '@/app/components/PetPhotoPicker'
 import {getSupabaseClient} from '@/lib/supabase'
 import {RELAUNCH_CITY_NAMES} from '@/lib/cities'
 import {RequestAccount,useRequestAccount} from '@/app/components/RequestAccount'
@@ -42,7 +43,7 @@ export default function SharePetReport(){
  <label className="block font-semibold">Current recorded status<select className={input} value={status} onChange={e=>setStatus(e.target.value)}><option value="lost">Lost</option><option value="found">Found / sighting</option><option value="reunited">Reunited</option></select></label>
  <label className="block font-semibold">Pet description / title<input required minLength={5} maxLength={200} className={input} value={title} onChange={e=>setTitle(e.target.value)}/></label>
  <label className="block font-semibold">Report details<textarea required maxLength={4000} rows={5} className={input} value={description} onChange={e=>setDescription(e.target.value)}/><span className="block text-sm font-normal mt-1">Include when and where seen using a neighborhood or public landmark. Say whether this is a sighting or the animal is secured. Keep private addresses, phone numbers and sensitive ownership evidence out.</span></label>
- <label className="block font-semibold">Photos (1–3)<input required multiple type="file" accept="image/jpeg,image/png,image/webp" className={input} onChange={e=>setPhotos(Array.from(e.target.files??[]))}/><span className="block text-sm font-normal mt-1">JPG, PNG or WebP, up to 5 MB each. Upload photos you own or have permission to publish. Avoid screenshots containing other people’s details. We remove embedded photo metadata before upload.</span></label>
+ <PetPhotoPicker photos={photos} onChange={setPhotos} locked={frozen}/>
  <label className="block font-semibold">Public photo credit<input required maxLength={120} className={input} placeholder="Photographer name or permitted credit" value={credit} onChange={e=>setCredit(e.target.value)}/></label>
  <label className="flex gap-3 rounded-xl border border-slate-300 p-4 text-sm"><input required type="checkbox" className="mt-1 h-5 w-5 shrink-0" checked={permission} onChange={e=>setPermission(e.target.checked)}/><span>{PET_SHARE_PERMISSION}</span></label>
  <p className="text-sm text-slate-600">Permission is for this submitted report and photos only. It does not authorize importing anyone else’s content. No matching or reunion is confirmed by submission.</p>
