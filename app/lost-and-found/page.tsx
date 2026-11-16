@@ -1,3 +1,4 @@
+import {petBoardMetadata,type PetBoardSearch} from '@/lib/pet-board-metadata'
 import {MatchComparisonGuide} from '@/app/components/PetMatches'
 import {PetProgressSummary} from '@/app/components/PetProgress'
 import { PUBLIC_PET_COLUMNS } from '@/lib/supabase'
@@ -192,6 +193,10 @@ function PetCard({ pet }: { pet: LostAndFound }) {
   )
 }
 
+export async function generateMetadata({searchParams}:{searchParams:Promise<PetBoardSearch>}) {
+  return petBoardMetadata(await searchParams)
+}
+
 // ── Page ─────────────────────────────────────────────────────────────────────
 interface PageProps {
   searchParams: Promise<{ city?: string; status?: string; history?: string }>
@@ -242,7 +247,7 @@ export default async function LostAndFoundPage({ searchParams }: PageProps) {
         </div>
         <Link
           href={`/post-lost-found${city === 'All Cities' ? '' : `?${new URLSearchParams({city})}`}`}
-          className="shrink-0 text-sm font-bold px-4 py-2 rounded-lg transition hover:opacity-90"
+          className="inline-flex min-h-11 items-center justify-center shrink-0 text-sm font-bold px-4 py-2 rounded-lg transition hover:opacity-90"
           style={{ backgroundColor: '#f59e0b', color: '#1e3a5f' }}
         >
           + Post Lost or Found Pet
@@ -278,7 +283,7 @@ export default async function LostAndFoundPage({ searchParams }: PageProps) {
             <Link
               key={c}
               href={`/lost-and-found?city=${encodeURIComponent(c)}&status=${encodeURIComponent(status)}${includeOlder ? '&history=1' : ''}`}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-all ${
+              className={`inline-flex min-h-11 items-center justify-center text-xs font-semibold px-3 py-1.5 rounded-full border transition-all ${
                 isActive
                   ? 'bg-[#1e3a5f] text-white border-[#1e3a5f]'
                   : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300 hover:text-blue-700'
@@ -305,7 +310,7 @@ export default async function LostAndFoundPage({ searchParams }: PageProps) {
             <Link
               key={key}
               href={`/lost-and-found?city=${encodeURIComponent(city)}&status=${encodeURIComponent(key)}${includeOlder ? '&history=1' : ''}`}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-all ${
+              className={`inline-flex min-h-11 items-center justify-center text-xs font-semibold px-3 py-1.5 rounded-full border transition-all ${
                 isActive
                   ? activeStyle
                   : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:text-gray-800'
