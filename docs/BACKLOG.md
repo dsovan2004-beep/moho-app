@@ -1,5 +1,12 @@
 # MoHoLocal active execution queue
 
+## November 16 — reporter-authorized pet sharing (PET-SHARE-01)
+
+LIVE: /share-pet-report accepts a Facebook reference, original date, current recorded status, description,1–3photos, credit and explicit versioned publication permission. Confirmed-account/owner-path guards, private pending bucket and RLS queue; no Facebook fetching, outreach or posting. Admin-only approval/rejection with review acknowledgement; approved photo gallery/credit and reporter withdrawal.204regressions, TypeScript and OpenNext pass; database read-back confirms private/RLS/anonymous-denied queue with0production records. Native Workers Builds success and exact6df0c9c749d492642ce33dddd5f1b86bd01df4a8 production marker accepted. Live320px form has no overflow,44px text/select controls,48px upload/submit, unchecked keyboard-operable consent and disabled submission without permission. Admin queue and pet-board entry link accepted; viewport restored.
+
+[Evidence](research/reporter-pet-sharing-2026-11-16.md). Source6df0c9c749d492642ce33dddd5f1b86bd01df4a8. Genuine authorized reporter upload→review→gallery→status/withdraw trial and physical-device acceptance remain OPEN; no fake report used. PET-SHARE-02 P1 OPEN: operational retention/cleanup of abandoned private uploads and moderation capacity follow-up. Photo-location/date/reuse tasks and pet pilot OPEN; FB UNPUBLISHED; no contact with anyone.
+
+
 ## November 16 — pet-board SEO and mobile filters (SEO-LOCAL-04 / MOBILE-20 / SUPPLY-21)
 
 LIVE: default pet-board filter URLs canonicalize to the clean board; meaningful city/status/history views retain distinct metadata. Invalid/duplicate filters are noindex,follow. City/status controls and report CTA measure44px at320px, with no horizontal overflow. Keyboard Lathrop/found selection and separate Lathrop history canonical accepted; viewport restored.198tests, TypeScript and OpenNext pass. Native f7b7720e053566ba7b10af9bfcbdb7b2cd7e7a4b completed success and exact public build marker accepted. This fixes a sampled Search Console duplicate cohort; Google recrawl/resolution remains OPEN.
