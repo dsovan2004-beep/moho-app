@@ -1,5 +1,16 @@
 # MoHoLocal — SPRINTS.md
 
+## November16 — Google directory metadata and one new sitter (SEO-LOCAL-02 / MOBILE-18 / SUPPLY-19)
+
+LIVE: descriptive validated city/service metadata and matching mobile service H1; sort/tracking canonical consolidation, arbitrary free-text searches/invalid filters noindex,follow.195tests/TypeScript/OpenNext pass; native04db7e72fa206623dd17f05b318911bdf3a79600 success and exact marker. Manteca dog-walking title/H1/canonical and four records accepted at320px without overflow; Tracy search noindex accepted. Screenshot inspected, viewport restored. Search Console/indexing/ranking not claimed; structured-data/rendering and outcome follow-up OPEN.
+
+NEW Silva Pet Care Services, Tracy-only pet sitting/dog walking, no overnight client-home care. Fresh public operator business-page identity/phone/limits checked; September2024operator activity not current availability. Duplicate guard/private audit/anonymous read-back, live details, Tracy Newest6 and Activity accepted. No other-city coverage/ratings/credentials inferred. Lathrop/Manteca independent supplier expansion remains OPEN. [Evidence](research/google-discovery-silva-pets-2026-11-16.md).
+
+FB lost-dog search restricted by Date posted2026;3visible bodies/one3-comment thread reviewed, comments35/36weeks old. No current-November incident/frequency, custody or reunion inference; private refs outside Git. Source/cross-post continuity and reporter latest-status/location acceptance remain pilot work.
+
+FB UNPUBLISHED; photo2026/location/reuse tasks, genuine-reporter pilot and real-device acceptance OPEN. Next P1: Google rendered/structured-data/Search Console follow-up, explicit-area Lathrop/Manteca sitters/walkers, dated FB research across remaining groups.
+
+
 ## November16 — explicit ownership, Google SEO and booking guidance (ROLE-01 / MOBILE-17)
 
 Added explicit Trust & Community Moderation, Resident & Business Success, Directory Freshness & Coverage and Local SEO & Search Discovery Lead responsibilities in OPERATIONS. SEO primarily targets Google organic search; SEO-LOCAL-02 P1 OPEN covers rendered city/service metadata/canonical, crawlability, sitemap/structured-data accuracy and Search Console/outcome follow-up. No ranking or indexing guarantee; no claim Search Console checked today.
