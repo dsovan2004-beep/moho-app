@@ -33,7 +33,7 @@ export default function SharePetReport(){
  }
  const input='mt-1 min-h-11 w-full rounded-xl border border-slate-300 bg-white px-3 py-2'
  return <div className="max-w-2xl mx-auto px-4 py-8"><Link href="/lost-and-found" className="inline-flex min-h-11 items-center underline">← Pet reports</Link><h1 className="mt-4 text-3xl font-bold">Share your existing pet report</h1><p className="mt-3 text-slate-600">Already posted on Facebook? Submit your own report and photos here for review. We do not fetch Facebook content, contact anyone or post to Facebook.</p>
- {reference?<section className="mt-6 rounded-xl border border-emerald-300 bg-emerald-50 p-5" role="status"><h2 className="font-bold">Saved for review—not published</h2><p className="mt-2 break-all">Request reference: {reference}</p><p className="mt-2">Your photos remain private while pending. Publication permission is recorded with your account and submission time.</p><Link href="/lost-and-found" className="inline-flex min-h-11 items-center underline">Return to pet reports →</Link></section>:<>
+ {reference?<section className="mt-6 rounded-xl border border-emerald-300 bg-emerald-50 p-5" role="status"><h2 className="font-bold">Request saved</h2><p className="mt-2 break-all">Request reference: {reference}</p><p className="mt-2">Your photos remain private while pending. Check Your shared reports below for the latest review status; recovering a reference does not mean a report was approved.</p><a href="#your-shared-reports" className="mt-2 flex min-h-11 items-center font-semibold underline">Check this request’s status ↓</a><Link href="/lost-and-found" className="inline-flex min-h-11 items-center underline">Return to pet reports →</Link></section>:<>
  {!user&&!checking&&<div className="mt-5"><RequestAccount returnTo="/share-pet-report"/></div>}
  <form onSubmit={submit} className="mt-6"><fieldset disabled={!user||checking||busy} className="space-y-5">
  <fieldset disabled={frozen} className="space-y-5"><label className="block font-semibold">City<select required className={input} value={city} onChange={e=>setCity(e.target.value)}><option value="">Choose city</option>{RELAUNCH_CITY_NAMES.map(c=><option key={c}>{c}</option>)}</select></label>
@@ -51,6 +51,6 @@ export default function SharePetReport(){
  {error&&<p role="alert" className="rounded-xl bg-amber-50 border border-amber-300 p-4">{error}{uncertain&&' Do not create a new request; retry this same request to avoid duplicates.'}</p>}
  <button type="submit" className="min-h-11 w-full rounded-xl bg-[#1e3a5f] px-4 py-3 font-bold text-white disabled:opacity-50" disabled={busy||!permission}>{busy?'Preparing photos and saving…':uncertain?'Recover this request reference':'Send report for review'}</button>
  </fieldset></form></>}
- {user&&<MyPetShares userId={user.id} refresh={reference}/>}
+ {user&&<MyPetShares key={user.id} userId={user.id} refresh={reference}/>}
  </div>
 }
