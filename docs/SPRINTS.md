@@ -1,5 +1,14 @@
 # MoHoLocal — SPRINTS.md
 
+## November 16 daytime — pet-share status recovery and safer withdrawal (PET-SHARE-03 / MOBILE-21)
+
+LIVE: Your shared reports now has explicit loading, fresh empty, failure and refresh states; stale cards remain visible with a warning and withdrawal is disabled until status refresh succeeds. Withdrawal requires a separate Confirm withdrawal / Keep report step, with busy feedback, keyboard focus handling and44px minimum actions. Approved records link only to a validated stored pet UUID; approval is not a claim of present visibility or reunion. Receipt now says Request saved and links to current status instead of assuming a recovered request is still pending. Account changes remount the private request list; superseded reads cannot overwrite newer state.
+
+205regressions, TypeScript and OpenNext pass. Application source133805c0b4ded27d608492d26a9329cfa0e14d83. Native Workers Builds success and exact133805c0b4ded27d608492d26a9329cfa0e14d83 public marker accepted. Live320px read-only refresh works by pointer/keyboard, shows loading then confirmed empty status, has44px refresh control and no horizontal overflow. Screenshot inspected; viewport restored. No schema, RLS, permissions or publication changes. [Evidence](research/pet-share-status-recovery-2026-11-16.md).
+
+FB UNPUBLISHED; no outreach, imports, photo uploads or real-report changes. Photo tasks and genuine-reporter pet pilot OPEN. Real-reporter save/recovery→review→gallery→withdraw and physical-device acceptance remain OPEN; no fabricated public records. Abandoned-upload retention/moderation follow-up PET-SHARE-02 remains OPEN.
+
+
 ## November 16 — reporter-authorized pet sharing (PET-SHARE-01)
 
 LIVE: /share-pet-report accepts a Facebook reference, original date, current recorded status, description,1–3photos, credit and explicit versioned publication permission. Confirmed-account/owner-path guards, private pending bucket and RLS queue; no Facebook fetching, outreach or posting. Admin-only approval/rejection with review acknowledgement; approved photo gallery/credit and reporter withdrawal.204regressions, TypeScript and OpenNext pass; database read-back confirms private/RLS/anonymous-denied queue with0production records. Native Workers Builds success and exact6df0c9c749d492642ce33dddd5f1b86bd01df4a8 production marker accepted. Live320px form has no overflow,44px text/select controls,48px upload/submit, unchecked keyboard-operable consent and disabled submission without permission. Admin queue and pet-board entry link accepted; viewport restored.
