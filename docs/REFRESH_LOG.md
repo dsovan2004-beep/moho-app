@@ -1,5 +1,14 @@
 # MoHoLocal living-directory refresh ledger
 
+## November 15 evening — readable mobile headers and walking supply (MOBILE-16 / SUPPLY-18)
+
+LIVE: business hero icon stacks above text below400px. Production expanded description240px wide at320px and310px at390px, no horizontal overflow; keyboard expansion and city return accepted.192tests/TypeScript/OpenNext pass; native2b5d3ed96e031293e5ecd348e487e899b13793a2 success/exact production marker. Viewport restored.
+
+Art Pet existing listing gained dog-walking discovery after BOTH official city service tabs opened: Lathrop3/Manteca4 checked walking options accepted anonymously and live. Three existing sitters/walkers rechecked from primary pages; original approval dates retained. Zero new unique businesses/independent sitters this pass. Three held legacy Lathrop records re-reviewed and remain held; no closure inference. Private audit records retained. [Evidence](research/pet-care-mobile-evening-2026-11-15.md).
+
+P1 OPEN: additional independent sitters/walkers with explicit area/contact evidence; remaining legacy audits and real-device/resident acceptance. FB UNPUBLISHED; photo tasks and genuine-reporter pet pilot OPEN.
+
+
 ## November 15 — mobile return and pet-care quality (MOBILE-15 / SUPPLY-17)
 
 LIVE: top business-detail Back to results preserves validated city/service/category/sort context.44px target and keyboard return accepted at320px without overflow; viewport restored.192tests/TypeScript/OpenNext pass; native c3b5ceffb8f572b0c009a2e9fce5f0d08c3391f5 success and exact production marker.
