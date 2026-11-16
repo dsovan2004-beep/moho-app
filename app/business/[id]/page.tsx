@@ -346,7 +346,7 @@ export default async function BusinessDetailPage({ params, searchParams }: PageP
         <div className="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-5">
 
           {/* Icon + core info — always paired together */}
-          <div className="flex items-start gap-4 flex-1 min-w-0">
+          <div className="flex flex-col min-[400px]:flex-row items-start gap-4 flex-1 min-w-0">
 
             {/* Logo / icon */}
             <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl flex items-center justify-center text-3xl sm:text-4xl shrink-0 shadow-lg">
