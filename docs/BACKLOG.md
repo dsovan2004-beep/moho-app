@@ -1,5 +1,14 @@
 # MoHoLocal active execution queue
 
+## November 16 noon — pet-share send progress and sequential preparation (PET-SHARE-05 / MOBILE-23)
+
+LIVE: mobile send action distinguishes preparing each photo, private upload of each photo and saving the request. Stable polite live region announces actual stages/counts, not estimated percentages or publication. Source images are prepared sequentially instead of concurrently; all preparation must finish before this attempt uploads anything. Failure stops remaining work with stage-specific retry wording. An immediate in-flight guard prevents overlapping submit handlers; receipt requires a UUID. Existing permission/review/private Storage/idempotency rules unchanged.
+
+210regressions, TypeScript and OpenNext pass. Tests verify peak1concurrent preparation callback, complete prepare→lock→upload order, failure boundaries and no success/publication claims in progress. Isolated320px actual-component UI simulation accepts pointer/keyboard stages, polite status and no overflow; no files or backend requests. Memory use/performance on a physical phone is not benchmarked. Sourcea139783515626a8bb65038fd844713435b9f1177; native Workers Builds success and exacta139783515626a8bb65038fd844713435b9f1177 public marker accepted. Live320px form guidance, stable empty polite status region, idle aria-busy=false, unchecked consent, disabled48px submit and no overflow accepted. Screenshot inspected; viewport restored. No real upload/save was attempted. [Evidence](research/pet-share-send-progress-2026-11-16.md).
+
+FB UNPUBLISHED; no contact, imports, photo uploads, report saves or public records during this task. Photo-location/reuse tasks, genuine-reporter pet pilot, real-phone/photo-format/accessibility acceptance and abandoned-upload retention OPEN. Real upload/save/recovery/review/gallery/withdraw acceptance requires a genuine authorized report, not a simulation.
+
+
 ## November 16 — local photo previews and selection recovery (PET-SHARE-04 / MOBILE-22)
 
 LIVE: reporter photo picker previews1–3locally selected images before upload, labels cover/gallery, supports44px remove controls and returns keyboard focus to Add photos after removal. Additional selection appends; unsupported/empty/oversized/over-limit batches retain earlier photos with a clear error. Removing the cover promotes the remaining first photo. Object URLs are tied to File identity and released on selection change/unmount; locked requests do not claim photos remain unuploaded. Existing permission, private Storage, review, retry and withdrawal rules unchanged.
