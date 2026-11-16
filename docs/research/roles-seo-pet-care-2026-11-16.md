@@ -1,0 +1,25 @@
+# November16 — role ownership, Google SEO and pet-care discovery
+
+## Ownership added
+
+OPERATIONS.md now explicitly assigns Trust & Community Moderation Lead, Resident & Business Success Lead, Directory Freshness & Coverage Lead and Local SEO & Search Discovery Lead. They remain responsibilities of this implementation chat, not separate agents or authorization to send messages. SEO focuses on Google organic search across the four relaunch cities while retaining usefulness for other search engines. No search ranking/indexing guarantee or paid campaign authorized.
+
+## Build increment
+
+MOBILE-17: pet-sitting and dog-walking shortlists gain a native expandable booking checklist.44px summary, neighborhood/dates/care location, pet/visit needs, meet-and-greet/full fees/cancellation terms, and private home-access guidance. Collapsed by default; no input collection, messaging, booking, authentication or schema changes.192regressions, TypeScript and OpenNext build pass. Native application source6881a51d3f39c309228b2c6909d0d39a1ef92cd5 LIVE: successful native Workers Builds check and exact production build marker. Actual320px Lathrop pet-sitting checklist keyboard Enter expansion accepted; summary64px tall, document305px <=320px viewport; no horizontal overflow. Screenshot nov16-pet-checklist-live.png inspected, temporary viewport reset before FB review. Physical-phone/screen-reader acceptance remains open.
+
+## Provider research
+
+New bounded leads reviewed, zero provider/data publications this pass. Canine & Company search surfaced an Arizona grooming business https://www.canineandcompany.com/ distinct from secondary Stockton/Lathrop listings; do not merge. Andy/Munchkinland secondary entries lack primary target coverage; held. PetSitter.com Noah P public self-authored profile names Manteca/Lathrop/RiverIslands and sitting, but no public direct contact beyond gated Get started; identity/contact path insufficient for current publication gate. No account, private data, profile image or review imported, no contact attempted. Source:https://petsitter.com/care/trusted-pet-sitter-in-manteca-ca-affordable-care-at-2000hour-for-your-furry-friends . Do not infer walking from city search category. Existing Lathrop3/Manteca4 walking checks accepted November15 remain the last accepted counts, not new supply today.
+
+## Google SEO follow-up
+
+SEO-LOCAL-02 P1 OPEN: audit rendered four-city/service title/description/canonical, crawlable record links, sitemap eligibility, accurate business structured data and Search Console coverage/performance. Code inspection confirms city pages have generateMetadata/canonical; regional sitemap filters approved+verified records; robots points to sitemap. Directory route is a client-component wrapper without route-specific metadata, inheriting generic site metadata; assess city/service rendering and canonical strategy before changing it. No claim that Search Console was accessed or rankings/indexing improved this pass. Follow https://developers.google.com/search/docs/essentials : useful reliable content, descriptive titles/link text, crawlability, relevant metadata and no spam/guarantees. No doorway pages, fake reviews or unsupported service cities.
+
+TRUST-OPS-01 P1 OPEN: report triage categories/decision evidence/private history and pet-contact privacy acceptance. SUCCESS-OPS-01 P1 OPEN: submission/claim/correction recovery and resident outcomes. FRESH-COVER-01 P1 OPEN: twice-weekly current-source review and city/service coverage, hold reasons, event expiry; preserve existing approval dates on rechecks. These assign ownership to existing workflows; completion requires actual acceptance evidence.
+
+FB UNPUBLISHED. Photo2026/location/reuse tasks, genuine-reporter pet pilot and physical-phone/screen-reader/notification acceptance OPEN. No outreach, spending, access expansion, fabricated posts/pets/engagement or database changes.
+
+## Product alignment and bounded Facebook check
+
+MoHoLocal remains a living digital directory; pet lost/found is a supporting local information/community workflow, alongside providers/events/openings. November16 fresh browser check of one accessible Mountain House group: six visible pet/loose-dog sighting post bodies across default and Most recent keyword-search views; one selected thread opened with four visible comment/reply entries in Most relevant mode. Entries displayed2y; a commenter says pets home followed by a question about escape again. Exact references remain private outside Git, no resident identities/text/precise locations imported. Not evidence of authenticated reporter reunion, recent volume or cross-city prevalence. Search ordering/obfuscated dates prevent a current frequency claim. Prior four-city research remains separate; no claim of fresh four-city/full-group review. No reactions/posts/messages/photos copied. Prioritize searchable report/status/source continuity, explicit sighting-versus-custody, private owner contact and genuine-reporter acceptance without turning directory into a generic feed. FB frequency audit over a defined dated window remains OPEN.

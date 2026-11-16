@@ -1,5 +1,16 @@
 # MoHoLocal living-directory refresh ledger
 
+## November16 — explicit ownership, Google SEO and booking guidance (ROLE-01 / MOBILE-17)
+
+Added explicit Trust & Community Moderation, Resident & Business Success, Directory Freshness & Coverage and Local SEO & Search Discovery Lead responsibilities in OPERATIONS. SEO primarily targets Google organic search; SEO-LOCAL-02 P1 OPEN covers rendered city/service metadata/canonical, crawlability, sitemap/structured-data accuracy and Search Console/outcome follow-up. No ranking or indexing guarantee; no claim Search Console checked today.
+
+LIVE: native6881a51d3f39c309228b2c6909d0d39a1ef92cd5 success/exact marker; expandable sitting/walking booking checklist keyboard accepted at320px,64px summary/no overflow, viewport reset.192tests/TypeScript/OpenNext pass. New supplier leads HELD; zero data publications. [Evidence](research/roles-seo-pet-care-2026-11-16.md).
+
+Fresh bounded MountainHouse FB keyword review confirms pet sightings/discussion; one opened4-entry historical thread displayed2y. No current-volume/all-city frequency claim, no content imports. Digital directory remains core; pet reports support it. Defined dated-window frequency audit OPEN. TRUST-OPS-01, SUCCESS-OPS-01, FRESH-COVER-01 own existing moderation/recovery/freshness workflows; acceptance outstanding.
+
+FB UNPUBLISHED; new independent sitter/walker qualification, photo tasks, genuine-reporter pilot and physical-device acceptance OPEN.
+
+
 ## November 15 evening — readable mobile headers and walking supply (MOBILE-16 / SUPPLY-18)
 
 LIVE: business hero icon stacks above text below400px. Production expanded description240px wide at320px and310px at390px, no horizontal overflow; keyboard expansion and city return accepted.192tests/TypeScript/OpenNext pass; native2b5d3ed96e031293e5ecd348e487e899b13793a2 success/exact production marker. Viewport restored.
