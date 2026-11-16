@@ -71,6 +71,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title,
     description,
+    alternates: { canonical: `https://www.moholocal.com/business/${biz.id}` },
     openGraph: {
       title,
       description,

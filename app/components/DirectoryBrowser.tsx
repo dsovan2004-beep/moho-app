@@ -118,7 +118,7 @@ function BusinessCard({ biz, activeCategory, city, service, returnTo, showApprov
       <div className="flex-1 min-w-0">
         {/* Resident name first; owner actions follow contact details */}
         <div className="flex items-start justify-between gap-2">
-          <Link href={businessHref(biz.id, city, service, returnTo)} className="min-w-0 flex-1">
+          <Link href={businessHref(biz.id, city, service, returnTo)} className="min-w-0 min-h-11 flex flex-1 items-center rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700">
             <h3 className="font-bold text-gray-900 group-hover:text-blue-700 transition leading-snug break-words">
               {biz.name}
             </h3>
