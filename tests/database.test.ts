@@ -26,7 +26,7 @@ test('setup isolated fixture and apply the exact production migration', () => {
   sql(schema)
   sql(readFileSync('sql/add_post_reactions.sql', 'utf8'))
   sql('create extension pg_trgm; create index fixture_business_trgm on public.businesses using gin(name gin_trgm_ops);')
-  sql(`insert into auth.users values ('${admin}','dsovan2004@gmail.com',now()),('${alice}','alice@example.test',now()),('${bob}','bob@example.test',now()),('${unconfirmed}','unconfirmed@example.test',null);`)
+  sql(`insert into auth.users(id,email,email_confirmed_at) values ('${admin}','dsovan2004@gmail.com',now()),('${alice}','alice@example.test',now()),('${bob}','bob@example.test',now()),('${unconfirmed}','unconfirmed@example.test',null);`)
   for (const migration of readdirSync('supabase/migrations').filter(f => f.endsWith('.sql')).sort()) {
     sql(readFileSync(`supabase/migrations/${migration}`, 'utf8'))
   }
@@ -610,4 +610,41 @@ test('late approval ranks old records ahead of newer creation dates; tied pages 
  select id from public.businesses where id in ('${old}','${newer}','${hidden}') order by verified_at desc nulls last,created_at desc nulls last,id asc limit 1 offset 1;
  rollback;`).split('\n')
  assert.deepEqual(result,[old,old,newer,old,newer])
+})
+
+const shareId='00000000-0000-4000-8000-000000000091'
+const photoPath=`${alice}/${shareId}/0.jpg`
+const sharePayload={id:shareId,city:'Lathrop',status:'found',title:'Fixture found pet',description:'Isolated fixture only',facebook_url:'https://www.facebook.com/groups/123/posts/456/',report_date:'2026-11-15',credit:'Fixture photographer',permission:true,permission_version:'2026-11-16-v1',photo_paths:[photoPath]}
+const shareCreate=(changes={})=>`public.submit_pet_share('${JSON.stringify({...sharePayload,...changes})}'::jsonb)`
+const photoFixture=`insert into storage.objects(bucket_id,name,owner_id) values('pet-share-pending','${photoPath}','${alice}');`
+test('pet share rejects missing consent, missing photos and unconfirmed identity',()=>{
+ assert.throws(()=>sql(`begin;${photoFixture}${as(alice)}select ${shareCreate({permission:false})};rollback;`),/permission fields/)
+ assert.throws(()=>sql(`begin;${photoFixture}${as(alice)}select ${shareCreate({permission_version:null})};rollback;`),/permission fields/)
+ assert.throws(()=>sql(`begin;${as(alice)}select ${shareCreate()};rollback;`),/Photo ownership/)
+ assert.throws(()=>sql(`begin;${photoFixture}${as(unconfirmed)}select ${shareCreate()};rollback;`),/Confirmed sign-in/)
+ assert.throws(()=>sql(`begin;${photoFixture}${as(bob)}select ${shareCreate()};rollback;`),/Photo ownership/)
+})
+test('pet share is idempotent, private while pending, admin-reviewed, and withdrawable',()=>{
+ const result=sql(`begin;${photoFixture}${as(alice)}select ${shareCreate()};select ${shareCreate()};
+ select count(*) from public.pet_report_shares; reset role;set local role anon;set local request.jwt.claim.sub='';
+ select public.pet_share_media('${shareId}') is null; select count(*) from storage.objects where bucket_id='pet-share-pending';
+ reset role;${as(admin)}select public.review_pet_share('${shareId}','approve',true) is not null;
+ reset role;set local role anon;set local request.jwt.claim.sub='';select public.pet_share_media('${shareId}') is not null;select count(*) from storage.objects where bucket_id='pet-share-pending';
+ reset role;${as(alice)}select public.withdraw_pet_share('${shareId}');
+ reset role;set local role anon;set local request.jwt.claim.sub='';select public.pet_share_media('${shareId}') is null;select count(*) from storage.objects where bucket_id='pet-share-pending';rollback;`).split('\n').filter(Boolean)
+ assert.deepEqual(result,[shareId,shareId,'1','t','0','t','t','1','t','0'])
+ assert.throws(()=>sql(`begin;${photoFixture}${as(alice)}select ${shareCreate()};select public.review_pet_share('${shareId}','approve',true);rollback;`),/Admin required/)
+ assert.throws(()=>sql(`begin;${photoFixture}${as(alice)}select ${shareCreate()};reset role;${as(admin)}select public.review_pet_share('${shareId}','approve',false);rollback;`),/Review permission/)
+})
+test('pet-share storage denies anonymous uploads, unconfirmed uploads and other-account paths',()=>{
+ assert.throws(()=>sql(`begin;set local role anon;insert into storage.objects(bucket_id,name,owner_id) values('pet-share-pending','${photoPath}','${alice}');rollback;`),/row-level security/)
+ assert.throws(()=>sql(`begin;${as(unconfirmed)}insert into storage.objects(bucket_id,name,owner_id) values('pet-share-pending','${unconfirmed}/${shareId}/0.jpg','${unconfirmed}');rollback;`),/row-level security/)
+ assert.throws(()=>sql(`begin;${as(bob)}insert into storage.objects(bucket_id,name,owner_id) values('pet-share-pending','${photoPath}','${bob}');rollback;`),/row-level security/)
+ assert.equal(sql(`begin;${photoFixture}${as(bob)}select count(*) from storage.objects where bucket_id='pet-share-pending';rollback;`),'0')
+})
+
+test('expired approved shares no longer expose public photo metadata',()=>{
+ assert.equal(sql(`begin;${photoFixture}${as(alice)}select ${shareCreate()};reset role;${as(admin)}select public.review_pet_share('${shareId}','approve',true);reset role;
+ update public.lost_and_found set expires_at=now()-interval '1 second' where id=(select published_report_id from public.pet_report_shares where id='${shareId}');
+ set local role anon;set local request.jwt.claim.sub='';select public.pet_share_media('${shareId}') is null;select count(*) from storage.objects where bucket_id='pet-share-pending';rollback;`).split('\n').slice(-2).join(':'),'t:0')
 })

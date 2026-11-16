@@ -7,6 +7,7 @@ import { getSupabaseClient } from '@/lib/supabase'
 import Link from 'next/link'
 import ResidentOutcomeSummary from '@/app/components/ResidentOutcomeSummary'
 import PetModeration from '@/app/components/PetModeration'
+import PetShareInbox from '@/app/components/PetShareInbox'
 import BusinessRequestInbox from '@/app/components/BusinessRequestInbox'
 import { reviewBusiness } from '@/lib/review-business'
 
@@ -269,6 +270,7 @@ export default function AdminPage() {
         <ResidentOutcomeSummary />
         <BusinessRequestInbox />
         <PetModeration />
+        <PetShareInbox />
 
         {/* City Audit link */}
         <Link

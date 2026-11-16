@@ -240,6 +240,7 @@ export default async function LostAndFoundPage({ searchParams }: PageProps) {
       {/* ── Header ── */}
       <div className="flex items-start justify-between gap-4 flex-wrap mb-6">
         <div>
+          <Link href="/share-pet-report" className="inline-flex min-h-11 items-center font-semibold underline mb-2">Share your existing pet report →</Link>
           <h1 className="text-2xl font-extrabold text-gray-900">🐾 Lost &amp; Found Pets</h1>
           <p className="text-gray-500 text-sm mt-1">
             {includeOlder ? 'Report history; older reports may be out of date' : 'Reports added or reporter-confirmed in the last 30 days'} · Confirm the date and current status before sharing.
