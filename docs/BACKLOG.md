@@ -1,5 +1,14 @@
 # MoHoLocal active execution queue
 
+## November 16 — local photo previews and selection recovery (PET-SHARE-04 / MOBILE-22)
+
+LIVE: reporter photo picker previews1–3locally selected images before upload, labels cover/gallery, supports44px remove controls and returns keyboard focus to Add photos after removal. Additional selection appends; unsupported/empty/oversized/over-limit batches retain earlier photos with a clear error. Removing the cover promotes the remaining first photo. Object URLs are tied to File identity and released on selection change/unmount; locked requests do not claim photos remain unuploaded. Existing permission, private Storage, review, retry and withdrawal rules unchanged.
+
+207regressions, TypeScript and OpenNext pass. Isolated320px browser test used labeled synthetic TEST images only:2decoded blob previews,44px removal/no overflow, keyboard cover removal, unsupported-file recovery and three-photo limit preserving the full set accepted. Local server logged onlyGETassets; no submission or storage upload. Sourcea216a86feba6367d0d0589e0ba4ca66e4188f71a; native Workers Builds success and exacta216a86feba6367d0d0589e0ba4ca66e4188f71a public marker accepted. Live320px form decoded a labeled local TEST fixture as a blob preview; Remove44px, no overflow, consent unchecked/submit disabled. Keyboard removal returned to0photos and focused Choose photos. No upload/submission; viewport reset. [Evidence](research/pet-photo-picker-2026-11-16.md).
+
+FB UNPUBLISHED; no outreach/imports or real pet report changes. City photo tasks and genuine-reporter pilot OPEN; selecting local test images is not reporter permission or end-to-end publication acceptance. Physical-device photo selection/preparation/upload→review→gallery/withdraw and abandoned-upload retention remain OPEN.
+
+
 ## November 16 daytime — pet-share status recovery and safer withdrawal (PET-SHARE-03 / MOBILE-21)
 
 LIVE: Your shared reports now has explicit loading, fresh empty, failure and refresh states; stale cards remain visible with a warning and withdrawal is disabled until status refresh succeeds. Withdrawal requires a separate Confirm withdrawal / Keep report step, with busy feedback, keyboard focus handling and44px minimum actions. Approved records link only to a validated stored pet UUID; approval is not a claim of present visibility or reunion. Receipt now says Request saved and links to current status instead of assuming a recovered request is still pending. Account changes remount the private request list; superseded reads cannot overwrite newer state.
