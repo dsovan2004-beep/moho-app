@@ -1,8 +1,11 @@
 'use client'
-import {useState} from 'react'
+import {useRef,useState} from 'react'
 import Link from 'next/link'
 import MyPetShares from '@/app/components/MyPetShares'
 import PetPhotoPicker from '@/app/components/PetPhotoPicker'
+import PetShareSendProgress from '@/app/components/PetShareSendProgress'
+import {sendPetSharePhotos,petShareSendMessage,type PetShareSendProgress as SendProgress} from '@/lib/pet-share-send'
+import {UUID} from '@/lib/directory-requests'
 import {getSupabaseClient} from '@/lib/supabase'
 import {RELAUNCH_CITY_NAMES} from '@/lib/cities'
 import {RequestAccount,useRequestAccount} from '@/app/components/RequestAccount'
@@ -20,23 +23,32 @@ async function preparePhoto(file:File):Promise<Blob>{
 }
 export default function SharePetReport(){
  const {user,checking}=useRequestAccount();const [city,setCity]=useState('');const [status,setStatus]=useState('lost');const [title,setTitle]=useState('');const [description,setDescription]=useState('');const [sourceUrl,setSourceUrl]=useState('');const [reportDate,setReportDate]=useState('');const [credit,setCredit]=useState('');const [permission,setPermission]=useState(false);const [photos,setPhotos]=useState<File[]>([])
+ const inFlight=useRef(false);const [progress,setProgress]=useState<SendProgress|null>(null)
  const [frozen,setFrozen]=useState(false);const [busy,setBusy]=useState(false);const [error,setError]=useState('');const [reference,setReference]=useState('');const [requestId]=useState(()=>crypto.randomUUID());const [uncertain,setUncertain]=useState(false)
- async function submit(e:React.FormEvent){e.preventDefault();if(!user||busy)return
+ async function submit(e:React.FormEvent){e.preventDefault();if(!user||inFlight.current)return
  const validation=validatePetShare({city,status,title,description,sourceUrl,reportDate,credit,permission});if(validation){setError(validation);return}if(photos.length<1||photos.length>3){setError('Choose one to three photos.');return}
- setBusy(true);setError('');let saveStarted=false
+ inFlight.current=true;setBusy(true);setError('');let saveStarted=false
  try{const supabase=getSupabaseClient();const paths:string[]=[]
- const prepared=await Promise.all(photos.map(preparePhoto));setFrozen(true)
- for(let i=0;i<photos.length;i++){const blob=prepared[i];const path=`${user.id}/${requestId}/${i}.jpg`;const {error:uploadError}=await supabase.storage.from('pet-share-pending').upload(path,blob,{contentType:'image/jpeg',upsert:false});if(uploadError&&!uploadError.message.toLowerCase().includes('already exists'))throw new Error('Photo upload could not finish. Your report has not been submitted. Retry with the same photos.');paths.push(path)}
+ await sendPetSharePhotos(photos,{
+  prepare:preparePhoto,onPrepared:()=>setFrozen(true),onProgress:setProgress,
+  upload:async(blob,index)=>{
+   const path=`${user.id}/${requestId}/${index}.jpg`
+   const {error:uploadError}=await supabase.storage.from('pet-share-pending').upload(path,blob,{contentType:'image/jpeg',upsert:false})
+   if(uploadError&&!uploadError.message.toLowerCase().includes('already exists'))throw uploadError
+   paths.push(path)
+  },
+ })
+ setProgress({phase:'saving'})
  saveStarted=true;const {data,error:saveError}=await supabase.rpc('submit_pet_share',{p:{id:requestId,city,status,title:title.trim(),description:description.trim(),facebook_url:facebookReportUrl(sourceUrl),report_date:reportDate,credit:credit.trim(),permission,permission_version:PET_SHARE_PERMISSION_VERSION,photo_paths:paths}})
  if(saveError)throw new Error(saveError.code==='P0001'?'Daily submission limit reached. Try tomorrow.':'Could not confirm the saved request. Retry this request with the same details to recover its reference.')
- if(typeof data!=='string')throw new Error('Could not confirm the saved request. Retry with the same details.');setReference(data);setUncertain(false)
- }catch(e){setUncertain(saveStarted);setError(e instanceof Error?e.message:'Submission unavailable. Your details remain here.')}finally{setBusy(false)}
+ if(typeof data!=='string'||!UUID.test(data))throw new Error('Could not confirm the saved request. Retry with the same details.');setReference(data);setUncertain(false)
+ }catch(e){setUncertain(saveStarted);setError(e instanceof Error?e.message:'Submission unavailable. Your details remain here.')}finally{inFlight.current=false;setBusy(false);setProgress(null)}
  }
  const input='mt-1 min-h-11 w-full rounded-xl border border-slate-300 bg-white px-3 py-2'
  return <div className="max-w-2xl mx-auto px-4 py-8"><Link href="/lost-and-found" className="inline-flex min-h-11 items-center underline">← Pet reports</Link><h1 className="mt-4 text-3xl font-bold">Share your existing pet report</h1><p className="mt-3 text-slate-600">Already posted on Facebook? Submit your own report and photos here for review. We do not fetch Facebook content, contact anyone or post to Facebook.</p>
  {reference?<section className="mt-6 rounded-xl border border-emerald-300 bg-emerald-50 p-5" role="status"><h2 className="font-bold">Request saved</h2><p className="mt-2 break-all">Request reference: {reference}</p><p className="mt-2">Your photos remain private while pending. Check Your shared reports below for the latest review status; recovering a reference does not mean a report was approved.</p><a href="#your-shared-reports" className="mt-2 flex min-h-11 items-center font-semibold underline">Check this request’s status ↓</a><Link href="/lost-and-found" className="inline-flex min-h-11 items-center underline">Return to pet reports →</Link></section>:<>
  {!user&&!checking&&<div className="mt-5"><RequestAccount returnTo="/share-pet-report"/></div>}
- <form onSubmit={submit} className="mt-6"><fieldset disabled={!user||checking||busy} className="space-y-5">
+ <form onSubmit={submit} aria-busy={busy} className="mt-6"><fieldset disabled={!user||checking||busy} className="space-y-5">
  <fieldset disabled={frozen} className="space-y-5"><label className="block font-semibold">City<select required className={input} value={city} onChange={e=>setCity(e.target.value)}><option value="">Choose city</option>{RELAUNCH_CITY_NAMES.map(c=><option key={c}>{c}</option>)}</select></label>
  <label className="block font-semibold">Facebook report link<input required type="url" maxLength={2000} className={input} value={sourceUrl} onChange={e=>setSourceUrl(e.target.value)}/><span className="block text-sm font-normal mt-1">The link will be public after approval. Do not share a private-group link without permission.</span></label>
  <label className="block font-semibold">Original report date<input required type="date" className={input} value={reportDate} max={new Date().toISOString().slice(0,10)} onChange={e=>setReportDate(e.target.value)}/></label>
@@ -50,7 +62,9 @@ export default function SharePetReport(){
  </fieldset>
  {frozen&&<p className="text-sm">Details are locked while this request is saved or recovered. Retry with the same request; reload only to start a different report.</p>}
  {error&&<p role="alert" className="rounded-xl bg-amber-50 border border-amber-300 p-4">{error}{uncertain&&' Do not create a new request; retry this same request to avoid duplicates.'}</p>}
- <button type="submit" className="min-h-11 w-full rounded-xl bg-[#1e3a5f] px-4 py-3 font-bold text-white disabled:opacity-50" disabled={busy||!permission}>{busy?'Preparing photos and saving…':uncertain?'Recover this request reference':'Send report for review'}</button>
+ <PetShareSendProgress progress={busy?progress:null}/>
+ <p className="text-sm text-slate-600">Photos are prepared one at a time on your device, then uploaded privately. Keep this page open while sending.</p>
+ <button type="submit" className="min-h-11 w-full rounded-xl bg-[#1e3a5f] px-4 py-3 font-bold text-white disabled:opacity-50" disabled={busy||!permission}>{busy?(progress?petShareSendMessage(progress):'Starting…'):uncertain?'Recover this request reference':'Send report for review'}</button>
  </fieldset></form></>}
  {user&&<MyPetShares key={user.id} userId={user.id} refresh={reference}/>}
  </div>
