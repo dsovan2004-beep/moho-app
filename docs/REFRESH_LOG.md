@@ -625,3 +625,13 @@ LIVE/accepted: Read full description / Show less reveals previously clipped busi
 Two NEW source-checked listings: Art Pet Mobile Grooming (Lathrop/Manteca) and Bone-a-Fide Dog Training (Manteca only). ExistingFreshPup expanded to explicit Lathrop coverage from dedicated primary page, approval date preserved. Duplicate guards, three private audits and anonymous read-back accepted. Actual Newest1036 (+2), Lathrop mobile-grooming6, Manteca training4, Activity and detail contact evidence accepted. No portfolios/reviews copied or credential/quality/availability claims inferred. ComfortedKitty HELD: primary coverage unestablished despite secondary-city appearance.
 
 FB UNPUBLISHED; photo tasks, genuine-reporter pet pilot and physical-phone/screen-reader/notification gates OPEN. Next: continue exact-area pet-care supply and resident/device/outcome validation, keeping new additions distinct from rechecks.
+
+## November 16 — pet-board SEO and mobile filters (SEO-LOCAL-04 / MOBILE-20 / SUPPLY-21)
+
+LIVE: default pet-board filter URLs canonicalize to the clean board; meaningful city/status/history views retain distinct metadata. Invalid/duplicate filters are noindex,follow. City/status controls and report CTA measure44px at320px, with no horizontal overflow. Keyboard Lathrop/found selection and separate Lathrop history canonical accepted; viewport restored.198tests, TypeScript and OpenNext pass. Native f7b7720e053566ba7b10af9bfcbdb7b2cd7e7a4b completed success and exact public build marker accepted. This fixes a sampled Search Console duplicate cohort; Google recrawl/resolution remains OPEN.
+
+Additional PSI individual profiles reviewed: search-city inclusion does not establish operator travel coverage. All Wags Care lacks explicit target-city evidence; Camp Cardinale is Los Gatos facility boarding; other broad-region leads remain held. Zero new unique providers or data publications this pass. Exact-area Lathrop/Manteca independent sitters/walkers remains P1 OPEN.
+
+Lathrop FB2026-filtered lost-cat sample:3visible result bodies; one full found-cat post and5visible top-level discussion entries reviewed, nested replies not expanded. Historical17w comments expose photo-comparison and claimed distinguishing-feature conflicts, not a confirmed match/custody. Separate missing/reunited posts must not be merged by pet name. Private evidence outside Git; no content imports or outreach. [Evidence](research/pet-board-seo-mobile-research-2026-11-16.md).
+
+FB UNPUBLISHED; photo tasks, genuine-reporter pet pilot and physical-device acceptance OPEN. Next: explicit-area supply, genuine reporter matching/custody validation, and DATA-03 query-failure versus empty-state handling. No current incident-frequency or new Google-indexing claim.
