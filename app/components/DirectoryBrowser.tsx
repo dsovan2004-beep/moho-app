@@ -419,6 +419,16 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
       <DirectoryServices city={city} selected={service?.key} />
       {service && <div className="bg-[#f0f4ec] border border-[#dce5d5] p-4 rounded-xl mb-5"><p className="font-semibold">{service.label} · website-checked shortlist</p><p className="text-sm text-slate-600 mt-1">Dated website checks for this service and city. Confirm your job and availability directly; this is not a quality endorsement.</p><Link className="inline-flex min-h-11 items-center mt-2 text-sm underline" href={`/directory?${new URLSearchParams({city,category:service.category})}`}>Browse all {service.category.toLowerCase()} listings →</Link></div>}
 
+      {(service?.key === 'pet-sitting' || service?.key === 'dog-walking') && <details className="mb-5 rounded-xl border border-slate-200 bg-white px-4">
+        <summary className="min-h-11 cursor-pointer py-3 text-sm font-semibold text-[#19352d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">What to ask before booking pet care</summary>
+        <ul className="list-disc space-y-2 pb-4 pl-5 text-sm leading-relaxed text-slate-700">
+          <li>Confirm your neighborhood, dates and whether care is at your home or the sitter’s.</li>
+          <li>Discuss your pets, visit or walk length, and any care needs.</li>
+          <li>Ask about a meet-and-greet, the full quote including travel or holiday fees, and cancellation terms.</li>
+          <li>Arrange home access privately after choosing a provider; do not post keys, access codes or travel plans publicly.</li>
+        </ul>
+      </details>}
+
       <ShortlistShare city={city} service={service?.key} />
 
       <div className="flex flex-col lg:flex-row gap-6">

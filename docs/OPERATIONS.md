@@ -50,6 +50,10 @@ Engineering, UX, editorial freshness, security/privacy, community/pet operations
 | QA / release lead | Meaningful tests, builds, deployment verification and real live checks |
 | Delivery / operations lead | Backlog, roadmap, sprint, recurring freshness workflow, refresh ledger and release evidence |
 | Analytics / business strategy lead | Useful contacts, replies, event/calendar actions, corrections, resolved reports and sustainable growth |
+| Trust & Community Moderation Lead | Spam/scam reports, disputed listings and discussion reports; pet-contact privacy, evidence-based decisions and private moderation history. No fabricated engagement or unsupported accusations. |
+| Resident & Business Success Lead | Submission, claim and correction journeys; clear confirmations, recovery and successful resident/business connections. No outreach unless separately authorized. |
+| Directory Freshness & Coverage Lead | Twice-weekly source checks, expired events, held records and explicit city/service gaps; preserve approval dates on rechecks and record scoped source evidence. |
+| Local SEO & Search Discovery Lead | Useful four-city/service landing pages, crawl/index health, canonical URLs, accurate structured data, internal links and Search Console follow-up. Measure search-led useful contacts/inquiries; no ranking guarantees, fake reviews, doorway pages or unsupported coverage. |
 
 
 The new local openings and community editor responsibilities were explicitly requested November 6. A November 6 request separately authorized FRESH-01, the active Tuesday/Friday 9 AM Pacific refresh in this chat. Messaging people remains prohibited.
