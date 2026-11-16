@@ -1,5 +1,16 @@
 # MoHoLocal living-directory refresh ledger
 
+## November16 — Search Console evidence and canonical fix (SEO-LOCAL-03 / MOBILE-19 / SUPPLY-20)
+
+LIVE: business parameter variants now canonicalize to clean stored-ID URL; directory names have44px minimum tap targets/focus styling.195tests/TypeScript/OpenNext pass; nativec0f90c51c73bb54007a69424ca6f0f5fe427d78b success/exact marker. Production canonical/return context,320px44px target/no overflow and keyboard detail navigation accepted; viewport restored.
+
+Search Console URL-prefix access confirmed. Dated duplicate sample exposes business parameter URLs; soft404 sample comprises free-text searches already noindex. Sitemap Success/lastreadNovember15. Detailed nonpublic metrics kept privately outside Git; no resolved-count/recrawl/ranking claim, validation or access changes. Remaining duplicate cohorts P1 OPEN. [Evidence](research/search-console-mobile-pet-followup-2026-11-16.md).
+
+MantecaCritterSitters corrected with required consultation from fresh rates/FAQ checks; original approval date/coverage preserved. Private audit and anonymous/live read-back accepted. Zero new unique providers this pass; additional Lathrop/Manteca sitting/walking supply OPEN.
+
+Regional FB2026-filtered sample:4visible result items, one expanded reunion narrative and one selected missing-dog dialog No comments yet; private originals/date limits retained. No incident-frequency or authenticated-custody inference and no imports. FB UNPUBLISHED; photo tasks, genuine-reporter pet pilot and real-device acceptance OPEN.
+
+
 ## November16 — Google directory metadata and one new sitter (SEO-LOCAL-02 / MOBILE-18 / SUPPLY-19)
 
 LIVE: descriptive validated city/service metadata and matching mobile service H1; sort/tracking canonical consolidation, arbitrary free-text searches/invalid filters noindex,follow.195tests/TypeScript/OpenNext pass; native04db7e72fa206623dd17f05b318911bdf3a79600 success and exact marker. Manteca dog-walking title/H1/canonical and four records accepted at320px without overflow; Tracy search noindex accepted. Screenshot inspected, viewport restored. Search Console/indexing/ranking not claimed; structured-data/rendering and outcome follow-up OPEN.

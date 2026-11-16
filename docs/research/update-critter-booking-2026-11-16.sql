@@ -1,0 +1,12 @@
+begin;
+do $update$ declare bid uuid:='d52dd83c-ca46-48ea-9064-5b651286f7bd'; old_b jsonb; old_c jsonb; new_b jsonb; new_c jsonb; begin
+select to_jsonb(b) into old_b from businesses b where id=bid and name='Manteca Critter Sitters' and verified and status='approved' and claimed=false and description='Advertises drop-in pet care and midday dog walks in Manteca, with pets staying in their own home. Call to confirm your address, animal needs, visit schedule, total quote and available dates. No boarding facility or visitable office established.' for update;
+select to_jsonb(c) into old_c from listing_checks c where business_id=bid and service_areas=array['Manteca'];
+if old_b is null or old_c is null then raise exception 'Current listing changed; review required'; end if;
+update businesses set description='Advertises in-home drop-in pet care and dog walks in Manteca. The website requires a consultation before booking; its FAQ describes daytime visits. Call to discuss your address, pet routine, visit length, full quote and available dates. No visitor office or holiday availability established.' where id=bid;
+update listing_checks set checked_at=now(),source_url='https://www.mantecacrittersitters.com/rates',scope_note='Fresh normal-browser rates/FAQ pages checked November16,2026.2095391025 contact, required consultation before booking, daytime drop-in care/walks, Manteca service scope checked. Generic immediate surrounding areas and discussion on request do not establish Lathrop coverage. FAQ specializes in drop-ins; overnight capability not established. No fixed quote/cancellation fee, medical capability, licensing, insurance, bonding, quality/safety or holiday availability adopted. No images/testimonials reused or contact submitted. Sources:https://www.mantecacrittersitters.com/rates https://www.mantecacrittersitters.com/faqs' where business_id=bid;
+select to_jsonb(b) into new_b from businesses b where id=bid;
+select to_jsonb(c) into new_c from listing_checks c where business_id=bid;
+insert into directory_private.listing_corrections(business_id,previous_values,applied_values,reason,source_reference) values(bid,old_b||jsonb_build_object('listing_check',old_c),new_b||jsonb_build_object('listing_check',new_c),'Clarify required pre-booking consultation from primary service page; retain original approval timestamp and Manteca-only checked coverage.','https://www.mantecacrittersitters.com/rates');
+end $update$;
+commit;

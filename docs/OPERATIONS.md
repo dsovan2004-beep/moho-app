@@ -58,6 +58,10 @@ Engineering, UX, editorial freshness, security/privacy, community/pet operations
 
 The new local openings and community editor responsibilities were explicitly requested November 6. A November 6 request separately authorized FRESH-01, the active Tuesday/Friday 9 AM Pacific refresh in this chat. Messaging people remains prohibited.
 
+## Search Console property — November16
+
+Use the existing authorized URL-prefix property `https://www.moholocal.com/`. The domain-property variant was not authorized; do not treat that as loss of prefix access or expand ownership/permissions. Keep nonpublic performance/query metrics in private research outside Git. Report indexing and crawl dates as displayed, and do not claim recrawl/ranking success from deployment alone.
+
 ## Editorial rules
 
 - Prefer current business/operator pages, City records and official organizer announcements. Keep source URLs and the check date.
