@@ -1,5 +1,14 @@
 # MoHoLocal — SPRINTS.md
 
+## November 17 — choose a pet report cover before sending (PET-SHARE-07 / MOBILE-25)
+
+LIVE: gallery previews offer **Use as cover photo** without removing/reselecting files. Promotion preserves each File and the remaining gallery order. Polite feedback announces cover/removal changes; focus returns to the stable input. Explicit disabled states and handler guards prevent changing locked selections. Existing permission, private pending photos, immutable request and review rules remain unchanged.
+
+213 regressions, TypeScript and OpenNext pass. Local 320px actual-picker checks accept keyboard promotion, identity/order/count preservation, decoded previews, 44px buttons, locked controls and no overflow. Native Workers Builds succeeded for `0139a2ccc1942744d1b5aa5e9bb152c304557fe5`; public marker matched. Live authenticated form accepted pointer cover change, local TEST previews, unchecked consent, disabled Send and 320px/no overflow. Previews cleared and viewport restored. No photo upload, real request or publication. [Acceptance evidence](research/pet-share-cover-selection-2026-11-17.md).
+
+FB UNPUBLISHED; no contact or imports. Photo-location/date/reuse tasks, genuine-reporter pet pilot, physical-phone/screen-reader acceptance and abandoned-upload retention remain OPEN. Next: genuine authorized send/recovery/review/gallery/withdraw evidence and remaining mobile friction. Today's completed scheduled freshness period was not repeated.
+
+
 ## Tuesday November 17, 9 AM Pacific — FRESH-01 completed
 
 DATA LIVE: corrected MoHoHo market venue to Town Hall parking lot and scoped6–9PM market schedule; retained unknown overall end. Added December12City holiday breakfast as9–10AM and10:30–11:30AM seatings, UnityCenter, with explicit street-address/availability caveats. Duplicate/current-record guards, private excluded0600before/after history, anonymous read-back, live city/detail/Activity and exact UTC calendar endpoints accepted. Two seatings of one program; no copied imagery or new provider count. [Sources and acceptance](research/freshness-2026-11-17.md).
