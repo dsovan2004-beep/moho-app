@@ -1,5 +1,12 @@
 # MoHoLocal — SPRINTS.md
 
+## Tuesday November 17, 9 AM Pacific — FRESH-01 completed
+
+DATA LIVE: corrected MoHoHo market venue to Town Hall parking lot and scoped6–9PM market schedule; retained unknown overall end. Added December12City holiday breakfast as9–10AM and10:30–11:30AM seatings, UnityCenter, with explicit street-address/availability caveats. Duplicate/current-record guards, private excluded0600before/after history, anonymous read-back, live city/detail/Activity and exact UTC calendar endpoints accepted. Two seatings of one program; no copied imagery or new provider count. [Sources and acceptance](research/freshness-2026-11-17.md).
+
+Four-city event/opening sample supports remaining rows unchanged; JerseyMike's403 and Lathrop parade venue remain unconfirmed. Tyler/iThink coverage/contact rechecks unchanged; no artificial check-date/Activity updates. Exact approved sitting/walking coverage: MH3/3, Tracy6/5, Lathrop3/3, Manteca4/4; supply gaps OPEN. Photo search did not qualify2026MH street/reuse evidence. No app/schema/security/deployment change or unnecessary build. FB UNPUBLISHED; photo tasks, genuine-reporter pet pilot, phone/screen-reader gates, event-audit persistence and abandoned-upload retention OPEN. No outreach/imports/permission requests or fabricated engagement. This scheduled period is complete; do not repeat it.
+
+
 ## November 17 — check saved pet requests before retry (PET-SHARE-06 / MOBILE-24)
 
 LIVE: an uncertain send first performs an authenticated request-ID/account-scoped read before image preparation/upload. A saved match recovers the receipt; a confirmed missing row offers a separate retry choice and checks again before retrying the same ID. Failed/malformed/wrong-reference reads stop with Nothing was resent, not a missing/success claim. Prior persistence uncertainty survives later errors. Recovery shows an explicitly unconfirmed request ID and a link to Your shared reports; account changes cannot silently resend the original request. Polite checking feedback and explanatory mobile guidance added.
