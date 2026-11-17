@@ -1,5 +1,14 @@
 # MoHoLocal active execution queue
 
+## November 17 — check saved pet requests before retry (PET-SHARE-06 / MOBILE-24)
+
+LIVE: an uncertain send first performs an authenticated request-ID/account-scoped read before image preparation/upload. A saved match recovers the receipt; a confirmed missing row offers a separate retry choice and checks again before retrying the same ID. Failed/malformed/wrong-reference reads stop with Nothing was resent, not a missing/success claim. Prior persistence uncertainty survives later errors. Recovery shows an explicitly unconfirmed request ID and a link to Your shared reports; account changes cannot silently resend the original request. Polite checking feedback and explanatory mobile guidance added.
+
+212regressions, TypeScript and OpenNext pass. Helper tests cover saved/null/error/thrown/undefined/mismatched responses and invalid references; checking-progress rendering stays covered. Isolated320px actual-helper/widget simulation accepts pointer/keyboard found/missing/failure examples with no overflow; no database client, uploads or reports. Source86dab9567015e5af75c545369ca99162cb182402; native Workers Builds success and exact86dab9567015e5af75c545369ca99162cb182402 public marker accepted. Live320px recovery guidance, unchecked consent, disabled48px submit, idle form and no overflow accepted. Screenshot inspected; viewport restored. No real send/retry was performed. [Evidence](research/pet-share-reference-recovery-2026-11-17.md).
+
+FB UNPUBLISHED; no contact/imports, photo uploads, real report saves or publications. No schema/RLS/key/permission changes. Photo tasks and genuine-reporter pet pilot OPEN; real uncertain-send/readback/retry, physical-device and screen-reader acceptance still require genuine authorized evidence. Abandoned-upload retention remains OPEN.
+
+
 ## November 16 noon — pet-share send progress and sequential preparation (PET-SHARE-05 / MOBILE-23)
 
 LIVE: mobile send action distinguishes preparing each photo, private upload of each photo and saving the request. Stable polite live region announces actual stages/counts, not estimated percentages or publication. Source images are prepared sequentially instead of concurrently; all preparation must finish before this attempt uploads anything. Failure stops remaining work with stage-specific retry wording. An immediate in-flight guard prevents overlapping submit handlers; receipt requires a UUID. Existing permission/review/private Storage/idempotency rules unchanged.
