@@ -3,8 +3,10 @@ import {PET_PHOTO_LIMIT} from './pet-share-photos'
 export type PetShareSendProgress =
  | {phase:'preparing'|'uploading';photo:number;total:number}
  | {phase:'saving'}
+ | {phase:'checking'}
 
 export function petShareSendMessage(progress:PetShareSendProgress):string {
+ if(progress.phase==='checking')return 'Checking for your saved request…'
  if(progress.phase==='saving')return 'Saving your request for review…'
  return progress.phase==='preparing'
   ? `Preparing photo ${progress.photo} of ${progress.total} on this device…`

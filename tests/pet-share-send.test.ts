@@ -9,7 +9,7 @@ test('photo preparation is sequential, and every image is prepared before privat
  const calls:string[]=[];let active=0;let peak=0
  await sendPetSharePhotos([1,2,3],{
   prepare:async n=>{active++;peak=Math.max(peak,active);calls.push(`prepare${n}`);await new Promise(resolve=>setTimeout(resolve,1));active--;return `blob${n}`},
-  onPrepared:()=>calls.push('lock'),onProgress:p=>{if(p.phase!=='saving')calls.push(`${p.phase}${p.photo}`)},
+  onPrepared:()=>calls.push('lock'),onProgress:p=>{if('photo' in p)calls.push(`${p.phase}${p.photo}`)},
   upload:async(blob,index)=>{calls.push(`upload${index}:${blob}`)},
  })
  assert.equal(peak,1)
@@ -24,7 +24,7 @@ test('preparation failures never upload or lock, while failed uploads stop the r
  for(const files of [[],[1,2,3,4]])await assert.rejects(sendPetSharePhotos(files,{prepare:async n=>n,upload:async()=>{throw new Error('must not run')},onPrepared:()=>{},onProgress:()=>{}}),/one to three/)
 })
 test('progress describes work in flight without claiming receipt or publication',()=>{
- const phases:PetShareSendProgress[]=[{phase:'preparing',photo:1,total:3},{phase:'uploading',photo:2,total:3},{phase:'saving'}]
+ const phases:PetShareSendProgress[]=[{phase:'preparing',photo:1,total:3},{phase:'uploading',photo:2,total:3},{phase:'saving'},{phase:'checking'}]
  for(const progress of phases){const html=renderToStaticMarkup(React.createElement(PetShareSendProgressView,{progress}));assert.match(html,/role="status"/);assert.match(html,/saved request reference/);assert.doesNotMatch(html,/published successfully|upload complete|100%|request saved/i)}
  const idle=renderToStaticMarkup(React.createElement(PetShareSendProgressView,{progress:null}))
  assert.match(idle,/role="status"/);assert.doesNotMatch(idle,/Preparing|Uploading|Saving|Sending progress/)
