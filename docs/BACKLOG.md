@@ -1,5 +1,14 @@
 # MoHoLocal active execution queue
 
+## November 17 — copy pet request references (PET-SHARE-09 / MOBILE-27)
+
+DEPLOYED / LOCALLY TESTED: saved receipts, recovery IDs and Your shared reports use a validated UUID copy control with a labeled selectable field, 44px buttons, polite success/failure feedback and manual Select reference fallback. Only the ID is copied. Recovery IDs explicitly remain unconfirmed receipts, and reference/variant changes clear old feedback. No publication, sharing menu or contact is triggered.
+
+213 regressions, TypeScript, OpenNext and whitespace checks pass. Local actual-component 320px tests accept pointer/keyboard copy, exact confirmed-example clipboard read-back, fresh feedback and no overflow. A clearly labeled unavailable-clipboard simulation accepts failure wording and full-ID selection; a Permissions-Policy attempt did NOT establish real denial and is not counted. Native Workers Builds succeeded for `19b3cbe0a66cc145bc2788135891543d01cd36a9`; production marker matched. Live authenticated empty form remains healthy at320px with unchecked consent/disabled Send. Production conditional copy interaction is still OPEN pending a genuine reporter request. [Evidence and limits](research/pet-share-reference-copy-2026-11-17.md).
+
+FB UNPUBLISHED; no contact, imports, files uploaded or reports submitted. Photo-location/date/reuse tasks, genuine-reporter pilot, physical-phone/clipboard-permission/screen-reader acceptance and abandoned-upload retention remain OPEN. Next: genuine authorized receipt/recovery/status/review/gallery/withdraw evidence and remaining mobile accessibility friction. Completed Tuesday freshness period not repeated.
+
+
 ## November 17 — review selected pet photos before sending (PET-SHARE-08 / MOBILE-26)
 
 LIVE: **Review photo** opens a larger local preview in a named native modal, with cover/gallery label, filename and a reminder to remove private details. Close preview and Escape restore focus to the selected photo’s review button. The close control is 44px and stays accessible on short screens; locked or unreadable selections cannot open review. Selection/order and the existing permission/private-upload/admin-review flow remain unchanged. This does not detect or redact private information automatically.
