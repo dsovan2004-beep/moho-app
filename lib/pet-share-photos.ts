@@ -11,3 +11,9 @@ export function appendPetPhotos<T extends PhotoFile>(current:readonly T[],incomi
  if(incoming.some(file=>file.size<=0||file.size>PET_PHOTO_MAX_BYTES))return {files:[...current],error:'Each photo must be a nonempty file up to 5 MB. This selection was not added; your earlier photos are unchanged.'}
  return {files:[...current,...incoming],error:null}
 }
+
+// Preserve every File object and the relative order of the remaining gallery.
+export function promotePetPhoto<T>(photos:readonly T[],index:number):T[] {
+ if(!Number.isInteger(index)||index<0||index>=photos.length)return [...photos]
+ return [photos[index],...photos.slice(0,index),...photos.slice(index+1)]
+}
