@@ -4,6 +4,7 @@ import Link from 'next/link'
 import MyPetShares from '@/app/components/MyPetShares'
 import PetPhotoPicker from '@/app/components/PetPhotoPicker'
 import PetShareSendProgress from '@/app/components/PetShareSendProgress'
+import PetRequestReference from '@/app/components/PetRequestReference'
 import {sendPetSharePhotos,petShareSendMessage,type PetShareSendProgress as SendProgress} from '@/lib/pet-share-send'
 import {UUID} from '@/lib/directory-requests'
 import {recoverPetShareReference} from '@/lib/pet-share-recovery'
@@ -65,7 +66,7 @@ export default function SharePetReport(){
 
  const input='mt-1 min-h-11 w-full rounded-xl border border-slate-300 bg-white px-3 py-2'
  return <div className="max-w-2xl mx-auto px-4 py-8"><Link href="/lost-and-found" className="inline-flex min-h-11 items-center underline">← Pet reports</Link><h1 className="mt-4 text-3xl font-bold">Share your existing pet report</h1><p className="mt-3 text-slate-600">Already posted on Facebook? Submit your own report and photos here for review. We do not fetch Facebook content, contact anyone or post to Facebook.</p>
- {reference?<section className="mt-6 rounded-xl border border-emerald-300 bg-emerald-50 p-5" role="status"><h2 className="font-bold">Request saved</h2><p className="mt-2 break-all">Request reference: {reference}</p><p className="mt-2">Your photos remain private while pending. Check Your shared reports below for the latest review status; recovering a reference does not mean a report was approved.</p><a href="#your-shared-reports" className="mt-2 flex min-h-11 items-center font-semibold underline">Check this request’s status ↓</a><Link href="/lost-and-found" className="inline-flex min-h-11 items-center underline">Return to pet reports →</Link></section>:<>
+ {reference?<section className="mt-6 rounded-xl border border-emerald-300 bg-emerald-50 p-5" role="status"><h2 className="font-bold">Request saved</h2><PetRequestReference reference={reference}/><p className="mt-2">Your photos remain private while pending. Check Your shared reports below for the latest review status; recovering a reference does not mean a report was approved.</p><a href="#your-shared-reports" className="mt-2 flex min-h-11 items-center font-semibold underline">Check this request’s status ↓</a><Link href="/lost-and-found" className="inline-flex min-h-11 items-center underline">Return to pet reports →</Link></section>:<>
  {!user&&!checking&&<div className="mt-5"><RequestAccount returnTo="/share-pet-report"/></div>}
  <form onSubmit={submit} aria-busy={busy} className="mt-6"><fieldset disabled={!user||checking||busy} className="space-y-5">
  <fieldset disabled={frozen} className="space-y-5"><label className="block font-semibold">City<select required className={input} value={city} onChange={e=>setCity(e.target.value)}><option value="">Choose city</option>{RELAUNCH_CITY_NAMES.map(c=><option key={c}>{c}</option>)}</select></label>
@@ -81,7 +82,7 @@ export default function SharePetReport(){
  </fieldset>
  {frozen&&<p className="text-sm">Details are locked while this request is saved or recovered. Retry with the same request; reload only to start a different report.</p>}
  {notice&&<p role="status" className="rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm">{notice}</p>}
- {uncertain&&<div className="rounded-xl border border-slate-300 p-4 text-sm"><p className="font-semibold">Recovery request ID · receipt not yet confirmed</p><code className="mt-2 block select-all break-all">{requestId}</code><a href="#your-shared-reports" className="mt-2 inline-flex min-h-11 items-center font-semibold underline">Check Your shared reports ↓</a></div>}
+ {uncertain&&<div className="rounded-xl border border-slate-300 p-4 text-sm"><PetRequestReference reference={requestId} unconfirmed/><a href="#your-shared-reports" className="mt-2 inline-flex min-h-11 items-center font-semibold underline">Check Your shared reports ↓</a></div>}
  {error&&<p role="alert" className="rounded-xl bg-amber-50 border border-amber-300 p-4">{error}{uncertain&&' Avoid starting another request. Use Check saved request to recover this one.'}</p>}
  <PetShareSendProgress progress={busy?progress:null}/>
  <p className="text-sm text-slate-600">Photos are prepared one at a time on your device, then uploaded privately. Keep this page open while sending.</p>

@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import {UUID} from '@/lib/directory-requests'
+import PetRequestReference from './PetRequestReference'
 
 export type SharedPetRequest = {id:string; title:string; review_status:string; published_report_id:string|null}
 const labels:Record<string,string> = {
@@ -15,8 +16,7 @@ export default function PetShareStatus({request}:{request:SharedPetRequest}) {
  return <>
   <h3 className="font-semibold break-words">{request.title}</h3>
   <p className="mt-1 text-sm">{label}</p>
-  <p className="mt-2 text-xs text-slate-600">Request reference</p>
-  <code className="block select-all break-all text-sm">{request.id}</code>
+  <PetRequestReference reference={request.id}/>
   {reportId&&<Link href={`/lost-and-found/${reportId}`} className="mt-2 inline-flex min-h-11 items-center font-semibold underline focus-visible:ring-2 focus-visible:ring-emerald-700">View pet report →</Link>}
  </>
 }
