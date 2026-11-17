@@ -1,5 +1,14 @@
 # MoHoLocal active execution queue
 
+## November 17 — review selected pet photos before sending (PET-SHARE-08 / MOBILE-26)
+
+LIVE: **Review photo** opens a larger local preview in a named native modal, with cover/gallery label, filename and a reminder to remove private details. Close preview and Escape restore focus to the selected photo’s review button. The close control is 44px and stays accessible on short screens; locked or unreadable selections cannot open review. Selection/order and the existing permission/private-upload/admin-review flow remain unchanged. This does not detect or redact private information automatically.
+
+213 regressions, TypeScript, OpenNext and whitespace checks pass. Actual-picker local browser checks accept keyboard/pointer close, exact focus return, unchanged selection, locked controls and 320×740/320×400 layout. Native Workers Builds succeeded for `86496d2e2dc566e1598e082559d7a0db83448cd0`; production marker matched. Live authenticated 320px dialog accepted local TEST preview, 288px modal/no overflow, unchecked consent, disabled Send and Escape focus return. Test selection cleared and sizing restored. No upload, real report or publication. [Acceptance evidence](research/pet-share-photo-review-2026-11-17.md).
+
+FB UNPUBLISHED; no contact or imports. Photo-location/date/reuse tasks, genuine-reporter pet pilot, physical-phone/screen-reader acceptance and abandoned-upload retention remain OPEN. Next: genuine authorized send/recovery/review/gallery/withdraw evidence and remaining mobile accessibility friction. The completed Tuesday freshness period was not repeated.
+
+
 ## November 17 — choose a pet report cover before sending (PET-SHARE-07 / MOBILE-25)
 
 LIVE: gallery previews offer **Use as cover photo** without removing/reselecting files. Promotion preserves each File and the remaining gallery order. Polite feedback announces cover/removal changes; focus returns to the stable input. Explicit disabled states and handler guards prevent changing locked selections. Existing permission, private pending photos, immutable request and review rules remain unchanged.
