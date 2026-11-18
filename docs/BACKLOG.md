@@ -1,5 +1,14 @@
 # MoHoLocal active execution queue
 
+## November 18 afternoon — signed-in navigation accepted; mobile link entry (PET-SHARE-11 / MOBILE-29)
+
+LIVE: closed the authenticated production navigation gate from PET-SHARE-10/MOBILE-28. At320px Check my requests, Back to report form and Fill out a report focus the correct destinations, preserve city selection and clear the173px header;44px task links and no overflow accepted. Actual account has no shared requests; this does not establish reporter workflow success.
+
+Added concise Facebook-link accessible name, associated HTTPS/format-only help, mobile URL entry settings and inline error after blur for unsupported nonempty URLs. Clearing removes error/aria-invalid. No retrieval/import or valid-report claim. 213 regressions, TypeScript, OpenNext and whitespace checks pass. Native Workers Builds succeeded for `ca6b129d92f9be1401cfafa4f781e874ab03d945`; public marker matched. Signed-in production320px format feedback/error clearing and navigation round trip accepted. Nonsensitive example.invalid test entry and city cleared; viewport restored; no submission. [Evidence](research/pet-share-link-entry-2026-11-18.md).
+
+FB UNPUBLISHED; no contact, imports, photo uploads or reports submitted. Photo-location/date/reuse tasks and genuine-reporter pet pilot remain OPEN, including real send/recovery/receipt/reference-copy/review/gallery/withdraw. Physical-phone/screen-reader/clipboard-denial acceptance and abandoned-upload retention remain OPEN. Next: genuine authorized pilot evidence and remaining form accessibility friction. No scheduled refresh or listing activity manufactured.
+
+
 ## November 18 — direct pet-sharing task navigation (PET-SHARE-10 / MOBILE-28)
 
 DEPLOYED / LOCALLY TESTED: signed-in residents get **Fill out a report** and **Check my requests** shortcuts before the long form, plus **Back to report form** from their request section. Native fragment targets are focusable and offset below the mobile header. Navigation retains form state; the form shortcut is omitted after a saved receipt. No account/data/submission/permission behavior changed.

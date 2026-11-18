@@ -29,3 +29,7 @@ Native Workers Builds moho-web completed successfully for `64a4f2c4578a5da805aa7
 ## Open work
 
 Photo-location/date/reuse tasks, genuine-reporter pet pilot (real send/recovery/receipt/review/gallery/withdraw), authenticated production navigation, physical-phone, screen-reader and clipboard-denial acceptance, and abandoned-upload retention remain OPEN. FB UNPUBLISHED. No outreach, imports or permission requests. No refresh rerun or artificial listing activity.
+
+## Later November18 authenticated follow-up
+
+The previously open signed-in navigation gate is now accepted on production64a4f2c and rechecked on ca6b129d92f9be1401cfafa4f781e874ab03d945:320px keyboard/pointer round trip, exact focus targets, preserved city selection and no overflow. [Follow-up evidence](pet-share-link-entry-2026-11-18.md). This closes only navigation, not the genuine-reporter pilot or physical-phone/screen-reader gates.
