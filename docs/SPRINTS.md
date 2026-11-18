@@ -1,5 +1,14 @@
 # MoHoLocal — SPRINTS.md
 
+## November 18 — direct pet-sharing task navigation (PET-SHARE-10 / MOBILE-28)
+
+DEPLOYED / LOCALLY TESTED: signed-in residents get **Fill out a report** and **Check my requests** shortcuts before the long form, plus **Back to report form** from their request section. Native fragment targets are focusable and offset below the mobile header. Navigation retains form state; the form shortcut is omitted after a saved receipt. No account/data/submission/permission behavior changed.
+
+213 regressions, TypeScript, OpenNext and whitespace checks pass. Local actual-page harness with simulated account/empty reads and disabled writes accepts pointer/keyboard focus targets, preserved Tracy selection, 44px links and no overflow at320px. This is not a genuine reporter trial. Native Workers Builds succeeded for `64a4f2c4578a5da805aa7c414f4666f66bcbb10e`; public marker matched. Signed-out production IDs/form semantics, hidden account-only shortcuts, unchecked consent/disabled Send and320px CDP geometry accepted; emulation cleared. Authenticated production navigation remains OPEN: Chrome extension unavailable and isolated browser signed out. [Evidence and limits](research/pet-share-navigation-2026-11-18.md).
+
+FB UNPUBLISHED; no contact, imports, uploads or reports submitted. Photo-location/date/reuse tasks, genuine-reporter pilot, physical-phone/screen-reader/clipboard-denial acceptance and abandoned-upload retention remain OPEN. Next: authenticated production shortcut round trip and genuine authorized send/recovery/receipt/review/gallery/withdraw evidence. No scheduled refresh repeated or listing activity fabricated.
+
+
 ## November 17 — copy pet request references (PET-SHARE-09 / MOBILE-27)
 
 DEPLOYED / LOCALLY TESTED: saved receipts, recovery IDs and Your shared reports use a validated UUID copy control with a labeled selectable field, 44px buttons, polite success/failure feedback and manual Select reference fallback. Only the ID is copied. Recovery IDs explicitly remain unconfirmed receipts, and reference/variant changes clear old feedback. No publication, sharing menu or contact is triggered.
