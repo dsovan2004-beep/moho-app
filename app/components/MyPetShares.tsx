@@ -49,8 +49,9 @@ export default function MyPetShares({userId,refresh}:{userId:string;refresh:stri
   } finally {setWithdrawing(null)}
  }
  const action='min-h-11 rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold focus-visible:ring-2 focus-visible:ring-emerald-700 disabled:opacity-50'
- return <section id="your-shared-reports" aria-labelledby="your-shared-reports-heading" className="mt-8 scroll-mt-48 border-t pt-5">
+ return <section id="your-shared-reports" tabIndex={-1} aria-labelledby="your-shared-reports-heading" className="mt-8 scroll-mt-48 rounded-lg border-t pt-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700">
   <h2 id="your-shared-reports-heading" className="font-bold text-xl">Your shared reports</h2>
+  <a href="#pet-share-start" className="mt-2 inline-flex min-h-11 items-center rounded-lg px-1 text-sm font-semibold underline focus-visible:ring-2 focus-visible:ring-emerald-700">Back to report form ↑</a>
   <p className="text-sm mt-2">Your latest 20 requests. Withdraw publication permission here to hide the MoHoLocal report and photos. This does not change your Facebook post.</p>
   <button type="button" disabled={loading||!!withdrawing} onClick={()=>{setConfirmId(null);void load()}} className={`${action} mt-3`}>{loading?'Refreshing reports…':'Refresh report status'}</button>
   {loading&&<p role="status" className="mt-3 text-sm">Loading your latest report status…</p>}
