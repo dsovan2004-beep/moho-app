@@ -1,5 +1,14 @@
 # MoHoLocal active execution queue
 
+## November 19 — accessible pet-share errors (PET-SHARE-12 / MOBILE-30)
+
+DEPLOYED / LOCALLY TESTED: Request needs attention alerts receive keyboard focus after validation/account/preparation/upload/save/recovery failures, including an identical error on a later attempt. The focusable alert retains uncertainty-specific Check saved request guidance and has mobile header clearance. Submission, validation, permission, immutable retry and storage behavior remain unchanged.
+
+213 regressions, TypeScript, OpenNext and whitespace checks pass. Local actual-component simulation accepts first/repeated errors, recovery guidance, retained draft, no overflow and visible alert below176px header at320×740 and320×400. No backend in that harness. Native Workers Builds succeeded for `81cd9b20a9b0cdf14bad747ec247e8519be865da`; production marker matched. Signed-in live320px navigation/focus/city preservation and unchecked consent/disabled Send remain accepted; city and emulation cleared. Conditional real error/recovery branch remains OPEN; no production failure was fabricated. [Evidence and limits](research/pet-share-error-focus-2026-11-19.md).
+
+FB UNPUBLISHED; no contact, imports, uploads or submissions. Photo-location/date/reuse tasks and genuine-reporter pilot remain OPEN, including real send/recovery/receipt/reference-copy/review/gallery/withdraw. Physical-phone/screen-reader/clipboard-denial acceptance and abandoned-upload retention remain OPEN. Next: genuine authorized pilot evidence and remaining mobile form friction. No scheduled refresh or listing activity manufactured.
+
+
 ## November 18 afternoon — signed-in navigation accepted; mobile link entry (PET-SHARE-11 / MOBILE-29)
 
 LIVE: closed the authenticated production navigation gate from PET-SHARE-10/MOBILE-28. At320px Check my requests, Back to report form and Fill out a report focus the correct destinations, preserve city selection and clear the173px header;44px task links and no overflow accepted. Actual account has no shared requests; this does not establish reporter workflow success.
