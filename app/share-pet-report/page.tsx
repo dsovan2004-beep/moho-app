@@ -4,6 +4,7 @@ import Link from 'next/link'
 import MyPetShares from '@/app/components/MyPetShares'
 import PetPhotoPicker from '@/app/components/PetPhotoPicker'
 import PetShareSendProgress from '@/app/components/PetShareSendProgress'
+import PetShareAlert from '@/app/components/PetShareAlert'
 import PetRequestReference from '@/app/components/PetRequestReference'
 import {sendPetSharePhotos,petShareSendMessage,type PetShareSendProgress as SendProgress} from '@/lib/pet-share-send'
 import {UUID} from '@/lib/directory-requests'
@@ -29,11 +30,13 @@ export default function SharePetReport(){
  const sourceInvalid=sourceTouched&&sourceUrl.trim().length>0&&!facebookReportUrl(sourceUrl)
  const requestOwner=useRef<string|null>(null);const inFlight=useRef(false);const [progress,setProgress]=useState<SendProgress|null>(null)
  const [frozen,setFrozen]=useState(false);const [busy,setBusy]=useState(false);const [error,setError]=useState('');const [reference,setReference]=useState('');const [requestId]=useState(()=>crypto.randomUUID());const [uncertain,setUncertain]=useState(false);const [canRetry,setCanRetry]=useState(false);const [notice,setNotice]=useState('')
+ const [errorAttempt,setErrorAttempt]=useState(0)
+ function showError(message:string){setError(message);setErrorAttempt(attempt=>attempt+1)}
  async function submit(e:React.FormEvent){
   e.preventDefault();if(!user||inFlight.current)return
-  if(requestOwner.current&&requestOwner.current!==user.id){setNotice('');setCanRetry(false);setError('This request was started with a different account. Sign back in to that account to check its reference.');return}
+  if(requestOwner.current&&requestOwner.current!==user.id){setNotice('');setCanRetry(false);showError('This request was started with a different account. Sign back in to that account to check its reference.');return}
   const validation=validatePetShare({city,status,title,description,sourceUrl,reportDate,credit,permission})
-  if(!uncertain&&(validation||photos.length<1||photos.length>3)){setError(validation??'Choose one to three photos.');return}
+  if(!uncertain&&(validation||photos.length<1||photos.length>3)){showError(validation??'Choose one to three photos.');return}
   inFlight.current=true;setBusy(true);setError('');setNotice('')
   let persistenceUncertain=uncertain
   try {
@@ -62,7 +65,7 @@ export default function SharePetReport(){
    if(saveError)throw new Error(saveError.code==='P0001'?'Daily submission limit reached. Try tomorrow.':'Could not confirm the saved request. Check this request before retrying.')
    if(typeof data!=='string'||!UUID.test(data))throw new Error('Could not confirm the saved request. Check this request before retrying.')
    setReference(data);setUncertain(false)
-  } catch(e){setCanRetry(false);setUncertain(persistenceUncertain);setError(e instanceof Error?e.message:'Submission unavailable. Your details remain here.')}
+  } catch(e){setCanRetry(false);setUncertain(persistenceUncertain);showError(e instanceof Error?e.message:'Submission unavailable. Your details remain here.')}
   finally{inFlight.current=false;setBusy(false);setProgress(null)}
  }
 
@@ -86,7 +89,7 @@ export default function SharePetReport(){
  {frozen&&<p className="text-sm">Details are locked while this request is saved or recovered. Retry with the same request; reload only to start a different report.</p>}
  {notice&&<p role="status" className="rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm">{notice}</p>}
  {uncertain&&<div className="rounded-xl border border-slate-300 p-4 text-sm"><PetRequestReference reference={requestId} unconfirmed/><a href="#your-shared-reports" className="mt-2 inline-flex min-h-11 items-center font-semibold underline">Check Your shared reports ↓</a></div>}
- {error&&<p role="alert" className="rounded-xl bg-amber-50 border border-amber-300 p-4">{error}{uncertain&&' Avoid starting another request. Use Check saved request to recover this one.'}</p>}
+ {error&&<PetShareAlert message={error} attempt={errorAttempt} uncertain={uncertain}/>}
  <PetShareSendProgress progress={busy?progress:null}/>
  <p className="text-sm text-slate-600">Photos are prepared one at a time on your device, then uploaded privately. Keep this page open while sending.</p>
  <p className="text-sm text-slate-600">If sending is unconfirmed, Check saved request looks for your existing reference without uploading photos or resending the report. You choose whether to retry if no saved request is found.</p>
