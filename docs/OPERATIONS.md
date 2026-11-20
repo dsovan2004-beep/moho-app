@@ -1,5 +1,20 @@
 # MoHoLocal — Operations Guide
 
+## November 19 — priority reset and continuous improvement
+
+Founder correction: repeated pet-sharing/mobile refinements displaced the core living-directory mission. This is a prioritization failure, not a missing engineering role. The existing Delivery / operations role is expanded to **Delivery, Product Operations & Continuous Improvement Lead**. All other existing responsibilities remain active; no separate agents or additional access are implied.
+
+A broad “continue autonomously” resumes the highest-priority directory queue, not whichever feature was edited most recently. Current order: verified provider/service coverage gaps across Mountain House, Tracy, Lathrop and Manteca; source-confirmed upcoming events/openings and stale-information fixes; observed directory-wide mobile search/filter/contact blockers; launch/growth readiness tied to actual evidence.
+
+Pet sharing is in maintenance and genuine-reporter validation. Stop adding pet-form features as the default work. Fix an evidenced security issue, data-loss defect or blocking failure if found; otherwise leave the pilot open until genuine authorized evidence meets its acceptance criteria. Photo-location/date/reuse tasks also stay open without invented substitutes or repeated no-change searches. Neither open gate justifies unrelated feature expansion.
+
+Before work, record the resident problem, evidence, expected outcome and acceptance/stop condition. Keep one primary outcome in progress. Batch related editorial records or related fixes; do not create a new build/release for every cosmetic adjustment. Once acceptance passes, move to the next ranked directory need. Revisit accepted behavior only for a new defect, material change or genuine user evidence.
+
+After work, record actual additions/corrections/retirements, explicit city/service coverage checked, contact/discovery obstacles resolved, sources and public read-back or release evidence. Distinguish unchanged checks, held candidates and remaining uncertainty. Measure successful resident connections only when actually observed; clicks and traffic are separate indicators. Never manufacture counts, fresh dates, posts, reviews or engagement to satisfy a target. A source-backed held decision is valid evidence; it is not a published addition.
+
+At each sprint boundary, review whether the work advanced directory usefulness, what displaced higher priorities and what will change next. If the same workstream repeats without a new resident outcome, stop expanding it and reprioritize. Current next actions and acceptance are in the active queue at the top of BACKLOG.md, ROADMAP.md and SPRINTS.md. Facebook remains unpublished; no contact/imports without permission, no new access or spending.
+
+
 ## Regional directory boundary — November 9 acceptance
 
 DirectoryBrowser All Cities must apply the four relaunch city locations OR listing-check coverage naming at least one relaunch city, on initial and subsequent pages. Use the shared regionalDirectoryFilter predicate and the RLS-scoped coverage lookup. Retain checked outside-city providers; office location alone must not be used to remove them. Do not restore the unrestricted legacy inventory query. Existing explicit legacy city URLs remain readable; this is a browsing-scope change, not record deletion or blanket freshness verification. Mobile/desktop label is All four cities; internal All Cities URL value remains compatible. Evidence: docs/research/four-city-directory-scope-2026-11-09.md.
@@ -26,7 +41,7 @@ Founder direction, November 6: MoHoLocal is a living directory for locals. Maint
 
 This chat is the MoHoLocal implementation owner for Mountain House, Tracy, Lathrop and Manteca. The roles below remain active as one accountable team, not separate chats. Keep the Next.js/Cloudflare/Supabase stack. Lead product decisions and finish reviewable increments autonomously.
 
-Prioritize resident-facing improvements over repeated status passes. Choose one concrete build outcome, implement it, test the affected journey, deploy and verify it, then update plans once with accepted evidence. Provider/event curation and imagery research continue as supporting work. Do not turn unchanged Search Console processing, a healthy deployment or unchanged photo/pet-pilot gates into repeated work. Check those at meaningful intervals or when a new release/evidence requires it.
+Prioritize a concrete resident directory outcome over repeated status passes or automatic feature additions. Verified provider/service coverage, current events/openings, stale-information corrections and directory-wide find/contact usability are first-class deliverables. Choose the highest-impact evidenced gap, finish a useful batch or blocking fix, verify the affected public surfaces, and update plans once. Application builds are needed only for application changes, not editorial data updates or operating documentation. Do not turn unchanged Search Console processing, a healthy deployment or unchanged photo/pet-pilot gates into repeated work. Check those at meaningful intervals or when new evidence requires it.
 
 Engineering, UX, editorial freshness, security/privacy, community/pet operations, growth/SEO, monetization strategy, analytics and release delivery all remain owned here. Basic listings remain free for initial validation; no paid activation or willingness-to-pay claims without validation. Facebook drafts stay unpublished; no outreach or photo-permission requests. Keep photo-location/rights, genuine-reporter pilot and physical-phone acceptance open until their actual criteria pass.
 
@@ -48,7 +63,7 @@ Engineering, UX, editorial freshness, security/privacy, community/pet operations
 | Data quality editor | Duplicates, stale records, corrections, provenance and city/category coverage gaps |
 | Security / privacy lead | Access controls, private-data boundaries and safe submission/claim/community workflows |
 | QA / release lead | Meaningful tests, builds, deployment verification and real live checks |
-| Delivery / operations lead | Backlog, roadmap, sprint, recurring freshness workflow, refresh ledger and release evidence |
+| Delivery, Product Operations & Continuous Improvement Lead | Backlog/roadmap/sprint ownership, priority decisions, work-in-progress limit, acceptance and stop rules, short evidence-based retrospectives, directory outcome scorecard, recurring freshness workflow and release evidence. Own preventing repeated low-priority refinements from displacing core directory coverage. |
 | Analytics / business strategy lead | Useful contacts, replies, event/calendar actions, corrections, resolved reports and sustainable growth |
 | Trust & Community Moderation Lead | Spam/scam reports, disputed listings and discussion reports; pet-contact privacy, evidence-based decisions and private moderation history. No fabricated engagement or unsupported accusations. |
 | Resident & Business Success Lead | Submission, claim and correction journeys; clear confirmations, recovery and successful resident/business connections. No outreach unless separately authorized. |

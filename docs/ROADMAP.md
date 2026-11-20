@@ -1,5 +1,23 @@
 # MoHoLocal Product Roadmap
 
+## November 19, 5:44 PM Pacific — priority reset and role accountability (OPS-PRIORITY-01)
+
+OPERATING CHANGE COMPLETE: expanded Delivery / operations into **Delivery, Product Operations & Continuous Improvement Lead**. Existing product/research/provider/events/engineering/security/UX/SEO/growth/monetization roles remain; the missing responsibility was stopping low-priority repetition. Repeated pet-form refinement displaced directory coverage. The updated OPERATIONS.md defines evidence before work, one primary outcome, acceptance/stop rules, editorial batches, outcome reporting and sprint retrospectives. Broad autonomous continuation now follows this queue instead of the last-edited feature.
+
+### Active execution queue
+
+1. **CORE-01 — provider/service coverage first (NEXT).** Audit current published, checked coverage by city and service across Mountain House, Tracy, Lathrop and Manteca, including last-check scope and held candidates. Use the evidence to choose a useful gap-filling batch. Individually deduplicate and verify exact services, contacts and explicit coverage with primary sources. Publish justified records/corrections through the established workflow, retain private history and read back Directory/appropriate city discovery/detail/Activity. Unsupported candidates remain held. No quota or assumed service radius.
+2. **CORE-02 — timely events and freshness (QUEUED).** Source-check upcoming events, local openings/closures and Thanksgiving notices. Confirm dates/venue/hours before publication; retire expired notices and correct stale information. Keep unknown availability labeled. Acceptance is source evidence plus affected public read-back, not a research count.
+3. **CORE-03 — directory-wide mobile find/contact journey (QUEUED).** Inspect search, city/service filters, empty results, listing details and contact actions. Fix an observed blocking problem, batch related changes and verify the actual journey. Do not substitute cosmetic pet-form edits.
+4. **CORE-04 — launch and growth readiness (QUEUED).** Close evidenced resident submission/claim/correction/discovery blockers, then prioritize useful local SEO and outcome measurement. Marketing drafts stay unpublished. Monetization validation remains owned but no paid activation, outreach or willingness-to-pay claims without evidence/authorization.
+
+### Maintenance and acceptance gates
+
+Pet sharing: maintain deployed behavior; no new form features by default. Genuine-reporter pilot remains OPEN until real authorized send/recovery/receipt/reference-copy/review/gallery/withdraw evidence passes. Only evidenced security, data-loss or blocking failures justify immediate pet work. Photo-location/date/reuse tasks, physical-phone/screen-reader/clipboard-denial acceptance and abandoned-upload retention remain OPEN; do not count technical fixtures as resident or city-photo evidence.
+
+Cycle scorecard: supported published additions/corrections/retirements; dated city/service coverage actually checked; held decisions/reasons; resident find/contact blockers resolved; genuine resident outcomes only where observed; sources and public verification. Separate unchanged checks and traffic/clicks from successful connections. This pass updates operating/planning documents only; it adds no listings and claims no new market or engagement evidence. No application build required. FB UNPUBLISHED; no outreach/imports, access expansion or spending.
+
+
 ## November 19 evening — safe local photo replacement (PET-SHARE-13 / MOBILE-31)
 
 LIVE: each selected pet photo has a native single-file **Replace photo** control. Valid replacement retains its cover/gallery slot, count and other File identities/order, including at3photos. Invalid size/type/empty/multiple files or stale target preserve earlier selections; cancellation is a no-op. Locked selections cannot replace. Success announces the changed slot and returns focus to the stable file input. Existing private-upload/metadata/permission/admin-review rules unchanged.
