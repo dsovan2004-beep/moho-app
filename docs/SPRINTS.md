@@ -1,5 +1,11 @@
 # MoHoLocal — SPRINTS.md
 
+## November 20 overnight — CORE-02 upcoming events LIVE
+
+Added **2 individually source-checked events**: Quickly Donuts Car Show, Manteca November21 11AM–3PM; Better World Rescue’s Santa Paws pancake breakfast, Tracy December5 8–10AM. Exact venue/date/time sources and November20 check scope in descriptions; no copied imagery or availability/admission guarantees. Deduplication checked all event statuses. Anonymous public API, both details, both city Events/Activity streams accepted; Tracy seasonal view accepted. Existing Mountain House/Lathrop holiday events remain visible, source checks recorded without invented new activity. [Sources, holds, publication and public evidence](research/events-refresh-2026-11-20.md).
+
+Separate Manteca Christmas at the Center held pending fuller organizer schedule; Lathrop parade route remains unconfirmed. CORE-02 this batch accepted; event coverage ongoing. CORE-03 next: batch missing junk/dryer service shortcuts and stale seasonal global check-date banner with actual directory journey acceptance. CORE-01 service coverage continues; avoid pet-form microtask loop. Data-only release; no app build. Photo tasks/pet pilot OPEN; FB UNPUBLISHED; no outreach/imports or fabricated engagement. Does not complete the later Friday9AM scheduled refresh.
+
 ## November 19 late — CORE-01 service expansion LIVE
 
 Published **5 distinct website-checked providers**: Junk Geni, LUNKERS Hauling and One Strong Man (explicit all-four-city junk removal), Armstrong (Mountain House/Tracy dryer vents), Tri Valley HVAC/AireServ (Mountain House/Lathrop/Manteca dryer vents, ducts and HVAC). Exact checked junk-removal coverage MH/Tracy/Lathrop/Manteca changed 1/1/0/0 → **4/4/3/3**; dryer vents 0/0/0/0 → **2/1/1/1**. Overlapping coverage counts, not new businesses per city. Contacts/services/areas sourced individually; duplicate candidates excluded. Conflicting hours and AireServ Tracy/Tracey coverage remain unconfirmed; credentials, quality, availability and ratings not endorsed.
