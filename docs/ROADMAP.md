@@ -1,5 +1,13 @@
 # MoHoLocal Product Roadmap
 
+## November 19 late — CORE-01 service expansion LIVE
+
+Published **5 distinct website-checked providers**: Junk Geni, LUNKERS Hauling and One Strong Man (explicit all-four-city junk removal), Armstrong (Mountain House/Tracy dryer vents), Tri Valley HVAC/AireServ (Mountain House/Lathrop/Manteca dryer vents, ducts and HVAC). Exact checked junk-removal coverage MH/Tracy/Lathrop/Manteca changed 1/1/0/0 → **4/4/3/3**; dryer vents 0/0/0/0 → **2/1/1/1**. Overlapping coverage counts, not new businesses per city. Contacts/services/areas sourced individually; duplicate candidates excluded. Conflicting hours and AireServ Tracy/Tracey coverage remain unconfirmed; credentials, quality, availability and ratings not endorsed.
+
+Production acceptance: anonymous API all5; Directory Newest all5; loaded junk-removal/dryer-vent searches all4 cities; city Discovery and Activity applicable5/4/4/4; five details and contact links read back. Four search-copy corrections retain dates and private history. Data-only publication through existing editorial records; no app build. [Sources, holds and acceptance](research/core-services-2026-11-19.md).
+
+CORE-01 first batch complete, broader coverage ongoing. Next: CORE-02 events/Thanksgiving freshness, then CORE-03 evidenced directory journey gaps including missing junk/dryer shortcut options. Pet feature maintenance only; genuine-reporter pilot and photo tasks OPEN. FB UNPUBLISHED; no outreach/imports or fabricated engagement.
+
 ## November 19, 5:44 PM Pacific — priority reset and role accountability (OPS-PRIORITY-01)
 
 OPERATING CHANGE COMPLETE: expanded Delivery / operations into **Delivery, Product Operations & Continuous Improvement Lead**. Existing product/research/provider/events/engineering/security/UX/SEO/growth/monetization roles remain; the missing responsibility was stopping low-priority repetition. Repeated pet-form refinement displaced directory coverage. The updated OPERATIONS.md defines evidence before work, one primary outcome, acceptance/stop rules, editorial batches, outcome reporting and sprint retrospectives. Broad autonomous continuation now follows this queue instead of the last-edited feature.
