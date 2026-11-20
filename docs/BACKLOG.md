@@ -1,5 +1,14 @@
 # MoHoLocal active execution queue
 
+## November 19 evening — safe local photo replacement (PET-SHARE-13 / MOBILE-31)
+
+LIVE: each selected pet photo has a native single-file **Replace photo** control. Valid replacement retains its cover/gallery slot, count and other File identities/order, including at3photos. Invalid size/type/empty/multiple files or stale target preserve earlier selections; cancellation is a no-op. Locked selections cannot replace. Success announces the changed slot and returns focus to the stable file input. Existing private-upload/metadata/permission/admin-review rules unchanged.
+
+214 regressions, TypeScript, final OpenNext and whitespace checks pass. Local actual-picker test accepts keyboard cover and pointer gallery replacement at capacity, invalid replacement preservation, lock behavior, decoded previews,44px controls and no overflow at320px. Initial Chrome chooser timeouts coincided with active-window changes; not counted as accepted interactions or proven app defects. Native Workers Builds succeeded for `7f722fc3306f0444200d86ae43bd1647d00f6215`; production marker matched. Actual signed-in production keyboard replacement of local TEST cover accepted at320px, unchanged gallery/count, unchecked consent/disabled Send. Test previews removed; viewport restored. No upload or report save. [Evidence](research/pet-photo-replacement-2026-11-19.md).
+
+FB UNPUBLISHED; no contact or imports. Photo-location/date/reuse tasks and genuine-reporter pilot remain OPEN, including real send/recovery/receipt/reference-copy/review/gallery/withdraw. Physical-phone/screen-reader/clipboard-denial acceptance and abandoned-upload retention remain OPEN. Next: genuine authorized pilot evidence and remaining mobile form friction. No scheduled refresh or listing activity manufactured.
+
+
 ## November 19 — accessible pet-share errors (PET-SHARE-12 / MOBILE-30)
 
 DEPLOYED / LOCALLY TESTED: Request needs attention alerts receive keyboard focus after validation/account/preparation/upload/save/recovery failures, including an identical error on a later attempt. The focusable alert retains uncertainty-specific Check saved request guidance and has mobile header clearance. Submission, validation, permission, immutable retry and storage behavior remain unchanged.
