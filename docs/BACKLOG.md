@@ -1,5 +1,13 @@
 # MoHoLocal active execution queue
 
+## November 20, 09:00 Pacific — scheduled freshness period COMPLETE
+
+Published **1 supported Lathrop event**, Silver Harvest November24 9–11AM with explicit residency/over60/income eligibility. Held **1 Mountain House hackathon** for re-verification after its primary source404 and absence from current organizer Events index; not a cancellation claim. Private editorial history preserved. Overnight additions not duplicated. Reviewed selected upcoming/featured information across all four cities and held conflicting Lathrop breakfast pricing/eligibility. No blanket inventory-freshness or new provider coverage claim.
+
+Fixed observed event RLS public-read gap: pending record was reachable through anonymous Data API despite website filtering. Applied migration20261120172250 (approved-only read predicate). Live API positive/negative checks, anon/auth SQL assertions, transaction-only fixture tests and post-policy browser accepted; held detail404, city Events/Activity clean. No app-code release/build. [Full source, security, public acceptance and photo-gap evidence](research/freshness-2026-11-20-0900.md).
+
+CORE-03 next: batch directory discovery shortcuts and stale seasonal check-date banner with actual journey checks. Broader CORE-01 coverage ongoing. Photos/reuse tasks, genuine-reporter pilot OPEN; FB UNPUBLISHED; no outreach/imports or fabricated engagement. Period2026-11-20 Friday09:00 completed; next scheduled November24 Tuesday09:00Pacific.
+
 ## November 20 overnight — CORE-02 upcoming events LIVE
 
 Added **2 individually source-checked events**: Quickly Donuts Car Show, Manteca November21 11AM–3PM; Better World Rescue’s Santa Paws pancake breakfast, Tracy December5 8–10AM. Exact venue/date/time sources and November20 check scope in descriptions; no copied imagery or availability/admission guarantees. Deduplication checked all event statuses. Anonymous public API, both details, both city Events/Activity streams accepted; Tracy seasonal view accepted. Existing Mountain House/Lathrop holiday events remain visible, source checks recorded without invented new activity. [Sources, holds, publication and public evidence](research/events-refresh-2026-11-20.md).
