@@ -1,7 +1,21 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {appendPetPhotos,promotePetPhoto,PET_PHOTO_MAX_BYTES} from '../lib/pet-share-photos'
+import {appendPetPhotos,promotePetPhoto,replacePetPhoto,PET_PHOTO_MAX_BYTES} from '../lib/pet-share-photos'
 const image=(name:string,size=500,type='image/jpeg')=>({name,size,type})
+test('replacement at capacity preserves slot, count, other identities and original input',()=>{
+ const selection=[image('cover.jpg'),image('same.jpg'),image('same.jpg')],next=image('replacement.webp',400,'image/webp')
+ for(const index of [0,1,2]){
+  const result=replacePetPhoto(selection,index,[next])
+  assert.equal(result.error,null);assert.equal(result.files.length,3);assert.equal(result.files[index],next)
+  selection.forEach((file,i)=>{if(i!==index)assert.equal(result.files[i],file)})
+ }
+ assert.equal(selection[0].name,'cover.jpg');assert.equal(selection[1].name,'same.jpg');assert.notEqual(selection[1],selection[2])
+ for(const batch of [[image('bad.svg',1,'image/svg+xml')],[image('empty.jpg',0)],[image('large.jpg',PET_PHOTO_MAX_BYTES+1)],[next,next]]){
+  const result=replacePetPhoto(selection,0,batch);assert.ok(result.error);assert.deepEqual(result.files,selection)
+ }
+ assert.deepEqual(replacePetPhoto(selection,0,[]),{files:selection,error:null})
+ for(const index of [-1,3,NaN,0.5]){const result=replacePetPhoto(selection,index,[next]);assert.ok(result.error);assert.deepEqual(result.files,selection)}
+})
 test('photo selection appends in cover/gallery order without mutating earlier choices',()=>{
  const current=[image('first.jpg')];const next=image('second.jpg')
  const result=appendPetPhotos(current,[next])

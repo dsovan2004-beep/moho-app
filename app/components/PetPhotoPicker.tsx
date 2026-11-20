@@ -1,6 +1,6 @@
 'use client'
 import {useEffect,useRef,useState} from 'react'
-import {appendPetPhotos,promotePetPhoto} from '@/lib/pet-share-photos'
+import {appendPetPhotos,promotePetPhoto,replacePetPhoto} from '@/lib/pet-share-photos'
 
 export default function PetPhotoPicker({photos,onChange,locked=false}:{photos:File[];onChange:(files:File[])=>void;locked?:boolean}) {
  const [previews,setPreviews]=useState<{file:File;url:string}[]>([])
@@ -41,6 +41,13 @@ export default function PetPhotoPicker({photos,onChange,locked=false}:{photos:Fi
   setSelectionNote('Photo removed. Review the remaining previews before sending.')
   onChange(photos.filter((_,i)=>i!==index));setError('');input.current?.focus()
  }
+ function replace(target:File,files:File[]) {
+  if(locked||files.length===0)return
+  const index=photos.findIndex(file=>file===target)
+  const result=replacePetPhoto(photos,index,files)
+  setError(result.error??'');setSelectionNote('')
+  if(!result.error){onChange(result.files);setSelectionNote(`Photo ${index+1} replaced. Review the new preview before sending.`);input.current?.focus()}
+ }
  function useAsCover(index:number) {
   if(locked)return
   onChange(promotePetPhoto(photos,index));setError('');setSelectionNote('Cover photo changed. Review the first preview before sending.');input.current?.focus()
@@ -56,6 +63,7 @@ export default function PetPhotoPicker({photos,onChange,locked=false}:{photos:Fi
    {previews.find(item=>item.file===file)&&!unreadable.includes(file)&&<img src={previews.find(item=>item.file===file)?.url} alt={`Selected photo ${index+1}`} className="h-40 w-full rounded-lg bg-slate-50 object-contain" onError={()=>setUnreadable(previous=>previous.includes(file)?previous:[...previous,file])}/>}
    {unreadable.includes(file)&&<p role="alert" className="rounded-lg bg-amber-50 p-3 text-sm">This photo could not be previewed. Remove it and choose a readable JPG, PNG or WebP before sending.</p>}
    <figcaption className="mt-2 break-words text-sm"><span className="font-semibold">{index===0?'Cover photo':'Gallery photo'}</span><span className="mt-1 block break-all text-slate-600">{file.name}</span></figcaption>
+   <div className={`relative mt-3 min-h-11 rounded-xl border border-slate-300 focus-within:ring-2 focus-within:ring-emerald-700${locked?' opacity-50':''}`}><label htmlFor={`pet-photo-replace-${index}`} className="flex min-h-11 items-center justify-center px-3 py-2 text-sm font-semibold">Replace photo</label><input id={`pet-photo-replace-${index}`} aria-label={`Replace photo ${index+1}`} disabled={locked} type="file" accept="image/jpeg,image/png,image/webp" className="absolute inset-0 h-full w-full cursor-pointer opacity-0" onChange={event=>{replace(file,Array.from(event.target.files??[]));event.target.value=''}}/></div>
    <button type="button" disabled={locked||unreadable.includes(file)||!previews.some(item=>item.file===file)} onClick={event=>{reviewTrigger.current=event.currentTarget;setReviewFile(file)}} aria-label={`Review photo ${index+1}`} aria-haspopup="dialog" className="mt-3 min-h-11 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-semibold disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-emerald-700">Review photo</button>
    {index>0&&<button type="button" disabled={locked} onClick={()=>useAsCover(index)} aria-label={`Use as cover photo: photo ${index+1}`} className="mt-3 min-h-11 w-full rounded-xl bg-[#1e3a5f] px-3 py-2 text-sm font-semibold text-white disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-emerald-700">Use as cover photo</button>}
    <button type="button" disabled={locked} onClick={()=>remove(index)} aria-label={`Remove photo ${index+1}`} className="mt-3 min-h-11 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-semibold disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-emerald-700">Remove photo</button>

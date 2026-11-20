@@ -17,3 +17,13 @@ export function promotePetPhoto<T>(photos:readonly T[],index:number):T[] {
  if(!Number.isInteger(index)||index<0||index>=photos.length)return [...photos]
  return [photos[index],...photos.slice(0,index),...photos.slice(index+1)]
 }
+
+// Validate first: replacement must never discard a good cover/gallery selection.
+export function replacePetPhoto<T extends PhotoFile>(current:readonly T[],index:number,incoming:readonly T[]):{files:T[];error:string|null} {
+ if(incoming.length===0)return {files:[...current],error:null}
+ if(!Number.isInteger(index)||index<0||index>=current.length)return {files:[...current],error:'This photo is no longer selected. Your photos are unchanged; choose a preview to replace.'}
+ if(incoming.length!==1)return {files:[...current],error:'Choose one replacement photo. Your selected photos are unchanged.'}
+ const checked=appendPetPhotos<T>([],incoming)
+ if(checked.error)return {files:[...current],error:checked.error}
+ return {files:current.map((file,i)=>i===index?incoming[0]:file),error:null}
+}
