@@ -775,8 +775,8 @@ Fixed observed event RLS public-read gap: pending record was reachable through a
 
 CORE-03 next: batch directory discovery shortcuts and stale seasonal check-date banner with actual journey checks. Broader CORE-01 coverage ongoing. Photos/reuse tasks, genuine-reporter pilot OPEN; FB UNPUBLISHED; no outreach/imports or fabricated engagement. Period2026-11-20 Friday09:00 completed; next scheduled November24 Tuesday09:00Pacific.
 
-## November21 — CORE-03 service discovery batch ready for native release
+## November21 — CORE-03 service discovery LIVE
 
 Implemented junk-removal/dryer-vent shortcuts and exact job aliases; removed stale universal November6 seasonal-check claim in favor of individual event evidence. Local320px all4city checked filters accepted (junk4/4/3/3; dryer2/1/1/1), no overflow; Lathrop listing return preserves filters.216 regressions, TypeScript and Cloudflare build pass. Event RLS migration now covered by local legacy-policy fixture/regression. [Evidence and release status](research/service-discovery-2026-11-21.md).
 
-Native build/production acceptance PENDING. No data freshness/availability endorsement or new providers claimed. FB UNPUBLISHED; photo tasks/pet pilot OPEN. After acceptance, CORE-01 supported coverage expansion and event freshness resume.
+Native Build33df0a81 succeeded; production marker d994f0a matched. Live320px all8 city/service filters, Manteca keyboard detail/contact-link/return journey and seasonal guidance accepted. Version553b2f9a-1942-4032-9ade-09ed291ae83c. CORE-03 this batch COMPLETE. No data freshness/availability endorsement or new providers claimed. FB UNPUBLISHED; photo tasks/pet pilot OPEN. After acceptance, CORE-01 supported coverage expansion and event freshness resume.
