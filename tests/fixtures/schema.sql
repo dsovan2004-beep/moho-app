@@ -146,6 +146,8 @@ create table public."events" (
   "image_url" text);
 alter table public."events" enable row level security;
 grant all on public."events" to anon,authenticated,service_role;
+-- Legacy production policy, narrowed by the November 20 migration.
+create policy "Public read events" on public.events for select using (true);
 create table public."listing_reports" (
   "id" uuid not null default gen_random_uuid() primary key,
   "business_id" uuid,

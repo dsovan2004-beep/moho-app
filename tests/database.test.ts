@@ -35,6 +35,10 @@ test('setup isolated fixture and apply the exact production migration', () => {
     ('00000000-0000-4000-8000-000000000011','Fixture Pending','Tracy','Home Services','Fixture description','pending',false,false,'private@example.test');`)
 })
 
+test('event visibility migration keeps approved reads and hides held editorial records', () => {
+  assert.match(sql(readFileSync('supabase/tests/events_visibility.sql', 'utf8')), /fixture assertions passed/)
+})
+
 test('anonymous reads see only approved verified rows; private columns are denied', () => {
   assert.equal(sql('begin; set local role anon; select count(id) from public.businesses; rollback;'), '1')
   assert.throws(() => sql('begin; set local role anon; select contact_email from public.businesses; rollback;'), /permission denied/)

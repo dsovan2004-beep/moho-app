@@ -1,5 +1,11 @@
 # MoHoLocal Product Roadmap
 
+## November21 — CORE-03 service discovery batch ready for native release
+
+Implemented junk-removal/dryer-vent shortcuts and exact job aliases; removed stale universal November6 seasonal-check claim in favor of individual event evidence. Local320px all4city checked filters accepted (junk4/4/3/3; dryer2/1/1/1), no overflow; Lathrop listing return preserves filters.216 regressions, TypeScript and Cloudflare build pass. Event RLS migration now covered by local legacy-policy fixture/regression. [Evidence and release status](research/service-discovery-2026-11-21.md).
+
+Native build/production acceptance PENDING. No data freshness/availability endorsement or new providers claimed. FB UNPUBLISHED; photo tasks/pet pilot OPEN. After acceptance, CORE-01 supported coverage expansion and event freshness resume.
+
 ## November 20, 09:00 Pacific — scheduled freshness period COMPLETE
 
 Published **1 supported Lathrop event**, Silver Harvest November24 9–11AM with explicit residency/over60/income eligibility. Held **1 Mountain House hackathon** for re-verification after its primary source404 and absence from current organizer Events index; not a cancellation claim. Private editorial history preserved. Overnight additions not duplicated. Reviewed selected upcoming/featured information across all four cities and held conflicting Lathrop breakfast pricing/eligibility. No blanket inventory-freshness or new provider coverage claim.

@@ -1,6 +1,6 @@
 import {test} from 'node:test'
 import assert from 'node:assert/strict'
-import {serviceSearchTag} from '../lib/services'
+import {serviceSearchTag,serviceForCategory} from '../lib/services'
 
 test('exact resident role terms match the checked service, despite name/description wording',()=>{
   for(const query of ['electrician',' Electricians ','ELECTRICAL']) assert.equal(serviceSearchTag(query),'electrical services')
@@ -20,4 +20,12 @@ test('ambiguous jobs, company names and filter-like text do not infer a service'
 test('dog training discovery accepts exact resident terms without broadening general training or businesses',()=>{
  for(const q of ['dog training',' Dog Trainer ','DOG TRAINERS'])assert.equal(serviceSearchTag(q),'dog training')
  for(const q of ['training','trainer','K9 Courage Dog Training','dog boarding','aggressive dog'])assert.equal(serviceSearchTag(q),undefined)
+})
+
+test('cleanout and dryer vent discovery preserves exact specialties and category boundaries',()=>{
+ for(const q of ['junk removal','Junk hauling','Junk removal & cleanouts'])assert.equal(serviceSearchTag(q),'junk removal')
+ for(const q of ['dryer vent cleaning',' Dryer vents '])assert.equal(serviceSearchTag(q),'dryer vent cleaning')
+ for(const q of ['hauling','cleanouts','dryer repair','vent cleaning','Junk Geni'])assert.equal(serviceSearchTag(q),undefined)
+ assert.equal(serviceForCategory('junk-removal','Home Services')?.tag,'junk removal')
+ assert.equal(serviceForCategory('dryer-vent-cleaning','Pet Services'),undefined)
 })
