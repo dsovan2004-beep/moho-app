@@ -1,5 +1,13 @@
 # MoHoLocal Product Roadmap
 
+## November 24, 09:00 Pacific — scheduled freshness COMPLETE
+
+Published **1 checked Lathrop retail facility and2 exact remembrance events**: Sam’s Club#7684 with official November26 warehouse closure (other departments unconfirmed); Tree of Lights MantecaDecember1 and TracyDecember8, both5:30PM Pacific. Dates/venues deduplicated and primary-source checked; unknown end/admission retained, stale donation weekday and Tracy street spelling conflict resolved against year-specific schedule/City address. No copied photos, promotions, memorial names or donation transaction.
+
+Anonymous Data API and public details/Events/seasonal/Activity accepted; Sam’s Lathrop DirectoryNewest/Discover/Activity/contact links accepted. Near-term four-city and selectedopening checks recorded; holds retained. Data-only publication, no app build. Prior overnight2providers/bin correction and acceptedUI not counted again. [Full scope, sources, holds, history and evidence](research/freshness-2026-11-24-0900.md).
+
+P1 next: November27 recheck/remove Sam’s time-sensitive closure text, upcomingweekend details and service gaps; independentLathrop/Manteca sitters/walkers remain open. MountainHouseActivity passed this check, prior intermittent failure not claimed fixed. Photo rights/date/location tasks OPEN; labeled satellite retained. FB UNPUBLISHED; pet reporting LIVE with ordinaryQA, no pilot gate. CompletedTuesday09:00period; nextFridayNovember27,09:00Pacific.
+
 ## November 24 — pool/appliance providers and bin discovery LIVE
 
 Published 2 distinct website-checked providers, Ron’s Pool and Spa Service and Smart Repair, each explicitly serving all four cities. Exact checked pool-cleaning and appliance-repair coverage0→1percity. Corrected Mountain Cleaners’ older trash-bin tag so Mountain House trash-can shortlist1→2; no new business/coverage or approval-date change for that record. Individual sources, contacts, services, duplicate guards and private correction history retained.
