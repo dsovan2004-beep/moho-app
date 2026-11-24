@@ -1,10 +1,10 @@
 # MoHoLocal Product Roadmap
 
-## November 23 — grouped service discovery (release in progress)
+## November 23 — grouped service discovery LIVE
 
 Resident problem: newly checked mobile detailing, trash-can cleaning, gutter cleaning and pressure washing lacked precise directory shortcuts. Added four exact service filters and resident search terms; separated Home & yard, Pet care and Car care into clear panels. Links retain city and category, with 44px minimum targets and mobile disclosure. No provider counts or availability claims added.
 
-Acceptance: 217 regressions, TypeScript and OpenNext Cloudflare build passed. Local production browser accepted all 16 city/service combinations at 320px without horizontal overflow; mobile detailing shortcut retains Lathrop and returns 3 checked providers. Desktop grouped panels accepted. Native production acceptance pending. Stop this UI batch after mobile/desktop discovery and live source acceptance; return to verified service/event coverage. FB UNPUBLISHED, photo tasks OPEN; pet reporting LIVE with normal moderation and ongoing QA.
+Acceptance: 217 regressions, TypeScript and OpenNext Cloudflare build passed. Local production browser accepted all 16 city/service combinations at 320px without horizontal overflow; mobile detailing shortcut retains Lathrop and returns 3 checked providers. Desktop grouped panels accepted. Native build 0bbc1c98-b158-48f2-811a-9ee817e3691a Ready, version 4dc74230; public source marker matches 470d0707078afa67212cd7ca108ea5b6f81394c8. All 16 live city/service views accepted at 320px without overflow; Lathrop shortcut/detail/contact/return context accepted. Batch COMPLETE. Evidence: docs/research/service-browser-ui-2026-11-23.md. Stop this UI batch after mobile/desktop discovery and live source acceptance; return to verified service/event coverage. FB UNPUBLISHED, photo tasks OPEN; pet reporting LIVE with normal moderation and ongoing QA.
 
 
 ## November 23 — pet reporting LIVE; pilot gate removed
