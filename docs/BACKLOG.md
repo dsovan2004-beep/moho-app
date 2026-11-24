@@ -1,5 +1,13 @@
 # MoHoLocal active execution queue
 
+## November 24 — pool/appliance providers and bin discovery LIVE
+
+Published 2 distinct website-checked providers, Ron’s Pool and Spa Service and Smart Repair, each explicitly serving all four cities. Exact checked pool-cleaning and appliance-repair coverage0→1percity. Corrected Mountain Cleaners’ older trash-bin tag so Mountain House trash-can shortlist1→2; no new business/coverage or approval-date change for that record. Individual sources, contacts, services, duplicate guards and private correction history retained.
+
+Anonymous API all3business/check records accepted. All4city Directory Newest/Discover/Activity show both additions; provider contact links, Mountain House bin shortlist and all8service/city searches accepted at measured320px without overflow. Data-only publication, no new app build. Existing four-city main holiday celebrations reviewed, no duplicate events, fabricated check dates or unconfirmed Thanksgiving hours published. No newly qualified sitter/walker; that supply gap stays open.
+
+P1 observed Activity reliability follow-up: first Mountain House load failed, single refresh recovered; later other-city views passed. Root cause unestablished; investigate with reproducible/log evidence, do not claim fixed. This publication batch COMPLETE. [Sources, scope, coverage and live evidence](research/coverage-2026-11-24-overnight.md). FB UNPUBLISHED; photo tasks OPEN; pet reporting LIVE with normal moderation/QA. Separate9AMrefresh not completed by this overnight increment.
+
 ## November 23 — grouped service discovery LIVE
 
 Resident problem: newly checked mobile detailing, trash-can cleaning, gutter cleaning and pressure washing lacked precise directory shortcuts. Added four exact service filters and resident search terms; separated Home & yard, Pet care and Car care into clear panels. Links retain city and category, with 44px minimum targets and mobile disclosure. No provider counts or availability claims added.
