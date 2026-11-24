@@ -1,5 +1,13 @@
 # MoHoLocal Product Roadmap
 
+## November 23 — pet reporting LIVE; pilot gate removed
+
+Founder direction: no pilot requirement. **Pet reporting and report sharing are LIVE for all four cities.** The earlier genuine-reporter pilot gate is REMOVED by product decision, not marked as a successfully completed test. Any older pet-pilot OPEN statements below are historical and superseded by this entry. Future status updates must say live, with ordinary QA/monitoring where relevant.
+
+Verified public /lost-and-found entry points and all four city filters, /share-pet-report form and /post-lost-found normal sign-in requirement. Source review found no pilot/allowlist feature switch to enable. Existing production is already public; this corrects the operating/backlog status rather than claiming a new app deployment. Login with confirmed email, report-specific publication permission, private photos before review and moderation remain unchanged. No fake reports, imports, uploads or messages submitted to manufacture acceptance. Real send/receipt/review/reunion behavior and physical-device checks remain ongoing QA where unobserved, not release gates.
+
+Backlog/roadmap/sprint updated. Photo-location/date/reuse work remains OPEN. FB remains UNPUBLISHED. Keep core directory growth as the primary workstream; only evidenced pet defects justify interruption. [Live access evidence](research/pet-live-status-2026-11-23.jpg).
+
 ## November 23 evening — mobile detailing and library programs LIVE
 
 Published **3 distinct website-checked Automotive providers**: Detail Guyz, Singh Detailing and JuJu Detail. Each explicitly names Mountain House, Tracy, Lathrop and Manteca. Exact mobile-auto-detailing checked coverage increased from 0 to **3 per city**; overlapping coverage, not twelve businesses. Added two exact library programs: Mountain House Elf/tote-bag program December 23 (4–6 PM), and Lathrop Clay Ornaments December 17 (4–5 PM), ages 8–13, required registration opening December 1.

@@ -796,3 +796,11 @@ Published **3 distinct website-checked Automotive providers**: Detail Guyz, Sing
 Sources, contacts, services, city lists, event venue/age/booking rules checked individually. Flakito held for incomplete contact verification; promotions, ratings and availability claims omitted. Anonymous API all five records accepted; Directory Newest, all four city Directory/Discover/Activity/search views and provider contact links accepted; both event details and city Events/Activity accepted. Data-only publication, no app build. [Sources, scope, private history and live acceptance](research/mobile-detailing-expansion-2026-11-23.md).
 
 This batch COMPLETE; broader coverage ongoing. Next grouped discovery batch should cover Automotive detailing and new bin/gutter/pressure specialties using exact service evidence. FB UNPUBLISHED; photo tasks and genuine-reporter pet pilot OPEN; no outreach/imports or fabricated engagement. Tuesday November 24 scheduled refresh remains separate.
+
+## November 23 — pet reporting LIVE; pilot gate removed
+
+Founder direction: no pilot requirement. **Pet reporting and report sharing are LIVE for all four cities.** The earlier genuine-reporter pilot gate is REMOVED by product decision, not marked as a successfully completed test. Any older pet-pilot OPEN statements below are historical and superseded by this entry. Future status updates must say live, with ordinary QA/monitoring where relevant.
+
+Verified public /lost-and-found entry points and all four city filters, /share-pet-report form and /post-lost-found normal sign-in requirement. Source review found no pilot/allowlist feature switch to enable. Existing production is already public; this corrects the operating/backlog status rather than claiming a new app deployment. Login with confirmed email, report-specific publication permission, private photos before review and moderation remain unchanged. No fake reports, imports, uploads or messages submitted to manufacture acceptance. Real send/receipt/review/reunion behavior and physical-device checks remain ongoing QA where unobserved, not release gates.
+
+Backlog/roadmap/sprint updated. Photo-location/date/reuse work remains OPEN. FB remains UNPUBLISHED. Keep core directory growth as the primary workstream; only evidenced pet defects justify interruption. [Live access evidence](research/pet-live-status-2026-11-23.jpg).
