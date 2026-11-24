@@ -1,5 +1,13 @@
 # MoHoLocal Product Roadmap
 
+## November 23 evening — mobile detailing and library programs LIVE
+
+Published **3 distinct website-checked Automotive providers**: Detail Guyz, Singh Detailing and JuJu Detail. Each explicitly names Mountain House, Tracy, Lathrop and Manteca. Exact mobile-auto-detailing checked coverage increased from 0 to **3 per city**; overlapping coverage, not twelve businesses. Added two exact library programs: Mountain House Elf/tote-bag program December 23 (4–6 PM), and Lathrop Clay Ornaments December 17 (4–5 PM), ages 8–13, required registration opening December 1.
+
+Sources, contacts, services, city lists, event venue/age/booking rules checked individually. Flakito held for incomplete contact verification; promotions, ratings and availability claims omitted. Anonymous API all five records accepted; Directory Newest, all four city Directory/Discover/Activity/search views and provider contact links accepted; both event details and city Events/Activity accepted. Data-only publication, no app build. [Sources, scope, private history and live acceptance](research/mobile-detailing-expansion-2026-11-23.md).
+
+This batch COMPLETE; broader coverage ongoing. Next grouped discovery batch should cover Automotive detailing and new bin/gutter/pressure specialties using exact service evidence. FB UNPUBLISHED; photo tasks and genuine-reporter pet pilot OPEN; no outreach/imports or fabricated engagement. Tuesday November 24 scheduled refresh remains separate.
+
 ## November21 evening — CORE-01/02 eight supported additions LIVE
 
 Published **4 distinct providers and4 exact library events**, one event each in MountainHouse/Tracy/Lathrop/Manteca. Providers:209Handyman gutter cleaning(all4);GoldenState bin cleaning(all4);DeltaBinCleaner andFreddy’sSpotlessWash(Tracy/Lathrop/Manteca only). Exact checked trash-can coverage0/0/0/0 → **1/3/3/3**. Gutter7/6/6/5 →8/8/8/7;pressure3/3/3/3 →3/5/5/5 (MH/Tracy/Lathrop/Manteca). Overlapping service counts, not extra businesses or quality endorsements.
