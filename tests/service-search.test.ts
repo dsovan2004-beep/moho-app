@@ -29,3 +29,14 @@ test('cleanout and dryer vent discovery preserves exact specialties and category
  assert.equal(serviceForCategory('junk-removal','Home Services')?.tag,'junk removal')
  assert.equal(serviceForCategory('dryer-vent-cleaning','Pet Services'),undefined)
 })
+
+ test('new cleaning and mobile detailing discovery retains exact job and category boundaries',()=>{
+ for(const q of ['mobile auto detailing','Mobile car detailing'])assert.equal(serviceSearchTag(q),'mobile auto detailing')
+ for(const q of ['trash bin cleaning','garbage can cleaning'])assert.equal(serviceSearchTag(q),'trash can cleaning')
+ assert.equal(serviceSearchTag('gutter cleaners'),'gutter cleaning')
+ assert.equal(serviceSearchTag('pressure wash'),'pressure washing')
+ for(const q of ['car wash','auto repair','detailing','cleaning','gutter repair','Detail Guyz'])assert.equal(serviceSearchTag(q),undefined)
+ assert.equal(serviceForCategory('mobile-auto-detailing','Automotive')?.tag,'mobile auto detailing')
+ assert.equal(serviceForCategory('mobile-auto-detailing','Home Services'),undefined)
+ assert.equal(serviceForCategory('trash-can-cleaning','Automotive'),undefined)
+ })

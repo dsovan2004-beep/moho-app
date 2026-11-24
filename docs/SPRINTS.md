@@ -1,5 +1,12 @@
 # MoHoLocal — SPRINTS.md
 
+## November 23 — grouped service discovery (release in progress)
+
+Resident problem: newly checked mobile detailing, trash-can cleaning, gutter cleaning and pressure washing lacked precise directory shortcuts. Added four exact service filters and resident search terms; separated Home & yard, Pet care and Car care into clear panels. Links retain city and category, with 44px minimum targets and mobile disclosure. No provider counts or availability claims added.
+
+Acceptance: 217 regressions, TypeScript and OpenNext Cloudflare build passed. Local production browser accepted all 16 city/service combinations at 320px without horizontal overflow; mobile detailing shortcut retains Lathrop and returns 3 checked providers. Desktop grouped panels accepted. Native production acceptance pending. Stop this UI batch after mobile/desktop discovery and live source acceptance; return to verified service/event coverage. FB UNPUBLISHED, photo tasks OPEN; pet reporting LIVE with normal moderation and ongoing QA.
+
+
 ## November 23 — pet reporting LIVE; pilot gate removed
 
 Founder direction: no pilot requirement. **Pet reporting and report sharing are LIVE for all four cities.** The earlier genuine-reporter pilot gate is REMOVED by product decision, not marked as a successfully completed test. Any older pet-pilot OPEN statements below are historical and superseded by this entry. Future status updates must say live, with ordinary QA/monitoring where relevant.

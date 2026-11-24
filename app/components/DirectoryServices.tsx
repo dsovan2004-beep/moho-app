@@ -15,10 +15,11 @@ export default function DirectoryServices({city, selected}: {city: string; selec
       </button>
     </div>
     <p className={`${expanded ? 'block' : 'hidden lg:block'} mt-1 text-sm text-slate-600`}>Choose a service to see providers with dated website checks for your city.</p>
-    <div id="directory-service-options" className={`${expanded ? 'grid' : 'hidden lg:grid'} md:grid-cols-2 gap-5 mt-4`}>
-      {(['Home Services','Pet Services'] as const).map(group => <div key={group}>
-        <h3 className="text-xs font-bold uppercase tracking-wide text-slate-500 mb-2">{group === 'Home Services' ? 'Home & yard' : 'Pets & everyday care'}</h3>
-        <div className="flex flex-wrap gap-2">{SERVICE_CHOICES.filter(item => item.category === group).map(item => <Link key={item.key} aria-current={selected === item.key ? 'page' : undefined} onClick={() => setExpanded(false)} className={`inline-flex min-h-11 items-center px-3 py-2 rounded-xl text-sm border focus-visible:ring-2 focus-visible:ring-[#19352d] ${selected === item.key ? 'bg-[#19352d] text-white border-[#19352d]' : 'border-slate-200 bg-[#f7f8f5] text-slate-700 hover:border-[#19352d]'}`} href={`/directory?${new URLSearchParams({city,category:item.category,service:item.key})}`}>{item.label}</Link>)}</div>
+    <div id="directory-service-options" className={`${expanded ? 'grid' : 'hidden lg:grid'} lg:grid-cols-2 gap-3 mt-4`}>
+      {([['Home Services','Home & yard','Cleaning, repairs & outdoor help'],['Pet Services','Pet care','Walking, sitting, grooming & training'],['Automotive','Car care','Detailing that comes to you']] as const).map(([group, label, description]) => <div key={group} className={`min-w-0 rounded-xl border border-slate-200 bg-[#f7f8f5] p-3 sm:p-4 ${group === 'Home Services' ? 'lg:row-span-2' : ''}`}>
+        <h3 className="font-bold text-[#19352d]">{label}</h3>
+        <p className="mb-3 mt-1 text-xs text-slate-600">{description}</p>
+        <div className="flex flex-wrap gap-2">{SERVICE_CHOICES.filter(item => item.category === group).map(item => <Link key={item.key} aria-current={selected === item.key ? 'page' : undefined} onClick={() => setExpanded(false)} className={`inline-flex min-h-11 items-center px-3 py-2 rounded-xl text-sm border focus-visible:ring-2 focus-visible:ring-[#19352d] ${selected === item.key ? 'bg-[#19352d] text-white border-[#19352d]' : 'border-slate-200 bg-white text-slate-700 hover:border-[#19352d]'}`} href={`/directory?${new URLSearchParams({city,category:item.category,service:item.key})}`}>{item.label}</Link>)}</div>
       </div>)}
     </div>
   </section>
