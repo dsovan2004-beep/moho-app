@@ -1,8 +1,8 @@
 # MoHoLocal — SPRINTS.md
 
-## November 25 — Activity event previews IN PROGRESS
+## November 25 — Activity event previews LIVE
 
-Observed live Tracy Activity event cards emphasize publication age and clamp the description containing occurrence details. Add an explicit Pacific event date/time/venue calendar panel, label publication age as Added and provide clear card actions/keyboard focus. Keep actual check/approval dates, feed order and real-content-only rules. 219 regressions, TypeScript and Cloudflare build PASS; local desktop/four-city320px event streams, keyboard detail journey and listing check labels accepted. Native source marker and live acceptance pending. Stop this batch after those pass. FB unpublished; photos open; pet reporting LIVE, no pilot gate.
+Observed live Tracy Activity event cards emphasize publication age and clamp the description containing occurrence details. Add an explicit Pacific event date/time/venue calendar panel, label publication age as Added and provide clear card actions/keyboard focus. Keep actual check/approval dates, feed order and real-content-only rules. 219 regressions, TypeScript and Cloudflare build PASS; local desktop/four-city320px event streams, keyboard detail journey and listing check labels accepted. Native build e2624797-380c-4daa-b9c5-10be0fe81567 Ready, version66f2d45c; public source38e653bfa9dc35b08bf10ab7e313b1354c8a4ecf matches. All4production320px event feeds and keyboard event/detail journey accepted; listing check dates preserved. Batch COMPLETE. Evidence:docs/research/activity-ui-2026-11-25.md. Stop this batch after those pass. FB unpublished; photos open; pet reporting LIVE, no pilot gate.
 
 
 ## November 24, 09:00 Pacific — scheduled freshness COMPLETE
