@@ -1,5 +1,10 @@
 # MoHoLocal active execution queue
 
+## November 25 — Activity event previews IN PROGRESS
+
+Observed live Tracy Activity event cards emphasize publication age and clamp the description containing occurrence details. Add an explicit Pacific event date/time/venue calendar panel, label publication age as Added and provide clear card actions/keyboard focus. Keep actual check/approval dates, feed order and real-content-only rules. 219 regressions, TypeScript and Cloudflare build PASS; local desktop/four-city320px event streams, keyboard detail journey and listing check labels accepted. Native source marker and live acceptance pending. Stop this batch after those pass. FB unpublished; photos open; pet reporting LIVE, no pilot gate.
+
+
 ## November 24, 09:00 Pacific — scheduled freshness COMPLETE
 
 Published **1 checked Lathrop retail facility and2 exact remembrance events**: Sam’s Club#7684 with official November26 warehouse closure (other departments unconfirmed); Tree of Lights MantecaDecember1 and TracyDecember8, both5:30PM Pacific. Dates/venues deduplicated and primary-source checked; unknown end/admission retained, stale donation weekday and Tracy street spelling conflict resolved against year-specific schedule/City address. No copied photos, promotions, memorial names or donation transaction.

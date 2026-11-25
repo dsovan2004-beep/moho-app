@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import { eventDateParts, eventTimeRange } from '@/lib/event-dates'
 import { checkDate } from '@/lib/listing-evidence'
 import { RELAUNCH_CITY_NAMES } from '@/lib/cities'
 
@@ -16,6 +17,9 @@ export interface ActivityItem {
   approval_recorded?: boolean
   service_areas?: string[]
   category?: string
+  start_date?: string | null
+  end_date?: string | null
+  location?: string | null
 }
 
 const TYPE_BADGE: Record<ActivityItemType, { label: string; classes: string }> = {
@@ -83,11 +87,15 @@ export function ActivityCard({ item, currentCity }: ActivityCardProps) {
   const cityColor = CITY_BADGE[item.city] ?? 'bg-gray-50 text-gray-600'
   const icon = TYPE_ICON[item.type]
   const href = getHref(item, currentCity)
+  const action = item.type === 'event' ? 'View event details' : item.type === 'community' ? 'Read discussion' : item.type === 'lost_pet' ? 'View pet reports' : 'View listing'
+  const eventStart = item.type === 'event' && item.start_date && Number.isFinite(Date.parse(item.start_date)) ? item.start_date : undefined
+  const eventDate = eventStart ? eventDateParts(eventStart) : undefined
+  const eventEnd = eventStart && item.end_date && Number.isFinite(Date.parse(item.end_date)) && Date.parse(item.end_date) >= Date.parse(eventStart) ? item.end_date : undefined
   const showCityBadge = item.city && item.city.trim().length > 0
 
   return (
-    <Link href={href} className="block group">
-      <article className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all">
+    <Link href={href} aria-label={`${action}: ${item.title}`} className="block group rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2">
+      <article className="bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all">
         {/* Flyer / screenshot thumbnail — shown when present */}
         {item.image_url && (
           <div className="w-full h-40 bg-gray-100 overflow-hidden">
@@ -99,19 +107,32 @@ export function ActivityCard({ item, currentCity }: ActivityCardProps) {
           </div>
         )}
 
-        <div className="p-5">
+        <div className="p-4 sm:p-5">
           {/* Top row: type badge + timestamp */}
           <div className="flex flex-wrap gap-2 items-center justify-between mb-3">
             <span className={`text-xs font-bold px-2.5 py-1 rounded-full tracking-wide ${badge.classes}`}>
               {icon} {badge.label}
             </span>
-            <time dateTime={item.created_at} className="text-xs text-slate-500">{item.type === 'business_check' ? `Checked ${checkDate(item.created_at)}` : item.type === 'business' && item.approval_recorded ? `Approved ${checkDate(item.created_at)}` : timeAgo(item.created_at)}</time>
+            <time dateTime={item.created_at} className="text-xs text-slate-500">{item.type === 'business_check' ? `Checked ${checkDate(item.created_at)}` : item.type === 'business' && item.approval_recorded ? `Approved ${checkDate(item.created_at)}` : `${item.type === 'event' ? 'Added ' : ''}${timeAgo(item.created_at)}`}</time>
           </div>
 
           {/* Title */}
           <h3 className="font-bold text-gray-900 text-base mb-1 group-hover:text-blue-700 transition-colors line-clamp-2">
             {item.title}
           </h3>
+
+          {eventDate && eventStart && <div className="my-3 flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-3">
+            <div aria-hidden="true" className="shrink-0 overflow-hidden rounded-lg border border-amber-200 bg-white text-center min-w-12">
+              <div className="bg-amber-800 px-2 py-1 text-[10px] font-bold tracking-wide text-white">{eventDate.month}</div>
+              <div className="px-2 py-1 text-2xl font-extrabold text-amber-950">{eventDate.day}</div>
+            </div>
+            <div className="min-w-0 break-words">
+              <p className="text-[10px] font-bold uppercase tracking-wide text-amber-900">Event date</p>
+              <time dateTime={eventStart} className="block text-sm font-bold text-slate-900">{eventDate.weekday}, {eventDate.date}</time>
+              <p className="mt-1 text-sm text-slate-700">{eventTimeRange({start_date:eventStart,end_date:eventEnd})}</p>
+              {item.location && <p className="mt-2 text-xs leading-relaxed text-slate-700">{item.location}</p>}
+            </div>
+          </div>}
 
           {/* Category label for businesses */}
           {(item.type === 'business' || item.type === 'business_check') && item.category && (
@@ -127,12 +148,15 @@ export function ActivityCard({ item, currentCity }: ActivityCardProps) {
 
           {item.service_areas?.length ? <p className="mb-3 text-xs text-slate-600">Advertised coverage: {item.service_areas.join(' · ')}</p> : null}
 
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-3">
           {/* City badge — only rendered when city is a non-empty string */}
           {showCityBadge && (
             <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${cityColor}`}>
               📍 {item.city === 'Service area only' ? 'Office location not listed' : item.city}
             </span>
           )}
+          <span className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-blue-700">{action} <span aria-hidden="true">→</span></span>
+          </div>
         </div>
       </article>
     </Link>

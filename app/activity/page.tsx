@@ -33,7 +33,7 @@ async function fetchActivityFeed(city: string | undefined, stream: ActivityStrea
   const earliestUnknown = new Date(now.getTime()-86400000).toISOString()
   const [posts, events, pets, listed, checked] = await Promise.all([
     stream==='all' || stream==='discussions' ? db.from('community_posts').select('id,title,content,city,created_at').in('city',cities).neq('status','flagged').neq('status','removed').not('title','ilike','%facebook%').not('content','ilike','%facebook.com/groups%').order('created_at',{ascending:false}).limit(40) : empty,
-    stream==='all' || stream==='events' ? db.from('events').select('id,title,description,city,created_at,start_date,end_date').eq('status','approved').in('city',cities).or(`end_date.gte.${now.toISOString()},and(end_date.is.null,start_date.gte.${earliestUnknown})`).order('created_at',{ascending:false}).limit(40) : empty,
+    stream==='all' || stream==='events' ? db.from('events').select('id,title,description,city,created_at,start_date,end_date,location').eq('status','approved').in('city',cities).or(`end_date.gte.${now.toISOString()},and(end_date.is.null,start_date.gte.${earliestUnknown})`).order('created_at',{ascending:false}).limit(40) : empty,
     stream==='all' || stream==='pets' ? db.from('lost_and_found').select('id,title,description,city,created_at').in('city',cities).in('status',['lost','found']).order('created_at',{ascending:false}).limit(40) : empty,
     wantsListings ? businesses : empty, wantsListings ? checks : empty,
   ])
@@ -42,7 +42,7 @@ async function fetchActivityFeed(city: string | undefined, stream: ActivityStrea
   const refreshes: ActivityItem[] = (checked.data ?? []).map((check:any)=>({id:check.business_id,type:'business_check',title:check.businesses.name,description:check.businesses.description ?? 'Website information checked; confirm your service needs and current availability directly.',city:check.businesses.city,category:check.businesses.category,created_at:check.checked_at,service_areas:check.service_areas}))
   return mergeActivity([
     ...(posts.data ?? []).map(p=>({id:p.id,type:'community' as const,title:p.title ?? '',description:p.content ?? '',city:p.city ?? '',created_at:p.created_at})),
-    ...(events.data ?? []).filter(e=>isUpcomingEvent(e,now)).map(e=>({id:e.id,type:'event' as const,title:e.title ?? '',description:e.description ?? '',city:e.city ?? '',created_at:e.created_at})),
+    ...(events.data ?? []).filter(e=>isUpcomingEvent(e,now)).map(e=>({id:e.id,type:'event' as const,title:e.title ?? '',description:e.description ?? '',city:e.city ?? '',created_at:e.created_at,start_date:e.start_date,end_date:e.end_date,location:e.location})),
     ...(pets.data ?? []).map(p=>({id:p.id,type:'lost_pet' as const,title:p.title ?? '',description:p.description ?? '',city:p.city ?? '',created_at:p.created_at})),
     ...additions,...refreshes,
   ])

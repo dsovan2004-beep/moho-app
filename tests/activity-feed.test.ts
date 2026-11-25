@@ -32,3 +32,22 @@ test('later actual approval is not hidden behind an older website check',()=>{
  const html=renderToStaticMarkup(React.createElement(ActivityCard,{item:approval}))
  assert.match(html,/LISTING APPROVED/);assert.match(html,/Approved Nov 12, 2026/)
 })
+
+
+test('event preview separates publication from the Pacific occurrence and never invents an end time',()=>{
+ const html=renderToStaticMarkup(React.createElement(ActivityCard,{item:{...row,type:'event',created_at:'2026-11-24T17:00:00Z',start_date:'2026-12-02T01:30:00Z',end_date:null,location:'Doctors Hospital, North and Cottage'}}))
+ assert.match(html,/Tuesday, December 1, 2026/)
+ assert.match(html,/5:30 PM Pacific Time/)
+ assert.match(html,/Doctors Hospital, North and Cottage/)
+ assert.match(html,/Event date/);assert.match(html,/Added /)
+ assert.match(html,/aria-label="View event details: Example"/)
+ assert.ok(!html.includes('6:30'))
+})
+test('event preview shows a supplied time range and omits invalid occurrence metadata',()=>{
+ const html=renderToStaticMarkup(React.createElement(ActivityCard,{item:{...row,type:'event',start_date:'2026-12-02T00:00:00Z',end_date:'2026-12-02T01:00:00Z'}}))
+ assert.match(html,/4:00 PM – 5:00 PM Pacific Time/)
+ const invalid=renderToStaticMarkup(React.createElement(ActivityCard,{item:{...row,type:'event',start_date:'invalid'}}))
+ assert.ok(!invalid.includes('Event date'));assert.ok(!invalid.includes('Invalid Date'))
+ const listing=renderToStaticMarkup(React.createElement(ActivityCard,{item:row}))
+ assert.ok(!listing.includes('Event date'));assert.match(listing,/aria-label="View listing: Example"/)
+})
