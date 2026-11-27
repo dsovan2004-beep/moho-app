@@ -1,5 +1,14 @@
 # MoHoLocal living-directory refresh ledger
 
+## November 27, 09:00 Pacific — scheduled freshness COMPLETE
+
+LIVE: removed expired November26 Sam’s Club Lathrop closure notice, preserving original approval and private before/after history. Fresh primary identity/address/contact check and anonymous/public detail/Activity read-back accepted. No new provider or event qualified; selected upcoming library/City/organizer sources across all four cities agree with existing records. BarkingBuddies held because primary contact/coverage could not be verified.
+
+Fixed an observed Directory name-search failure: smart apostrophes were stripped, hiding Sam’s Club. Bounded straight/smart typography variants now retain existing filter safety and city/service constraints. 222 tests, TypeScript and Cloudflare build PASS. Native build c2d00dc1-77a6-47c8-96d0-0b3c0e9ae3a2 Ready2m5s, version5dc1618b; production marker595f510fc8b4801e9147fda45f6f06054be5eec2 matches. Production Sam’s Club both spellings and Ron’s Pool both spellings across all4cities accepted at320px; detail/return context/contact links accepted, no horizontal overflow. Viewport restored and local test processes stopped. Evidence:docs/research/freshness-2026-11-27-0900.md.
+
+Next: qualify independent Lathrop/Manteca sitter/walker supply, recheck approaching events and exact parade venue, continue dated/location/reuse-qualified photo sourcing. Photo tasks OPEN; labeled satellite retained; FB unpublished, no outreach/imports. Pet reporting LIVE with ongoing moderation/QA. Next scheduled period December1,09:00Pacific.
+
+
 ## November16 — Search Console evidence and canonical fix (SEO-LOCAL-03 / MOBILE-19 / SUPPLY-20)
 
 LIVE: business parameter variants now canonicalize to clean stored-ID URL; directory names have44px minimum tap targets/focus styling.195tests/TypeScript/OpenNext pass; nativec0f90c51c73bb54007a69424ca6f0f5fe427d78b success/exact marker. Production canonical/return context,320px44px target/no overflow and keyboard detail navigation accepted; viewport restored.
