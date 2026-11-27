@@ -12,6 +12,7 @@ import ListingEvidence from '@/app/components/ListingEvidence'
 import { CHECK_COLUMNS, checkDate } from '@/lib/listing-evidence'
 import { serviceForCategory, serviceSearchTag } from '@/lib/services'
 import { directoryHref } from '@/lib/directory-filters'
+import { directoryTextSearch, normalizeSearchApostrophes } from '@/lib/directory-search'
 import { businessHref } from '@/lib/business-discovery'
 import BusinessContactActions from '@/app/components/BusinessContactActions'
 import DirectoryServices from '@/app/components/DirectoryServices'
@@ -68,10 +69,10 @@ const SORT_OPTIONS = [
 // Tier 3: everything else (description/city/address match)
 // Within each tier: secondary sort by rating DESC
 function sortByRelevance(bizs: Business[], q: string): Business[] {
-  const lower = q.toLowerCase()
+  const lower = normalizeSearchApostrophes(q).toLowerCase().replace(/\s+/g, ' ').trim()
   return [...bizs].sort((a, b) => {
     const tier = (biz: Business): number => {
-      const name = biz.name.toLowerCase()
+      const name = normalizeSearchApostrophes(biz.name).toLowerCase()
       if (name.startsWith(lower))                    return 0
       if (name.includes(lower))                      return 1
       if (biz.category.toLowerCase().includes(lower)) return 2
@@ -255,7 +256,8 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
       req = req.in('id',ids.length ? ids : ['00000000-0000-0000-0000-000000000000'])
     }
 
-    const safeQuery = query.replace(/[^\p{L}\p{N}\s'-]/gu, ' ').trim().slice(0,100)
+    const textSearch = directoryTextSearch(query)
+    const safeQuery = textSearch.term
     if (safeQuery) {
       // Known job terms also match dated service evidence, retaining every existing filter.
       const tag = serviceSearchTag(safeQuery)
@@ -268,7 +270,7 @@ export default function DirectoryBrowser({initialCity,initialCategory,initialSer
         if (searchError) { failPage(); return }
         evidenceIds=(matches??[]).map(row=>row.business_id).filter(id=>/^[0-9a-f-]{36}$/i.test(id))
       }
-      const textFields=`name.ilike.%${safeQuery}%,description.ilike.%${safeQuery}%,category.ilike.%${safeQuery}%,city.ilike.%${safeQuery}%,address.ilike.%${safeQuery}%`
+      const textFields=textSearch.filter
       req=req.or(textFields+(evidenceIds.length?`,id.in.(${evidenceIds.join(',')})`:''))
       // Fetch alphabetically; relevance re-sort happens client-side below
       req = req.order('name', { ascending: true })

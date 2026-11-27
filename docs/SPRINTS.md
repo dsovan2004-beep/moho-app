@@ -1,5 +1,10 @@
 # MoHoLocal — SPRINTS.md
 
+## November 27, 09:00 Pacific — freshness IN PROGRESS
+
+Priority: retire the expired November26 Sam’s warehouse closure from current listing copy, preserve private history and original approval, and recheck selected upcoming events/openings across all four cities. Review accepted November25UI release without rebuilding it. Qualify service candidates only with current primary contact/scope; no duplicate seed publication. Live acceptance found a business-name search defect: Sam’s Club returned zero while removing text showed the listing. Fix bounded straight/smart-apostrophe query variants without loosening filter grammar, then run regression/TypeScript/build/mobile/native/live acceptance. Complete with anonymous/public read-back and ledger evidence. Photo rights/location/date tasks open; FB unpublished; pet reporting LIVE.
+
+
 ## November 25 — Activity event previews LIVE
 
 Observed live Tracy Activity event cards emphasize publication age and clamp the description containing occurrence details. Add an explicit Pacific event date/time/venue calendar panel, label publication age as Added and provide clear card actions/keyboard focus. Keep actual check/approval dates, feed order and real-content-only rules. 219 regressions, TypeScript and Cloudflare build PASS; local desktop/four-city320px event streams, keyboard detail journey and listing check labels accepted. Native build e2624797-380c-4daa-b9c5-10be0fe81567 Ready, version66f2d45c; public source38e653bfa9dc35b08bf10ab7e313b1354c8a4ecf matches. All4production320px event feeds and keyboard event/detail journey accepted; listing check dates preserved. Batch COMPLETE. Evidence:docs/research/activity-ui-2026-11-25.md. Stop this batch after those pass. FB unpublished; photos open; pet reporting LIVE, no pilot gate.
