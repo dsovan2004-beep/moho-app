@@ -1,5 +1,10 @@
 # MoHoLocal — SPRINTS.md
 
+## November 28 — service/event expansion and mobile date discovery IN PROGRESS
+
+Resident outcome: more source-checked contacts and exact upcoming occurrences across the four cities. Qualify Mr. Ed’s Plumbing (explicit all4city coverage) and Valley City Plumbing (Tracy/Lathrop/Manteca only), plus4individually checked library events; deduplicate identity/domain/phone/occurrence before publishing. Mobile Events measured320px: first card top808px, later cards1208–2000px, no compact date index. Add accessible date/title jump list with44px targets and current-view content only. Stop after scoped data/public read-back and regression/typecheck/build/local/native/live UI acceptance. FB unpublished; photo tasks open; pet reporting live.
+
+
 ## November 27, 09:00 Pacific — scheduled freshness COMPLETE
 
 LIVE: removed expired November26 Sam’s Club Lathrop closure notice, preserving original approval and private before/after history. Fresh primary identity/address/contact check and anonymous/public detail/Activity read-back accepted. No new provider or event qualified; selected upcoming library/City/organizer sources across all four cities agree with existing records. BarkingBuddies held because primary contact/coverage could not be verified.

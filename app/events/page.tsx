@@ -50,7 +50,7 @@ function EventCard({ event, archived = false }: { event: Event; archived?: boole
   const cityColor = CITY_COLORS[event.city] ?? 'bg-gray-100 text-gray-700'
 
   return (
-    <article className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all">
+    <article id={`event-${event.id}`} tabIndex={-1} className="scroll-mt-28 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-700 bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all">
       {!event.image_url && <CardCityPhoto city={event.city} />}
       <Link href={`/events/${event.id}`} className="block group focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-700">
       {/* Flyer / screenshot image — shown when present */}
@@ -165,7 +165,7 @@ export default async function EventsPage({ searchParams }: PageProps) {
                 : 'bg-white border border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-700'
             }`}
           >
-            {c}
+            {c === 'All Cities' ? 'All four cities' : c}
           </Link>
         ))}
       </div>
@@ -174,6 +174,23 @@ export default async function EventsPage({ searchParams }: PageProps) {
         <p className="font-semibold">{upcoming.length} current or upcoming {upcoming.length === 1 ? 'event' : 'events'}{city === 'All Cities' ? ' across our cities' : ` in ${city}`}</p>
         <p className="mt-1 text-slate-600">Check the organizer for availability and changes.{past.length > 0 && ' Past events are tucked into the archive below.'}</p>
       </div>}
+      {!unavailable && upcoming.length > 0 && (
+        <nav aria-label="Upcoming event quick list" className="mb-6 rounded-2xl border border-slate-200 bg-white p-4">
+          <h2 className="font-bold text-[#18324f]">Find a date quickly</h2>
+          <p className="mt-1 text-sm text-slate-600">Jump to an event for its time, location and details.</p>
+          <ul className="mt-3 divide-y divide-slate-100">
+            {upcoming.map(event => {
+              const date = eventDateParts(event.start_date)
+              return <li key={event.id}>
+                <a href={`#event-${event.id}`} className="flex min-h-11 items-start gap-3 rounded-md py-3 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-700">
+                  <span className="w-14 shrink-0 font-bold text-blue-700">{date.month} {date.day}</span>
+                  <span className="min-w-0"><span className="font-semibold text-slate-800">{event.title}</span>{city === 'All Cities' && <span className="mt-0.5 block text-xs text-slate-500">{event.city}</span>}</span>
+                </a>
+              </li>
+            })}
+          </ul>
+        </nav>
+      )}
       {unavailable ? <div role="status" className="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-slate-700"><h2 className="font-bold">Events are temporarily unavailable</h2><p className="mt-2">We couldn’t load the calendar. Please try again shortly.</p><Link href={`/events?city=${encodeURIComponent(city)}`} className="inline-flex min-h-11 items-center underline mt-2">Try again →</Link></div> : events.length === 0 ? (
         <div className="text-center py-20 text-gray-400">
           <p className="text-4xl mb-3">📅</p>
