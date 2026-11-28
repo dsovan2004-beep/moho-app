@@ -1,5 +1,16 @@
 # MoHoLocal living-directory refresh ledger
 
+## November 28 — pet-service coverage and four-city events COMPLETE / LIVE
+
+Added advertised pet boarding to existing iThink Pet’s four-city service discovery, with care location, animal eligibility, transport, full quote and availability explicitly requiring provider confirmation. Original approval preserved; actual November28 source check and private before/after history retained. This is one service addition to an existing business, not a new sitter/walker. All4boarding shortlists and listing Activity, public detail/text contact and anonymous read-back accepted.
+
+Published4new exact library occurrences: MountainHouse Lego Building Dec9, Tracy Family Bingo Dec3, Lathrop adult ribbon-tree craft Dec9 (registration opensDec1), Manteca robotics Dec10 (ages9–13,12participants, registration opensDec3). Exact dates/times/venues and stated limits individually checked; no capacity or unlisted admission promise. All4cityEvents/Activity and public details/sourcehrefs accepted; anonymousHTTP200 for4events. Data-only, no application build/deployment needed.
+
+Priority Lathrop/Manteca sitter/walker research completed for this bounded pass: AllWagsCare/PetYogi/ComfortedCanine held for explicit city travel-coverage gaps; association nearby-city results, provider base addresses and testimonials do not establish travel. No new pet providers qualified. MantecaCritterSitters and GrowlsNMeows primary info agrees with existing scoped records, not republished as new. BarkingBuddies remains held. [Sources, holds and acceptance](research/pet-coverage-events-2026-11-28.md).
+
+Next: pursue materially new primary sitter/walker coverage evidence, retain held leads without repeating unchanged searches; approaching registrations and December1 scheduled freshness. Photo tasks OPEN, satellite retained, FB unpublished, no outreach/imports/photos/credentials/accounts/spending; pet reporting LIVE. Earlier November28 providers/UI/events are separate and not counted again.
+
+
 ## November 28 — services, events and mobile date discovery COMPLETE / LIVE
 
 Published 2 unique website-checked plumbing providers: Mr. Ed’s explicitly serves all four cities; Valley City Plumbing names Tracy, Lathrop and Manteca only. Published 4 exact library occurrences, one per city: Mountain House Superspy Day Dec7, Lathrop Toddler Time Dec4, Tracy Clay Ornaments Dec16, Manteca adult Ornaments/Wreaths Dec11. Contacts, services, city coverage, dates/times and branch addresses individually checked; unknown attendance/availability retained. No quality/credential/owner confirmation implied.
