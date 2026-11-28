@@ -50,7 +50,7 @@ function EventCard({ event, archived = false }: { event: Event; archived?: boole
   const cityColor = CITY_COLORS[event.city] ?? 'bg-gray-100 text-gray-700'
 
   return (
-    <article id={`event-${event.id}`} tabIndex={-1} className="scroll-mt-28 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-700 bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all">
+    <article id={`event-${event.id}`} tabIndex={-1} className="scroll-mt-56 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-700 bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all">
       {!event.image_url && <CardCityPhoto city={event.city} />}
       <Link href={`/events/${event.id}`} className="block group focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-700">
       {/* Flyer / screenshot image — shown when present */}
