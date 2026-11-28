@@ -1,8 +1,14 @@
 # MoHoLocal active execution queue
 
-## November 28 — service/event expansion and mobile date discovery IN PROGRESS
+## November 28 — services, events and mobile date discovery COMPLETE / LIVE
 
-Resident outcome: more source-checked contacts and exact upcoming occurrences across the four cities. Qualify Mr. Ed’s Plumbing (explicit all4city coverage) and Valley City Plumbing (Tracy/Lathrop/Manteca only), plus4individually checked library events; deduplicate identity/domain/phone/occurrence before publishing. Mobile Events measured320px: first card top808px, later cards1208–2000px, no compact date index. Add accessible date/title jump list with44px targets and current-view content only. Stop after scoped data/public read-back and regression/typecheck/build/local/native/live UI acceptance. FB unpublished; photo tasks open; pet reporting live.
+Published 2 unique website-checked plumbing providers: Mr. Ed’s explicitly serves all four cities; Valley City Plumbing names Tracy, Lathrop and Manteca only. Published 4 exact library occurrences, one per city: Mountain House Superspy Day Dec7, Lathrop Toddler Time Dec4, Tracy Clay Ornaments Dec16, Manteca adult Ornaments/Wreaths Dec11. Contacts, services, city coverage, dates/times and branch addresses individually checked; unknown attendance/availability retained. No quality/credential/owner confirmation implied.
+
+Anonymous HTTP200 confirms2businesses/2checks/4events. Directory Newest, Discover and Activity accepted across4cities with correct Valley City exclusion from Mountain House. All4event details/source links and city Events/Activity accepted; private publication history retained. No images copied or fabricated engagement.
+
+Mobile Events now has a compact date/title jump list,44px minimum targets, city labels in regional view and keyboard-focusable cards. Screenshot review caught sticky navigation obscuring a heading; corrected scroll offset before final acceptance. 222tests, TypeScript and OpenNext build PASS. Nativeeaa8adbf-31f5-44a5-9ed9-f13f0281ea17 Ready4m24s, versiond715a1da. Productionmarker27bea07c90fc9a3b100697ff55bee425d650cfdf matches. All4live320px views: no overflow/brokenanchors, minimumtargets≥44px; keyboard jump exposes fullheading, seasonalDecember filtering and desktop accepted. Viewport restored; disposable test processes stopped. Superseded01b8e9dbuild failed beforedeploy and was not retried. [Evidence](research/services-events-mobile-2026-11-28.md).
+
+Next: independent Lathrop/Manteca sitter/walker supply; check exact Knights office/contact against fresh primary page before any correction; December1 scheduled freshness and approaching-event details. Photo/location/date/reuse tasks OPEN, labeledsatellite retained; FB unpublished; pet reporting LIVE with ongoingQA. This increment does not consume the December1 scheduled refresh.
 
 
 ## November 27, 09:00 Pacific — scheduled freshness COMPLETE
